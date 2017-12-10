@@ -36,7 +36,7 @@ with `eval-last-sepx` (`C-x C-e`).
 
 For the most curious, you can test my complete configuration with:
 
-`git clone --recursive https://github.com/rememberYou/.emacs.d`
+	git clone --recursive https://github.com/rememberYou/.emacs.d
 
 Notes that the first time Emacs starts, this one will install some additional
 packages that are best handled by the package manager.
