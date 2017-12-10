@@ -68,7 +68,7 @@ Adding main Elisp directory and install =use-package=.
 
 * General configuration
 
-** =abbrev=
+** [[https://www.emacswiki.org/emacs/AbbrevMode/][Abbrev Mode]]
 
 According to a list of mispelling words, =abbrev= auto-correct these words on
 the fly.
