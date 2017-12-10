@@ -1,0 +1,3 @@
+[submodule "elisp/yasnippet-snippets"]
+	path = elisp/yasnippet-snippets
+	url = https://github.com/AndreaCrotti/yasnippet-snippets
