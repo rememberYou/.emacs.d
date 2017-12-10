@@ -1,0 +1,16 @@
+*~
+*.elc
+/anaconda-mode/
+/auto-save-list/
+/backups/
+/elpa/
+history
+org-clock-save.el
+plantuml.jar
+projectile-bookmarks.eld
+projectile.cache
+recentf
+smex-items
+/url/
+/var/
+/history
