@@ -180,6 +180,15 @@ abort completely with `C-g'."
 (global-set-key (kbd "C-x R") 'revert-buffer)
 
 (fset 'yes-or-no-p 'y-or-n-p)
+    (defun erc-global-notify (match-type nick message)
+      "Notify when a message is recieved."
+      (notifications-notify
+       :title nick
+       :body message
+       :app-icon "/home/io/.emacs.d/assets/spacemacs.svg"
+       :urgency 'low))
+
+    (add-hook 'erc-text-matched-hook 'erc-global-notify)
 
 (prefer-coding-system 'utf-8)
 (when (display-graphic-p)
@@ -1118,7 +1127,6 @@ same day of the month, but will be the same day of the week."
   (add-hook 'web-mode-hook 'skewer-html-mode))
 
 (use-package ivy
-
   :diminish (ivy-mode)
   :bind (("C-x b" . ivy-switch-buffer))
   :config

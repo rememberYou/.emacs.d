@@ -68,7 +68,7 @@ Adding main Elisp directory and install =use-package=.
 
 * General configuration
 
-** [[https://www.emacswiki.org/emacs/AbbrevMode/][Abbrev Mode]]
+** =abbrev-mode=
 
 According to a list of mispelling words, =abbrev= auto-correct these words on
 the fly.
@@ -80,7 +80,7 @@ the fly.
   (quietly-read-abbrev-file)
 #+END_SRC
 
-** [[https://github.com/tarsius/auto-compile/][auto-compile]]
+** =auto-compile=
 
 With that, Emacs never loads outdated byte code files.
 
@@ -218,7 +218,7 @@ I find useful to delete a line and a region with only =C-w=
              (line-beginning-position 2)))))
 #+END_SRC
 
-** [[https://www.emacswiki.org/emacs/IbufferMode/][Ibuffer Mode]]
+** =Ibuffer=
 
 Buffers can quickly become a mess. For some people, that's not a problem, but I
 like to be able to easily find my way around.
@@ -244,7 +244,7 @@ like to be able to easily find my way around.
               (ibuffer-switch-to-saved-filter-groups "default")))
 #+END_SRC
 
-** Ispell
+** =ispell=
 
 I often write reports and =ispell= provides me a powerful dictionary when I need
 to overview the document.
@@ -309,7 +309,7 @@ and English when typing.
           save-abbrevs 'silently))
 #+END_SRC
 
-** [[https://www.emacswiki.org/emacs/LoremIpsum][Lorem Ipsum]]
+** =lorel-ipsum=
 
 I could use =try= when I need to use =lipsum=, but as I'm using =defer=, the
 loading of the package doesn't impact the =emacs-init-time=.
@@ -338,6 +338,15 @@ I'm too lazy...
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (fset 'yes-or-no-p 'y-or-n-p)
+      (defun erc-global-notify (match-type nick message)
+        "Notify when a message is recieved."
+        (notifications-notify
+         :title nick
+         :body message
+         :app-icon "/home/io/.emacs.d/assets/spacemacs.svg"
+         :urgency 'low))
+
+      (add-hook 'erc-text-matched-hook 'erc-global-notify)
 #+END_SRC
 
 ** Set UTF-8
@@ -465,7 +474,7 @@ clipboard.
         (message "Copied buffer file name '%s' to the clipboard." filename))))
 #+END_SRC
 
-** [[https://github.com/hrs/engine-mode][Engine Mode]]
+** =engine-mode=
 
 I use it to do most of my querying search without leaving Emacs.
 
@@ -509,7 +518,7 @@ I use it to do most of my querying search without leaving Emacs.
     (engine-mode t))
 #+END_SRC
 
-** [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Dired-and-Find.html/][Find Dired]]
+** =find-dired=
 
 =find-dired= gives the possibility to display files from a directory.
 
@@ -557,7 +566,7 @@ might as well add shortcuts for refiling.
   (my/defshortcut ?s "~/personal/school.org")
 #+END_SRC
 
-** [[https://github.com/emacsfodder/move-text/][Move Texte]]
+** =move-text=
 
 Moves the current line (or if marked, the current region’s, whole lines).
 
@@ -612,7 +621,7 @@ Notice that it doesn't affect global mark ring.
   (setq set-mark-command-repeat-pop t)
 #+END_SRC
 
-** [[https://www.emacswiki.org/emacs/RecentFiles/][Recent Files]]
+** =recentf=
 
 Provides fast access to the recent files.
 
@@ -625,7 +634,7 @@ Provides fast access to the recent files.
     (recentf-mode))
 #+END_SRC
 
-** [[https://github.com/dimitri/switch-window/][Switch Window]]
+** =switch-window=
 
 Displays an overlay in each window showing a unique key, then ask user for the
 window where move to.
@@ -640,7 +649,7 @@ buffer by hiding his contents.
            ("C-x w" . switch-window-then-swap-buffer)))
 #+END_SRC
 
-** [[https://www.emacswiki.org/emacs/WindMove/][Wind Move]]
+** =windmove=
 
 Lets you move between windows with something more natural than cycling through
 =C-x o= (=other-window=). Windmove doesn't behave well with Org, so we need to
@@ -657,7 +666,7 @@ good complementary to it.
            ("C-c l" . windmove-right)))
 #+END_SRC
 
-* [[https://github.com/jwiegley/org-mode/][Org-Mode]]
+* Org-Mode
 
 One of my favorite mode in Emacs. I mainly use it to organize my life, takes
 notes and make my presentations, but you can do plenty of stuff with
@@ -1685,7 +1694,7 @@ To use that, you should install =gnupg2=
 
 * Plugins configuration
 
-** [[https://github.com/Malabarba/aggressive-indent-mode][Aggresive Indent]]
+** =aggressive-indent=
 
 minor mode that keeps your code always indented. It reindents after every
 change.
@@ -1697,7 +1706,7 @@ change.
     (add-to-list 'aggressive-indent-excluded-modes 'html-mode))
 #+END_SRC
 
-** [[https://github.com/company-mode/company-mode/][Company]]
+** =company=
 
 Company is a text completion framework for Emacs. The name stands for "complete
 anything". It uses pluggable back-ends and front-ends to retrieve and display
@@ -1714,7 +1723,7 @@ completion candidates.
           company-begin-commands '(self-insert-command))) ; start autocompletion only after typing
 #+END_SRC
 
-** [[https://github.com/justbur/emacs-which-key/][Which key]]
+** =which-key=
 
 It's difficult to remember all the keyboard shortcuts. The =which-key= package
 helps to solve this.
@@ -1728,14 +1737,14 @@ I used =guide-key= in my past days, but =which-key= is a good replacement.
     (which-key-mode))
 #+END_SRC
 
-** [[https://github.com/magnars/expand-region.el/][Expand Region]]
+** =expend-region=
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package expand-region
     :init (global-set-key (kbd "C-=") 'er/expand-region))
 #+END_SRC
 
-** [[https://github.com/flycheck/flycheck/][Flycheck]]
+** =flycheck=
 
 #+BEGIN_SRC emacs-lisp :tangle yes
     (use-package flycheck
@@ -1754,7 +1763,7 @@ I used =guide-key= in my past days, but =which-key= is a good replacement.
         :modes (php-mode php+-mode web-mode)))
 #+END_SRC
 
-** [[https://github.com/nflath/hungry-delete/][Hungry Delete]]
+** =hungry-delete=
 
 Deleting a whitespace character will delete all whitespace until the next
 non-whitespace character.
@@ -1765,7 +1774,7 @@ non-whitespace character.
     (global-hungry-delete-mode))
 #+END_SRC
 
-** [[https://github.com/victorhge/iedit][Iedit]]
+** =iedit=
 
 Edit multiple regions in the same way simultaneously
 
@@ -1773,7 +1782,7 @@ Edit multiple regions in the same way simultaneously
   (use-package iedit)
 #+END_SRC
 
-** [[https://github.com/ledger/ledger-mode/][Ledger]]
+** =ledger=
 
 I usually use ledger to take a track of my finance.
 
@@ -1792,7 +1801,7 @@ if you using =Arch Linux= like I do. Otherwise, see for your case.
   pacaur -S ledger
 #+END_SRC
 
-** [[https://github.com/politza/pdf-tools/][PDF-Tools]]
+** =pdf-tools=
 
 PDF Tools is, among other things, a replacement of DocView for PDF files. The
 key difference is, that pages are not pre-rendered by e.g. ghostscript and
@@ -1802,7 +1811,7 @@ stored in the file-system, but rather created on-demand and stored in memory.
   (pdf-tools-install)
 #+END_SRC
 
-** [[https://github.com/bbatsov/projectile/][Projectile]]
+** =projectile=
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package projectile
@@ -1815,7 +1824,7 @@ stored in the file-system, but rather created on-demand and stored in memory.
       (counsel-projectile-on)))
 #+END_SRC
 
-** [[https://github.com/emacsmirror/rainbow-mode/][Rainbow Mode]]
+** =rainbow-mode=
 
 Minor mode for Emacs which displays strings representing
 colors with the color they represent as background.
@@ -1831,7 +1840,7 @@ colors with the color they represent as background.
         (add-hook 'web-mode-hook 'rainbow-mode)))
 #+END_SRC
 
-** [[https://github.com/skeeto/skewer-mode/][Skewer Mode]]
+** =skewer-mode=
 
 Provides live interaction with JavaScript, CSS, and HTML in a web
 browser. Expressions are sent on-the-fly from an editing buffer to be evaluated
@@ -1848,13 +1857,12 @@ modes.
     (add-hook 'web-mode-hook 'skewer-html-mode))
 #+END_SRC
 
-** Ivy
+** =ivy=
 
 I used =helm= before, but I find =ivy= more faster and lighter.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package ivy
-
     :diminish (ivy-mode)
     :bind (("C-x b" . ivy-switch-buffer))
     :config
@@ -1863,7 +1871,7 @@ I used =helm= before, but I find =ivy= more faster and lighter.
     (setq ivy-display-style 'fancy))
 #+END_SRC
 
-** [[https://github.com/abo-abo/swiper][Swiper]]
+** =swiper=
 
 Provides to myself isearch with an overview.
 
@@ -1884,12 +1892,12 @@ I also use =counsel= to easily find my files.
       :bind ("M-y" . counsel-yank-pop)))
 #+END_SRC
 
-** [[https://github.com/skeeto/impatient-mode/][Impatient Mode]]
+** =impatient-mode=
 
 Useful to see the effect of then HTML when you type it.
 
 To use =impatient mode= , you need to enable the web server provided by
-[[https://github.com/skeeto/emacs-web-server/][simple-httpd]]. For that, use =M-x httpd-start=, open your browser to
+=simple-httpd. For that, use =M-x httpd-start=, open your browser to
 =http://localhost:8080/imp/= and select your buffer to watch your changes appear
 as you type!
 
@@ -1908,7 +1916,7 @@ as you type!
       (add-hook 'css-mode-hook 'impatient-mode)))
 #+END_SRC
 
-** [[https://github.com/Fuco1/smartparens/][Smartparens]]
+** =smartparens=
 
 According to myself, this is most powerful package to deal with parenthesis.
 Anyway, if you don't like it you can try take a look to =paredit= or =autopair=
@@ -2000,7 +2008,7 @@ Anyway, if you don't like it you can try take a look to =paredit= or =autopair=
         (sp-local-pair "(" nil :bind "C-("))))
 #+END_SRC
 
-** [[https://github.com/danielfm/spotify.el/][Spotify]]
+** =spotify=
 
 Control the spotify application from Emacs.
 
@@ -2011,7 +2019,7 @@ Control the spotify application from Emacs.
       (spotify-enable-song-notifications))
 #+END_SRC
 
-** Try
+** =try=
 
 Useful to temporary use a package.
 
@@ -2019,7 +2027,7 @@ Useful to temporary use a package.
   (use-package try :defer 5)
 #+END_SRC
 
-** [[https://github.com/emacsmirror/undo-tree/][Undo Tree]]
+** =undo-tree=
 
 Emacs's undo system allows you to recover any past state of a buffer. To do
 this, Emacs treats "undo itself as another editing that can be undone.
@@ -2035,7 +2043,7 @@ this, Emacs treats "undo itself as another editing that can be undone.
       (setq undo-tree-visualizer-diff t)))
 #+END_SRC
 
-** [[https://github.com/yasuyk/web-beautify/][Web beautify]]
+** =web-beautify=
 
 A formatting package of HTML, CSS and JavaScript/JSON for Emacs. It uses the
 command-line/node.js javascript formatter from http://jsbeautifier.org/ to
@@ -2077,7 +2085,7 @@ If you plan to use it, don’t forget installing it via =npm=
   sudo npm install -g js-beautify
 #+END_SRC
 
-** [[https://github.com/fxbois/web-mode/][Web Mode]]
+** =web-mode=
 
 An autonomous emacs major-mode for editing web templates.
 
@@ -2098,7 +2106,7 @@ An autonomous emacs major-mode for editing web templates.
     (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode)))
 #+END_SRC
 
-** [[https://github.com/Russell91/emacs/blob/master/key-chord.el/][Keychord]]
+** =key-chord=
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   ;; (use-package key-chord
@@ -2109,7 +2117,7 @@ An autonomous emacs major-mode for editing web templates.
   ;;     (key-chord-define-global "yy" 'my/window-movement/body)))
 #+END_SRC
 
-** [[https://github.com/abo-abo/hydra/][Hydra]]
+** =hydra=
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   ;; (use-package hydra
@@ -2137,7 +2145,7 @@ An autonomous emacs major-mode for editing web templates.
   ;;     ("p" (join-line 1))))
 #+END_SRC
 
-** [[https://github.com/emacs-mirror/emacs/blob/master/lisp/winner.el/][Winner]]
+** =winner=
 
 Global minor mode. When activated, it allows you to “undo”
 (and “redo”) changes in the window configuration.
@@ -2146,7 +2154,7 @@ Global minor mode. When activated, it allows you to “undo”
   (use-package winner :defer 5)
 #+END_SRC
 
-** [[https://github.com/joaotavora/yasnippet/][YASnippet]]
+** =yasnippet=
 
 YASnippet is a template system for Emacs. It allows you to type an
 abbreviation and automatically expand it into function templates.
@@ -2242,7 +2250,7 @@ Borrowed from Steve Purcell’s config. This pretty-prints the results.
 
 ** HTML/CSS
 
-*** [[https://github.com/smihica/emmet-mode/][Emmet]]
+*** =emmet-mode=
 
 Powerful minor mode to produce HTML from CSS-like selector.
 
@@ -2255,9 +2263,7 @@ Powerful minor mode to produce HTML from CSS-like selector.
     (add-hook 'web-mode-hook 'emmet-mode))
 #+END_SRC
 
-*** LESS
-
-[[https://github.com/purcell/less-css-mode/][less-css-mode]] is an awesome package to programming in LESS.
+*** =less-css-mode= is an awesome package to programming in LESS.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package less-css-mode
@@ -2270,7 +2276,7 @@ Powerful minor mode to produce HTML from CSS-like selector.
 Configurate Java for Emacs is quite simple =eclim=. All you need to do, it's to
 install =Eclipse= and =eclim=.
 
-*** [[https://github.com/ervandew/eclim/][Eclim]]
+*** =eclim=
 
 Is a protocol for communicating with an =Eclipse= server from vim. Fortunately,
 Emacs can also use =eclim= as an emacs port exists called =emacs-eclim=.
@@ -2293,7 +2299,7 @@ installed =Eclipse= (for my case, =/opt/eclipse=).
     (help-at-pt-set-timer))
 #+END_SRC
 
-*** [[https://github.com/emacs-eclim/emacs-eclim][company-emacs-eclim]]
+*** =company-emacs-eclim=
 
 From =company-mode= and provides auto-completion with =eclim=.
 
@@ -2302,7 +2308,7 @@ From =company-mode= and provides auto-completion with =eclim=.
     :commands company-emacs-eclim-setup)
 #+END_SRC
 
-*** [[https://github.com/jacobono/emacs-gradle-mode][gradle-mode]]
+*** =gradle-mode=
 
 Most of my Java projects are made with =gradle=
 
@@ -2322,7 +2328,7 @@ blog of Nicolas Petton that I found really well explain.
 
 [[https://emacs.cafe/emacs/javascript/setup/2017/05/09/emacs-setup-javascript-2.html][Setting up Emacs for JavaScript (part #2)]]
 
-*** [[https://github.com/mooz/js2-mode/][js2-mode]]
+*** =js2-mode=
 
 By default, Emacs use =js-mode= as major mode for JavaScript buffers and I
 prefer use =js2-mode= instead because of his abilities to parses buffers and
@@ -2337,7 +2343,7 @@ builds an AST for things like syntax highlighting.
     (add-hook 'js2-mode-hook #'js2-imenu-extras-mode))
 #+END_SRC
 
-*** [[https://github.com/magnars/js2-refactor.el/][js2-refactor]]
+*** =js2-refactor=
 
 Provides powerful refactoring based on the AST generated by =js2-mode=
 
@@ -2357,7 +2363,7 @@ Provides powerful refactoring based on the AST generated by =js2-mode=
                                (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t))))
 #+END_SRC
 
-*** [[https://github.com/NicolasPetton/xref-js2/][xref-js2]]
+*** =xref-js2=
 
 Makes it easy to jump to function references or definitions.
 
@@ -2365,7 +2371,7 @@ Makes it easy to jump to function references or definitions.
   (use-package xref-js2 :defer 40)
 #+END_SRC
 
-*** [[https://github.com/ternjs/tern/][Tern]]
+*** =tern=
 
 Parses JavaScript files in a project and does type inference to provide
 meaningful completion (with type hints) and support for cross-references.
@@ -2417,7 +2423,7 @@ files from the =bower_components= directory:
   }
 #+END_SRC
 
-*** [[https://github.com/proofit404/company-tern][company-tern]]
+*** =company-tern=
 
 From =company-mode= and provides auto-completion with =tern=
 
@@ -2494,7 +2500,7 @@ configuration doesn't contains any mistakes with =M-x pdf-info-check-epdfinfo=
 I rarely programming in Lua, except to configurate my own windows manager
 (=AwesomeWM=).
 
-[[https://github.com/immerrr/lua-mode/][lua-mode]] satisfeat myself for my needed.
+=lua-mode= satisfeat myself for my needed.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package lua-mode
@@ -2650,7 +2656,7 @@ of the buffer and displays them only if they aren't too large with the use of
 
 * Mail
 
-** [[https://notmuchmail.org/][Notmuch]]
+** =helm-notmuch=
 
 I use =Dovecot= (IMAP server) with =OfflineIMAP= (IMAP synchronization) and
 =Notmuch=. I don't use =Gnus= anymore, because I find =Notmuch= more simple and
@@ -2663,7 +2669,7 @@ faster than =Gnus= with a powerful research emails function.
     :bind ("C-x M-e" . helm-notmuch))
 #+END_SRC
 
-** [[https://www.emacswiki.org/emacs/SendingMail/][SendingMail]]
+** Sending Mail
 
 Small piece of code allowing me to send e-mails using SMTP with =C-x m=
 
@@ -2686,7 +2692,7 @@ informations with =gpg -c ~/.authinfo= and remember to delete the =.authinfo= fi
         smtpmail-smtp-service 465)
 #+END_SRC
 
-** [[https://github.com/emacsmirror/bbdb/][EBDB]]
+** =ebdb=
 
 I use it because it provides an address book for email and snail mail addresses,
 phone numbers and the like.
