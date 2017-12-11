@@ -309,7 +309,7 @@ and English when typing.
           save-abbrevs 'silently))
 #+END_SRC
 
-** =lorel-ipsum=
+** =lorem-ipsum=
 
 I could use =try= when I need to use =lipsum=, but as I'm using =defer=, the
 loading of the package doesn't impact the =emacs-init-time=.
