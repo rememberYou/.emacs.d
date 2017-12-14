@@ -43,6 +43,19 @@ packages that are best handled by the package manager.
 
 --------------------
 
+### TODO ###
+
+Here is a list of tasks I plan to do in my spare time to improve this
+configuration:
+
+*  Update my configuration with new changes made by `use-package`.
+*  Show images on `erc` in the center of the buffer with `magic-buffer`.
+*  Show images on `erc` only if they are not large with `imagemagick`.
+*  Set up notifications on `erc` when my name is quoted.
+*  Write a function to know the number of entities on a channel with `erc`.
+
+--------------------
+
 ### Contributions ###
 
 Various functions may be optimized or spelling errors may occur. If you want to
