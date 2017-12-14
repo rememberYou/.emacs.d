@@ -55,6 +55,8 @@ configuration:
 *  Set up notifications on `erc` when my name is quoted.
 *  Write a function to know the number of entities on a channel with `erc`.
 
+--------------------
+
 ### Contributions ###
 
 Various functions may be optimized or spelling errors may occur. If you want to
