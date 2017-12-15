@@ -22,10 +22,10 @@
 (setq load-prefer-newer t)
 (setq vc-follow-symlinks nil)
 
-(setq default-abbrev-mode t)
-(setq abbrev-file-name "~/.emacs.d/.abbrev_defs"
-      save-abbrevs 'silently)
-(quietly-read-abbrev-file)
+;; (abbrev-mode t)
+  (setq abbrev-file-name "~/.emacs.d/.abbrev_defs"
+        save-abbrevs 'silently)
+  (quietly-read-abbrev-file)
 
 (use-package auto-compile
   :defer 5
@@ -41,9 +41,8 @@
 (use-package whitespace-cleanup-mode
   :diminish whitespace-cleanup-mode
   :defer 5
-  :config
-  (add-hook 'before-save-hook 'whitespace-cleanup)
-  (setq whitespace-style '(face empty tabs lines-tail trailing)))
+  :hook (before-save-hook . whitespace-cleanup)
+  :custom (whitespace-style '(face empty tabs lines-tail trailing)))
 
 (setq x-select-enable-clipboard-manager nil)
 
@@ -53,7 +52,7 @@
          ("M-g x" . dumb-jump-go-prefer-external)
          ("M-g z" . dumb-jump-go-prefer-external-other-window))
   :init (dumb-jump-mode)
-  :config (setq dump-jump-selector 'ivy))
+  :custom (dump-jump-selector 'ivy))
 
 (use-package org
   :defer 2
@@ -180,15 +179,6 @@ abort completely with `C-g'."
 (global-set-key (kbd "C-x R") 'revert-buffer)
 
 (fset 'yes-or-no-p 'y-or-n-p)
-    (defun erc-global-notify (match-type nick message)
-      "Notify when a message is recieved."
-      (notifications-notify
-       :title nick
-       :body message
-       :app-icon "/home/io/.emacs.d/assets/spacemacs.svg"
-       :urgency 'low))
-
-    (add-hook 'erc-text-matched-hook 'erc-global-notify)
 
 (prefer-coding-system 'utf-8)
 (when (display-graphic-p)
@@ -292,8 +282,7 @@ abort completely with `C-g'."
 
 (use-package find-dired
   :defer 20
-  :config
-  (setq find-ls-option '("-print0 | xargs -0 ls -ld" . "-ld")))
+  :custom (find-ls-option '("-print0 | xargs -0 ls -ld" . "-ld")))
 
 (defvar my/refile-map (make-sparse-keymap))
 
@@ -358,10 +347,10 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package recentf
   :bind ("C-c r" . recentf-open-files)
-  :config
-  (setq recentf-max-saved-items 200
-        recentf-max-menu-items 15)
-  (recentf-mode))
+  :init (recentf-mode)
+  :custom
+  (recentf-max-saved-items 200)
+  (recentf-max-menu-items 15))
 
 (use-package switch-window
   :bind (("C-x o" . switch-window)
@@ -1009,7 +998,7 @@ same day of the month, but will be the same day of the week."
     (let ((journal-file (concat org-journal-dir (journal-last-year-file))))
       (find-file journal-file))))
 
-(require 'epa-file)
+(require 'epa)
 (custom-set-variables '(epg-gpg-program  "/usr/bin/gpg"))
 (epa-file-enable)
 
@@ -1026,28 +1015,27 @@ same day of the month, but will be the same day of the week."
 (use-package artbollocks-mode
   :defer 5
   :load-path  "~/elisp/artbollocks-mode"
-  :config
-  (progn
-    (setq artbollocks-weasel-words-regex
-          (concat "\\b" (regexp-opt
-                         '("one of the"
-                           "should"
-                           "just"
-                           "sort of"
-                           "a lot"
-                           "probably"
-                           "maybe"
-                           "perhaps"
-                           "I think"
-                           "really"
-                           "pretty"
-                           "nice"
-                           "action"
-                           "utilize"
-                           "leverage") t) "\\b"))
-    ;; Don't show the art critic words, or at least until I figure
-    ;; out my own jargon
-    (setq artbollocks-jargon nil)))
+  :custom
+  (artbollocks-weasel-words-regex
+   (concat "\\b" (regexp-opt
+                  '("one of the"
+                    "should"
+                    "just"
+                    "sort of"
+                    "a lot"
+                    "probably"
+                    "maybe"
+                    "perhaps"
+                    "I think"
+                    "really"
+                    "pretty"
+                    "nice"
+                    "action"
+                    "utilize"
+                    "leverage") t) "\\b"))
+  ;; Don't show the art critic words, or at least until I figure
+  ;; out my own jargon
+  (artbollocks-jargon nil))
 
 (use-package aggressive-indent
   :init
@@ -1056,12 +1044,12 @@ same day of the month, but will be the same day of the week."
 
 (use-package company
   :diminish company-mode
-  :config
-  (add-hook 'after-init-hook 'global-company-mode)
-  (setq company-tooltip-limit 20                        ; bigger popup window
-        company-tooltip-align-annotations 't            ; align annotations to the right tooltip border
-        company-idle-delay .1                           ; decrease delay before autocompletion popup shows
-        company-begin-commands '(self-insert-command))) ; start autocompletion only after typing
+  :hook (after-init . global-company-mode)
+  :custom
+  (company-tooltip-limit 20)
+  (company-tooltip-align-annotations 't)
+  (company-idle-delay .1)
+  (company-begin-commands '(self-insert-command)))
 
 (use-package which-key
   :defer 2
@@ -1094,45 +1082,42 @@ same day of the month, but will be the same day of the week."
 
 (use-package ledger-mode
   :mode "\\.ledger\\'"
-  :config
-  (setq ledger-clear-whole-transactions 1)
-  (use-package flycheck-ledger))
+  :custom
+  (ledger-clear-whole-transactions 1))
+
+(use-package flycheck-ledger
+  :after ledger-mode)
 
 (pdf-tools-install)
 
 (use-package projectile
+  :defer 5
+  :diminish
   :config
   (projectile-global-mode)
-  (setq projectile-completion-system 'ivy)
+  (setq projectile-completion-system 'ivy))
 
-  (use-package counsel-projectile
-    :config
-    (counsel-projectile-on)))
+(use-package counsel-projectile
+  :after (counsel projectile)
+  :config (counsel-projectile-on))
 
 (use-package rainbow-mode
-  :defer 10
-  :config (rainbow-mode)
-  (use-package web-mode
-    :defer 10
-    :config
-    (add-hook 'css-mode-hook 'rainbow-mode)
-    (add-hook 'web-mode-hook 'rainbow-mode)))
+  :commands rainbow-mode)
 
 (use-package skewer-mode
   :defer t
-  :config
-  (add-hook 'js2-mode-hook 'skewer-mode)
-  (add-hook 'css-mode-hook 'skewer-css-mode)
-  (add-hook 'html-mode-hook 'skewer-html-mode)
-  (add-hook 'web-mode-hook 'skewer-html-mode))
+  :hook ((js2-mode-hook . skewer-mode)
+        (css-mode-hook . skewer-css-mode)
+        (html-mode-hook . skewer-html-mode)
+        (web-mode-hook . skewer-html-mode)))
 
 (use-package ivy
   :diminish (ivy-mode)
-  :bind (("C-x b" . ivy-switch-buffer))
-  :config
+  :bind ("C-x b" . ivy-switch-buffer)
+  :custom
   (ivy-mode 1)
-  (setq ivy-use-virtual-buffers t)
-  (setq ivy-display-style 'fancy))
+  (ivy-use-virtual-buffers t)
+  (ivy-display-style 'fancy))
 
 (use-package swiper
   :bind (("C-s" . swiper)
@@ -1154,11 +1139,9 @@ same day of the month, but will be the same day of the week."
 
   (use-package impatient-mode
     :defer t
-    :config
-    (add-hook 'web-mode-hook 'httpd-start)
-    (add-hook 'web-mode-hook 'impatient-mode)
-    (add-hook 'css-mode-hook 'httpd-start)
-    (add-hook 'css-mode-hook 'impatient-mode)))
+    :hook ((web-mode-hook . httpd-start)
+           (web-mode-hook . impatient-mode)
+           (css-mode-hook . httpd-start))))
 
 (use-package smartparens
   :defer 5
@@ -1255,11 +1238,10 @@ same day of the month, but will be the same day of the week."
 (use-package undo-tree
   :diminish undo-tree-mode
   :bind ("C--" . undo-tree-redo)
-  :config
-  (progn
-    (global-undo-tree-mode)
-    (setq undo-tree-visualizer-timestamps t)
-    (setq undo-tree-visualizer-diff t)))
+  :init (global-undo-tree-mode)
+  :custom
+  (undo-tree-visualizer-timestamps t)
+  (undo-tree-visualizer-diff t))
 
 (use-package web-beautify
   :disabled
@@ -1290,7 +1272,9 @@ same day of the month, but will be the same day of the week."
                  (add-hook 'before-save-hook 'web-beautify-css-buffer t t)))))
 
 (use-package web-mode
-  :defer 10
+  :commands web-mode
+  :hook ((css-mode-hook . rainbow-mode)
+         (web-mode-hook . rainbow-mode))
   :config
   (add-to-list 'auto-mode-alist '("\\.blade\\.php\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
@@ -1344,18 +1328,16 @@ same day of the month, but will be the same day of the week."
   :init
   (yas-global-mode t)
   (add-to-list 'yas-snippet-dirs "~/.emacs.d/elisp/yasnippet-snippets")
-  :config
-  (setq yas-snippet-dirs '("~/.emacs.d/elisp/yasnippet-snippets"))
-  (setq yas-installed-snippets-dir "~/.emacs.d/elisp/yasnippet-snippets"))
+  :custom
+  (yas-snippet-dirs '("~/.emacs.d/elisp/yasnippet-snippets"))
+  (yas-installed-snippets-dir "~/.emacs.d/elisp/yasnippet-snippets"))
 
 (use-package "eldoc"
   :diminish eldoc-mode
   :commands turn-on-eldoc-mode
-  :init
-  (progn
-  (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
-  (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
-  (add-hook 'ielm-mode-hook 'turn-on-eldoc-mode)))
+  :hook ((emacs-lisp-mode-hook . turn-on-eldoc-mode)
+         (lisp-interaction-mode-hook . turn-on-eldoc-mode)
+         (ielm-mode-hook . turn-on-eldoc-mode)))
 
 (define-key emacs-lisp-mode-map (kbd "C-c .") 'find-function-at-point)
 (bind-key "C-c f" 'find-function)
@@ -1399,10 +1381,7 @@ couldn't figure things out (ex: syntax errors)."
 
 (use-package emmet-mode
   :defer 10
-  :config
-  (add-hook 'sgml-mode-hook 'emmet-mode)
-  (add-hook 'css-mode-hook 'emmet-mode)
-  (add-hook 'web-mode-hook 'emmet-mode))
+  :hook (sgml-mode-hook css-mode-hook web-mode-hook))
 
 (use-package less-css-mode
   :mode "\\.less\\'"
@@ -1410,17 +1389,18 @@ couldn't figure things out (ex: syntax errors)."
 
 (use-package eclim
   :defer t
-  :config
-  (add-hook 'java-mode-hook 'eclim-mode)
-  (setq eclimd-autostart t)
-  (setq eclimd-default-workspace '"~/Documents/Projects/Java/")
-  (setq eclim-eclipse-dirs '"/opt/eclipse")
-  (setq eclim-executable '"/opt/eclipse/eclim")
-  (setq help-at-pt-display-when-idle t)
-  (setq help-at-pt-timer-delay 0.1)
+  :hook (java-mode-hook . eclim-mode)
+  :custom
+  (eclimd-autostart t)
+  (eclimd-default-workspace '"~/Documents/Projects/Java/")
+  (eclim-eclipse-dirs '"/opt/eclipse")
+  (eclim-executable '"/opt/eclipse/eclim")
+  (help-at-pt-display-when-idle t)
+  (help-at-pt-timer-delay 0.1)
   (help-at-pt-set-timer))
 
 (use-package company-emacs-eclim
+  :after eclim
   :commands company-emacs-eclim-setup)
 
 (use-package gradle-mode
@@ -1463,8 +1443,31 @@ couldn't figure things out (ex: syntax errors)."
   (define-key tern-mode-keymap (kbd "M-,") nil))
 
 (use-package company-tern
-  :defer 35
+  :after (company tern)
   :config (add-to-list 'company-backends 'company-tern))
+
+;; (use-package tex-site
+;;   :ensure auctex
+;;   :config
+    ;; (use-package tex
+    ;; :custom
+    ;;    (TeX-auto-save t)
+    ;;    (TeX-byte-compile t)
+    ;;    (TeX-clean-confirm nil)
+    ;;    (TeX-master 'dwim)
+    ;;    (TeX-parse-self t)
+    ;;    (TeX-view-program-selection '((output-pdf "Evince")
+    ;;                                  (output-html "xdg-open")))
+    ;;    (Tex-PDF-mode t)
+    ;;    (TeX-source-correlate-mode t))
+
+  ;; (use-package latex
+  ;;     :requires (flyspell reftex)
+  ;;     :custom
+  ;;     (LaTeX-default-style "scrartcl")
+  ;;     (LaTeX-default-options "version=last, paper=A4, parskip=half")
+  ;;     (LaTeX-default-author user-full-name)
+  ;;     :hook (LaTeX-mode . (LaTeX-math-mode flyspell-mode reftex-mode))))
 
 (setq Tex-PDF-mode t)
 
@@ -1502,9 +1505,10 @@ couldn't figure things out (ex: syntax errors)."
 (use-package markdown-mode
   :mode (("\\`README\\.md\\'" . gfm-mode)
          ("\\.md\\'"          . markdown-mode)
-         ("\\.markdown\\'"    . markdown-mode))
-  :config
-  (use-package markdown-preview-mode))
+         ("\\.markdown\\'"    . markdown-mode)))
+
+(use-package markdown-preview-mode
+  :after markdown-mode)
 
 (defun my/php-setup ()
   (web-mode)
@@ -1529,14 +1533,13 @@ couldn't figure things out (ex: syntax errors)."
 
 (use-package anaconda-mode
   :defer 2
-  :config
-  (add-hook 'python-mode-hook 'anaconda-mode)
-  (add-hook 'python-mode-hook '(lambda ()
-                                  (add-to-list 'company-backends 'company-anaconda))))
+  :hook ((python-mode-hook . anaconda-mode)
+         (python-mode-hook . (lambda ()
+                               (add-to-list 'company-backends 'company-anaconda)))))
 
 (use-package company-anaconda
-  :defer 15
-  :config (add-hook 'python-mode-hook 'anaconda-mode))
+  :after anaconda-mode
+  :hook (python-mode-hook . anaconda-mode))
 
 (use-package sql-indent
   :mode "\\.sql\\'"
@@ -1545,52 +1548,59 @@ couldn't figure things out (ex: syntax errors)."
 (use-package erc
   :defer 10
   :bind ("C-c e" . erc-start-or-switch)
-  :config
-  (setq erc-autojoin-channels-alist '(("freenode.net" "#android-dev" "#archlinux" "#bitcoin" "#bitcoin-pricetalk" "#emacs" "#latex" "#node.js" "#python" "#sway"))
-        erc-autojoin-timing 'ident
-        erc-fill-function 'erc-fill-static
-        erc-fill-static-center 22
-        erc-hide-list '("JOIN" "PART" "QUIT")
-        erc-prompt-for-nickserv-password nil
-        erc-server-reconnect-attempts 5
-        erc-server-reconnect-timeout 3
-        erc-track-exclude-types '("JOIN" "MODE" "NICK" "PART" "QUIT"
-                                  "324" "329" "332" "333" "353" "477"))
+  :custom
+  (erc-autojoin-channels-alist '(("freenode.net"
+                                  "#android-dev" "#archlinux" "#bitcoin"
+                                  "#bitcoin-pricetalk" "#emacs" "#latex"
+                                  "#python" "#sway"
+                                  )))
+  (erc-autojoin-timing 'ident)
+  (erc-fill-function 'erc-fill-static)
+  (erc-fill-static-center 22)
+  (erc-prompt-for-nickserv-password nil)
+  (erc-hide-list '("JOIN" "PART" "QUIT"))
+  (erc-server-reconnect-attempts 5)
+  (erc-server-reconnect-timeout 3)
+  (erc-track-exclude-types '("JOIN" "MODE" "NICK" "PART" "QUIT"
+                             "324" "329" "332" "333" "353" "477"))
   (erc-services-mode 1)
   (erc-track-mode t)
-  (use-package erc-image
-    :config (add-to-list 'erc-modules 'image))
-  (use-package erc-hl-nicks
-    :config (add-to-list 'erc-modules 'hl-nicks))
   (add-to-list 'erc-modules 'spelling)
   (add-to-list 'erc-modules 'notifications)
-  (load "~/.ercpass")
-  (setq erc-nickserv-passwords `((freenode     (("rememberYou" . ,freenode-password)))))
-  (defun erc-start-or-switch ()
-    "Connect to ERC, or switch to last active buffer."
-    (interactive)
-    (if (get-buffer "irc.freenode.net:6667")
-        (erc-track-switch-buffer 1)
-      (when (y-or-n-p "Start ERC? ")
-        (erc :server "irc.freenode.net" :port 6667 :nick "rememberYou"))))
+  (add-to-list 'erc-modules 'hl-nicks)
+  (add-to-list 'erc-modules 'image))
 
-  (defun my/display-four-channels ()
-    "Lazy function permit to execute a bunch of commands
-    to display four IRC channels in the same time."
-    (interactive)
-    (if (not (get-buffer "irc.freenode.net:6667"))
-        (erc-start-or-switch)
-      (delete-other-windows)
-      (switch-to-buffer "#latex")
-      (split-window-right)
-      (windmove-right)
-      (switch-to-buffer "#emacs")
-      (split-window-below)
-      (windmove-down)
-      (switch-to-buffer "#python")
-      (windmove-left)
-      (split-window-below)
-      (switch-to-buffer "#archlinux"))))
+(use-package erc-hl-nicks
+  :after erc)
+
+(use-package erc-image 
+  :after erc)
+
+(defun erc-start-or-switch ()
+  "Connect to ERC, or switch to last active buffer."
+  (interactive)
+  (if (get-buffer "irc.freenode.net:6667")
+      (erc-track-switch-buffer 1)
+    (when (y-or-n-p "Start ERC? ")
+      (erc :server "irc.freenode.net" :port 6667 :nick "rememberYou"))))
+
+(defun my/display-four-channels ()
+  "Lazy function permit to execute a bunch of commands
+          to display four IRC channels in the same time."
+  (interactive)
+  (if (not (get-buffer "irc.freenode.net:6667"))
+      (erc-start-or-switch)
+    (delete-other-windows)
+    (switch-to-buffer "#latex")
+    (split-window-right)
+    (windmove-right)
+    (switch-to-buffer "#emacs")
+    (split-window-below)
+    (windmove-down)
+    (switch-to-buffer "#python")
+    (windmove-left)
+    (split-window-below)
+    (switch-to-buffer "#archlinux")))
 
 (autoload 'notmuch "notmuch" "notmuch mail" t)
 (use-package helm-notmuch
@@ -1603,10 +1613,10 @@ couldn't figure things out (ex: syntax errors)."
       smtpmail-smtp-service 465)
 
 (use-package ebdb
-  :defer 5
-  :init
-  (use-package helm-ebdb
-    :defer 5
-    :init
-    (use-package company-ebdb
-      :defer 5)))
+  :commands ebdb)
+
+(use-package helm-ebdb
+  :after ebdb)
+
+(use-package company-ebdb
+  :after ebdb)

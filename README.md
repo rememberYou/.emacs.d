@@ -48,6 +48,7 @@ packages that are best handled by the package manager.
 Here is a list of tasks I plan to do in my spare time to improve this
 configuration:
 
+*  Read my RSS feeds with Emacs.
 *  Update my configuration with new changes made by `use-package`.
 *  Show images on `erc` in the center of the buffer with `magic-buffer`.
 *  Show images on `erc` only if they are not large with `imagemagick`.
