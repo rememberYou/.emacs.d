@@ -1,4 +1,4 @@
-#+TITLE: Terencio Agozzino's Emacs configuration
+ #+TITLE: Terencio Agozzino's Emacs configuration
 #+OPTIONS: toc:4 h:4
 
 * About
@@ -74,10 +74,8 @@ According to a list of mispelling words, =abbrev= auto-correct these words on
 the fly.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-;; (abbrev-mode t)
-  (setq abbrev-file-name "~/.emacs.d/.abbrev_defs"
-        save-abbrevs 'silently)
-  (quietly-read-abbrev-file)
+    (if (file-exists-p abbrev-file-name)
+        (quietly-read-abbrev-file))
 #+END_SRC
 
 ** =auto-compile=
@@ -115,8 +113,8 @@ It's often annoying to see useless white spaces at the end of a file.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package whitespace-cleanup-mode
-    :diminish whitespace-cleanup-mode
     :defer 5
+    :diminish
     :hook (before-save-hook . whitespace-cleanup)
     :custom (whitespace-style '(face empty tabs lines-tail trailing)))
 #+END_SRC
@@ -2074,8 +2072,7 @@ An autonomous emacs major-mode for editing web templates.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package web-mode
     :commands web-mode
-    :hook ((css-mode-hook . rainbow-mode)
-           (web-mode-hook . rainbow-mode))
+    :hook ((css-mode-hook web-mode-hook) . rainbow-mode)
     :config
     (add-to-list 'auto-mode-alist '("\\.blade\\.php\\'" . web-mode))
     (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
@@ -2170,9 +2167,7 @@ Provides minibuffer hints when working with Emacs Lisp.
   (use-package "eldoc"
     :diminish eldoc-mode
     :commands turn-on-eldoc-mode
-    :hook ((emacs-lisp-mode-hook . turn-on-eldoc-mode)
-           (lisp-interaction-mode-hook . turn-on-eldoc-mode)
-           (ielm-mode-hook . turn-on-eldoc-mode)))
+    :hook ((emacs-lisp-mode-hook lisp-interaction-mode-hook ielm-mode-hook) . abbrev-mode))
 #+END_SRC
 
 *** Jumping to code
@@ -2414,90 +2409,49 @@ From =company-mode= and provides auto-completion with =tern=
 
 ** LaTeX
 
+*** Configuration
+
 I use LaTeX for my reports, resume, synthesis, etc.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  ;; (use-package tex-site
-  ;;   :ensure auctex
-  ;;   :config
-      ;; (use-package tex
-      ;; :custom
-      ;;    (TeX-auto-save t)
-      ;;    (TeX-byte-compile t)
-      ;;    (TeX-clean-confirm nil)
-      ;;    (TeX-master 'dwim)
-      ;;    (TeX-parse-self t)
-      ;;    (TeX-view-program-selection '((output-pdf "Evince")
-      ;;                                  (output-html "xdg-open")))
-      ;;    (Tex-PDF-mode t)
-      ;;    (TeX-source-correlate-mode t))
-
-    ;; (use-package latex
-    ;;     :requires (flyspell reftex)
-    ;;     :custom
-    ;;     (LaTeX-default-style "scrartcl")
-    ;;     (LaTeX-default-options "version=last, paper=A4, parskip=half")
-    ;;     (LaTeX-default-author user-full-name)
-    ;;     :hook (LaTeX-mode . (LaTeX-math-mode flyspell-mode reftex-mode))))
-
+  (use-package tex
+    :ensure auctex
+    :custom
+    (TeX-PDF-mode t)
+    (TeX-auto-save t)
+    (TeX-parse-self t)
+    (TeX-byte-compile t)
+    (TeX-clean-confirm nil)
+    (TeX-master 'dwim)
+    (TeX-view-program-selection '((output-pdf "Evince")
+                                  (output-html "xdg-open")))
+    (TeX-source-correlate-mode t)
+    :hook ((LaTeX-mode flyspell-mode) . reftex-mode))
 #+END_SRC
-
-*** Enable LaTeX mode
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (setq Tex-PDF-mode t)
-#+END_SRC
-
-*** Bibtex with XeLaTeX
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (setq TeX-auto-save t
-        TeX-parse-self t)
-#+END_SRC
-
-*** Configuration
 
 I want a TeX engine that can deal with Unicode and use any font I like.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (setq-default TeX-engine 'xetex)
-  (setq-default TeX-master nil)
-  (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-  (setq reftex-plug-into-AUCTeX t)
 #+END_SRC
 
-*** Update PDF automatically with DocView
+***  =company-auctex=
+
+AUCTeX backend for company-mode.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (add-hook 'doc-view-mode-hook 'auto-revert-mode)
-  (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
+  (use-package company-auctex
+    :after auctex
+    :config (company-auctex-init))
 #+END_SRC
 
-*** PDF Tools with Emacs
+*** =reftex=
 
-To view =pdf= files on Emacs, use =M-x pdf-tools-install= and test the
-configuration doesn't contains any mistakes with =M-x pdf-info-check-epdfinfo=
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (setq TeX-source-correlate-method (quote synctex))
-  (setq TeX-source-correlate-mode t)
-  (setq TeX-source-correlate-start-server t)
-  (setq TeX-view-program-selection '(((output-pdf "PDF Tools")
-                                      ((output-dvi has-no-display-manager)
-                                       "dvi2tty")
-                                      ((output-dvi style-pstricks)
-                                       "dvips and gv")
-                                      (output-dvi "xdvi")
-                                      (output-(point)df "Evince")
-                                      (output-html "xdg-open"))))
-#+END_SRC
-
-*** Script command for LaTeX compiling
+Minor mode with distinct support for =\label=, =\ref= and =\cite= in LaTeX.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (setq latex-run-command "xelatex -synctex=1 -interaction=nonstopmode --shell-escape")
-  (setq LaTeX-command "latex -synctex=1 -interaction=nonstopmode --shell-escape")
+  (use-package reftex
+    :after auctex)
 #+END_SRC
 
 ** Lua
@@ -2560,9 +2514,10 @@ The function below provides my own PHP configuration with [[https://github.com/x
 #+END_SRC
 
 ** Python
-*** Anaconda
 
-Anaconda-mode is a mode for code navigation, documentation lookup and completion
+*** =anaconda-mode=
+
+=anaconda-mode= is a mode for code navigation, documentation lookup and completion
 for Python.
 
 I prefer use Anaconda that is more easier to configurate and support
@@ -2576,7 +2531,7 @@ I prefer use Anaconda that is more easier to configurate and support
                                  (add-to-list 'company-backends 'company-anaconda)))))
 #+END_SRC
 
-*** Company Anaconda
+*** =company-anaconda=
 
 Anaconda backend for company-mode
 
@@ -2601,11 +2556,22 @@ Anaconda backend for company-mode
 IRC is a great way to hang out with other people. I like to use [[https://github.com/hober/erc/][erc]] that I
 prefer to =rcirc= that I find really very minimal.
 
-Maybe one day I should switch to [[https://github.com/jorgenschaefer/circe/][circle]], time will tell.
+For a better security and to avoid to type your IRC password, I advice you to
+use a =.authinfo= file in your home directory with the following things (example
+for me where =rememberYou= is my login name):
 
-In the future, I would like to display every pictures on =erc= to the center
-of the buffer and displays them only if they aren't too large with the use of
-[[https://github.com/kidd/erc-image.el/][erc-image]] package.
+#+BEGIN_EXAMPLE
+  machine irc.freenode.net login rememberYou password <IRC_PASSWORD>
+#+END_EXAMPLE
+
+Then, I advice you to encrypt this file as it contains some credentials
+informations with =gpg -c .authinfo= and remember to delete the =.authinfo=
+file.
+
+Don't forget to specific to =erc= that you use a =.authinfo= filewith =(setq
+erc-prompt-for-nickserv-password nil)=.
+
+Maybe one day I should switch to [[https://github.com/jorgenschaefer/circe/][circle]], time will tell.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package erc

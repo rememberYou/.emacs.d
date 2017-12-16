@@ -22,10 +22,8 @@
 (setq load-prefer-newer t)
 (setq vc-follow-symlinks nil)
 
-;; (abbrev-mode t)
-  (setq abbrev-file-name "~/.emacs.d/.abbrev_defs"
-        save-abbrevs 'silently)
-  (quietly-read-abbrev-file)
+(if (file-exists-p abbrev-file-name)
+    (quietly-read-abbrev-file))
 
 (use-package auto-compile
   :defer 5
@@ -39,8 +37,8 @@
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
 
 (use-package whitespace-cleanup-mode
-  :diminish whitespace-cleanup-mode
   :defer 5
+  :diminish
   :hook (before-save-hook . whitespace-cleanup)
   :custom (whitespace-style '(face empty tabs lines-tail trailing)))
 
@@ -1273,8 +1271,7 @@ same day of the month, but will be the same day of the week."
 
 (use-package web-mode
   :commands web-mode
-  :hook ((css-mode-hook . rainbow-mode)
-         (web-mode-hook . rainbow-mode))
+  :hook ((css-mode-hook web-mode-hook) . rainbow-mode)
   :config
   (add-to-list 'auto-mode-alist '("\\.blade\\.php\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
@@ -1335,9 +1332,7 @@ same day of the month, but will be the same day of the week."
 (use-package "eldoc"
   :diminish eldoc-mode
   :commands turn-on-eldoc-mode
-  :hook ((emacs-lisp-mode-hook . turn-on-eldoc-mode)
-         (lisp-interaction-mode-hook . turn-on-eldoc-mode)
-         (ielm-mode-hook . turn-on-eldoc-mode)))
+  :hook ((emacs-lisp-mode-hook lisp-interaction-mode-hook ielm-mode-hook) . abbrev-mode))
 
 (define-key emacs-lisp-mode-map (kbd "C-c .") 'find-function-at-point)
 (bind-key "C-c f" 'find-function)
@@ -1446,57 +1441,28 @@ couldn't figure things out (ex: syntax errors)."
   :after (company tern)
   :config (add-to-list 'company-backends 'company-tern))
 
-;; (use-package tex-site
-;;   :ensure auctex
-;;   :config
-    ;; (use-package tex
-    ;; :custom
-    ;;    (TeX-auto-save t)
-    ;;    (TeX-byte-compile t)
-    ;;    (TeX-clean-confirm nil)
-    ;;    (TeX-master 'dwim)
-    ;;    (TeX-parse-self t)
-    ;;    (TeX-view-program-selection '((output-pdf "Evince")
-    ;;                                  (output-html "xdg-open")))
-    ;;    (Tex-PDF-mode t)
-    ;;    (TeX-source-correlate-mode t))
-
-  ;; (use-package latex
-  ;;     :requires (flyspell reftex)
-  ;;     :custom
-  ;;     (LaTeX-default-style "scrartcl")
-  ;;     (LaTeX-default-options "version=last, paper=A4, parskip=half")
-  ;;     (LaTeX-default-author user-full-name)
-  ;;     :hook (LaTeX-mode . (LaTeX-math-mode flyspell-mode reftex-mode))))
-
-(setq Tex-PDF-mode t)
-
-(setq TeX-auto-save t
-      TeX-parse-self t)
+(use-package tex
+  :ensure auctex
+  :custom
+  (TeX-PDF-mode t)
+  (TeX-auto-save t)
+  (TeX-parse-self t)
+  (TeX-byte-compile t)
+  (TeX-clean-confirm nil)
+  (TeX-master 'dwim)
+  (TeX-view-program-selection '((output-pdf "Evince")
+                                (output-html "xdg-open")))
+  (TeX-source-correlate-mode t)
+  :hook ((LaTeX-mode flyspell-mode) . reftex-mode))
 
 (setq-default TeX-engine 'xetex)
-(setq-default TeX-master nil)
-(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-(setq reftex-plug-into-AUCTeX t)
 
-(add-hook 'doc-view-mode-hook 'auto-revert-mode)
-(add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer)
+(use-package company-auctex
+  :after auctex
+  :config (company-auctex-init))
 
-(setq TeX-source-correlate-method (quote synctex))
-(setq TeX-source-correlate-mode t)
-(setq TeX-source-correlate-start-server t)
-(setq TeX-view-program-selection '(((output-pdf "PDF Tools")
-                                    ((output-dvi has-no-display-manager)
-                                     "dvi2tty")
-                                    ((output-dvi style-pstricks)
-                                     "dvips and gv")
-                                    (output-dvi "xdvi")
-                                    (output-(point)df "Evince")
-                                    (output-html "xdg-open"))))
-
-(setq latex-run-command "xelatex -synctex=1 -interaction=nonstopmode --shell-escape")
-(setq LaTeX-command "latex -synctex=1 -interaction=nonstopmode --shell-escape")
+(use-package reftex
+  :after auctex)
 
 (use-package lua-mode
   :mode "\\.lua\\'"
