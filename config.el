@@ -94,24 +94,26 @@
      (list (line-beginning-position)
            (line-beginning-position 2)))))
 
-(global-set-key (kbd "C-x C-b") 'ibuffer)
-(setq ibuffer-saved-filter-groups
-      (quote (("default"
-               ("Dired" (mode . dired-mode))
-               ("Org" (name . "^.*org$"))
-               ("Web" (or (mode . web-mode) (mode . js2-mode)))
-               ("Shell" (or (mode . eshell-mode) (mode . shell-mode)))
-               ("Programming" (or
-                               (mode . python-mode)))
-               ("Emacs" (or
-                         (name . "^\\*scratch\\*$")
-                         (name . "^\\*Messages\\*$")))
-               ))))
+(use-package ibuffer
+  :bind ("C-x C-b" . ibuffer)
+  :init
+  (setq ibuffer-saved-filter-groups
+        (quote (("default"
+                 ("Dired" (mode . dired-mode))
+                 ("Org" (name . "^.*org$"))
+                 ("Web" (or (mode . web-mode) (mode . js2-mode)))
+                 ("Shell" (or (mode . eshell-mode) (mode . shell-mode)))
+                 ("Programming" (or
+                                 (mode . python-mode)))
+                 ("Emacs" (or
+                           (name . "^\\*scratch\\*$")
+                           (name . "^\\*Messages\\*$")))
+                 ))))
 
-(add-hook 'ibuffer-mode-hook
-          (lambda ()
-            (ibuffer-auto-mode 1)
-            (ibuffer-switch-to-saved-filter-groups "default")))
+  (add-hook 'ibuffer-mode-hook
+            (lambda ()
+              (ibuffer-auto-mode 1)
+              (ibuffer-switch-to-saved-filter-groups "default"))))
 
 (define-key ctl-x-map "\C-i"
   #'endless/ispell-word-then-abbrev)
@@ -344,6 +346,7 @@ point reaches the beginning or end of the buffer, stop there."
 (setq set-mark-command-repeat-pop t)
 
 (use-package recentf
+  :defer 10
   :bind ("C-c r" . recentf-open-files)
   :init (recentf-mode)
   :custom
@@ -998,7 +1001,6 @@ same day of the month, but will be the same day of the week."
 
 (require 'epa)
 (custom-set-variables '(epg-gpg-program  "/usr/bin/gpg"))
-(epa-file-enable)
 
 (require 'org-crypt)
 (org-crypt-use-before-save-magic)
@@ -1036,9 +1038,29 @@ same day of the month, but will be the same day of the week."
   (artbollocks-jargon nil))
 
 (use-package aggressive-indent
+  :defer 2
+  :diminish
   :init
   (global-aggressive-indent-mode 1)
   (add-to-list 'aggressive-indent-excluded-modes 'html-mode))
+
+(use-package calc
+  :defer t
+  :custom
+  (math-additional-units
+   '((GiB "1024 * MiB" "Giga Byte")
+     (MiB "1024 * KiB" "Mega Byte")
+     (KiB "1024 * B" "Kilo Byte")
+     (B nil "Byte")
+     (Gib "1024 * Mib" "Giga Bit")
+     (Mib "1024 * Kib" "Mega Bit")
+     (Kib "1024 * b" "Kilo Bit")
+     (b "B / 8" "Bit")))
+  :config
+  (setq math-units-table nil))
+
+(use-package chess  
+  :commands chess)
 
 (use-package company
   :diminish company-mode
@@ -1049,16 +1071,29 @@ same day of the month, but will be the same day of the week."
   (company-idle-delay .1)
   (company-begin-commands '(self-insert-command)))
 
+(use-package docker  
+  :defer 15
+  :diminish
+  :config
+  (require 'docker-images)
+  (require 'docker-containers)
+  (require 'docker-volumes)
+  (require 'docker-networks)
+  (docker-global-mode))
+
 (use-package which-key
   :defer 2
+  :diminish
+  :commands which-key-mode
   :config
   (which-key-mode))
 
 (use-package expand-region
-  :init (global-set-key (kbd "C-=") 'er/expand-region))
+  :defer 2
+  :bind ("C-=" . er/expand-region))
 
 (use-package flycheck
-  :defer t
+  :defer 2
   :diminish (flycheck-mode)
   :init (global-flycheck-mode t)
   :config
@@ -1073,10 +1108,15 @@ same day of the month, but will be the same day of the week."
     :modes (php-mode php+-mode web-mode)))
 
 (use-package hungry-delete
+  :defer 2
   :config
   (global-hungry-delete-mode))
 
-(use-package iedit)
+(use-package iedit
+  :defer t)
+
+(use-package ipcalc 
+  :commands ipcalc)
 
 (use-package ledger-mode
   :mode "\\.ledger\\'"
@@ -1110,25 +1150,44 @@ same day of the month, but will be the same day of the week."
         (web-mode-hook . skewer-html-mode)))
 
 (use-package ivy
+  :defer 5
   :diminish (ivy-mode)
-  :bind ("C-x b" . ivy-switch-buffer)
+  :bind (("C-x b" . ivy-switch-buffer)
+         ("C-x B" . ivy-switch-buffer-other-window))
   :custom
   (ivy-mode 1)
   (ivy-use-virtual-buffers t)
   (ivy-display-style 'fancy))
 
+(use-package ivy-pass
+  :after ivy
+  :commands ivy-pass)
+
+(use-package ivy-rich
+  :after ivy
+  :config
+  (ivy-set-display-transformer 'ivy-switch-buffer
+                               'ivy-rich-switch-buffer-transformer)
+  (setq ivy-virtual-abbreviate 'full
+        ivy-rich-switch-buffer-align-virtual-buffer t
+        ivy-rich-path-style 'abbrev))
+
 (use-package swiper
+  :after ivy
   :bind (("C-s" . swiper)
          ("C-r" . swiper)
          ("C-c C-r" . ivy-resume)
          ("M-x" . counsel-M-x)
          ("C-x C-f" . counsel-find-file))
+  :bind (:map swiper-map
+              ("M-%" . swiper-query-replace))
   :config
   (progn
-    (define-key read-expression-map (kbd "C-r") 'counsel-expression-history))
+    (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)))
 
-  (use-package counsel
-    :bind ("M-y" . counsel-yank-pop)))
+(use-package counsel
+  :after ivy
+  :bind ("M-y" . counsel-yank-pop))
 
 (use-package simple-httpd
   :defer t
@@ -1142,89 +1201,7 @@ same day of the month, but will be the same day of the week."
            (css-mode-hook . httpd-start))))
 
 (use-package smartparens
-  :defer 5
-  :config
-  (progn
-    (require 'smartparens-config)
-    (add-hook 'emacs-lisp-mode-hook 'smartparens-mode)
-    (add-hook 'emacs-lisp-mode-hook 'show-smartparens-mode)
-
-  ;;;;;;;;;;;;;;;;;;;;;;;;
-    ;; keybinding management
-
-    (define-key sp-keymap (kbd "C-c s r n") 'sp-narrow-to-sexp)
-    (define-key sp-keymap (kbd "C-M-f") 'sp-forward-sexp)
-    (define-key sp-keymap (kbd "C-M-b") 'sp-backward-sexp)
-    (define-key sp-keymap (kbd "C-M-d") 'sp-down-sexp)
-    (define-key sp-keymap (kbd "C-M-a") 'sp-backward-down-sexp)
-    (define-key sp-keymap (kbd "C-S-a") 'sp-beginning-of-sexp)
-    (define-key sp-keymap (kbd "C-S-d") 'sp-end-of-sexp)
-
-    (define-key sp-keymap (kbd "C-M-e") 'sp-up-sexp)
-    (define-key emacs-lisp-mode-map (kbd ")") 'sp-up-sexp)
-    (define-key sp-keymap (kbd "C-M-u") 'sp-backward-up-sexp)
-    (define-key sp-keymap (kbd "C-M-t") 'sp-transpose-sexp)
-
-    (define-key sp-keymap (kbd "C-M-n") 'sp-next-sexp)
-    (define-key sp-keymap (kbd "C-M-p") 'sp-previous-sexp)
-
-    (define-key sp-keymap (kbd "C-M-k") 'sp-kill-sexp)
-    (define-key sp-keymap (kbd "C-M-w") 'sp-copy-sexp)
-
-    (define-key sp-keymap (kbd "M-<delete>") 'sp-unwrap-sexp)
-    (define-key sp-keymap (kbd "M-<backspace>") 'sp-backward-unwrap-sexp)
-
-    (define-key sp-keymap (kbd "C-<right>") 'sp-forward-slurp-sexp)
-    (define-key sp-keymap (kbd "C-<left>") 'sp-forward-barf-sexp)
-    (define-key sp-keymap (kbd "C-M-<left>") 'sp-backward-slurp-sexp)
-    (define-key sp-keymap (kbd "C-M-<right>") 'sp-backward-barf-sexp)
-
-    ;; (define-key sp-keymap (kbd "M-D") 'sp-splice-sexp)
-    (define-key sp-keymap (kbd "C-M-<delete>") 'sp-splice-sexp-killing-forward)
-    (define-key sp-keymap (kbd "C-M-<backspace>") 'sp-splice-sexp-killing-backward)
-    (define-key sp-keymap (kbd "C-S-<backspace>") 'sp-splice-sexp-killing-around)
-
-    (define-key sp-keymap (kbd "C-]") 'sp-select-next-thing-exchange)
-    (define-key sp-keymap (kbd "C-<left_bracket>") 'sp-select-previous-thing)
-    (define-key sp-keymap (kbd "C-M-]") 'sp-select-next-thing)
-
-    (define-key sp-keymap (kbd "M-F") 'sp-forward-symbol)
-    (define-key sp-keymap (kbd "M-B") 'sp-backward-symbol)
-
-    (define-key sp-keymap (kbd "C-c s t") 'sp-prefix-tag-object)
-    (define-key sp-keymap (kbd "C-c s p") 'sp-prefix-pair-object)
-    (define-key sp-keymap (kbd "C-c s c") 'sp-convolute-sexp)
-    (define-key sp-keymap (kbd "C-c s a") 'sp-absorb-sexp)
-    (define-key sp-keymap (kbd "C-c s e") 'sp-emit-sexp)
-    (define-key sp-keymap (kbd "C-c s p") 'sp-add-to-previous-sexp)
-    (define-key sp-keymap (kbd "C-c s n") 'sp-add-to-next-sexp)
-    (define-key sp-keymap (kbd "C-c s j") 'sp-join-sexp)
-    (define-key sp-keymap (kbd "C-c s s") 'sp-split-sexp)
-
-  ;;;;;;;;;;;;;;;;;;
-    ;; pair management
-
-    (sp-local-pair 'minibuffer-inactive-mode "'" nil :actions nil)
-    (sp-local-pair 'web-mode "<" nil :when '(my/sp-web-mode-is-code-context))
-
-  ;;; markdown-mode
-    (sp-with-modes '(markdown-mode gfm-mode rst-mode)
-      (sp-local-pair "*" "*" :bind "C-*")
-      (sp-local-tag "2" "**" "**")
-      (sp-local-tag "s" "```scheme" "```")
-      (sp-local-tag "<"  "<_>" "</_>" :transform 'sp-match-sgml-tags))
-
-  ;;; tex-mode latex-mode
-    (sp-with-modes '(tex-mode plain-tex-mode latex-mode)
-      (sp-local-tag "i" "1d5f8e69396c521f645375107197ea4dfbc7b792quot;<" "1d5f8e69396c521f645375107197ea4dfbc7b792quot;>"))
-
-  ;;; html-mode
-    (sp-with-modes '(html-mode sgml-mode web-mode)
-      (sp-local-pair "<" ">"))
-
-  ;;; lisp modes
-    (sp-with-modes sp--lisp-modes
-      (sp-local-pair "(" nil :bind "C-("))))
+  :defer 5)
 
 (use-package spotify
   :defer 5
@@ -1285,36 +1262,8 @@ same day of the month, but will be the same day of the week."
   (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode)))
 
-;; (use-package key-chord
-;;   :init
-;;   (progn
-;;     (setq key-chord-one-key-delay 0.16)
-;;     (key-chord-mode 1)
-;;     (key-chord-define-global "yy" 'my/window-movement/body)))
-
-;; (use-package hydra
-;;   :defer t
-;;   :config
-;;   (defhydra my/window-movement ()
-;;     ("h" windmove-left)
-;;     ("l" windmove-right)
-;;     ("j" windmove-down)
-;;     ("k" windmove-up)
-;;     ("y" other-window "other")
-;;     ("f" find-file "file")
-;;     ("F" find-file-other-window "other file")
-;;     ("v" (progn (split-window-right) (windmove-right)))
-;;     ("o" delete-other-windows :color blue)
-;;     ("a" ace-window)
-;;     ("s" ace-swap-window)
-;;     ("d" delete-window "delete")
-;;     ("D" ace-delete-window "ace delete")
-;;     ("i" ace-delete-other-windows)
-;;     ("b" helm-buffers-list)
-;;     ("q" nil))
-;;   (defhydra join-lines ()
-;;     ("n" join-line)
-;;     ("p" (join-line 1))))
+(use-package key-chord
+  :commands key-chord-mord)
 
 (use-package winner :defer 5)
 
@@ -1330,7 +1279,7 @@ same day of the month, but will be the same day of the week."
   (yas-installed-snippets-dir "~/.emacs.d/elisp/yasnippet-snippets"))
 
 (use-package "eldoc"
-  :diminish eldoc-mode
+  :diminish
   :commands turn-on-eldoc-mode
   :hook ((emacs-lisp-mode-hook lisp-interaction-mode-hook ielm-mode-hook) . abbrev-mode))
 
@@ -1530,7 +1479,6 @@ couldn't figure things out (ex: syntax errors)."
   (erc-track-exclude-types '("JOIN" "MODE" "NICK" "PART" "QUIT"
                              "324" "329" "332" "333" "353" "477"))
   (erc-services-mode 1)
-  (erc-track-mode t)
   (add-to-list 'erc-modules 'spelling)
   (add-to-list 'erc-modules 'notifications)
   (add-to-list 'erc-modules 'hl-nicks)

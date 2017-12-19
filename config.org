@@ -1,4 +1,4 @@
- #+TITLE: Terencio Agozzino's Emacs configuration
+#+TITLE: Terencio Agozzino's Emacs configuration
 #+OPTIONS: toc:4 h:4
 
 * About
@@ -74,8 +74,8 @@ According to a list of mispelling words, =abbrev= auto-correct these words on
 the fly.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-    (if (file-exists-p abbrev-file-name)
-        (quietly-read-abbrev-file))
+  (if (file-exists-p abbrev-file-name)
+      (quietly-read-abbrev-file))
 #+END_SRC
 
 ** =auto-compile=
@@ -221,24 +221,26 @@ Buffers can quickly become a mess. For some people, that's not a problem, but I
 like to be able to easily find my way around.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (global-set-key (kbd "C-x C-b") 'ibuffer)
-  (setq ibuffer-saved-filter-groups
-        (quote (("default"
-                 ("Dired" (mode . dired-mode))
-                 ("Org" (name . "^.*org$"))
-                 ("Web" (or (mode . web-mode) (mode . js2-mode)))
-                 ("Shell" (or (mode . eshell-mode) (mode . shell-mode)))
-                 ("Programming" (or
-                                 (mode . python-mode)))
-                 ("Emacs" (or
-                           (name . "^\\*scratch\\*$")
-                           (name . "^\\*Messages\\*$")))
-                 ))))
+  (use-package ibuffer
+    :bind ("C-x C-b" . ibuffer)
+    :init
+    (setq ibuffer-saved-filter-groups
+          (quote (("default"
+                   ("Dired" (mode . dired-mode))
+                   ("Org" (name . "^.*org$"))
+                   ("Web" (or (mode . web-mode) (mode . js2-mode)))
+                   ("Shell" (or (mode . eshell-mode) (mode . shell-mode)))
+                   ("Programming" (or
+                                   (mode . python-mode)))
+                   ("Emacs" (or
+                             (name . "^\\*scratch\\*$")
+                             (name . "^\\*Messages\\*$")))
+                   ))))
 
-  (add-hook 'ibuffer-mode-hook
-            (lambda ()
-              (ibuffer-auto-mode 1)
-              (ibuffer-switch-to-saved-filter-groups "default")))
+    (add-hook 'ibuffer-mode-hook
+              (lambda ()
+                (ibuffer-auto-mode 1)
+                (ibuffer-switch-to-saved-filter-groups "default"))))
 #+END_SRC
 
 ** =ispell=
@@ -248,8 +250,8 @@ to overview the document.
 
 These functions saves me couple of minutes when I need to switch between French
 and English when typing.
-
 #+BEGIN_SRC emacs-lisp :tangle yes
+
   (define-key ctl-x-map "\C-i"
     #'endless/ispell-word-then-abbrev)
 
@@ -614,6 +616,7 @@ Provides fast access to the recent files.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package recentf
+    :defer 10
     :bind ("C-c r" . recentf-open-files)
     :init (recentf-mode)
     :custom
@@ -1634,7 +1637,6 @@ To use that, you should install =gnupg2=
 #+BEGIN_SRC emacs-lisp :tangle yes
   (require 'epa)
   (custom-set-variables '(epg-gpg-program  "/usr/bin/gpg"))
-  (epa-file-enable)
 
   (require 'org-crypt)
   (org-crypt-use-before-save-magic)
@@ -1687,9 +1689,41 @@ change.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package aggressive-indent
+    :defer 2
+    :diminish
     :init
     (global-aggressive-indent-mode 1)
     (add-to-list 'aggressive-indent-excluded-modes 'html-mode))
+#+END_SRC
+
+** =calc=
+
+May be useful in a timely manner
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package calc
+    :defer t
+    :custom
+    (math-additional-units
+     '((GiB "1024 * MiB" "Giga Byte")
+       (MiB "1024 * KiB" "Mega Byte")
+       (KiB "1024 * B" "Kilo Byte")
+       (B nil "Byte")
+       (Gib "1024 * Mib" "Giga Bit")
+       (Mib "1024 * Kib" "Mega Bit")
+       (Kib "1024 * b" "Kilo Bit")
+       (b "B / 8" "Bit")))
+    :config
+    (setq math-units-table nil))
+#+END_SRC
+
+** =chess=
+
+Because I like chess.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package chess  
+    :commands chess)
 #+END_SRC
 
 ** =company=
@@ -1709,6 +1743,24 @@ completion candidates.
     (company-begin-commands '(self-insert-command)))
 #+END_SRC
 
+** =docker=
+
+I like to use Docker when I need to install various databases or other services
+that only run on a particular operating system while keeping my operating system
+clean.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package docker  
+    :defer 15
+    :diminish
+    :config
+    (require 'docker-images)
+    (require 'docker-containers)
+    (require 'docker-volumes)
+    (require 'docker-networks)
+    (docker-global-mode))
+#+END_SRC
+
 ** =which-key=
 
 It's difficult to remember all the keyboard shortcuts. The =which-key= package
@@ -1719,6 +1771,8 @@ I used =guide-key= in my past days, but =which-key= is a good replacement.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package which-key
     :defer 2
+    :diminish
+    :commands which-key-mode
     :config
     (which-key-mode))
 #+END_SRC
@@ -1727,14 +1781,15 @@ I used =guide-key= in my past days, but =which-key= is a good replacement.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package expand-region
-    :init (global-set-key (kbd "C-=") 'er/expand-region))
+    :defer 2
+    :bind ("C-=" . er/expand-region))
 #+END_SRC
 
 ** =flycheck=
 
 #+BEGIN_SRC emacs-lisp :tangle yes
     (use-package flycheck
-      :defer t
+      :defer 2
       :diminish (flycheck-mode)
       :init (global-flycheck-mode t)
       :config
@@ -1756,6 +1811,7 @@ non-whitespace character.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package hungry-delete
+    :defer 2
     :config
     (global-hungry-delete-mode))
 #+END_SRC
@@ -1765,7 +1821,18 @@ non-whitespace character.
 Edit multiple regions in the same way simultaneously
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package iedit)
+  (use-package iedit
+    :defer t)
+#+END_SRC
+
+
+** =ipcalc=
+
+Allows me to avoid calculating network ranges.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package ipcalc 
+    :commands ipcalc)
 #+END_SRC
 
 ** =ledger=
@@ -1846,12 +1913,27 @@ I used =helm= before, but I find =ivy= more faster and lighter.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package ivy
+    :defer 5
     :diminish (ivy-mode)
-    :bind ("C-x b" . ivy-switch-buffer)
+    :bind (("C-x b" . ivy-switch-buffer)
+           ("C-x B" . ivy-switch-buffer-other-window))
     :custom
     (ivy-mode 1)
     (ivy-use-virtual-buffers t)
     (ivy-display-style 'fancy))
+
+  (use-package ivy-pass
+    :after ivy
+    :commands ivy-pass)
+
+  (use-package ivy-rich
+    :after ivy
+    :config
+    (ivy-set-display-transformer 'ivy-switch-buffer
+                                 'ivy-rich-switch-buffer-transformer)
+    (setq ivy-virtual-abbreviate 'full
+          ivy-rich-switch-buffer-align-virtual-buffer t
+          ivy-rich-path-style 'abbrev))
 #+END_SRC
 
 ** =swiper=
@@ -1862,17 +1944,21 @@ I also use =counsel= to easily find my files.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package swiper
+    :after ivy
     :bind (("C-s" . swiper)
            ("C-r" . swiper)
            ("C-c C-r" . ivy-resume)
            ("M-x" . counsel-M-x)
            ("C-x C-f" . counsel-find-file))
+    :bind (:map swiper-map
+                ("M-%" . swiper-query-replace))
     :config
     (progn
-      (define-key read-expression-map (kbd "C-r") 'counsel-expression-history))
+      (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)))
 
-    (use-package counsel
-      :bind ("M-y" . counsel-yank-pop)))
+  (use-package counsel
+    :after ivy
+    :bind ("M-y" . counsel-yank-pop))
 #+END_SRC
 
 ** =impatient-mode=
@@ -1904,89 +1990,7 @@ Anyway, if you don't like it you can try take a look to =paredit= or =autopair=
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package smartparens
-    :defer 5
-    :config
-    (progn
-      (require 'smartparens-config)
-      (add-hook 'emacs-lisp-mode-hook 'smartparens-mode)
-      (add-hook 'emacs-lisp-mode-hook 'show-smartparens-mode)
-
-    ;;;;;;;;;;;;;;;;;;;;;;;;
-      ;; keybinding management
-
-      (define-key sp-keymap (kbd "C-c s r n") 'sp-narrow-to-sexp)
-      (define-key sp-keymap (kbd "C-M-f") 'sp-forward-sexp)
-      (define-key sp-keymap (kbd "C-M-b") 'sp-backward-sexp)
-      (define-key sp-keymap (kbd "C-M-d") 'sp-down-sexp)
-      (define-key sp-keymap (kbd "C-M-a") 'sp-backward-down-sexp)
-      (define-key sp-keymap (kbd "C-S-a") 'sp-beginning-of-sexp)
-      (define-key sp-keymap (kbd "C-S-d") 'sp-end-of-sexp)
-
-      (define-key sp-keymap (kbd "C-M-e") 'sp-up-sexp)
-      (define-key emacs-lisp-mode-map (kbd ")") 'sp-up-sexp)
-      (define-key sp-keymap (kbd "C-M-u") 'sp-backward-up-sexp)
-      (define-key sp-keymap (kbd "C-M-t") 'sp-transpose-sexp)
-
-      (define-key sp-keymap (kbd "C-M-n") 'sp-next-sexp)
-      (define-key sp-keymap (kbd "C-M-p") 'sp-previous-sexp)
-
-      (define-key sp-keymap (kbd "C-M-k") 'sp-kill-sexp)
-      (define-key sp-keymap (kbd "C-M-w") 'sp-copy-sexp)
-
-      (define-key sp-keymap (kbd "M-<delete>") 'sp-unwrap-sexp)
-      (define-key sp-keymap (kbd "M-<backspace>") 'sp-backward-unwrap-sexp)
-
-      (define-key sp-keymap (kbd "C-<right>") 'sp-forward-slurp-sexp)
-      (define-key sp-keymap (kbd "C-<left>") 'sp-forward-barf-sexp)
-      (define-key sp-keymap (kbd "C-M-<left>") 'sp-backward-slurp-sexp)
-      (define-key sp-keymap (kbd "C-M-<right>") 'sp-backward-barf-sexp)
-
-      ;; (define-key sp-keymap (kbd "M-D") 'sp-splice-sexp)
-      (define-key sp-keymap (kbd "C-M-<delete>") 'sp-splice-sexp-killing-forward)
-      (define-key sp-keymap (kbd "C-M-<backspace>") 'sp-splice-sexp-killing-backward)
-      (define-key sp-keymap (kbd "C-S-<backspace>") 'sp-splice-sexp-killing-around)
-
-      (define-key sp-keymap (kbd "C-]") 'sp-select-next-thing-exchange)
-      (define-key sp-keymap (kbd "C-<left_bracket>") 'sp-select-previous-thing)
-      (define-key sp-keymap (kbd "C-M-]") 'sp-select-next-thing)
-
-      (define-key sp-keymap (kbd "M-F") 'sp-forward-symbol)
-      (define-key sp-keymap (kbd "M-B") 'sp-backward-symbol)
-
-      (define-key sp-keymap (kbd "C-c s t") 'sp-prefix-tag-object)
-      (define-key sp-keymap (kbd "C-c s p") 'sp-prefix-pair-object)
-      (define-key sp-keymap (kbd "C-c s c") 'sp-convolute-sexp)
-      (define-key sp-keymap (kbd "C-c s a") 'sp-absorb-sexp)
-      (define-key sp-keymap (kbd "C-c s e") 'sp-emit-sexp)
-      (define-key sp-keymap (kbd "C-c s p") 'sp-add-to-previous-sexp)
-      (define-key sp-keymap (kbd "C-c s n") 'sp-add-to-next-sexp)
-      (define-key sp-keymap (kbd "C-c s j") 'sp-join-sexp)
-      (define-key sp-keymap (kbd "C-c s s") 'sp-split-sexp)
-
-    ;;;;;;;;;;;;;;;;;;
-      ;; pair management
-
-      (sp-local-pair 'minibuffer-inactive-mode "'" nil :actions nil)
-      (sp-local-pair 'web-mode "<" nil :when '(my/sp-web-mode-is-code-context))
-
-    ;;; markdown-mode
-      (sp-with-modes '(markdown-mode gfm-mode rst-mode)
-        (sp-local-pair "*" "*" :bind "C-*")
-        (sp-local-tag "2" "**" "**")
-        (sp-local-tag "s" "```scheme" "```")
-        (sp-local-tag "<"  "<_>" "</_>" :transform 'sp-match-sgml-tags))
-
-    ;;; tex-mode latex-mode
-      (sp-with-modes '(tex-mode plain-tex-mode latex-mode)
-        (sp-local-tag "i" "1d5f8e69396c521f645375107197ea4dfbc7b792quot;<" "1d5f8e69396c521f645375107197ea4dfbc7b792quot;>"))
-
-    ;;; html-mode
-      (sp-with-modes '(html-mode sgml-mode web-mode)
-        (sp-local-pair "<" ">"))
-
-    ;;; lisp modes
-      (sp-with-modes sp--lisp-modes
-        (sp-local-pair "(" nil :bind "C-("))))
+    :defer 5)
 #+END_SRC
 
 ** =spotify=
@@ -2090,40 +2094,8 @@ An autonomous emacs major-mode for editing web templates.
 ** =key-chord=
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  ;; (use-package key-chord
-  ;;   :init
-  ;;   (progn
-  ;;     (setq key-chord-one-key-delay 0.16)
-  ;;     (key-chord-mode 1)
-  ;;     (key-chord-define-global "yy" 'my/window-movement/body)))
-#+END_SRC
-
-** =hydra=
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  ;; (use-package hydra
-  ;;   :defer t
-  ;;   :config
-  ;;   (defhydra my/window-movement ()
-  ;;     ("h" windmove-left)
-  ;;     ("l" windmove-right)
-  ;;     ("j" windmove-down)
-  ;;     ("k" windmove-up)
-  ;;     ("y" other-window "other")
-  ;;     ("f" find-file "file")
-  ;;     ("F" find-file-other-window "other file")
-  ;;     ("v" (progn (split-window-right) (windmove-right)))
-  ;;     ("o" delete-other-windows :color blue)
-  ;;     ("a" ace-window)
-  ;;     ("s" ace-swap-window)
-  ;;     ("d" delete-window "delete")
-  ;;     ("D" ace-delete-window "ace delete")
-  ;;     ("i" ace-delete-other-windows)
-  ;;     ("b" helm-buffers-list)
-  ;;     ("q" nil))
-  ;;   (defhydra join-lines ()
-  ;;     ("n" join-line)
-  ;;     ("p" (join-line 1))))
+  (use-package key-chord
+    :commands key-chord-mord)
 #+END_SRC
 
 ** =winner=
@@ -2165,7 +2137,7 @@ Provides minibuffer hints when working with Emacs Lisp.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package "eldoc"
-    :diminish eldoc-mode
+    :diminish
     :commands turn-on-eldoc-mode
     :hook ((emacs-lisp-mode-hook lisp-interaction-mode-hook ielm-mode-hook) . abbrev-mode))
 #+END_SRC
@@ -2593,7 +2565,6 @@ Maybe one day I should switch to [[https://github.com/jorgenschaefer/circe/][cir
     (erc-track-exclude-types '("JOIN" "MODE" "NICK" "PART" "QUIT"
                                "324" "329" "332" "333" "353" "477"))
     (erc-services-mode 1)
-    (erc-track-mode t)
     (add-to-list 'erc-modules 'spelling)
     (add-to-list 'erc-modules 'notifications)
     (add-to-list 'erc-modules 'hl-nicks)
