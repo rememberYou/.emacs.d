@@ -53,7 +53,6 @@ configuration:
 *  Show images on `erc` in the center of the buffer with `magic-buffer`.
 *  Show images on `erc` only if they are not large with `imagemagick`.
 *  Set up notifications on `erc` when my name is quoted.
-*  Write a function to know the number of entities on a channel with `erc`.
 
 --------------------
 
