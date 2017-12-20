@@ -1973,14 +1973,14 @@ as you type!
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package simple-httpd
     :defer t
-    :config
-    (setq httpd-root "/var/www/html")
+    :custom
+    (httpd-root "/var/www/html"))
 
     (use-package impatient-mode
       :defer t
       :hook ((web-mode-hook . httpd-start)
              (web-mode-hook . impatient-mode)
-             (css-mode-hook . httpd-start))))
+             (css-mode-hook . httpd-start)))
 #+END_SRC
 
 ** =smartparens=
@@ -2548,7 +2548,8 @@ Maybe one day I should switch to [[https://github.com/jorgenschaefer/circe/][cir
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package erc
     :defer 10
-    :bind ("C-c e" . erc-start-or-switch)
+    :bind (("C-c e" . my/erc-start-or-switch)
+           ("C-c n" . my/erc-count-users))
     :custom
     (erc-autojoin-channels-alist '(("freenode.net"
                                     "#android-dev" "#archlinux" "#bitcoin"
@@ -2576,7 +2577,7 @@ Maybe one day I should switch to [[https://github.com/jorgenschaefer/circe/][cir
   (use-package erc-image 
     :after erc)
 
-  (defun erc-start-or-switch ()
+  (defun my/erc-start-or-switch ()
     "Connect to ERC, or switch to last active buffer."
     (interactive)
     (if (get-buffer "irc.freenode.net:6667")
@@ -2584,23 +2585,17 @@ Maybe one day I should switch to [[https://github.com/jorgenschaefer/circe/][cir
       (when (y-or-n-p "Start ERC? ")
         (erc :server "irc.freenode.net" :port 6667 :nick "rememberYou"))))
 
-  (defun my/display-four-channels ()
-    "Lazy function permit to execute a bunch of commands
-            to display four IRC channels in the same time."
+  (defun my/erc-count-users ()
+    "Displays the number of users connected on the current channel."
     (interactive)
-    (if (not (get-buffer "irc.freenode.net:6667"))
-        (erc-start-or-switch)
-      (delete-other-windows)
-      (switch-to-buffer "#latex")
-      (split-window-right)
-      (windmove-right)
-      (switch-to-buffer "#emacs")
-      (split-window-below)
-      (windmove-down)
-      (switch-to-buffer "#python")
-      (windmove-left)
-      (split-window-below)
-      (switch-to-buffer "#archlinux")))
+    (if (get-buffer "irc.freenode.net:6667")
+        (let ((channel (erc-default-target)))
+          (if (and channel (erc-channel-p channel))
+              (message "%d users are online on %s" 
+                       (hash-table-count erc-channel-users) 
+                       channel)
+            (user-error "The current buffer is not a channel")))
+      (user-error "You must first start ERC")))
 #+END_SRC
 
 * Mail
