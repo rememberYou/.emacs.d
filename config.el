@@ -915,43 +915,12 @@ the same tree node, and the headline of the tree node in the Org-mode file."
 ;; Override the key definition
 (define-key org-agenda-mode-map "X" 'my/org-agenda-mark-done-and-add-followup)
 
-(defun my/org-agenda-list-unscheduled (&rest ignore)
-  "Create agenda view for tasks that are unscheduled and not done."
-  (let* ((org-agenda-todo-ignore-with-date t)
-         (org-agenda-overriding-header "List of unscheduled tasks: "))
-    (org-agenda-get-todos)))
-(setq org-stuck-projects
-      '("+PROJECT-MAYBE-DONE"
-        ("TODO")
-        nil
-        "\\<IGNORE\\>"))
-
-(defvar my/org-agenda-limit-items nil "Number of items to show in agenda to-do views; nil if unlimited.")
-;;  (eval-after-load 'org
-    '(defadvice org-agenda-finalize-entries (around sacha activate)
-       (if my/org-agenda-limit-items
-           (progn
-             (setq list (mapcar 'org-agenda-highlight-todo list))
-             (setq ad-return-value
-                   (subseq list 0 my/org-agenda-limit-items))
-             (when org-agenda-before-sorting-filter-function
-               (setq list (delq nil (mapcar org-agenda-before-sorting-filter-function list))))
-             (setq ad-return-value
-                   (mapconcat 'identity
-                              (delq nil
-                                    (subseq
-                                     (sort list 'org-entries-lessp)
-                                     0
-                                     my/org-agenda-limit-items))
-                              "\n")))
-         ad-do-it));;)
-
 (use-package org-journal
-  :init
-  (setq org-journal-dir "~/.journal/")
-  (setq org-journal-file-format "%Y%m%d")
-  (setq org-journal-date-format "%e %b %Y (%A)")
-  (setq org-journal-time-format "")
+  :custom
+  (org-journal-dir "~/.journal/")
+  (org-journal-file-format "%Y%m%d")
+  (org-journal-date-format "%e %b %Y (%A)")
+  (org-journal-time-format "")
   :config
   (defun get-journal-file-today ()
     "Return filename for today's journal entry."
@@ -1011,31 +980,6 @@ same day of the month, but will be the same day of the week."
 (setq auto-save-default nil)
 
 (global-set-key (kbd "C-c d") 'org-decrypt-entry)
-
-(use-package artbollocks-mode
-  :defer 5
-  :load-path  "~/elisp/artbollocks-mode"
-  :custom
-  (artbollocks-weasel-words-regex
-   (concat "\\b" (regexp-opt
-                  '("one of the"
-                    "should"
-                    "just"
-                    "sort of"
-                    "a lot"
-                    "probably"
-                    "maybe"
-                    "perhaps"
-                    "I think"
-                    "really"
-                    "pretty"
-                    "nice"
-                    "action"
-                    "utilize"
-                    "leverage") t) "\\b"))
-  ;; Don't show the art critic words, or at least until I figure
-  ;; out my own jargon
-  (artbollocks-jargon nil))
 
 (use-package aggressive-indent
   :defer 2
@@ -1178,12 +1122,7 @@ same day of the month, but will be the same day of the week."
          ("C-r" . swiper)
          ("C-c C-r" . ivy-resume)
          ("M-x" . counsel-M-x)
-         ("C-x C-f" . counsel-find-file))
-  :bind (:map swiper-map
-              ("M-%" . swiper-query-replace))
-  :config
-  (progn
-    (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)))
+         ("C-x C-f" . counsel-find-file)))
 
 (use-package counsel
   :after ivy
@@ -1191,14 +1130,14 @@ same day of the month, but will be the same day of the week."
 
 (use-package simple-httpd
   :defer t
-  :config
-  (setq httpd-root "/var/www/html")
+  :custom
+  (httpd-root "/var/www/html"))
 
   (use-package impatient-mode
     :defer t
     :hook ((web-mode-hook . httpd-start)
            (web-mode-hook . impatient-mode)
-           (css-mode-hook . httpd-start))))
+           (css-mode-hook . httpd-start)))
 
 (use-package smartparens
   :defer 5)
@@ -1462,7 +1401,8 @@ couldn't figure things out (ex: syntax errors)."
 
 (use-package erc
   :defer 10
-  :bind ("C-c e" . erc-start-or-switch)
+  :bind (("C-c e" . my/erc-start-or-switch)
+         ("C-c n" . my/erc-count-users))
   :custom
   (erc-autojoin-channels-alist '(("freenode.net"
                                   "#android-dev" "#archlinux" "#bitcoin"
@@ -1476,13 +1416,17 @@ couldn't figure things out (ex: syntax errors)."
   (erc-hide-list '("JOIN" "PART" "QUIT"))
   (erc-server-reconnect-attempts 5)
   (erc-server-reconnect-timeout 3)
+  (erc-lurker-hide-list (quote ("JOIN" "PART" "QUIT")))
+  (erc-lurker-threshold-time 43200)
+
   (erc-track-exclude-types '("JOIN" "MODE" "NICK" "PART" "QUIT"
                              "324" "329" "332" "333" "353" "477"))
   (erc-services-mode 1)
-  (add-to-list 'erc-modules 'spelling)
-  (add-to-list 'erc-modules 'notifications)
   (add-to-list 'erc-modules 'hl-nicks)
-  (add-to-list 'erc-modules 'image))
+  (add-to-list 'erc-modules 'notifications)
+  (add-to-list 'erc-modules 'image)
+  (add-to-list 'erc-modules 'spelling)
+  (add-to-list 'erc-modules 'youtube))
 
 (use-package erc-hl-nicks
   :after erc)
@@ -1490,7 +1434,10 @@ couldn't figure things out (ex: syntax errors)."
 (use-package erc-image 
   :after erc)
 
-(defun erc-start-or-switch ()
+(use-package erc-youtube
+  :after erc)
+
+(defun my/erc-start-or-switch ()
   "Connect to ERC, or switch to last active buffer."
   (interactive)
   (if (get-buffer "irc.freenode.net:6667")
@@ -1498,23 +1445,62 @@ couldn't figure things out (ex: syntax errors)."
     (when (y-or-n-p "Start ERC? ")
       (erc :server "irc.freenode.net" :port 6667 :nick "rememberYou"))))
 
-(defun my/display-four-channels ()
-  "Lazy function permit to execute a bunch of commands
-          to display four IRC channels in the same time."
+(defun my/erc-count-users ()
+  "Displays the number of users connected on the current channel."
   (interactive)
-  (if (not (get-buffer "irc.freenode.net:6667"))
-      (erc-start-or-switch)
-    (delete-other-windows)
-    (switch-to-buffer "#latex")
-    (split-window-right)
-    (windmove-right)
-    (switch-to-buffer "#emacs")
-    (split-window-below)
-    (windmove-down)
-    (switch-to-buffer "#python")
-    (windmove-left)
-    (split-window-below)
-    (switch-to-buffer "#archlinux")))
+  (if (get-buffer "irc.freenode.net:6667")
+      (let ((channel (erc-default-target)))
+        (if (and channel (erc-channel-p channel))
+            (message "%d users are online on %s" 
+                     (hash-table-count erc-channel-users) 
+                     channel)
+          (user-error "The current buffer is not a channel")))
+    (user-error "You must first start ERC")))
+
+(use-package elfeed
+  :defer 2
+  :bind (("C-x e" . elfeed)
+         :map elfeed-search-mode-map
+         ("q" . bjm/elfeed-save-db-and-bury)
+         ("Q" . bjm/elfeed-save-db-and-bury)
+         ("m" . elfeed-toggle-star)
+         ("M" . elfeed-toggle-star))
+  :custom
+  (elfeed-db-directory "~/Dropbox/shared/elfeed/db"))
+
+(defalias 'elfeed-toggle-star
+  (elfeed-expose #'elfeed-search-toggle-all 'star))
+
+(defun elfeed-mark-all-as-read ()
+  (interactive)
+  (mark-whole-buffer)
+  (elfeed-search-untag-all-unread))
+
+(defun bjm/elfeed-load-db-and-open ()
+  "Wrapper to load the elfeed db from disk before opening"
+  (interactive)
+  (elfeed-db-load)
+  (elfeed)
+  (elfeed-search-update--force))
+
+(defun bjm/elfeed-save-db-and-bury ()
+  "Wrapper to save the elfeed db to disk before burying buffer"
+  (interactive)
+  (elfeed-db-save)
+  (quit-window))
+
+(use-package elfeed-org
+  :after elfeed
+  :defer 2
+  :config
+  (elfeed-org)
+  (setq rmh-elfeed-org-files (list "~/Dropbox/shared/elfeed/elfeed.org")))
+
+(use-package elfeed-goodies
+  :after elfeed
+  :defer 2
+  :config
+  (elfeed-goodies/setup))
 
 (autoload 'notmuch "notmuch" "notmuch mail" t)
 (use-package helm-notmuch
