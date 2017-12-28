@@ -22,6 +22,11 @@
 (setq load-prefer-newer t)
 (setq vc-follow-symlinks nil)
 
+(setq auth-sources '("~/Dropbox/shared/.authinfo.gpg"
+                     "~/.authinfo.gpg"
+                     "~/.authinfo"
+                     "~/.netrc"))
+
 (if (file-exists-p abbrev-file-name)
     (quietly-read-abbrev-file))
 
@@ -303,9 +308,8 @@ abort completely with `C-g'."
 (my/defshortcut ?a "~/.config/awesome/rc.lua")
 (my/defshortcut ?b "~/personal/business.org")
 (my/defshortcut ?c "~/.emacs.d/config.org")
-(my/defshortcut ?d "~/personal/decisions.org")
+(my/defshortcut ?e "~/Dropbox/shared/elfeed/elfeed.org")
 (my/defshortcut ?i "~/.emacs.d/init.el")
-(my/defshortcut ?l "~/personal/learning.org")
 (my/defshortcut ?o "~/personal/organizer.org")
 (my/defshortcut ?p "~/personal/projects.org")
 (my/defshortcut ?r "~/personal/routine.org")
@@ -530,14 +534,13 @@ and indent it one level."
 
 (defun my/org-contacts-template-email (&optional return-value)
   "Try to return the contact email for a template.
-    If not found return RETURN-VALUE or something that would ask the user."
+        If not found return RETURN-VALUE or something that would ask the user."
   (or (cadr (if (gnus-alive-p)
                 (gnus-with-article-headers
                  (mail-extract-address-components
                   (or (mail-fetch-field "Reply-To") (mail-fetch-field "From") "")))))
       return-value
       (concat "%^{" org-contacts-email-property "}p")))
-
 
 (defvar my/org-basic-task-template "* TODO %^{Task}
   :PROPERTIES:
@@ -548,31 +551,38 @@ and indent it one level."
 
   %i
   " "Basic task data")
+
+(defvar my/org-basic-trade-template "* Trade
+  Previous Balance: %^{PreviousBalance}
+  Next Balance: %^{NextBalance}
+  Captured %<%Y-%m-%d>
+  %?
+
+  %i
+  " "Basic trade data")
+
 (setq org-capture-templates
-      '(("T" "Quick task" entry
-         (file+headline "~/personal/organizer.org" "Inbox")
-         "* TODO %^{Task}\nSCHEDULED: %t\n"
+      `(("b" "Buy task" checkitem (file+headline "~/personal/various/buy.org" "To Buy")
+         "- [ ] %^{Task}"
          :immediate-finish t)
-        ("b" "Business task" entry
-         (file+headline "~/personal/business.org" "Tasks")
-         ,my/org-basic-task-template)
-        ("i" "Interrupting task" entry
-         (file+headline "~/personal/organizer.org" "Inbox")
+        ("i" "Interrupting task" entry (file+headline "~/personal/organizer.org" "Inbox")
          "* STARTED %^{Task}"
          :clock-in :clock-resume)
-        ("p" "People task" entry
-         (file+headline "~/personal/people.org" "Tasks")
-         ,my/org-basic-task-template)
-        ("q" "Quick note" item
-         (file+headline "~/personal/organizer.org" "Quick notes")
-         ,my/org-basic-task-template)
-        ("t" "Tasks" entry
-         (file+headline "~/personal/organizer.org" "Inbox")
-         ,my/org-basic-task-template)
-        ("j" "Journal Note" entry
-         (file (get-journal-file-today))
-         "* %?\n\n  %i\n\n  From: %a" :empty-lines 1)
-        ))
+        ("m" "Movie task" checkitem (file+headline "~/personal/various/movies.org" "To Watch")
+         "- [ ] %^{Task}"
+         :immediate-finish t)
+        ("p" "People task" entry (file+headline "~/personal/people.org" "Tasks"),
+         my/org-basic-task-template
+         :immediate-finish t)
+        ("s" "School task" entry (file+headline "~/personal/school.org" "Tasks"), 
+         my/org-basic-task-template 
+         :immediate-finish t)
+        ("t" "Trading" entry (file+headline "~/personal/trading.org" "Trades/Day"), 
+         my/org-basic-trade-template
+         :immediate-finish t)
+        ("T" "Tasks" entry (file+headline "~/personal/organizer.org" "Tasks"), 
+         my/org-basic-task-template
+         :immediate-finish t)))
 
 (defun my/org-agenda-new ()
   "Create a new note or task at the current agenda item.
@@ -592,6 +602,7 @@ this with to-do items than with projects or headings."
     (tags-todo "+@writing")
     (tags-todo "+@computer")
     (tags-todo "+@home")
+    (tags-todo "+@school")
     (tags-todo "+@errands"))
   "Usual list of contexts.")
 (bind-key "<apps> a" 'org-agenda)
@@ -827,8 +838,8 @@ LOCATION and FILE can also be regular expressions for `my/org-refile-get-locatio
                       ("@phone" . ?p)
                       ("@reading" . ?r)
                       ("@computer" . ?l)
+                      ("@school" . ?s)
                       ("crypt" . ?C)
-                      ("quantified" . ?q)
                       ("fuzzy" . ?0)
                       ("highenergy" . ?1)))
 
@@ -1063,12 +1074,15 @@ same day of the month, but will be the same day of the week."
   :commands ipcalc)
 
 (use-package ledger-mode
-  :mode "\\.ledger\\'"
-  :custom
-  (ledger-clear-whole-transactions 1))
+    :mode "\\.ledger\\'"
+    :custom
+    (ledger-clear-whole-transactions 1)
+    ;; https://xkcd.com/1179/
+    ;; (ledger-use-iso-dates t)
+)
 
-(use-package flycheck-ledger
-  :after ledger-mode)
+    (use-package flycheck-ledger
+      :after ledger-mode)
 
 (pdf-tools-install)
 
@@ -1407,11 +1421,11 @@ couldn't figure things out (ex: syntax errors)."
   (erc-autojoin-channels-alist '(("freenode.net"
                                   "#android-dev" "#archlinux" "#bitcoin"
                                   "#bitcoin-pricetalk" "#emacs" "#latex"
-                                  "#python" "#sway"
-                                  )))
+                                  "#python" "#sway")))
   (erc-autojoin-timing 'ident)
   (erc-fill-function 'erc-fill-static)
   (erc-fill-static-center 22)
+
   (erc-prompt-for-nickserv-password nil)
   (erc-hide-list '("JOIN" "PART" "QUIT"))
   (erc-server-reconnect-attempts 5)
@@ -1457,37 +1471,107 @@ couldn't figure things out (ex: syntax errors)."
           (user-error "The current buffer is not a channel")))
     (user-error "You must first start ERC")))
 
+;; I have no fucking idea why, but I had to create a script that calls
+;; `notify-send' to receive notifications.
+;;
+;; I should fix the `libnotify` issue for `alert`
+(defun erc-notifications (nickname message)
+  (shell-command (concat "/home/someone/bin/alert" " " nickname " " message)))
+
+(add-hook 'ercn-notify-hook 'erc-notifications)
+
 (use-package elfeed
   :defer 2
   :bind (("C-x e" . elfeed)
          :map elfeed-search-mode-map
-         ("q" . bjm/elfeed-save-db-and-bury)
-         ("Q" . bjm/elfeed-save-db-and-bury)
+         ("q" . elfeed-save-db-and-bury)
+         ("Q" . elfeed-save-db-and-bury)
          ("m" . elfeed-toggle-star)
-         ("M" . elfeed-toggle-star))
-  :custom
-  (elfeed-db-directory "~/Dropbox/shared/elfeed/db"))
+         ("M" . elfeed-toggle-star)
+         ("j" . mz/make-and-run-elfeed-hydra)
+         ("J" . mz/make-and-run-elfeed-hydra))
+  :custom (elfeed-db-directory "~/Dropbox/shared/elfeed/db"))
 
 (defalias 'elfeed-toggle-star
   (elfeed-expose #'elfeed-search-toggle-all 'star))
 
-(defun elfeed-mark-all-as-read ()
-  (interactive)
-  (mark-whole-buffer)
-  (elfeed-search-untag-all-unread))
-
-(defun bjm/elfeed-load-db-and-open ()
+(defun elfeed-load-db-and-open ()
   "Wrapper to load the elfeed db from disk before opening"
   (interactive)
   (elfeed-db-load)
   (elfeed)
   (elfeed-search-update--force))
 
-(defun bjm/elfeed-save-db-and-bury ()
+(defun elfeed-mark-all-as-read ()
+  "Mark all feeds as read"
+  (interactive)
+  (mark-whole-buffer)
+  (elfeed-search-untag-all-unread))
+
+(defun elfeed-save-db-and-bury ()
   "Wrapper to save the elfeed db to disk before burying buffer"
   (interactive)
   (elfeed-db-save)
   (quit-window))
+
+(defun z/hasCap (s) ""
+       (let ((case-fold-search nil))
+         (string-match-p "[[:upper:]]" s)))
+
+
+(defun z/get-hydra-option-key (s)
+  "returns single upper case letter (converted to lower) or first"
+  (interactive)
+  (let ( (loc (z/hasCap s)))
+    (if loc
+        (downcase (substring s loc (+ loc 1)))
+      (substring s 0 1))))
+
+(defun mz/make-elfeed-cats (tags)
+  "Returns a list of lists. Each one is line for the hydra configuratio in the form
+     (c function hint)"
+  (interactive)
+  (mapcar (lambda (tag)
+            (let* (
+                   (tagstring (symbol-name tag))
+                   (c (z/get-hydra-option-key tagstring))
+                   )
+              (list c (append '(elfeed-search-set-filter) (list (format "@6-months-ago +%s" tagstring) ))tagstring  )))
+          tags))
+
+(defmacro mz/make-elfeed-hydra ()
+  `(defhydra mz/hydra-elfeed ()
+     "filter"
+     ,@(mz/make-elfeed-cats (elfeed-db-get-all-tags))
+     ("*" (elfeed-search-set-filter "@6-months-ago +star") "Starred")
+     ("M" elfeed-toggle-star "Mark")
+     ("A" (elfeed-search-set-filter "@6-months-ago") "All")
+     ("T" (elfeed-search-set-filter "@1-day-ago") "Today")
+     ("Q" elfeed-save-db-and-bury "Quit Elfeed" :color blue)
+     ("q" nil "quit" :color blue)))
+
+(defun mz/make-and-run-elfeed-hydra ()
+  ""
+  (interactive)
+  (mz/make-elfeed-hydra)
+  (mz/hydra-elfeed/body))
+
+(use-package hydra)
+
+(global-set-key
+ (kbd "C-x t")
+ (defhydra toggle (:color blue)
+   "toggle"
+   ("a" abbrev-mode "abbrev")
+   ("s" flyspell-mode "flyspell")
+   ("d" toggle-debug-on-error "debug")
+   ("w" whitespace-mode "whitespace")
+   ("q" nil "cancel")))
+
+(defhydra hydra-zoom (global-map "<f2>")
+  "zoom"
+  ("g" text-scale-increase "in")
+  ("l" text-scale-decrease "out"))
 
 (use-package elfeed-org
   :after elfeed
@@ -1499,13 +1583,30 @@ couldn't figure things out (ex: syntax errors)."
 (use-package elfeed-goodies
   :after elfeed
   :defer 2
-  :config
+  :config 
   (elfeed-goodies/setup))
 
-(autoload 'notmuch "notmuch" "notmuch mail" t)
-(use-package helm-notmuch
-  :defer 5
-  :bind ("C-x M-e" . helm-notmuch))
+(require 'mu4e)
+
+(setq mu4e-maildir "~/Maildir"
+      mu4e-trash-folder "/trash"
+      mu4e-refile-folder "/archive"
+      mu4e-get-mail-command "mbsync -a"
+      mu4e-update-interval 300 ;; second
+      mu4e-compose-signature-auto-include nil
+      mu4e-view-show-images t
+      mu4e-view-show-addresses t
+      mu4e-attachment-dir "~/Downloads"
+      mu4e-use-fancy-chars t)
+
+(setq mu4e-maildir-shortcuts
+      '(("/gmail/INBOX" . ?i)
+        ("/gmail/All Mail" . ?a)
+        ("/gmail/Deleted Items" . ?d)
+        ("/gmail/Drafts" . ?D)
+        ("/gmail/Important" . ?i)
+        ("/gmail/Sent Mail" . ?s)
+        ("/gmail/Starred" . ?S)))
 
 (setq send-mail-function 'smtpmail-send-it
       smtpmail-smtp-server "smtp.gmail.com"
