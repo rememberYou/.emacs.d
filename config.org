@@ -2562,6 +2562,17 @@ Maybe one day I should switch to [[https://github.com/jorgenschaefer/circe/][cir
             (user-error "The current buffer is not a channel")))
       (user-error "You must first start ERC")))
 
+  (defun do-notify (nickname message)
+    "Displays a notification message for ERC."
+    (let* ((channel (buffer-name))
+           (nick (erc-hl-nicks-trim-irc-nick nickname))
+           (title (if (string-match-p (concat "^" nickname) channel)
+                      nick
+                    (concat nick " (" channel ")")))
+           (msg (s-trim (s-collapse-whitespace message))))
+
+      (alert (concat nick ": " msg) :title title)))
+
   (add-hook 'ercn-notify-hook 'do-notify)
 #+END_SRC
 

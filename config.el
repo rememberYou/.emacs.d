@@ -235,9 +235,9 @@ abort completely with `C-g'."
   (scroll-bar-mode -1)
   (tooltip-mode -1))
 
-(use-package webpaste
-  :bind (("C-c p r" . webpaste-paste-region)
-         ("C-c p b" . webpaste-paste-buffer)))
+(use-package webpaste 
+  :bind (("C-c C-p C-b" . webpaste-paste-buffer)
+         ("C-c C-p C-r" . webpaste-paste-region)))
 
 (add-hook 'after-init-hook 'auto-fill-mode)
 (setq-default fill-column 80)
@@ -1423,63 +1423,75 @@ couldn't figure things out (ex: syntax errors)."
   :interpreter ("sql" . sql-mode))
 
 (use-package erc
-  :defer 10
-  :bind (("C-c e" . my/erc-start-or-switch)
-         ("C-c n" . my/erc-count-users))
-  :custom
-  (erc-autojoin-channels-alist '(("freenode.net" "#android-dev" "#archlinux"
-                                  "bash" "#bitcoin" "#emacs" "#latex"
-                                  "#python" "#sway")))
-  (erc-autojoin-timing 'ident)
-  (erc-fill-function 'erc-fill-static)
-  (erc-fill-static-center 22)
+    :defer 10
+    :bind (("C-c e" . my/erc-start-or-switch)
+           ("C-c n" . my/erc-count-users))
+    :custom
+    (erc-autojoin-channels-alist '(("freenode.net" "#android-dev" "#archlinux"
+                                    "bash" "#bitcoin" "#emacs" "#latex"
+                                    "#python" "#sway")))
+    (erc-autojoin-timing 'ident)
+    (erc-fill-function 'erc-fill-static)
+    (erc-fill-static-center 22)
 
-  (erc-prompt-for-nickserv-password nil)
-  (erc-hide-list '("JOIN" "PART" "QUIT"))
-  (erc-server-reconnect-attempts 5)
-  (erc-server-reconnect-timeout 3)
-  (erc-lurker-hide-list (quote ("JOIN" "PART" "QUIT")))
-  (erc-lurker-threshold-time 43200)
+    (erc-prompt-for-nickserv-password nil)
+    (erc-hide-list '("JOIN" "PART" "QUIT"))
+    (erc-server-reconnect-attempts 5)
+    (erc-server-reconnect-timeout 3)
+    (erc-lurker-hide-list (quote ("JOIN" "PART" "QUIT")))
+    (erc-lurker-threshold-time 43200)
 
-  (erc-track-exclude-types '("JOIN" "MODE" "NICK" "PART" "QUIT"
-                             "324" "329" "332" "333" "353" "477"))
-  (erc-services-mode 1)
-  (add-to-list 'erc-modules 'hl-nicks)
-  (add-to-list 'erc-modules 'notifications)
-  (add-to-list 'erc-modules 'image)
-  (add-to-list 'erc-modules 'spelling)
-  (add-to-list 'erc-modules 'youtube))
+    (erc-track-exclude-types '("JOIN" "MODE" "NICK" "PART" "QUIT"
+                               "324" "329" "332" "333" "353" "477"))
+    (erc-services-mode 1)
+    (add-to-list 'erc-modules 'hl-nicks)
+    (add-to-list 'erc-modules 'notifications)
+    (add-to-list 'erc-modules 'image)
+    (add-to-list 'erc-modules 'spelling)
+    (add-to-list 'erc-modules 'youtube))
 
-(use-package erc-hl-nicks
-  :after erc)
+  (use-package erc-hl-nicks
+    :after erc)
 
-(use-package erc-image 
-  :after erc)
+  (use-package erc-image 
+    :after erc)
 
-(use-package erc-youtube
-  :after erc)
+  (use-package erc-youtube
+    :after erc)
 
-(defun my/erc-start-or-switch ()
-  "Connect to ERC, or switch to last active buffer."
-  (interactive)
-  (if (get-buffer "irc.freenode.net:6667")
-      (erc-track-switch-buffer 1)
-    (when (y-or-n-p "Start ERC? ")
-      (erc :server "irc.freenode.net" :port 6667 :nick "rememberYou"))))
+  (defun my/erc-start-or-switch ()
+    "Connect to ERC, or switch to last active buffer."
+    (interactive)
+    (if (get-buffer "irc.freenode.net:6667")
+        (erc-track-switch-buffer 1)
+      (when (y-or-n-p "Start ERC? ")
+        (erc :server "irc.freenode.net" :port 6667 :nick "rememberYou"))))
 
-(defun my/erc-count-users ()
-  "Displays the number of users connected on the current channel."
-  (interactive)
-  (if (get-buffer "irc.freenode.net:6667")
-      (let ((channel (erc-default-target)))
-        (if (and channel (erc-channel-p channel))
-            (message "%d users are online on %s" 
-                     (hash-table-count erc-channel-users) 
-                     channel)
-          (user-error "The current buffer is not a channel")))
-    (user-error "You must first start ERC")))
+  (defun my/erc-count-users ()
+    "Displays the number of users connected on the current channel."
+    (interactive)
+    (if (get-buffer "irc.freenode.net:6667")
+        (let ((channel (erc-default-target)))
+          (if (and channel (erc-channel-p channel))
+              (message "%d users are online on %s" 
+                       (hash-table-count erc-channel-users) 
+                       channel)
+            (user-error "The current buffer is not a channel")))
+      (user-error "You must first start ERC")))
 
-(add-hook 'ercn-notify-hook 'do-notify)
+(defun do-notify (nickname message)
+  (let* ((channel (buffer-name))
+         ;; using https://github.com/leathekd/erc-hl-nicks
+         (nick (erc-hl-nicks-trim-irc-nick nickname))
+         (title (if (string-match-p (concat "^" nickname) channel)
+                    nick
+                  (concat nick " (" channel ")")))
+         ;; Using https://github.com/magnars/s.el
+         (msg (s-trim (s-collapse-whitespace message))))
+    ;; call the system notifier here
+    ))
+
+  (add-hook 'ercn-notify-hook 'do-notify)
 
 (use-package elfeed
   :defer 2
