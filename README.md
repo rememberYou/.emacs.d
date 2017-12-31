@@ -50,7 +50,6 @@ configuration:
 
 *  Show images on `erc` in the center of the buffer with `magic-buffer`.
 *  Show images on `erc` only if they are not large with `imagemagick`.
-*  Fix issue with `libnotify` and `alert`.
 
 --------------------
 
