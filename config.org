@@ -88,6 +88,18 @@ the fly.
       (quietly-read-abbrev-file))
 #+END_SRC
 
+** =alert=
+
+Most packages use =alerts= to make notifications with =libnotify=. Don't forget
+to first install a notification daemon, like =dunst=.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package alert
+    :commands alert
+    :config
+    (setq alert-default-style 'libnotify))
+#+END_SRC
+
 ** =auto-compile=
 
 With that, Emacs never loads outdated byte code files.
@@ -430,6 +442,16 @@ Disables menu bar, tool bar, scroll bar and tooltip.
     (tool-bar-mode -1)
     (scroll-bar-mode -1)
     (tooltip-mode -1))
+#+END_SRC
+
+** =webpaste=
+
+paste region or buffer become easy with this package.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package webpaste 
+    :bind (("C-c C-p C-b" . webpaste-paste-buffer)
+           ("C-c C-p C-r" . webpaste-paste-region)))
 #+END_SRC
 
 ** Word wrap at 80 characters
@@ -2488,9 +2510,8 @@ Maybe one day I should switch to [[https://github.com/jorgenschaefer/circe/][cir
     :bind (("C-c e" . my/erc-start-or-switch)
            ("C-c n" . my/erc-count-users))
     :custom
-    (erc-autojoin-channels-alist '(("freenode.net"
-                                    "#android-dev" "#archlinux" "#bitcoin"
-                                    "#bitcoin-pricetalk" "#emacs" "#latex"
+    (erc-autojoin-channels-alist '(("freenode.net" "#android-dev" "#archlinux"
+                                    "bash" "#bitcoin" "#emacs" "#latex"
                                     "#python" "#sway")))
     (erc-autojoin-timing 'ident)
     (erc-fill-function 'erc-fill-static)
@@ -2541,28 +2562,7 @@ Maybe one day I should switch to [[https://github.com/jorgenschaefer/circe/][cir
             (user-error "The current buffer is not a channel")))
       (user-error "You must first start ERC")))
 
-  ;; I have no fucking idea why, but I had to create a script that calls
-  ;; `notify-send' to receive notifications.
-  ;;
-  ;; I should fix the `libnotify` issue for `alert`
-  (defun erc-notifications (nickname message)
-    (shell-command (concat "/home/someone/bin/alert" " " nickname " " message)))
-
-  (add-hook 'ercn-notify-hook 'erc-notifications)
-#+END_SRC
-
-I need to debug this; I seem the one and only person to got this issue with dbus
-and libnotify with Emacs...
-
-#+BEGIN_SRC emacs-lisp :tangle
-  (use-package alert)
-
-  (defun do-notify (nickname message)
-    (alert message :title nickname))
-
-  (setq alert-libnotify-command "/home/someone/bin/alert")
-
-  (alert "This is a test alert")
+  (add-hook 'ercn-notify-hook 'do-notify)
 #+END_SRC
 
 * RSS Feeder
@@ -2730,12 +2730,12 @@ one is a better thing.
 The following few lines allow you to receive Desktop notifications and modeline
 display for =mu4e=
 
-#+BEGIN_SRC emacs-lisp :tangle
+#+BEGIN_SRC emacs-lisp :tangle yes
   (use-package mu4e-alert
-    :custom (mu4e-alert-set-default-style 'libnotify)
-    :hook 
-    (after-init-hook . mu4e-alert-enable-notifications)
-    (after-init-hook . mu4e-alert-enable-mode-line-display))
+    :init
+    (add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
+    (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
+    :custom (mu4e-alert-set-default-style 'libnotify))
 #+END_SRC
 
 ** Sending Mail

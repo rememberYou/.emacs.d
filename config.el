@@ -30,6 +30,11 @@
 (if (file-exists-p abbrev-file-name)
     (quietly-read-abbrev-file))
 
+(use-package alert
+  :commands alert
+  :config
+  (setq alert-default-style 'libnotify))
+
 (use-package auto-compile
   :defer 5
   :config (auto-compile-on-load-mode))
@@ -229,6 +234,10 @@ abort completely with `C-g'."
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
   (tooltip-mode -1))
+
+(use-package webpaste
+  :bind (("C-c p r" . webpaste-paste-region)
+         ("C-c p b" . webpaste-paste-buffer)))
 
 (add-hook 'after-init-hook 'auto-fill-mode)
 (setq-default fill-column 80)
@@ -1418,9 +1427,8 @@ couldn't figure things out (ex: syntax errors)."
   :bind (("C-c e" . my/erc-start-or-switch)
          ("C-c n" . my/erc-count-users))
   :custom
-  (erc-autojoin-channels-alist '(("freenode.net"
-                                  "#android-dev" "#archlinux" "#bitcoin"
-                                  "#bitcoin-pricetalk" "#emacs" "#latex"
+  (erc-autojoin-channels-alist '(("freenode.net" "#android-dev" "#archlinux"
+                                  "bash" "#bitcoin" "#emacs" "#latex"
                                   "#python" "#sway")))
   (erc-autojoin-timing 'ident)
   (erc-fill-function 'erc-fill-static)
@@ -1471,14 +1479,7 @@ couldn't figure things out (ex: syntax errors)."
           (user-error "The current buffer is not a channel")))
     (user-error "You must first start ERC")))
 
-;; I have no fucking idea why, but I had to create a script that calls
-;; `notify-send' to receive notifications.
-;;
-;; I should fix the `libnotify` issue for `alert`
-(defun erc-notifications (nickname message)
-  (shell-command (concat "/home/someone/bin/alert" " " nickname " " message)))
-
-(add-hook 'ercn-notify-hook 'erc-notifications)
+(add-hook 'ercn-notify-hook 'do-notify)
 
 (use-package elfeed
   :defer 2
@@ -1607,6 +1608,12 @@ couldn't figure things out (ex: syntax errors)."
         ("/gmail/Important" . ?i)
         ("/gmail/Sent Mail" . ?s)
         ("/gmail/Starred" . ?S)))
+
+(use-package mu4e-alert
+  :init
+  (add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
+  (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
+  :custom (mu4e-alert-set-default-style 'libnotify))
 
 (setq send-mail-function 'smtpmail-send-it
       smtpmail-smtp-server "smtp.gmail.com"
