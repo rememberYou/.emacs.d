@@ -403,6 +403,7 @@ point reaches the beginning or end of the buffer, stop there."
  'org-babel-load-languages '((C . t)
                              (css . t)
                              (dot . t)
+                             (ditaa . t)
                              (emacs-lisp t)
                              (gnuplot . t)
                              (java . t)
@@ -416,6 +417,7 @@ point reaches the beginning or end of the buffer, stop there."
                              (shell . t)))
 
 (setq org-plantuml-jar-path (expand-file-name "~/.emacs.d/plantuml.jar"))
+(setq org-ditaa-jar-path "~/.emacs.d/ditaa0_9.jar")
 
 (setq org-modules '(org-info
                     org-habit
@@ -937,7 +939,7 @@ the same tree node, and the headline of the tree node in the Org-mode file."
 
 (use-package org-journal
   :custom
-  (org-journal-dir "~/.journal/")
+  (org-journal-dir "~/Dropbox/shared/.journal/2018/")
   (org-journal-file-format "%Y%m%d")
   (org-journal-date-format "%e %b %Y (%A)")
   (org-journal-time-format "")
@@ -1000,6 +1002,15 @@ same day of the month, but will be the same day of the week."
 (setq auto-save-default nil)
 
 (global-set-key (kbd "C-c d") 'org-decrypt-entry)
+
+(use-package ox-reveal)
+
+(setq org-reveal-root "file:///home/someone/.emacs.d/reveal.js")
+(setq org-reveal-mathjax t)
+(setq org-reveal-transition "linear")
+(setq org-reveal-transition "fade")
+
+(use-package htmlize)
 
 (use-package aggressive-indent
   :defer 2
@@ -1094,6 +1105,8 @@ same day of the month, but will be the same day of the week."
       :after ledger-mode)
 
 (pdf-tools-install)
+;; Disable unicode support in mode line for more speed.
+(setq pdf-view-use-unicode-ligther nil)
 
 (use-package projectile
   :defer 5
@@ -1423,75 +1436,74 @@ couldn't figure things out (ex: syntax errors)."
   :interpreter ("sql" . sql-mode))
 
 (use-package erc
-    :defer 10
-    :bind (("C-c e" . my/erc-start-or-switch)
-           ("C-c n" . my/erc-count-users))
-    :custom
-    (erc-autojoin-channels-alist '(("freenode.net" "#android-dev" "#archlinux"
-                                    "bash" "#bitcoin" "#emacs" "#latex"
-                                    "#python" "#sway")))
-    (erc-autojoin-timing 'ident)
-    (erc-fill-function 'erc-fill-static)
-    (erc-fill-static-center 22)
+  :defer 10
+  :bind (("C-c e" . my/erc-start-or-switch)
+         ("C-c n" . my/erc-count-users))
+  :custom
+  (erc-autojoin-channels-alist '(("freenode.net" "#android-dev" "#archlinux"
+                                  "bash" "#bitcoin" "#emacs" "#latex"
+                                  "#python" "#sway")))
+  (erc-autojoin-timing 'ident)
+  (erc-fill-function 'erc-fill-static)
+  (erc-fill-static-center 22)
 
-    (erc-prompt-for-nickserv-password nil)
-    (erc-hide-list '("JOIN" "PART" "QUIT"))
-    (erc-server-reconnect-attempts 5)
-    (erc-server-reconnect-timeout 3)
-    (erc-lurker-hide-list (quote ("JOIN" "PART" "QUIT")))
-    (erc-lurker-threshold-time 43200)
+  (erc-prompt-for-nickserv-password nil)
+  (erc-hide-list '("JOIN" "PART" "QUIT"))
+  (erc-server-reconnect-attempts 5)
+  (erc-server-reconnect-timeout 3)
+  (erc-lurker-hide-list (quote ("JOIN" "PART" "QUIT")))
+  (erc-lurker-threshold-time 43200)
 
-    (erc-track-exclude-types '("JOIN" "MODE" "NICK" "PART" "QUIT"
-                               "324" "329" "332" "333" "353" "477"))
-    (erc-services-mode 1)
-    (add-to-list 'erc-modules 'hl-nicks)
-    (add-to-list 'erc-modules 'notifications)
-    (add-to-list 'erc-modules 'image)
-    (add-to-list 'erc-modules 'spelling)
-    (add-to-list 'erc-modules 'youtube))
+  (erc-track-exclude-types '("JOIN" "MODE" "NICK" "PART" "QUIT"
+                             "324" "329" "332" "333" "353" "477"))
+  (erc-services-mode 1)
+  (add-to-list 'erc-modules 'hl-nicks)
+  (add-to-list 'erc-modules 'notifications)
+  (add-to-list 'erc-modules 'image)
+  (add-to-list 'erc-modules 'spelling)
+  (add-to-list 'erc-modules 'youtube))
 
-  (use-package erc-hl-nicks
-    :after erc)
+(use-package erc-hl-nicks
+  :after erc)
 
-  (use-package erc-image 
-    :after erc)
+(use-package erc-image 
+  :after erc)
 
-  (use-package erc-youtube
-    :after erc)
+(use-package erc-youtube
+  :after erc)
 
-  (defun my/erc-start-or-switch ()
-    "Connect to ERC, or switch to last active buffer."
-    (interactive)
-    (if (get-buffer "irc.freenode.net:6667")
-        (erc-track-switch-buffer 1)
-      (when (y-or-n-p "Start ERC? ")
-        (erc :server "irc.freenode.net" :port 6667 :nick "rememberYou"))))
+(defun my/erc-start-or-switch ()
+  "Connect to ERC, or switch to last active buffer."
+  (interactive)
+  (if (get-buffer "irc.freenode.net:6667")
+      (erc-track-switch-buffer 1)
+    (when (y-or-n-p "Start ERC? ")
+      (erc :server "irc.freenode.net" :port 6667 :nick "rememberYou"))))
 
-  (defun my/erc-count-users ()
-    "Displays the number of users connected on the current channel."
-    (interactive)
-    (if (get-buffer "irc.freenode.net:6667")
-        (let ((channel (erc-default-target)))
-          (if (and channel (erc-channel-p channel))
-              (message "%d users are online on %s" 
-                       (hash-table-count erc-channel-users) 
-                       channel)
-            (user-error "The current buffer is not a channel")))
-      (user-error "You must first start ERC")))
+(defun my/erc-count-users ()
+  "Displays the number of users connected on the current channel."
+  (interactive)
+  (if (get-buffer "irc.freenode.net:6667")
+      (let ((channel (erc-default-target)))
+        (if (and channel (erc-channel-p channel))
+            (message "%d users are online on %s" 
+                     (hash-table-count erc-channel-users) 
+                     channel)
+          (user-error "The current buffer is not a channel")))
+    (user-error "You must first start ERC")))
 
 (defun do-notify (nickname message)
+  "Displays a notification message for ERC."
   (let* ((channel (buffer-name))
-         ;; using https://github.com/leathekd/erc-hl-nicks
          (nick (erc-hl-nicks-trim-irc-nick nickname))
          (title (if (string-match-p (concat "^" nickname) channel)
                     nick
                   (concat nick " (" channel ")")))
-         ;; Using https://github.com/magnars/s.el
          (msg (s-trim (s-collapse-whitespace message))))
-    ;; call the system notifier here
-    ))
 
-  (add-hook 'ercn-notify-hook 'do-notify)
+    (alert (concat nick ": " msg) :title title)))
+
+(add-hook 'ercn-notify-hook 'do-notify)
 
 (use-package elfeed
   :defer 2

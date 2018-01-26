@@ -756,6 +756,7 @@ With that, I can compile many languages.
    'org-babel-load-languages '((C . t)
                                (css . t)
                                (dot . t)
+                               (ditaa . t)
                                (emacs-lisp t)
                                (gnuplot . t)
                                (java . t)
@@ -769,6 +770,7 @@ With that, I can compile many languages.
                                (shell . t)))
 
   (setq org-plantuml-jar-path (expand-file-name "~/.emacs.d/plantuml.jar"))
+  (setq org-ditaa-jar-path "~/.emacs.d/ditaa0_9.jar")
 #+END_SRC
 
 ** Modules
@@ -1567,7 +1569,7 @@ https://github.com/howardabrams/dot-files/blob/master/emacs-org.org
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package org-journal
     :custom
-    (org-journal-dir "~/.journal/")
+    (org-journal-dir "~/Dropbox/shared/.journal/2018/")
     (org-journal-file-format "%Y%m%d")
     (org-journal-date-format "%e %b %Y (%A)")
     (org-journal-time-format "")
@@ -1640,6 +1642,21 @@ To use that, you should install =gnupg2=
 
   (global-set-key (kbd "C-c d") 'org-decrypt-entry)
 #+END_SRC
+
+** Reveal.js
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package ox-reveal)
+
+  (setq org-reveal-root "file:///home/someone/.emacs.d/reveal.js")
+;;  (setq org-reveal-mathjax t)
+  (setq org-reveal-transition "fade")
+
+  (use-package htmlize)
+
+#+END_SRC
+
+[[file:reveal.js/]]
 
 * Plugins configuration
 
@@ -1828,6 +1845,8 @@ stored in the file-system, but rather created on-demand and stored in memory.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (pdf-tools-install)
+  ;; Disable unicode support in mode line for more speed.
+  (setq pdf-view-use-unicode-ligther nil)
 #+END_SRC
 
 ** =projectile=
@@ -2623,7 +2642,6 @@ Maybe one day I should switch to [[https://github.com/jorgenschaefer/circe/][cir
   (defun z/hasCap (s) ""
          (let ((case-fold-search nil))
            (string-match-p "[[:upper:]]" s)))
-
 
   (defun z/get-hydra-option-key (s)
     "returns single upper case letter (converted to lower) or first"
