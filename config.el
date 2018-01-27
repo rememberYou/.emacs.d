@@ -46,11 +46,20 @@
 (setq vc-make-backup-files t)
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
 
-(use-package whitespace-cleanup-mode
-  :defer 5
-  :diminish
-  :hook (before-save-hook . whitespace-cleanup)
-  :custom (whitespace-style '(face empty tabs lines-tail trailing)))
+(defun my/other-delete-trailing-blank-lines ()
+  "Deletes all blank lines at the end of the file, even the last one"
+  (interactive)
+  (save-excursion
+    (save-restriction
+      (widen)
+      (goto-char (point-max))
+      (delete-blank-lines)
+      (let ((trailnewlines (abs (skip-chars-backward "\n\t"))))
+        (if (> trailnewlines 0)
+            (progn
+              (delete-char trailnewlines)))))))
+
+(add-hook 'before-save-hook 'my/other-delete-trailing-blank-lines)
 
 (setq x-select-enable-clipboard-manager nil)
 
@@ -235,7 +244,7 @@ abort completely with `C-g'."
   (scroll-bar-mode -1)
   (tooltip-mode -1))
 
-(use-package webpaste 
+(use-package webpaste
   :bind (("C-c C-p C-b" . webpaste-paste-buffer)
          ("C-c C-p C-r" . webpaste-paste-region)))
 
@@ -585,13 +594,13 @@ and indent it one level."
         ("p" "People task" entry (file+headline "~/personal/people.org" "Tasks"),
          my/org-basic-task-template
          :immediate-finish t)
-        ("s" "School task" entry (file+headline "~/personal/school.org" "Tasks"), 
-         my/org-basic-task-template 
+        ("s" "School task" entry (file+headline "~/personal/school.org" "Tasks"),
+         my/org-basic-task-template
          :immediate-finish t)
-        ("t" "Trading" entry (file+headline "~/personal/trading.org" "Trades/Day"), 
+        ("t" "Trading" entry (file+headline "~/personal/trading.org" "Trades/Day"),
          my/org-basic-trade-template
          :immediate-finish t)
-        ("T" "Tasks" entry (file+headline "~/personal/organizer.org" "Tasks"), 
+        ("T" "Tasks" entry (file+headline "~/personal/organizer.org" "Tasks"),
          my/org-basic-task-template
          :immediate-finish t)))
 
@@ -1005,12 +1014,11 @@ same day of the month, but will be the same day of the week."
 
 (use-package ox-reveal)
 
-(setq org-reveal-root "file:///home/someone/.emacs.d/reveal.js")
-(setq org-reveal-mathjax t)
-(setq org-reveal-transition "linear")
-(setq org-reveal-transition "fade")
+  (setq org-reveal-root "file:///home/someone/.emacs.d/reveal.js")
+;;  (setq org-reveal-mathjax t)
+  (setq org-reveal-transition "fade")
 
-(use-package htmlize)
+  (use-package htmlize)
 
 (use-package aggressive-indent
   :defer 2
@@ -1034,7 +1042,7 @@ same day of the month, but will be the same day of the week."
   :config
   (setq math-units-table nil))
 
-(use-package chess  
+(use-package chess
   :commands chess)
 
 (use-package company
@@ -1046,7 +1054,7 @@ same day of the month, but will be the same day of the week."
   (company-idle-delay .1)
   (company-begin-commands '(self-insert-command)))
 
-(use-package docker  
+(use-package docker
   :defer 15
   :diminish
   :config
@@ -1090,7 +1098,7 @@ same day of the month, but will be the same day of the week."
 (use-package iedit
   :defer t)
 
-(use-package ipcalc 
+(use-package ipcalc
   :commands ipcalc)
 
 (use-package ledger-mode
@@ -1441,7 +1449,7 @@ couldn't figure things out (ex: syntax errors)."
          ("C-c n" . my/erc-count-users))
   :custom
   (erc-autojoin-channels-alist '(("freenode.net" "#android-dev" "#archlinux"
-                                  "bash" "#bitcoin" "#emacs" "#latex"
+                                  "#bash" "#bitcoin" "#emacs" "#latex"
                                   "#python" "#sway")))
   (erc-autojoin-timing 'ident)
   (erc-fill-function 'erc-fill-static)
@@ -1466,7 +1474,7 @@ couldn't figure things out (ex: syntax errors)."
 (use-package erc-hl-nicks
   :after erc)
 
-(use-package erc-image 
+(use-package erc-image
   :after erc)
 
 (use-package erc-youtube
@@ -1486,8 +1494,8 @@ couldn't figure things out (ex: syntax errors)."
   (if (get-buffer "irc.freenode.net:6667")
       (let ((channel (erc-default-target)))
         (if (and channel (erc-channel-p channel))
-            (message "%d users are online on %s" 
-                     (hash-table-count erc-channel-users) 
+            (message "%d users are online on %s"
+                     (hash-table-count erc-channel-users)
                      channel)
           (user-error "The current buffer is not a channel")))
     (user-error "You must first start ERC")))
@@ -1542,7 +1550,6 @@ couldn't figure things out (ex: syntax errors)."
 (defun z/hasCap (s) ""
        (let ((case-fold-search nil))
          (string-match-p "[[:upper:]]" s)))
-
 
 (defun z/get-hydra-option-key (s)
   "returns single upper case letter (converted to lower) or first"
@@ -1608,7 +1615,7 @@ couldn't figure things out (ex: syntax errors)."
 (use-package elfeed-goodies
   :after elfeed
   :defer 2
-  :config 
+  :config
   (elfeed-goodies/setup))
 
 (require 'mu4e)

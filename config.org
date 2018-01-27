@@ -131,14 +131,24 @@ Don't hesitate to save a lot.
 
 ** Clean white spaces after saving
 
-It's often annoying to see useless white spaces at the end of a file.
+It's often annoying to see useless white spaces at the end of a line or a file.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package whitespace-cleanup-mode
-    :defer 5
-    :diminish
-    :hook (before-save-hook . whitespace-cleanup)
-    :custom (whitespace-style '(face empty tabs lines-tail trailing)))
+  (defun my/other-delete-trailing-blank-lines ()
+    "Deletes all blank lines at the end of the file, even the last one"
+    (interactive)
+    (save-excursion
+      (save-restriction
+        (widen)
+        (goto-char (point-max))
+        (delete-blank-lines)
+        (let ((trailnewlines (abs (skip-chars-backward "\n\t"))))
+          (if (> trailnewlines 0)
+              (progn
+                (delete-char trailnewlines)))))))
+
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  (add-hook 'before-save-hook 'my/other-delete-trailing-blank-lines)
 #+END_SRC
 
 ** Clipboard Manager
@@ -449,7 +459,7 @@ Disables menu bar, tool bar, scroll bar and tooltip.
 paste region or buffer become easy with this package.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package webpaste 
+  (use-package webpaste
     :bind (("C-c C-p C-b" . webpaste-paste-buffer)
            ("C-c C-p C-r" . webpaste-paste-region)))
 #+END_SRC
@@ -1020,13 +1030,13 @@ and other semi-structured pieces of information.
           ("p" "People task" entry (file+headline "~/personal/people.org" "Tasks"),
            my/org-basic-task-template
            :immediate-finish t)
-          ("s" "School task" entry (file+headline "~/personal/school.org" "Tasks"), 
-           my/org-basic-task-template 
+          ("s" "School task" entry (file+headline "~/personal/school.org" "Tasks"),
+           my/org-basic-task-template
            :immediate-finish t)
-          ("t" "Trading" entry (file+headline "~/personal/trading.org" "Trades/Day"), 
+          ("t" "Trading" entry (file+headline "~/personal/trading.org" "Trades/Day"),
            my/org-basic-trade-template
            :immediate-finish t)
-          ("T" "Tasks" entry (file+headline "~/personal/organizer.org" "Tasks"), 
+          ("T" "Tasks" entry (file+headline "~/personal/organizer.org" "Tasks"),
            my/org-basic-task-template
            :immediate-finish t)))
 #+END_SRC
@@ -1700,7 +1710,7 @@ May be useful in a timely manner
 Because I like chess.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package chess  
+  (use-package chess
     :commands chess)
 #+END_SRC
 
@@ -1728,7 +1738,7 @@ that only run on a particular operating system while keeping my operating system
 clean.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package docker  
+  (use-package docker
     :defer 15
     :diminish
     :config
@@ -1809,7 +1819,7 @@ Edit multiple regions in the same way simultaneously
 Allows me to avoid calculating network ranges.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package ipcalc 
+  (use-package ipcalc
     :commands ipcalc)
 #+END_SRC
 
@@ -2523,14 +2533,14 @@ erc-prompt-for-nickserv-password nil)=.
 
 Maybe one day I should switch to [[https://github.com/jorgenschaefer/circe/][circle]], time will tell.
 
-#+BEGIN_SRC emacs-lisp :tangle yes  
+#+BEGIN_SRC emacs-lisp :tangle yes
   (use-package erc
     :defer 10
     :bind (("C-c e" . my/erc-start-or-switch)
            ("C-c n" . my/erc-count-users))
     :custom
     (erc-autojoin-channels-alist '(("freenode.net" "#android-dev" "#archlinux"
-                                    "bash" "#bitcoin" "#emacs" "#latex"
+                                    "#bash" "#bitcoin" "#emacs" "#latex"
                                     "#python" "#sway")))
     (erc-autojoin-timing 'ident)
     (erc-fill-function 'erc-fill-static)
@@ -2555,7 +2565,7 @@ Maybe one day I should switch to [[https://github.com/jorgenschaefer/circe/][cir
   (use-package erc-hl-nicks
     :after erc)
 
-  (use-package erc-image 
+  (use-package erc-image
     :after erc)
 
   (use-package erc-youtube
@@ -2575,8 +2585,8 @@ Maybe one day I should switch to [[https://github.com/jorgenschaefer/circe/][cir
     (if (get-buffer "irc.freenode.net:6667")
         (let ((channel (erc-default-target)))
           (if (and channel (erc-channel-p channel))
-              (message "%d users are online on %s" 
-                       (hash-table-count erc-channel-users) 
+              (message "%d users are online on %s"
+                       (hash-table-count erc-channel-users)
                        channel)
             (user-error "The current buffer is not a channel")))
       (user-error "You must first start ERC")))
@@ -2717,7 +2727,7 @@ Allows a better reading of RSS Feeds
   (use-package elfeed-goodies
     :after elfeed
     :defer 2
-    :config 
+    :config
     (elfeed-goodies/setup))
 #+END_SRC
 
