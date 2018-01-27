@@ -779,8 +779,8 @@ With that, I can compile many languages.
                                (ruby . t)
                                (shell . t)))
 
-  (setq org-plantuml-jar-path (expand-file-name "~/.emacs.d/plantuml.jar"))
-  (setq org-ditaa-jar-path "~/.emacs.d/ditaa0_9.jar")
+  (setq org-plantuml-jar-path (expand-file-name "~/dropbox/shared/lib/plantuml.jar"))
+  (setq org-ditaa-jar-path "~/Dropbox/shared/lib/ditaa0_9.jar")
 #+END_SRC
 
 ** Modules
@@ -1656,17 +1656,15 @@ To use that, you should install =gnupg2=
 ** Reveal.js
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package ox-reveal)
-
-  (setq org-reveal-root "file:///home/someone/.emacs.d/reveal.js")
-;;  (setq org-reveal-mathjax t)
-  (setq org-reveal-transition "fade")
+  (use-package ox-reveal
+    :defer 10
+    :custom
+    (org-reveal-root "file:///home/someone/Dropbox/shared/lib/reveal.js")
+    (org-reveal-mathjax t)
+    (org-reveal-transition "fade"))
 
   (use-package htmlize)
-
 #+END_SRC
-
-[[file:reveal.js/]]
 
 * Plugins configuration
 
@@ -1997,7 +1995,8 @@ Control the spotify application from Emacs.
 Useful to temporary use a package.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package try :defer 5)
+  (use-package try
+    :defer 5)
 #+END_SRC
 
 ** =undo-tree=

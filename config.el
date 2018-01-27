@@ -59,6 +59,7 @@
             (progn
               (delete-char trailnewlines)))))))
 
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 (add-hook 'before-save-hook 'my/other-delete-trailing-blank-lines)
 
 (setq x-select-enable-clipboard-manager nil)
@@ -425,8 +426,8 @@ point reaches the beginning or end of the buffer, stop there."
                              (ruby . t)
                              (shell . t)))
 
-(setq org-plantuml-jar-path (expand-file-name "~/.emacs.d/plantuml.jar"))
-(setq org-ditaa-jar-path "~/.emacs.d/ditaa0_9.jar")
+(setq org-plantuml-jar-path (expand-file-name "~/dropbox/shared/lib/plantuml.jar"))
+(setq org-ditaa-jar-path "~/Dropbox/shared/lib/ditaa0_9.jar")
 
 (setq org-modules '(org-info
                     org-habit
@@ -1012,13 +1013,14 @@ same day of the month, but will be the same day of the week."
 
 (global-set-key (kbd "C-c d") 'org-decrypt-entry)
 
-(use-package ox-reveal)
+(use-package ox-reveal
+  :defer 10
+  :custom
+  (org-reveal-root "file:///home/someone/Dropbox/shared/lib/reveal.js")
+  (org-reveal-mathjax t)
+  (org-reveal-transition "fade"))
 
-  (setq org-reveal-root "file:///home/someone/.emacs.d/reveal.js")
-;;  (setq org-reveal-mathjax t)
-  (setq org-reveal-transition "fade")
-
-  (use-package htmlize)
+(use-package htmlize)
 
 (use-package aggressive-indent
   :defer 2
@@ -1191,7 +1193,8 @@ same day of the month, but will be the same day of the week."
   :config
   (spotify-enable-song-notifications))
 
-(use-package try :defer 5)
+(use-package try
+  :defer 5)
 
 (use-package undo-tree
   :diminish undo-tree-mode
