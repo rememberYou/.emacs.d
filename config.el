@@ -46,21 +46,7 @@
 (setq vc-make-backup-files t)
 (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
 
-(defun my/other-delete-trailing-blank-lines ()
-  "Deletes all blank lines at the end of the file, even the last one"
-  (interactive)
-  (save-excursion
-    (save-restriction
-      (widen)
-      (goto-char (point-max))
-      (delete-blank-lines)
-      (let ((trailnewlines (abs (skip-chars-backward "\n\t"))))
-        (if (> trailnewlines 0)
-            (progn
-              (delete-char trailnewlines)))))))
-
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
-(add-hook 'before-save-hook 'my/other-delete-trailing-blank-lines)
 
 (setq x-select-enable-clipboard-manager nil)
 
@@ -1457,7 +1443,6 @@ couldn't figure things out (ex: syntax errors)."
   (erc-autojoin-timing 'ident)
   (erc-fill-function 'erc-fill-static)
   (erc-fill-static-center 22)
-
   (erc-prompt-for-nickserv-password nil)
   (erc-hide-list '("JOIN" "PART" "QUIT"))
   (erc-server-reconnect-attempts 5)
@@ -1563,7 +1548,7 @@ couldn't figure things out (ex: syntax errors)."
       (substring s 0 1))))
 
 (defun mz/make-elfeed-cats (tags)
-  "Returns a list of lists. Each one is line for the hydra configuratio in the form
+  "Returns a list of lists. Each one is line for the hydra configuration in the form
      (c function hint)"
   (interactive)
   (mapcar (lambda (tag)
