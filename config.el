@@ -6,7 +6,7 @@
 (load custom-file t)
 
 (unless (assoc-default "melpa" package-archives)
-  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t))
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
 (unless (assoc-default "org" package-archives)
   (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t))
 
@@ -210,18 +210,9 @@ abort completely with `C-g'."
 
 (add-hook 'after-save-hook 'my/cmd-after-saved-file)
 
-(use-package color-theme
+(use-package solarized-theme
   :init
-  (set-face-foreground 'secondary-selection "darkblue")
-  (set-face-background 'font-lock-doc-face "black")
-  (set-face-foreground 'font-lock-doc-face "wheat")
-  (set-face-background 'font-lock-string-face "black"))
-
-(use-package color-theme-solarized
-  :init
-  (color-theme-solarized)
-  (set-face-foreground 'org-todo "green")
-  (set-face-background 'org-todo "black"))
+  (load-theme 'solarized-dark t))
 
 (display-time-mode 1)
 
@@ -395,25 +386,25 @@ point reaches the beginning or end of the buffer, stop there."
 
 (require 'ob-plantuml)
 
-(org-babel-do-load-languages
- 'org-babel-load-languages '((C . t)
-                             (css . t)
-                             (dot . t)
-                             (ditaa . t)
-                             (emacs-lisp t)
-                             (gnuplot . t)
-                             (java . t)
-                             (js . t)
-                             (latex . t)
-                             (plantuml . t)
-                             (makefile . t)
-                             (org . t)
-                             (python . t)
-                             (ruby . t)
-                             (shell . t)))
+  (org-babel-do-load-languages
+   'org-babel-load-languages '((C . t)
+                               (css . t)
+                               (dot . t)
+                               (ditaa . t)
+                               (emacs-lisp t)
+                               (gnuplot . t)
+                               (java . t)
+                               (js . t)
+                               (latex . t)
+                               (plantuml . t)
+                               (makefile . t)
+                               (org . t)
+                               (python . t)
+                               (ruby . t)))
+;;                             (shell . t)))
 
-(setq org-plantuml-jar-path (expand-file-name "~/dropbox/shared/lib/plantuml.jar"))
-(setq org-ditaa-jar-path "~/Dropbox/shared/lib/ditaa0_9.jar")
+  (setq org-plantuml-jar-path (expand-file-name "~/dropbox/shared/lib/plantuml.jar"))
+  (setq org-ditaa-jar-path "~/Dropbox/shared/lib/ditaa0_9.jar")
 
 (setq org-modules '(org-info
                     org-habit
@@ -1015,6 +1006,10 @@ same day of the month, but will be the same day of the week."
   (global-aggressive-indent-mode 1)
   (add-to-list 'aggressive-indent-excluded-modes 'html-mode))
 
+(use-package atomic-chrome
+  :init
+  (atomic-chrome-start-server))
+
 (use-package calc
   :defer t
   :custom
@@ -1100,9 +1095,12 @@ same day of the month, but will be the same day of the week."
     (use-package flycheck-ledger
       :after ledger-mode)
 
-(pdf-tools-install)
-;; Disable unicode support in mode line for more speed.
-(setq pdf-view-use-unicode-ligther nil)
+(use-package pdf-tools
+  :init
+  (pdf-tools-install)
+  :custom
+  ;; Disable unicode support in mode line for more speed.
+  (pdf-view-use-unicode-ligther nil))
 
 (use-package projectile
   :defer 5
@@ -1113,7 +1111,7 @@ same day of the month, but will be the same day of the week."
 
 (use-package counsel-projectile
   :after (counsel projectile)
-  :config (counsel-projectile-on))
+  (counsel-projectile-on))
 
 (use-package rainbow-mode
   :commands rainbow-mode)

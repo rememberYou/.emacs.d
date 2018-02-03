@@ -40,7 +40,7 @@ Adding packages sources in case it isn't already.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (unless (assoc-default "melpa" package-archives)
-    (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t))
+    (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
   (unless (assoc-default "org" package-archives)
     (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t))
 #+END_SRC
@@ -406,18 +406,9 @@ specific file.
 I like the light on dark because I find it to be more restful.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package color-theme
+  (use-package solarized-theme
     :init
-    (set-face-foreground 'secondary-selection "darkblue")
-    (set-face-background 'font-lock-doc-face "black")
-    (set-face-foreground 'font-lock-doc-face "wheat")
-    (set-face-background 'font-lock-string-face "black"))
-
-  (use-package color-theme-solarized
-    :init
-    (color-theme-solarized)
-    (set-face-foreground 'org-todo "green")
-    (set-face-background 'org-todo "black"))
+    (load-theme 'solarized-dark t))
 #+END_SRC
 
 ** Time
@@ -762,8 +753,8 @@ With that, I can compile many languages.
                                (makefile . t)
                                (org . t)
                                (python . t)
-                               (ruby . t)
-                               (shell . t)))
+                               (ruby . t)))
+;;                             (shell . t)))
 
   (setq org-plantuml-jar-path (expand-file-name "~/dropbox/shared/lib/plantuml.jar"))
   (setq org-ditaa-jar-path "~/Dropbox/shared/lib/ditaa0_9.jar")
@@ -1656,7 +1647,7 @@ To use that, you should install =gnupg2=
 
 ** =aggressive-indent=
 
-minor mode that keeps your code always indented. It reindents after every
+Minor mode that keeps your code always indented. It reindents after every
 change.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
@@ -1666,6 +1657,14 @@ change.
     :init
     (global-aggressive-indent-mode 1)
     (add-to-list 'aggressive-indent-excluded-modes 'html-mode))
+#+END_SRC
+
+** =atomic chrome=
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package atomic-chrome
+    :init
+    (atomic-chrome-start-server))
 #+END_SRC
 
 ** =calc=
@@ -1838,9 +1837,12 @@ key difference is, that pages are not pre-rendered by e.g. ghostscript and
 stored in the file-system, but rather created on-demand and stored in memory.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (pdf-tools-install)
-  ;; Disable unicode support in mode line for more speed.
-  (setq pdf-view-use-unicode-ligther nil)
+  (use-package pdf-tools
+    :init
+    (pdf-tools-install)
+    :custom
+    ;; Disable unicode support in mode line for more speed.
+    (pdf-view-use-unicode-ligther nil))
 #+END_SRC
 
 ** =projectile=
@@ -1855,7 +1857,7 @@ stored in the file-system, but rather created on-demand and stored in memory.
 
   (use-package counsel-projectile
     :after (counsel projectile)
-    :config (counsel-projectile-on))
+    (counsel-projectile-on))
 #+END_SRC
 
 ** =rainbow-mode=
@@ -2722,6 +2724,13 @@ Allows a better reading of RSS Feeds
 After having tried =gnus= that I found too old and =notmuch= which I thought
 lacked features like the possibility to delete some email and to be able to
 write emails easily, I finally found my happiness with =mu4e=.
+
+If you want to use this configuration, make sure to install the package on your
+operating system:
+
+#+BEGIN_SRC bash :tangle yes
+  pacaur -S mu
+#+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (require 'mu4e)
