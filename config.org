@@ -2527,7 +2527,7 @@ Maybe one day I should switch to [[https://github.com/jorgenschaefer/circe/][cir
            ("C-c n" . my/erc-count-users))
     :custom
     (erc-autojoin-channels-alist '(("freenode.net" "#android-dev" "#archlinux"
-                                    "#bash" "#bitcoin" "#emacs" "#latex"
+                                    "#bitcoin" "#emacs" "#latex"
                                     "#python" "#sway")))
     (erc-autojoin-timing 'ident)
     (erc-fill-function 'erc-fill-static)
@@ -2557,14 +2557,6 @@ Maybe one day I should switch to [[https://github.com/jorgenschaefer/circe/][cir
   (use-package erc-youtube
     :after erc)
 
-  (defun my/erc-start-or-switch ()
-    "Connect to ERC, or switch to last active buffer."
-    (interactive)
-    (if (get-buffer "irc.freenode.net:6667")
-        (erc-track-switch-buffer 1)
-      (when (y-or-n-p "Start ERC? ")
-        (erc :server "irc.freenode.net" :port 6667 :nick "rememberYou"))))
-
   (defun my/erc-count-users ()
     "Displays the number of users connected on the current channel."
     (interactive)
@@ -2577,7 +2569,7 @@ Maybe one day I should switch to [[https://github.com/jorgenschaefer/circe/][cir
             (user-error "The current buffer is not a channel")))
       (user-error "You must first start ERC")))
 
-  (defun do-notify (nickname message)
+  (defun my/erc-notify (nickname message)
     "Displays a notification message for ERC."
     (let* ((channel (buffer-name))
            (nick (erc-hl-nicks-trim-irc-nick nickname))
@@ -2588,7 +2580,23 @@ Maybe one day I should switch to [[https://github.com/jorgenschaefer/circe/][cir
 
       (alert (concat nick ": " msg) :title title)))
 
-  (add-hook 'ercn-notify-hook 'do-notify)
+  (add-hook 'ercn-notify-hook 'my/erc-notify)
+
+  (defun my/erc-preprocess (string)
+    "Avoids channel flooding"
+    (setq str
+          (string-trim
+           (replace-regexp-in-string "\n+" " " str))))
+
+  (add-hook 'erc-send-pre-hook 'my/erc-preprocess)
+
+  (defun my/erc-start-or-switch ()
+    "Connect to ERC, or switch to last active buffer."
+    (interactive)
+    (if (get-buffer "irc.freenode.net:6667")
+        (erc-track-switch-buffer 1)
+      (when (y-or-n-p "Start ERC? ")
+        (erc :server "irc.freenode.net" :port 6667 :nick "rememberYou"))))
 #+END_SRC
 
 * RSS Feeder
