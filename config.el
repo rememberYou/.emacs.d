@@ -298,18 +298,18 @@ abort completely with `C-g'."
                (current-prefix-arg (or current-prefix-arg '(4))))
            (call-interactively 'org-refile))))))
 
-(my/defshortcut ?P "~/personal/people.org")
+(my/defshortcut ?P "~/Dropbox/shared/.personal/people.org")
 (my/defshortcut ?S "~/.config/sway/config")
 (my/defshortcut ?X "~/.Xresources")
 (my/defshortcut ?a "~/.config/awesome/rc.lua")
-(my/defshortcut ?b "~/personal/business.org")
+(my/defshortcut ?b "~/Dropbox/shared/.personal/business.org")
 (my/defshortcut ?c "~/.emacs.d/config.org")
 (my/defshortcut ?e "~/Dropbox/shared/elfeed/elfeed.org")
 (my/defshortcut ?i "~/.emacs.d/init.el")
-(my/defshortcut ?o "~/personal/organizer.org")
-(my/defshortcut ?p "~/personal/projects.org")
-(my/defshortcut ?r "~/personal/routine.org")
-(my/defshortcut ?s "~/personal/school.org")
+(my/defshortcut ?o "~/Dropbox/shared/.personal/organizer.org")
+(my/defshortcut ?p "~/Dropbox/shared/.personal/projects.org")
+(my/defshortcut ?r "~/Dropbox/shared/.personal/routine.org")
+(my/defshortcut ?s "~/Dropbox/shared/.personal/school.org")
 
 (use-package move-text
   :bind (("M-p" . move-text-up)
@@ -386,25 +386,25 @@ point reaches the beginning or end of the buffer, stop there."
 
 (require 'ob-plantuml)
 
-  (org-babel-do-load-languages
-   'org-babel-load-languages '((C . t)
-                               (css . t)
-                               (dot . t)
-                               (ditaa . t)
-                               (emacs-lisp t)
-                               (gnuplot . t)
-                               (java . t)
-                               (js . t)
-                               (latex . t)
-                               (plantuml . t)
-                               (makefile . t)
-                               (org . t)
-                               (python . t)
-                               (ruby . t)))
-;;                             (shell . t)))
+(org-babel-do-load-languages
+ 'org-babel-load-languages '((C . t)
+                             (css . t)
+                             (dot . t)
+                             (ditaa . t)
+                             (emacs-lisp t)
+                             (gnuplot . t)
+                             (java . t)
+                             (js . t)
+                             (latex . t)
+                             (plantuml . t)
+                             (makefile . t)
+                             (org . t)
+                             (python . t)
+                             (ruby . t)
+                             (shell . t)))
 
-  (setq org-plantuml-jar-path (expand-file-name "~/dropbox/shared/lib/plantuml.jar"))
-  (setq org-ditaa-jar-path "~/Dropbox/shared/lib/ditaa0_9.jar")
+(setq org-plantuml-jar-path (expand-file-name "~/dropbox/shared/lib/plantuml.jar"))
+(setq org-ditaa-jar-path "~/Dropbox/shared/lib/ditaa0_9.jar")
 
 (setq org-modules '(org-info
                     org-habit
@@ -470,21 +470,21 @@ and indent it one level."
           (insert string "\n"))))))
 
 (require 'org-agenda)
-(setq org-directory "~/personal")
-(setq org-default-notes-file "~/personal/organizer.org")
+(setq org-directory "~/Dropbox/shared/personal")
+(setq org-default-notes-file "~/Dropbox/shared/.personal/organizer.org")
 
 (setq org-agenda-files
       (delq nil
             (mapcar (lambda (x) (and (file-exists-p x) x))
-                    '("~/personal/101things.org"
-                      "~/personal/business.org"
-                      "~/personal/decisions.org"
-                      "~/personal/learning.org"
-                      "~/personal/organizer.org"
-                      "~/personal/people.org"
-                      "~/personal/projects.org"
-                      "~/personal/routine.org"
-                      "~/personal/school.org"))))
+                    '("~/Dropbox/shared/.personal/101things.org"
+                      "~/Dropbox/shared/.personal/business.org"
+                      "~/Dropbox/shared/.personal/decisions.org"
+                      "~/Dropbox/shared/.personal/learning.org"
+                      "~/Dropbox/shared/.personal/organizer.org"
+                      "~/Dropbox/shared/.personal/people.org"
+                      "~/Dropbox/shared/.personal/projects.org"
+                      "~/Dropbox/shared/.personal/routine.org"
+                      "~/Dropbox/shared/.personal/school.org"))))
 (add-to-list 'auto-mode-alist '("\\.txt$" . org-mode))
 
 (defun my/org-insert-heading-for-next-day ()
@@ -560,25 +560,25 @@ and indent it one level."
   " "Basic trade data")
 
 (setq org-capture-templates
-      `(("b" "Buy task" checkitem (file+headline "~/personal/various/buy.org" "To Buy")
+      `(("b" "Buy task" checkitem (file+headline "~/Dropbox/shared/.personal/various/buy.org" "To Buy")
          "- [ ] %^{Task}"
          :immediate-finish t)
-        ("i" "Interrupting task" entry (file+headline "~/personal/organizer.org" "Inbox")
+        ("i" "Interrupting task" entry (file+headline "~/Dropbox/shared/.personal/organizer.org" "Inbox")
          "* STARTED %^{Task}"
          :clock-in :clock-resume)
-        ("m" "Movie task" checkitem (file+headline "~/personal/various/movies.org" "To Watch")
+        ("m" "Movie task" checkitem (file+headline "~/Dropbox/shared/.personal/various/movies.org" "To Watch")
          "- [ ] %^{Task}"
          :immediate-finish t)
-        ("p" "People task" entry (file+headline "~/personal/people.org" "Tasks"),
+        ("p" "People task" entry (file+headline "~/Dropbox/shared/.personal/people.org" "Tasks"),
          my/org-basic-task-template
          :immediate-finish t)
-        ("s" "School task" entry (file+headline "~/personal/school.org" "Tasks"),
+        ("s" "School task" entry (file+headline "~/Dropbox/shared/.personal/school.org" "Tasks"),
          my/org-basic-task-template
          :immediate-finish t)
-        ("t" "Trading" entry (file+headline "~/personal/trading.org" "Trades/Day"),
+        ("t" "Trading" entry (file+headline "~/Dropbox/shared/.personal/trading.org" "Trades/Day"),
          my/org-basic-trade-template
          :immediate-finish t)
-        ("T" "Tasks" entry (file+headline "~/personal/organizer.org" "Tasks"),
+        ("T" "Tasks" entry (file+headline "~/Dropbox/shared/.personal/organizer.org" "Tasks"),
          my/org-basic-task-template
          :immediate-finish t)))
 
@@ -1006,9 +1006,7 @@ same day of the month, but will be the same day of the week."
   (global-aggressive-indent-mode 1)
   (add-to-list 'aggressive-indent-excluded-modes 'html-mode))
 
-(use-package atomic-chrome
-  :init
-  (atomic-chrome-start-server))
+(use-package atomic-chrome)
 
 (use-package calc
   :defer t
@@ -1466,14 +1464,6 @@ couldn't figure things out (ex: syntax errors)."
 (use-package erc-youtube
   :after erc)
 
-(defun my/erc-start-or-switch ()
-  "Connect to ERC, or switch to last active buffer."
-  (interactive)
-  (if (get-buffer "irc.freenode.net:6667")
-      (erc-track-switch-buffer 1)
-    (when (y-or-n-p "Start ERC? ")
-      (erc :server "irc.freenode.net" :port 6667 :nick "rememberYou"))))
-
 (defun my/erc-count-users ()
   "Displays the number of users connected on the current channel."
   (interactive)
@@ -1486,7 +1476,7 @@ couldn't figure things out (ex: syntax errors)."
           (user-error "The current buffer is not a channel")))
     (user-error "You must first start ERC")))
 
-(defun do-notify (nickname message)
+(defun my/erc-notify (nickname message)
   "Displays a notification message for ERC."
   (let* ((channel (buffer-name))
          (nick (erc-hl-nicks-trim-irc-nick nickname))
@@ -1497,7 +1487,23 @@ couldn't figure things out (ex: syntax errors)."
 
     (alert (concat nick ": " msg) :title title)))
 
-(add-hook 'ercn-notify-hook 'do-notify)
+(add-hook 'ercn-notify-hook 'my/erc-notify)
+
+(defun my/erc-preprocess (string)
+  "Avoids channel flooding"
+  (setq str
+        (string-trim
+         (replace-regexp-in-string "\n+" " " str))))
+
+(add-hook 'erc-send-pre-hook 'my/erc-preprocess)
+
+(defun my/erc-start-or-switch ()
+  "Connect to ERC, or switch to last active buffer."
+  (interactive)
+  (if (get-buffer "irc.freenode.net:6667")
+      (erc-track-switch-buffer 1)
+    (when (y-or-n-p "Start ERC? ")
+      (erc :server "irc.freenode.net" :port 6667 :nick "rememberYou"))))
 
 (use-package elfeed
   :defer 2

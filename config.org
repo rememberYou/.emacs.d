@@ -559,18 +559,18 @@ might as well add shortcuts for refiling.
                  (current-prefix-arg (or current-prefix-arg '(4))))
              (call-interactively 'org-refile))))))
 
-  (my/defshortcut ?P "~/personal/people.org")
+  (my/defshortcut ?P "~/Dropbox/shared/.personal/people.org")
   (my/defshortcut ?S "~/.config/sway/config")
   (my/defshortcut ?X "~/.Xresources")
   (my/defshortcut ?a "~/.config/awesome/rc.lua")
-  (my/defshortcut ?b "~/personal/business.org")
+  (my/defshortcut ?b "~/Dropbox/shared/.personal/business.org")
   (my/defshortcut ?c "~/.emacs.d/config.org")
   (my/defshortcut ?e "~/Dropbox/shared/elfeed/elfeed.org")
   (my/defshortcut ?i "~/.emacs.d/init.el")
-  (my/defshortcut ?o "~/personal/organizer.org")
-  (my/defshortcut ?p "~/personal/projects.org")
-  (my/defshortcut ?r "~/personal/routine.org")
-  (my/defshortcut ?s "~/personal/school.org")
+  (my/defshortcut ?o "~/Dropbox/shared/.personal/organizer.org")
+  (my/defshortcut ?p "~/Dropbox/shared/.personal/projects.org")
+  (my/defshortcut ?r "~/Dropbox/shared/.personal/routine.org")
+  (my/defshortcut ?s "~/Dropbox/shared/.personal/school.org")
 #+END_SRC
 
 ** =move-text=
@@ -753,8 +753,8 @@ With that, I can compile many languages.
                                (makefile . t)
                                (org . t)
                                (python . t)
-                               (ruby . t)))
-;;                             (shell . t)))
+                               (ruby . t)
+                               (shell . t)))
 
   (setq org-plantuml-jar-path (expand-file-name "~/dropbox/shared/lib/plantuml.jar"))
   (setq org-ditaa-jar-path "~/Dropbox/shared/lib/ditaa0_9.jar")
@@ -860,14 +860,13 @@ it elsewhere in the hierarchy.
 I am a fan about the organization made by Sacha Chua, which is why most of
 the functions added above come essentially from her.
 
-My org files are in my =~/personal= directory, which is actually a symlink to a
-directory in my [[https://www.dropbox.com/][Dropbox]]. That way, I can update my =.org= files from multiple
-computers and smartphones.
+My org files are in my =personal= directory from my [[https://www.dropbox.com/][Dropbox]]. That way, I can
+update my =.org= files from multiple computers and smartphones.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (require 'org-agenda)
-  (setq org-directory "~/personal")
-  (setq org-default-notes-file "~/personal/organizer.org")
+  (setq org-directory "~/Dropbox/shared/personal")
+  (setq org-default-notes-file "~/Dropbox/shared/.personal/organizer.org")
 #+END_SRC
 
 Here is the place where I put all my =.org= files that will be read by =org-agenda=.
@@ -876,15 +875,15 @@ Here is the place where I put all my =.org= files that will be read by =org-agen
   (setq org-agenda-files
         (delq nil
               (mapcar (lambda (x) (and (file-exists-p x) x))
-                      '("~/personal/101things.org"
-                        "~/personal/business.org"
-                        "~/personal/decisions.org"
-                        "~/personal/learning.org"
-                        "~/personal/organizer.org"
-                        "~/personal/people.org"
-                        "~/personal/projects.org"
-                        "~/personal/routine.org"
-                        "~/personal/school.org"))))
+                      '("~/Dropbox/shared/.personal/101things.org"
+                        "~/Dropbox/shared/.personal/business.org"
+                        "~/Dropbox/shared/.personal/decisions.org"
+                        "~/Dropbox/shared/.personal/learning.org"
+                        "~/Dropbox/shared/.personal/organizer.org"
+                        "~/Dropbox/shared/.personal/people.org"
+                        "~/Dropbox/shared/.personal/projects.org"
+                        "~/Dropbox/shared/.personal/routine.org"
+                        "~/Dropbox/shared/.personal/school.org"))))
   (add-to-list 'auto-mode-alist '("\\.txt$" . org-mode))
 #+END_SRC
 
@@ -995,25 +994,25 @@ and other semi-structured pieces of information.
     " "Basic trade data")
 
   (setq org-capture-templates
-        `(("b" "Buy task" checkitem (file+headline "~/personal/various/buy.org" "To Buy")
+        `(("b" "Buy task" checkitem (file+headline "~/Dropbox/shared/.personal/various/buy.org" "To Buy")
            "- [ ] %^{Task}"
            :immediate-finish t)
-          ("i" "Interrupting task" entry (file+headline "~/personal/organizer.org" "Inbox")
+          ("i" "Interrupting task" entry (file+headline "~/Dropbox/shared/.personal/organizer.org" "Inbox")
            "* STARTED %^{Task}"
            :clock-in :clock-resume)
-          ("m" "Movie task" checkitem (file+headline "~/personal/various/movies.org" "To Watch")
+          ("m" "Movie task" checkitem (file+headline "~/Dropbox/shared/.personal/various/movies.org" "To Watch")
            "- [ ] %^{Task}"
            :immediate-finish t)
-          ("p" "People task" entry (file+headline "~/personal/people.org" "Tasks"),
+          ("p" "People task" entry (file+headline "~/Dropbox/shared/.personal/people.org" "Tasks"),
            my/org-basic-task-template
            :immediate-finish t)
-          ("s" "School task" entry (file+headline "~/personal/school.org" "Tasks"),
+          ("s" "School task" entry (file+headline "~/Dropbox/shared/.personal/school.org" "Tasks"),
            my/org-basic-task-template
            :immediate-finish t)
-          ("t" "Trading" entry (file+headline "~/personal/trading.org" "Trades/Day"),
+          ("t" "Trading" entry (file+headline "~/Dropbox/shared/.personal/trading.org" "Trades/Day"),
            my/org-basic-trade-template
            :immediate-finish t)
-          ("T" "Tasks" entry (file+headline "~/personal/organizer.org" "Tasks"),
+          ("T" "Tasks" entry (file+headline "~/Dropbox/shared/.personal/organizer.org" "Tasks"),
            my/org-basic-task-template
            :immediate-finish t)))
 #+END_SRC
@@ -1662,9 +1661,7 @@ change.
 ** =atomic chrome=
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package atomic-chrome
-    :init
-    (atomic-chrome-start-server))
+  (use-package atomic-chrome)
 #+END_SRC
 
 ** =calc=
@@ -2527,7 +2524,7 @@ Maybe one day I should switch to [[https://github.com/jorgenschaefer/circe/][cir
            ("C-c n" . my/erc-count-users))
     :custom
     (erc-autojoin-channels-alist '(("freenode.net" "#android-dev" "#archlinux"
-                                    "#bitcoin" "#emacs" "#latex"
+                                    "#bash" "#bitcoin" "#emacs" "#latex"
                                     "#python" "#sway")))
     (erc-autojoin-timing 'ident)
     (erc-fill-function 'erc-fill-static)
@@ -2733,8 +2730,8 @@ After having tried =gnus= that I found too old and =notmuch= which I thought
 lacked features like the possibility to delete some email and to be able to
 write emails easily, I finally found my happiness with =mu4e=.
 
-If you want to use this configuration, make sure to install the package on your
-operating system:
+If you want to use this configuration, make sure to create the directories about
+the emails and install =mu= on your operating system:
 
 #+BEGIN_SRC bash :tangle yes
   pacaur -S mu
@@ -2744,8 +2741,10 @@ operating system:
   (require 'mu4e)
 
   (setq mu4e-maildir "~/Maildir"
-        mu4e-trash-folder "/trash"
-        mu4e-refile-folder "/archive"
+        mu4e-drafts-folder "/gmail/Drafts"
+        mu4e-sent-folder "/gmail/Sent Mail"
+        mu4e-trash-folder "/gmail/Trash"
+        mu4e-refile-folder "/gmail/Archive"
         mu4e-get-mail-command "mbsync -a"
         mu4e-update-interval 300 ;; second
         mu4e-compose-signature-auto-include nil
