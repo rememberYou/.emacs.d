@@ -1661,7 +1661,9 @@ change.
 ** =atomic chrome=
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package atomic-chrome)
+  (use-package atomic-chrome
+    :init
+    (atomic-chrome-start-server))
 #+END_SRC
 
 ** =calc=
@@ -1703,12 +1705,13 @@ completion candidates.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package company
     :diminish company-mode
-    :hook (after-init . global-company-mode)
     :custom
     (company-tooltip-limit 20)
     (company-tooltip-align-annotations 't)
-    (company-idle-delay .1)
-    (company-begin-commands '(self-insert-command)))
+    (company-idle-delay 0)
+    (company-minimum-prefix-length 3)
+    (company-begin-commands '(self-insert-command))
+    (global-company-mode t))
 #+END_SRC
 
 ** =docker=
@@ -1776,7 +1779,8 @@ being edited.
 To easily see the changes made by previous commits.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package git-timemachine)
+  (use-package git-timemachine
+    :defer 3)
 #+END_SRC
 
 ** =which-key=
@@ -1843,7 +1847,6 @@ Edit multiple regions in the same way simultaneously
     :defer t)
 #+END_SRC
 
-
 ** =ipcalc=
 
 Allows me to avoid calculating network ranges.
@@ -1863,8 +1866,7 @@ I usually use ledger to take a track of my finance.
     :custom
     (ledger-clear-whole-transactions 1)
     ;; https://xkcd.com/1179/
-    ;; (ledger-use-iso-dates t)
-)
+    (ledger-use-iso-dates t))
 
     (use-package flycheck-ledger
       :after ledger-mode)
@@ -1874,7 +1876,7 @@ If you plan to use it, don’t forget installing it via your favorte AUR helpers
 if you using =Arch Linux= like I do. Otherwise, see for your case.
 
 #+BEGIN_SRC bash :tangle yes
-  pacaur -S ledger
+  trizen -S ledger
 #+END_SRC
 
 ** =pdf-tools=
@@ -2161,7 +2163,9 @@ Provides minibuffer hints when working with Emacs Lisp.
   (use-package "eldoc"
     :diminish
     :commands turn-on-eldoc-mode
-    :hook ((emacs-lisp-mode-hook lisp-interaction-mode-hook ielm-mode-hook) . abbrev-mode))
+    :hook ((abbrev-mode . emacs-lisp-mode-hook)
+           (abbrev-mode . lisp-interaction-mode-hook)
+           (abbrev-mode . ielm-mode-hook)))
 #+END_SRC
 
 *** Jumping to code
@@ -2519,10 +2523,9 @@ I prefer use Anaconda that is more easier to configurate and support
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package anaconda-mode
-    :defer 2
-    :hook ((python-mode-hook . anaconda-mode)
-           (python-mode-hook . (lambda ()
-                                 (add-to-list 'company-backends 'company-anaconda)))))
+    :after python
+    :hook ((python-mode . anaconda-mode)
+           (python-mode . anaconda-eldoc-mode)))
 #+END_SRC
 
 *** =company-anaconda=
@@ -2530,9 +2533,11 @@ I prefer use Anaconda that is more easier to configurate and support
 Anaconda backend for company-mode
 
 #+BEGIN_SRC emacs-lisp :tangle yes
+
   (use-package company-anaconda
-    :after anaconda-mode
-    :hook (python-mode-hook . anaconda-mode))
+    :after (anaconda-mode company)
+    :config
+    (add-to-list 'company-backends 'company-anaconda))
 #+END_SRC
 
 ** SQL
@@ -2573,9 +2578,8 @@ Maybe one day I should switch to [[https://github.com/jorgenschaefer/circe/][cir
     :bind (("C-c e" . my/erc-start-or-switch)
            ("C-c n" . my/erc-count-users))
     :custom
-    (erc-autojoin-channels-alist '(("freenode.net" "#android-dev" "#archlinux"
-                                    "#bash" "#bitcoin" "#emacs" "#latex"
-                                    "#python" "#sway")))
+    (erc-autojoin-channels-alist '(("freenode.net" "#archlinux" "#bash" "#bitcoin"
+                                    "#emacs" "#gentoo" "#i3" "#latex" "#python" "#sway")))
     (erc-autojoin-timing 'ident)
     (erc-fill-function 'erc-fill-static)
     (erc-fill-static-center 22)
@@ -2784,7 +2788,7 @@ If you want to use this configuration, make sure to create the directories about
 the emails and install =mu= on your operating system:
 
 #+BEGIN_SRC bash :tangle yes
-  pacaur -S mu
+  trizen -S mu
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle yes

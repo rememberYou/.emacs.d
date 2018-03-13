@@ -1006,7 +1006,9 @@ same day of the month, but will be the same day of the week."
   (global-aggressive-indent-mode 1)
   (add-to-list 'aggressive-indent-excluded-modes 'html-mode))
 
-(use-package atomic-chrome)
+(use-package atomic-chrome
+  :init
+  (atomic-chrome-start-server))
 
 (use-package calc
   :defer t
@@ -1028,12 +1030,14 @@ same day of the month, but will be the same day of the week."
 
 (use-package company
   :diminish company-mode
-  :hook (after-init . global-company-mode)
   :custom
   (company-tooltip-limit 20)
   (company-tooltip-align-annotations 't)
-  (company-idle-delay .1)
-  (company-begin-commands '(self-insert-command)))
+  (company-idle-delay 0)
+  (company-minimum-prefix-length 3)
+  (company-begin-commands '(self-insert-command))
+
+  (global-company-mode t))
 
 (use-package docker
   :defer 15
@@ -1044,6 +1048,43 @@ same day of the month, but will be the same day of the week."
   (require 'docker-volumes)
   (require 'docker-networks)
   (docker-global-mode))
+
+(use-package git-gutter
+  :defer 2
+  :diminish (git-gutter-mode)
+  :init
+  (global-git-gutter-mode +1))
+
+(defhydra hydra-git-gutter (:body-pre (git-gutter-mode 1)
+                                      :hint nil)
+"
+Git gutter:
+   _j_: next hunk        _s_tage hunk    _q_uit
+   _k_: previous hunk    _r_evert hunk   _Q_uit and dactivate
+   ^ ^
+   _h_: first hunk       _p_opup hunk
+   _l_: last hunk        set start _R_evision
+"
+  ("j" git-gutter-next-hunk)
+  ("k" git-gutter-previous-hunk)
+  ("h" (progn (goto-char (point-min))
+              (git-gutter:next-hunk 1)))
+  ("l" (progn (goto-char (point-min))
+              (git-gutter:previous-hunk 1)))
+  ("s" git-gutter:stage-hunk)
+  ("r" git-gutter:revert-hunk)
+  ("p" git-gutter:popup-hunk)
+  ("R" git-gutter:set-start-revision)
+  ("q" nil :color blue)
+  ("Q" (progn (git-gutter-mode -1)
+              (sit-for 0.1)
+              (gut-gutter:clear))
+   :color blue))
+
+(global-set-key (kbd "M-g M-g") 'hydra-git-gutter/body)
+
+(use-package git-timemachine
+  :defer 3)
 
 (use-package which-key
   :defer 2
@@ -1083,15 +1124,14 @@ same day of the month, but will be the same day of the week."
   :commands ipcalc)
 
 (use-package ledger-mode
-    :mode "\\.ledger\\'"
-    :custom
-    (ledger-clear-whole-transactions 1)
-    ;; https://xkcd.com/1179/
-    ;; (ledger-use-iso-dates t)
-)
+  :mode "\\.ledger\\'"
+  :custom
+  (ledger-clear-whole-transactions 1)
+  ;; https://xkcd.com/1179/
+  (ledger-use-iso-dates t))
 
-    (use-package flycheck-ledger
-      :after ledger-mode)
+  (use-package flycheck-ledger
+    :after ledger-mode)
 
 (use-package pdf-tools
   :init
@@ -1249,7 +1289,9 @@ same day of the month, but will be the same day of the week."
 (use-package "eldoc"
   :diminish
   :commands turn-on-eldoc-mode
-  :hook ((emacs-lisp-mode-hook lisp-interaction-mode-hook ielm-mode-hook) . abbrev-mode))
+  :hook ((abbrev-mode . emacs-lisp-mode-hook)
+         (abbrev-mode . lisp-interaction-mode-hook)
+         (abbrev-mode . ielm-mode-hook)))
 
 (define-key emacs-lisp-mode-map (kbd "C-c .") 'find-function-at-point)
 (bind-key "C-c f" 'find-function)
@@ -1415,14 +1457,14 @@ couldn't figure things out (ex: syntax errors)."
   (flycheck-mode t))
 
 (use-package anaconda-mode
-  :defer 2
-  :hook ((python-mode-hook . anaconda-mode)
-         (python-mode-hook . (lambda ()
-                               (add-to-list 'company-backends 'company-anaconda)))))
+  :after python
+  :hook ((python-mode . anaconda-mode)
+         (python-mode . anaconda-eldoc-mode)))
 
 (use-package company-anaconda
-  :after anaconda-mode
-  :hook (python-mode-hook . anaconda-mode))
+  :after (anaconda-mode company)
+  :config
+  (add-to-list 'company-backends 'company-anaconda))
 
 (use-package sql-indent
   :mode "\\.sql\\'"
@@ -1433,9 +1475,8 @@ couldn't figure things out (ex: syntax errors)."
   :bind (("C-c e" . my/erc-start-or-switch)
          ("C-c n" . my/erc-count-users))
   :custom
-  (erc-autojoin-channels-alist '(("freenode.net" "#android-dev" "#archlinux"
-                                  "#bash" "#bitcoin" "#emacs" "#latex"
-                                  "#python" "#sway")))
+  (erc-autojoin-channels-alist '(("freenode.net" "#archlinux" "#bash" "#bitcoin"
+                                  "#emacs" "#gentoo" "#i3" "#latex" "#python" "#sway")))
   (erc-autojoin-timing 'ident)
   (erc-fill-function 'erc-fill-static)
   (erc-fill-static-center 22)
@@ -1613,8 +1654,10 @@ couldn't figure things out (ex: syntax errors)."
 (require 'mu4e)
 
 (setq mu4e-maildir "~/Maildir"
-      mu4e-trash-folder "/trash"
-      mu4e-refile-folder "/archive"
+      mu4e-drafts-folder "/gmail/Drafts"
+      mu4e-sent-folder "/gmail/Sent Mail"
+      mu4e-trash-folder "/gmail/Trash"
+      mu4e-refile-folder "/gmail/Archive"
       mu4e-get-mail-command "mbsync -a"
       mu4e-update-interval 300 ;; second
       mu4e-compose-signature-auto-include nil
