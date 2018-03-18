@@ -997,7 +997,8 @@ same day of the month, but will be the same day of the week."
   (org-reveal-mathjax t)
   (org-reveal-transition "fade"))
 
-(use-package htmlize)
+(use-package htmlize
+  :defer 2)
 
 (use-package aggressive-indent
   :defer 2
@@ -1007,6 +1008,7 @@ same day of the month, but will be the same day of the week."
   (add-to-list 'aggressive-indent-excluded-modes 'html-mode))
 
 (use-package atomic-chrome
+  :defer 2
   :init
   (atomic-chrome-start-server))
 
@@ -1030,13 +1032,13 @@ same day of the month, but will be the same day of the week."
 
 (use-package company
   :diminish company-mode
+  :defer 2
   :custom
-  (company-tooltip-limit 20)
   (company-tooltip-align-annotations 't)
-  (company-idle-delay 0)
-  (company-minimum-prefix-length 3)
+  (company-idle-delay .1)
+  (company-minimum-prefix-length 2)
   (company-begin-commands '(self-insert-command))
-
+  (company-show-numbers t)
   (global-company-mode t))
 
 (use-package docker
@@ -1134,6 +1136,7 @@ Git gutter:
     :after ledger-mode)
 
 (use-package pdf-tools
+  :defer 2
   :init
   (pdf-tools-install)
   :custom
@@ -1176,6 +1179,7 @@ Git gutter:
   :commands ivy-pass)
 
 (use-package ivy-rich
+  :defer 6
   :after ivy
   :config
   (ivy-set-display-transformer 'ivy-switch-buffer
@@ -1281,10 +1285,10 @@ Git gutter:
   :bind ("C-c i" . yas-insert-snippet)
   :init
   (yas-global-mode t)
-  (add-to-list 'yas-snippet-dirs "~/.emacs.d/elisp/yasnippet-snippets")
+  (add-to-list 'yas-snippet-dirs "~/.emacs.d/snippets")
   :custom
-  (yas-snippet-dirs '("~/.emacs.d/elisp/yasnippet-snippets"))
-  (yas-installed-snippets-dir "~/.emacs.d/elisp/yasnippet-snippets"))
+  (yas-snippet-dirs '("~/.emacs.d/snippets"))
+  (yas-installed-snippets-dir "~/.emacs.d/snippets"))
 
 (use-package "eldoc"
   :diminish
@@ -1494,7 +1498,8 @@ couldn't figure things out (ex: syntax errors)."
   (add-to-list 'erc-modules 'notifications)
   (add-to-list 'erc-modules 'image)
   (add-to-list 'erc-modules 'spelling)
-  (add-to-list 'erc-modules 'youtube))
+  (add-to-list 'erc-modules 'youtube)
+  (erc-update-modules))
 
 (use-package erc-hl-nicks
   :after erc)
@@ -1621,7 +1626,8 @@ couldn't figure things out (ex: syntax errors)."
   (mz/make-elfeed-hydra)
   (mz/hydra-elfeed/body))
 
-(use-package hydra)
+(use-package hydra
+  :defer 2)
 
 (global-set-key
  (kbd "C-x t")
@@ -1676,6 +1682,7 @@ couldn't figure things out (ex: syntax errors)."
         ("/gmail/Starred" . ?S)))
 
 (use-package mu4e-alert
+  :defer 1
   :init
   (add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
   (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
