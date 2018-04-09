@@ -1482,8 +1482,8 @@ couldn't figure things out (ex: syntax errors)."
   :bind (("C-c e" . my/erc-start-or-switch)
          ("C-c n" . my/erc-count-users))
   :custom
-  (erc-autojoin-channels-alist '(("freenode.net" "#archlinux" "#bash" "#bitcoin"
-                                  "#emacs" "#gentoo" "#i3" "#latex" "#python" "#sway")))
+  ;; (erc-autojoin-channels-alist '(("freenode.net" "#archlinux" "#bash" "#bitcoin"
+  ;;                                 "#emacs" "#gentoo" "#i3" "#latex" "#python" "#sway")))
   (erc-autojoin-timing 'ident)
   (erc-fill-function 'erc-fill-static)
   (erc-fill-static-center 22)
@@ -1496,21 +1496,16 @@ couldn't figure things out (ex: syntax errors)."
 
   (erc-track-exclude-types '("JOIN" "MODE" "NICK" "PART" "QUIT"
                              "324" "329" "332" "333" "353" "477"))
-  (erc-services-mode 1)
-  (add-to-list 'erc-modules 'hl-nicks)
+  :config
   (add-to-list 'erc-modules 'notifications)
-  (add-to-list 'erc-modules 'image)
   (add-to-list 'erc-modules 'spelling)
-  (add-to-list 'erc-modules 'youtube)
+  (erc-services-mode 1)
   (erc-update-modules))
 
 (use-package erc-hl-nicks
   :after erc)
 
 (use-package erc-image
-  :after erc)
-
-(use-package erc-youtube
   :after erc)
 
 (defun my/erc-count-users ()

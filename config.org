@@ -2604,21 +2604,16 @@ Maybe one day I should switch to [[https://github.com/jorgenschaefer/circe/][cir
 
     (erc-track-exclude-types '("JOIN" "MODE" "NICK" "PART" "QUIT"
                                "324" "329" "332" "333" "353" "477"))
-    (erc-services-mode 1)
-    (add-to-list 'erc-modules 'hl-nicks)
+    :config
     (add-to-list 'erc-modules 'notifications)
-    (add-to-list 'erc-modules 'image)
     (add-to-list 'erc-modules 'spelling)
-    (add-to-list 'erc-modules 'youtube)
+    (erc-services-mode 1)
     (erc-update-modules))
 
   (use-package erc-hl-nicks
     :after erc)
 
   (use-package erc-image
-    :after erc)
-
-  (use-package erc-youtube
     :after erc)
 
   (defun my/erc-count-users ()

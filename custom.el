@@ -34,22 +34,22 @@
  '(epg-gpg-program "/usr/bin/gpg")
  '(erc-autojoin-channels-alist
    (quote
-    (("freenode.net" "#android-dev" "#archlinux" "#bash" "#bitcoin" "#emacs" "#latex" "#python" "#sway"))) nil nil "Customized with use-package erc")
- '(erc-autojoin-timing (quote ident) nil nil "Customized with use-package erc")
- '(erc-fill-function (quote erc-fill-static) nil nil "Customized with use-package erc")
- '(erc-fill-static-center 22 nil nil "Customized with use-package erc")
- '(erc-hide-list (quote ("JOIN" "PART" "QUIT")) nil nil "Customized with use-package erc")
- '(erc-lurker-hide-list (quote ("JOIN" "PART" "QUIT")) nil nil "Customized with use-package erc")
- '(erc-lurker-threshold-time 43200 nil nil "Customized with use-package erc")
+    (("freenode.net" "#archlinux" "#bash" "#bitcoin" "#emacs" "#gentoo" "#i3" "#latex" "#python" "#sway"))) t nil "Customized with use-package erc")
+ '(erc-autojoin-timing (quote ident) t nil "Customized with use-package erc")
+ '(erc-fill-function (quote erc-fill-static) t nil "Customized with use-package erc")
+ '(erc-fill-static-center 22 t nil "Customized with use-package erc")
+ '(erc-hide-list (quote ("JOIN" "PART" "QUIT")) t nil "Customized with use-package erc")
+ '(erc-lurker-hide-list (quote ("JOIN" "PART" "QUIT")) t nil "Customized with use-package erc")
+ '(erc-lurker-threshold-time 43200 t nil "Customized with use-package erc")
  '(erc-prompt-for-nickserv-password nil t nil "Customized with use-package erc")
- '(erc-server-reconnect-attempts 5 nil nil "Customized with use-package erc")
- '(erc-server-reconnect-timeout 3 nil nil "Customized with use-package erc")
+ '(erc-server-reconnect-attempts 5 t nil "Customized with use-package erc")
+ '(erc-server-reconnect-timeout 3 t nil "Customized with use-package erc")
  '(erc-services-mode 1 t nil "Customized with use-package erc")
  '(erc-track-exclude-types
    (quote
-    ("JOIN" "MODE" "NICK" "PART" "QUIT" "324" "329" "332" "333" "353" "477")) nil nil "Customized with use-package erc")
+    ("JOIN" "MODE" "NICK" "PART" "QUIT" "324" "329" "332" "333" "353" "477")) t nil "Customized with use-package erc")
  '(fci-rule-color "#073642")
- '(find-ls-option (quote ("-print0 | xargs -0 ls -ld" . "-ld")) nil nil "Customized with use-package find-dired")
+ '(find-ls-option (quote ("-print0 | xargs -0 ls -ld" . "-ld")) t nil "Customized with use-package find-dired")
  '(help-at-pt-display-when-idle t nil (help-at-pt) "Customized with use-package eclim")
  '(help-at-pt-set-timer nil t nil "Customized with use-package eclim")
  '(help-at-pt-timer-delay 0.1 nil nil "Customized with use-package eclim")
@@ -104,12 +104,12 @@
  '(org-journal-dir "~/Dropbox/shared/.journal/2018/" nil nil "Customized with use-package org-journal")
  '(org-journal-file-format "%Y%m%d" nil nil "Customized with use-package org-journal")
  '(org-journal-time-format "" nil nil "Customized with use-package org-journal")
- '(org-reveal-mathjax t nil nil "Customized with use-package ox-reveal")
- '(org-reveal-root "file:///home/someone/Dropbox/shared/lib/reveal.js" nil nil "Customized with use-package ox-reveal")
- '(org-reveal-transition "fade" nil nil "Customized with use-package ox-reveal")
+ '(org-reveal-mathjax t t nil "Customized with use-package ox-reveal")
+ '(org-reveal-root "file:///home/someone/Dropbox/shared/lib/reveal.js" t nil "Customized with use-package ox-reveal")
+ '(org-reveal-transition "fade" t nil "Customized with use-package ox-reveal")
  '(package-selected-packages
    (quote
-    (color-theme-sanityinc-solarized color-theme-solarized erc-yank solarized-theme color-theme atomic-chrome noctilux-theme sokoban elfeed markdown-mode eclim yasnippet projectile flycheck expand-region company htmlize webpaste mu4e-alert mu4e alert helm-notmuch elfeed-goodies elfeed-org erc-youtube docker chess beacon ivy-hydra ivy-pass ivy-rich ipcalc abbrev company-auctex latex ercn erc-question erc-alert comint circle circe auth-password-store tex use-package which-key dumb-jump dump-jump counsel-projectile aggresive-indent hungry-delete counsel swipper councel try org-journal sql-mode ng2-mode gradle-mode company-ebdb helm-ebdb ebdb abbrev-mode powershell org-edna plantuml-mode engine-mode w3m lorem-ipsum skewer-mode company-lua ac-php spotify bbdb helm-spotify flycheck-ledger erc-image erc-hl-nicks company-tern xref-js2 js2-refactor company-anaconda paredit erefactor artbollocks-mode peep-dired switch-window eclimd auto-compile web-mode web-beautify undo-tree tern tabbar sql-indent smex smartscan smartparens skype scss-mode restclient requirejs-mode rainbow-mode pdf-tools ox-twbs ox-reveal ox-ioslide org-bullets nlinum-relative neotree multiple-cursors move-text miniedit memoize markdown-preview-mode lua-mode less-css-mode ledger-mode key-chord json-mode js-comint impatient-mode iedit hydra helm-swoop helm-projectile helm-descbinds guide-key github-clone git-timemachine git-messenger git-link git-gutter git gist emmet-mode crm-custom company-ycmd company-quickhelp company-emacs-eclim column-marker change-inner buffer-move browse-at-remote bm autopair auto-package-update auto-complete-c-headers auctex android-mode anaconda-mode aggressive-indent ace-window ace-popup-menu ac-emacs-eclim)))
+    (magit color-theme-sanityinc-solarized color-theme-solarized erc-yank solarized-theme color-theme atomic-chrome noctilux-theme sokoban elfeed markdown-mode eclim yasnippet projectile flycheck expand-region company htmlize webpaste mu4e-alert mu4e alert helm-notmuch elfeed-goodies elfeed-org erc-youtube docker chess beacon ivy-hydra ivy-pass ivy-rich ipcalc abbrev company-auctex latex ercn erc-question erc-alert comint circle circe auth-password-store tex use-package which-key dumb-jump dump-jump counsel-projectile aggresive-indent hungry-delete counsel swipper councel try org-journal sql-mode ng2-mode gradle-mode company-ebdb helm-ebdb ebdb abbrev-mode powershell org-edna plantuml-mode engine-mode w3m lorem-ipsum skewer-mode company-lua ac-php spotify bbdb helm-spotify flycheck-ledger erc-image erc-hl-nicks company-tern xref-js2 js2-refactor company-anaconda paredit erefactor artbollocks-mode peep-dired switch-window eclimd auto-compile web-mode web-beautify undo-tree tern tabbar sql-indent smex smartscan smartparens skype scss-mode restclient requirejs-mode rainbow-mode pdf-tools ox-twbs ox-reveal ox-ioslide org-bullets nlinum-relative neotree multiple-cursors move-text miniedit memoize markdown-preview-mode lua-mode less-css-mode ledger-mode key-chord json-mode js-comint impatient-mode iedit hydra helm-swoop helm-projectile helm-descbinds guide-key github-clone git-timemachine git-messenger git-link git-gutter git gist emmet-mode crm-custom company-ycmd company-quickhelp company-emacs-eclim column-marker change-inner buffer-move browse-at-remote bm autopair auto-package-update auto-complete-c-headers auctex android-mode anaconda-mode aggressive-indent ace-window ace-popup-menu ac-emacs-eclim)))
  '(pdf-view-use-unicode-ligther nil nil nil "Customized with use-package pdf-tools")
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")
@@ -150,22 +150,12 @@
    ["#073642" "#dc322f" "#859900" "#b58900" "#268bd2" "#d33682" "#2aa198" "#eee8d5"])
  '(xterm-color-names-bright
    ["#002b36" "#cb4b16" "#586e75" "#657b83" "#839496" "#6c71c4" "#93a1a1" "#fdf6e3"])
- '(yas-installed-snippets-dir "~/.emacs.d/elisp/yasnippet-snippets" t nil "Customized with use-package yasnippet")
- '(yas-snippet-dirs (quote ("~/.emacs.d/elisp/yasnippet-snippets")) nil nil "Customized with use-package yasnippet"))
+ '(yas-installed-snippets-dir "~/.emacs.d/snippets" t nil "Customized with use-package yasnippet")
+ '(yas-snippet-dirs (quote ("~/.emacs.d/snippets")) nil nil "Customized with use-package yasnippet"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(erc-input-face ((t (:foreground "antique white"))))
- '(helm-selection ((t (:background "ForestGreen" :foreground "black"))))
- '(org-agenda-clocking ((t (:inherit secondary-selection :foreground "black"))))
- '(org-agenda-done ((t (:foreground "dim gray" :strike-through nil))))
- '(org-clock-overlay ((t (:background "SkyBlue4" :foreground "black"))))
- '(org-done ((t (:foreground "PaleGreen" :weight normal :strike-through t))))
- '(org-headline-done ((((class color) (min-colors 16) (background dark)) (:foreground "LightSalmon" :strike-through t))))
- '(org-level-1 ((t (:inherit variable-pitch :foreground "#cb4b16"))))
- '(org-level-2 ((t (:inherit variable-pitch :foreground "#859900"))))
- '(org-level-3 ((t (:inherit variable-pitch :foreground "#268bd2"))))
- '(org-level-4 ((t (:inherit variable-pitch :foreground "#b58900"))))
- '(outline-1 ((t (:inherit font-lock-function-name-face :foreground "cornflower blue")))))
+ '(org-agenda-clocking ((t (:inherit secondary-selection :foreground "black")))))
