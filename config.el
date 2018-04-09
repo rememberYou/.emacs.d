@@ -1051,6 +1051,9 @@ same day of the month, but will be the same day of the week."
   (require 'docker-networks)
   (docker-global-mode))
 
+(use-package magit
+  :bind ("C-x g" . magit-status))
+
 (use-package git-gutter
   :defer 2
   :diminish (git-gutter-mode)

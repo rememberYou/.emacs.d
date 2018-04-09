@@ -1740,8 +1740,15 @@ clean.
 It is quite common to work on Git repositories, so it is important to have a
 configuration that we like.
 
-For example, I to see the lines that are being modified in the file while it is
-being edited.
+Magit is for me the best package for to manage Git.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package magit
+    :bind ("C-x g" . magit-status))
+#+END_SRC
+
+I like to see the lines that are being modified in the file while it is being
+edited.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package git-gutter
