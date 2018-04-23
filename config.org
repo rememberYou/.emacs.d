@@ -1744,7 +1744,12 @@ Magit is for me the best package for to manage Git.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package magit
-    :bind ("C-x g" . magit-status))
+    :bind (("C-c m c" . magit-commit)
+           ("C-c m a" . magit-stage)
+           ("C-c m s" . magit-status)
+           ("C-c m u" . magit-unstage)
+           ("C-c m U" . magit-unstage-all)
+           ("C-c m p" . magit-push)))
 #+END_SRC
 
 I like to see the lines that are being modified in the file while it is being
