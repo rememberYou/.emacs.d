@@ -573,18 +573,19 @@ might as well add shortcuts for refiling.
                  (current-prefix-arg (or current-prefix-arg '(4))))
              (call-interactively 'org-refile))))))
 
-  (my/defshortcut ?P "~/Dropbox/shared/.personal/people.org")
+  (my/defshortcut ?I "~/.config/i3/config")
   (my/defshortcut ?S "~/.config/sway/config")
   (my/defshortcut ?X "~/.Xresources")
-  (my/defshortcut ?a "~/.config/awesome/rc.lua")
-  (my/defshortcut ?b "~/Dropbox/shared/.personal/business.org")
+  (my/defshortcut ?b "~/Dropbox/shared/.personal/various/buy.org")
   (my/defshortcut ?c "~/.emacs.d/config.org")
   (my/defshortcut ?e "~/Dropbox/shared/elfeed/elfeed.org")
   (my/defshortcut ?i "~/.emacs.d/init.el")
+  (my/defshortcut ?m "~/Dropbox/shared/.personal/various/movies.org")
   (my/defshortcut ?o "~/Dropbox/shared/.personal/organizer.org")
-  (my/defshortcut ?p "~/Dropbox/shared/.personal/projects.org")
+  (my/defshortcut ?p "~/Dropbox/shared/.personal/people.org")
   (my/defshortcut ?r "~/Dropbox/shared/.personal/routine.org")
   (my/defshortcut ?s "~/Dropbox/shared/.personal/school.org")
+  (my/defshortcut ?t "~/Dropbox/shared/.personal/tfe.org")
 #+END_SRC
 
 ** =move-text=
