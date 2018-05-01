@@ -2582,6 +2582,16 @@ Anaconda backend for company-mode
     :interpreter ("sql" . sql-mode))
 #+END_SRC
 
+** YAML
+
+=yaml-mode= give me the possibility to easily manage =.yml= files.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package yaml-mode
+    :mode "\\.yml\\'"
+    :interpreter ("yml" . yml-mode))
+#+END_SRC
+
 * Internet Relay Chat
 
 IRC is a great way to hang out with other people. I like to use [[https://github.com/hober/erc/][erc]] that I
