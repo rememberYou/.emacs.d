@@ -176,7 +176,7 @@ one.
 ** Ending up
 
 I'm using a =.org= file to maintain my Emacs config. However, at his launch, he
-will loads the compiled file =config.el= for a faster loading.
+will loads the =config.el= source file for a faster loading.
 
 The code below, automatic executes =org-babel tangle= if the =config.org= file has been
 modified at the close of Emacs.
