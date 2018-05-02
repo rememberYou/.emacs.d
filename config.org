@@ -191,19 +191,40 @@ modified at the close of Emacs.
     (defvar *config-last-change* (nth 5 (file-attributes *config-file*))
       "Last modification time of the configuration file.")
 
-    (defun my/config-updated-p ()
+    (defvar *show-async-tangle-results* nil
+      "Keep *emacs* async buffers around for later inspection.")
+
+    (defun my/config-updated ()
       "Check if the configuration file has been updated since the last time."
       (time-less-p *config-last-change*
                    (nth 5 (file-attributes *config-file*))))
 
-    (defun my/config-update ()
-      "Compile the configuration file."
-      (when (my/config-updated-p)
+    (defun my/config-tangle ()
+      "Tangle the org file asynchronously."
+      (when (my/config-updated)
         (setq *config-last-change*
               (nth 5 (file-attributes *config-file*)))
-        (org-babel-tangle)))
+        (my/async-babel-tangle *config-file*)))
 
-    (add-hook 'kill-emacs-hook 'my/config-update))
+    (defun my/async-babel-tangle (org-file)
+      "Tangle the org file asynchronously."
+      (let ((init-tangle-start-time (current-time))
+            (file (buffer-file-name))
+            (async-quiet-switch "-q"))
+        (async-start
+         `(lambda ()
+            (require 'org)
+            (org-babel-tangle-file ,org-file))
+         (unless *show-async-tangle-results*
+           `(lambda (result)
+              (if result
+                  (message "SUCCESS: %s successfully tangled (%.2fs)."
+                           ,org-file
+                           (float-time (time-subtract (current-time)
+                                                      ',init-tangle-start-time)))
+                (message "ERROR: %s as tangle failed." ,org-file))))))))
+
+  (add-hook 'after-save-hook 'my/config-tangle)
 #+END_SRC
 
 ** Highlight the current line
