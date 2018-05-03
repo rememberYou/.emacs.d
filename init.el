@@ -7,7 +7,11 @@
 (require 'package)
 (setq package-enable-at-startup nil)
 (package-initialize)
-(load-file (concat user-emacs-directory "config.el"))
+
+(if (file-exists-p (concat user-emacs-directory "config.el"))
+    (load-file (concat user-emacs-directory "config.el"))
+  (org-babel-load-file (concat user-emacs-directory "config.org")))
+
 (put 'narrow-to-region 'disabled nil)
 (put 'set-goal-column 'disabled nil)
 
