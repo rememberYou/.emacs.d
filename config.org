@@ -1751,6 +1751,10 @@ completion candidates.
     (company-begin-commands '(self-insert-command))
     (company-show-numbers t)
     (global-company-mode t))
+
+  (use-package company-box
+    :after comapany
+    :hook (company-mode . company-box-mode))
 #+END_SRC
 
 ** =docker=
