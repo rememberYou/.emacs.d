@@ -2480,8 +2480,10 @@ I use LaTeX for my reports, resume, synthesis, etc.
     (TeX-master 'dwim)
     (TeX-view-program-selection '((output-pdf "Evince")
                                   (output-html "xdg-open")))
-    (TeX-source-correlate-mode t)
-    :hook ((LaTeX-mode flyspell-mode) . reftex-mode))
+    (TeX-source-correlate-mode t))
+
+  (add-hook 'LaTeX-mode-hook 'flyspell-mode)
+  (add-hook 'LaTeX-mode-hook 'reftex-mode)
 #+END_SRC
 
 I want a TeX engine that can deal with Unicode and use any font I like.
