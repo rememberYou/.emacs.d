@@ -2648,7 +2648,7 @@ Maybe one day I should switch to [[https://github.com/jorgenschaefer/circe/][cir
            ("C-c n" . my/erc-count-users))
     :custom
     (erc-autojoin-channels-alist '(("freenode.net" "#archlinux" "#bash" "#bitcoin"
-                                    "#emacs" "#gentoo" "#i3" "#latex" "#python" "#sway")))
+                                    "#emacs" "#gentoo" "#i3" "#latex" "#org-mode"  "#python" "#sway")))
     (erc-autojoin-timing 'ident)
     (erc-fill-function 'erc-fill-static)
     (erc-fill-static-center 22)
