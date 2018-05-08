@@ -178,8 +178,8 @@ one.
 I'm using a =.org= file to maintain my Emacs config. However, at his launch, he
 will loads the =config.el= source file for a faster loading.
 
-The code below, automatic executes =org-babel tangle= if the =config.org= file has been
-modified at the close of Emacs.
+The code below, automatic executes =org-babel-tangle= asynchronously when
+config.org is saved.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package org
