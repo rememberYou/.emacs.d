@@ -182,8 +182,9 @@ The code below, automatic executes =org-babel-tangle= asynchronously when
 config.org is saved.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package async)
   (use-package org
-    :defer 2
+    :defer 1
     :config
     (defvar *config-file* "~/.emacs.d/config.org"
       "The configuration file.")
