@@ -424,13 +424,9 @@ specific file.
 
   (defun my/cmd-after-saved-file ()
     "Execute a command after saved a specific file."
-    (setq filenames (mapcar 'car *afilename-cmd*))
-    (dolist (file filenames)
-      (let ((cmd (cdr (assoc file *afilename-cmd*))))
-        (if (file-exists-p file)
-            (when (equal (buffer-file-name) file)
-              (shell-command cmd))
-          (error "No such file %s" file)))))
+    (let* ((match (assoc (buffer-file-name) *afilename-cmd*)))
+      (when match
+        (shell-command (cdr match)))))
 
   (add-hook 'after-save-hook 'my/cmd-after-saved-file)
 #+END_SRC
