@@ -13,6 +13,7 @@
 (add-to-list 'load-path "~/elisp")
 
 (unless (package-installed-p 'use-package)
+  (package-refresh-contents)
   (package-install 'use-package))
 (setq use-package-verbose t)
 (setq use-package-always-ensure t)
@@ -26,6 +27,14 @@
                      "~/.authinfo.gpg"
                      "~/.authinfo"
                      "~/.netrc"))
+
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (message "Emacs ready in %s with %d garbage collections."
+                     (format "%.2f seconds"
+                             (float-time
+                              (time-subtract after-init-time before-init-time)))
+                     gcs-done)))
 
 (if (file-exists-p abbrev-file-name)
     (quietly-read-abbrev-file))
@@ -58,8 +67,9 @@
   :init (dumb-jump-mode)
   :custom (dump-jump-selector 'ivy))
 
+(use-package async)
 (use-package org
-  :defer 2
+  :defer 1
   :config
   (defvar *config-file* "~/.emacs.d/config.org"
     "The configuration file.")
@@ -67,19 +77,40 @@
   (defvar *config-last-change* (nth 5 (file-attributes *config-file*))
     "Last modification time of the configuration file.")
 
-  (defun my/config-updated-p ()
+  (defvar *show-async-tangle-results* nil
+    "Keep *emacs* async buffers around for later inspection.")
+
+  (defun my/config-updated ()
     "Check if the configuration file has been updated since the last time."
     (time-less-p *config-last-change*
                  (nth 5 (file-attributes *config-file*))))
 
-  (defun my/config-update ()
-    "Compile the configuration file."
-    (when (my/config-updated-p)
+  (defun my/config-tangle ()
+    "Tangle the org file asynchronously."
+    (when (my/config-updated)
       (setq *config-last-change*
             (nth 5 (file-attributes *config-file*)))
-      (org-babel-tangle)))
+      (my/async-babel-tangle *config-file*)))
 
-  (add-hook 'kill-emacs-hook 'my/config-update))
+  (defun my/async-babel-tangle (org-file)
+    "Tangle the org file asynchronously."
+    (let ((init-tangle-start-time (current-time))
+          (file (buffer-file-name))
+          (async-quiet-switch "-q"))
+      (async-start
+       `(lambda ()
+          (require 'org)
+          (org-babel-tangle-file ,org-file))
+       (unless *show-async-tangle-results*
+         `(lambda (result)
+            (if result
+                (message "SUCCESS: %s successfully tangled (%.2fs)."
+                         ,org-file
+                         (float-time (time-subtract (current-time)
+                                                    ',init-tangle-start-time)))
+              (message "ERROR: %s as tangle failed." ,org-file))))))))
+
+(add-hook 'after-save-hook 'my/config-tangle)
 
 (global-hl-line-mode)
 
@@ -200,13 +231,9 @@ abort completely with `C-g'."
 
 (defun my/cmd-after-saved-file ()
   "Execute a command after saved a specific file."
-  (setq filenames (mapcar 'car *afilename-cmd*))
-  (dolist (file filenames)
-    (let ((cmd (cdr (assoc file *afilename-cmd*))))
-      (if (file-exists-p file)
-          (when (equal (buffer-file-name) file)
-            (shell-command cmd))
-        (error "No such file %s" file)))))
+  (let* ((match (assoc (buffer-file-name) *afilename-cmd*)))
+    (when match
+      (shell-command (cdr match)))))
 
 (add-hook 'after-save-hook 'my/cmd-after-saved-file)
 
@@ -298,18 +325,19 @@ abort completely with `C-g'."
                (current-prefix-arg (or current-prefix-arg '(4))))
            (call-interactively 'org-refile))))))
 
-(my/defshortcut ?P "~/Dropbox/shared/.personal/people.org")
+(my/defshortcut ?I "~/.config/i3/config")
 (my/defshortcut ?S "~/.config/sway/config")
 (my/defshortcut ?X "~/.Xresources")
-(my/defshortcut ?a "~/.config/awesome/rc.lua")
-(my/defshortcut ?b "~/Dropbox/shared/.personal/business.org")
+(my/defshortcut ?b "~/Dropbox/shared/.personal/various/buy.org")
 (my/defshortcut ?c "~/.emacs.d/config.org")
 (my/defshortcut ?e "~/Dropbox/shared/elfeed/elfeed.org")
 (my/defshortcut ?i "~/.emacs.d/init.el")
+(my/defshortcut ?m "~/Dropbox/shared/.personal/various/movies.org")
 (my/defshortcut ?o "~/Dropbox/shared/.personal/organizer.org")
-(my/defshortcut ?p "~/Dropbox/shared/.personal/projects.org")
+(my/defshortcut ?p "~/Dropbox/shared/.personal/people.org")
 (my/defshortcut ?r "~/Dropbox/shared/.personal/routine.org")
 (my/defshortcut ?s "~/Dropbox/shared/.personal/school.org")
+(my/defshortcut ?t "~/Dropbox/shared/.personal/tfe.org")
 
 (use-package move-text
   :bind (("M-p" . move-text-up)
@@ -346,7 +374,7 @@ point reaches the beginning or end of the buffer, stop there."
 (setq set-mark-command-repeat-pop t)
 
 (use-package recentf
-  :defer 10
+  :defer 2
   :bind ("C-c r" . recentf-open-files)
   :init (recentf-mode)
   :custom
@@ -384,24 +412,23 @@ point reaches the beginning or end of the buffer, stop there."
   (bind-key "C-TAB" 'org-cycle org-mode-map)
   (bind-key "C-M-w" 'append-next-kill org-mode-map))
 
-(require 'ob-plantuml)
+(use-package ob-python
+  :ensure org-plus-contrib
+  :commands (org-babel-execute:python))
 
-(org-babel-do-load-languages
- 'org-babel-load-languages '((C . t)
-                             (css . t)
-                             (dot . t)
-                             (ditaa . t)
-                             (emacs-lisp t)
-                             (gnuplot . t)
-                             (java . t)
-                             (js . t)
-                             (latex . t)
-                             (plantuml . t)
-                             (makefile . t)
-                             (org . t)
-                             (python . t)
-                             (ruby . t)
-                             (shell . t)))
+(require' ob-C)
+(require' ob-css)
+(require' ob-dot)
+(require' ob-ditaa)
+(require' ob-emacs-lisp)
+(require' ob-gnuplot)
+(require' ob-java)
+(require' ob-js)
+(require' ob-latex)
+(require' ob-plantuml)
+(require' ob-makefile)
+(require' ob-org)
+(require' ob-ruby)
 
 (setq org-plantuml-jar-path (expand-file-name "~/dropbox/shared/lib/plantuml.jar"))
 (setq org-ditaa-jar-path "~/Dropbox/shared/lib/ditaa0_9.jar")
@@ -484,7 +511,7 @@ and indent it one level."
                       "~/Dropbox/shared/.personal/people.org"
                       "~/Dropbox/shared/.personal/projects.org"
                       "~/Dropbox/shared/.personal/routine.org"
-                      "~/Dropbox/shared/.personal/school.org"))))
+                      "~/Dropbox/shared/.personal/school.org")))
 (add-to-list 'auto-mode-alist '("\\.txt$" . org-mode))
 
 (defun my/org-insert-heading-for-next-day ()
@@ -579,6 +606,9 @@ and indent it one level."
          my/org-basic-trade-template
          :immediate-finish t)
         ("T" "Tasks" entry (file+headline "~/Dropbox/shared/.personal/organizer.org" "Tasks"),
+         my/org-basic-task-template
+         :immediate-finish t)
+        ("F" "TFE Tasks" entry (file+headline "~/Dropbox/shared/.personal/tfe.org" "Tasks"),
          my/org-basic-task-template
          :immediate-finish t)))
 
@@ -991,11 +1021,10 @@ same day of the month, but will be the same day of the week."
 (global-set-key (kbd "C-c d") 'org-decrypt-entry)
 
 (use-package ox-reveal
-  :defer 10
-  :custom
-  (org-reveal-root "file:///home/someone/Dropbox/shared/lib/reveal.js")
-  (org-reveal-mathjax t)
-  (org-reveal-transition "fade"))
+  :defer 2
+  :config
+  (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
+  (setq org-reveal-mathjax t))
 
 (use-package htmlize
   :defer 2)
@@ -1041,6 +1070,10 @@ same day of the month, but will be the same day of the week."
   (company-show-numbers t)
   (global-company-mode t))
 
+(use-package company-box
+  :after comapany
+  :hook (company-mode . company-box-mode))
+
 (use-package docker
   :defer 15
   :diminish
@@ -1052,7 +1085,12 @@ same day of the month, but will be the same day of the week."
   (docker-global-mode))
 
 (use-package magit
-  :bind ("C-x g" . magit-status))
+  :bind (("C-c m c" . magit-commit)
+         ("C-c m a" . magit-stage)
+         ("C-c m s" . magit-status)
+         ("C-c m u" . magit-unstage)
+         ("C-c m U" . magit-unstage-all)
+         ("C-c m p" . magit-push)))
 
 (use-package git-gutter
   :defer 2
@@ -1418,8 +1456,10 @@ couldn't figure things out (ex: syntax errors)."
   (TeX-master 'dwim)
   (TeX-view-program-selection '((output-pdf "Evince")
                                 (output-html "xdg-open")))
-  (TeX-source-correlate-mode t)
-  :hook ((LaTeX-mode flyspell-mode) . reftex-mode))
+  (TeX-source-correlate-mode t))
+
+(add-hook 'LaTeX-mode-hook 'flyspell-mode)
+(add-hook 'LaTeX-mode-hook 'reftex-mode)
 
 (setq-default TeX-engine 'xetex)
 
@@ -1477,13 +1517,17 @@ couldn't figure things out (ex: syntax errors)."
   :mode "\\.sql\\'"
   :interpreter ("sql" . sql-mode))
 
+(use-package yaml-mode
+  :mode "\\.yml\\'"
+  :interpreter ("yml" . yml-mode))
+
 (use-package erc
   :defer 10
   :bind (("C-c e" . my/erc-start-or-switch)
          ("C-c n" . my/erc-count-users))
   :custom
-  ;; (erc-autojoin-channels-alist '(("freenode.net" "#archlinux" "#bash" "#bitcoin"
-  ;;                                 "#emacs" "#gentoo" "#i3" "#latex" "#python" "#sway")))
+  (erc-autojoin-channels-alist '(("freenode.net" "#archlinux" "#bash" "#bitcoin"
+                                  "#emacs" "#gentoo" "#i3" "#latex" "#org-mode"  "#python" "#sway")))
   (erc-autojoin-timing 'ident)
   (erc-fill-function 'erc-fill-static)
   (erc-fill-static-center 22)
