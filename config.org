@@ -768,24 +768,24 @@ Useful to speed up my daily life, I enjoy it!
 With that, I can compile many languages.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (require 'ob-plantuml)
+  ;; Avoid `org-babel-do-load-languages' since it does an eager require.
+  (use-package ob-python
+    :ensure org-plus-contrib
+    :commands (org-babel-execute:python))
 
-  (org-babel-do-load-languages
-   'org-babel-load-languages '((C . t)
-                               (css . t)
-                               (dot . t)
-                               (ditaa . t)
-                               (emacs-lisp t)
-                               (gnuplot . t)
-                               (java . t)
-                               (js . t)
-                               (latex . t)
-                               (plantuml . t)
-                               (makefile . t)
-                               (org . t)
-                               (python . t)
-                               (ruby . t)
-                               (shell . t)))
+  (require' ob-C)
+  (require' ob-css)
+  (require' ob-dot)
+  (require' ob-ditaa)
+  (require' ob-emacs-lisp)
+  (require' ob-gnuplot)
+  (require' ob-java)
+  (require' ob-js)
+  (require' ob-latex)
+  (require' ob-plantuml)
+  (require' ob-makefile)
+  (require' ob-org)
+  (require' ob-ruby)
 
   (setq org-plantuml-jar-path (expand-file-name "~/dropbox/shared/lib/plantuml.jar"))
   (setq org-ditaa-jar-path "~/Dropbox/shared/lib/ditaa0_9.jar")
