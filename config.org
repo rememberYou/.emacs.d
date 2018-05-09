@@ -913,7 +913,7 @@ Here is the place where I put all my =.org= files that will be read by =org-agen
                         "~/Dropbox/shared/.personal/people.org"
                         "~/Dropbox/shared/.personal/projects.org"
                         "~/Dropbox/shared/.personal/routine.org"
-                        "~/Dropbox/shared/.personal/school.org")))
+                        "~/Dropbox/shared/.personal/school.org"))))
   (add-to-list 'auto-mode-alist '("\\.txt$" . org-mode))
 #+END_SRC
 
