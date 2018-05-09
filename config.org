@@ -768,7 +768,6 @@ Useful to speed up my daily life, I enjoy it!
 With that, I can compile many languages.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  ;; Avoid `org-babel-do-load-languages' since it does an eager require.
   (use-package ob-python
     :ensure org-plus-contrib
     :commands (org-babel-execute:python))
@@ -1044,6 +1043,9 @@ and other semi-structured pieces of information.
            my/org-basic-trade-template
            :immediate-finish t)
           ("T" "Tasks" entry (file+headline "~/Dropbox/shared/.personal/organizer.org" "Tasks"),
+           my/org-basic-task-template
+           :immediate-finish t)
+          ("F" "TFE Tasks" entry (file+headline "~/Dropbox/shared/.personal/tfe.org" "Tasks"),
            my/org-basic-task-template
            :immediate-finish t)))
 #+END_SRC
