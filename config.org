@@ -1721,15 +1721,6 @@ May be useful in a timely manner
     (setq math-units-table nil))
 #+END_SRC
 
-** =chess=
-
-Because I like chess.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package chess
-    :commands chess)
-#+END_SRC
-
 ** =company=
 
 Company is a text completion framework for Emacs. The name stands for "complete
