@@ -45,9 +45,6 @@ Adding packages sources in case it isn't already.
     (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t))
 #+END_SRC
 
-Use =M-x package-refresh-contents= to reload the list of packages after
-adding these for the first time.
-
 ** Directories and others files
 
 Adding main Elisp directory and install =use-package=.
@@ -56,6 +53,7 @@ Adding main Elisp directory and install =use-package=.
   (add-to-list 'load-path "~/elisp")
 
   (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
     (package-install 'use-package))
   (setq use-package-verbose t)
   (setq use-package-always-ensure t)
