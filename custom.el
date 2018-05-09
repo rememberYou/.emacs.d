@@ -28,10 +28,10 @@
    (quote
     ("4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "8db4b03b9ae654d4a57804286eb3e332725c84d7cdab38463cb6b97d5762ad26" "ef04dd1e33f7cbd5aa3187981b18652b8d5ac9e680997b45dc5d00443e6a46e3" "aded4ec996e438a5e002439d58f09610b330bbc18f580c83ebaba026bbef6c82" "4980e5ddaae985e4bae004280bd343721271ebb28f22b3e3b2427443e748cd3f" "83db918b06f0b1df1153f21c0d47250556c7ffb5b5e6906d21749f41737babb7" default)))
  '(dump-jump-selector (quote ivy) t nil "Customized with use-package dumb-jump")
- '(eclim-eclipse-dirs "/opt/eclipse" t nil "Customized with use-package eclim")
- '(eclim-executable "/opt/eclipse/eclim" t nil "Customized with use-package eclim")
- '(eclimd-autostart t t nil "Customized with use-package eclim")
- '(eclimd-default-workspace "~/Documents/Projects/Java/" t nil "Customized with use-package eclim")
+ '(eclim-eclipse-dirs "/opt/eclipse" nil nil "Customized with use-package eclim")
+ '(eclim-executable "/opt/eclipse/eclim" nil nil "Customized with use-package eclim")
+ '(eclimd-autostart t nil nil "Customized with use-package eclim")
+ '(eclimd-default-workspace "~/Documents/Projects/Java/" nil nil "Customized with use-package eclim")
  '(elfeed-db-directory "~/Dropbox/shared/elfeed/db" nil nil "Customized with use-package elfeed")
  '(epg-gpg-program "/usr/bin/gpg")
  '(erc-autojoin-channels-alist
@@ -51,7 +51,7 @@
    (quote
     ("JOIN" "MODE" "NICK" "PART" "QUIT" "324" "329" "332" "333" "353" "477")) nil nil "Customized with use-package erc")
  '(fci-rule-color "#073642")
- '(find-ls-option (quote ("-print0 | xargs -0 ls -ld" . "-ld")) nil nil "Customized with use-package find-dired")
+ '(find-ls-option (quote ("-print0 | xargs -0 ls -ld" . "-ld")) t nil "Customized with use-package find-dired")
  '(help-at-pt-display-when-idle t nil (help-at-pt) "Customized with use-package eclim")
  '(help-at-pt-set-timer nil t nil "Customized with use-package eclim")
  '(help-at-pt-timer-delay 0.1 nil nil "Customized with use-package eclim")
@@ -78,11 +78,11 @@
  '(hl-fg-colors
    (quote
     ("#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36")))
- '(httpd-root "/var/www/html" t nil "Customized with use-package simple-httpd")
+ '(httpd-root "/var/www/html" nil nil "Customized with use-package simple-httpd")
  '(ivy-display-style (quote fancy) nil nil "Customized with use-package ivy")
  '(ivy-mode 1 nil nil "Customized with use-package ivy")
  '(ivy-use-virtual-buffers t nil nil "Customized with use-package ivy")
- '(ledger-clear-whole-transactions 1 t nil "Customized with use-package ledger-mode")
+ '(ledger-clear-whole-transactions 1 nil nil "Customized with use-package ledger-mode")
  '(magit-diff-use-overlays nil)
  '(math-additional-units
    (quote
@@ -111,7 +111,7 @@
  '(org-reveal-transition "fade" nil nil "Customized with use-package ox-reveal")
  '(package-selected-packages
    (quote
-    (ob-java ob-C company-box emacs-async org-plus-contrib counsel-org-clock jinja2-mode yaml-mode magit color-theme-sanityinc-solarized color-theme-solarized erc-yank solarized-theme color-theme atomic-chrome noctilux-theme sokoban elfeed markdown-mode eclim yasnippet projectile flycheck expand-region company htmlize webpaste mu4e-alert mu4e alert helm-notmuch elfeed-goodies elfeed-org erc-youtube docker chess beacon ivy-hydra ivy-pass ivy-rich ipcalc abbrev company-auctex latex ercn erc-question erc-alert comint circle circe auth-password-store tex use-package which-key dumb-jump dump-jump counsel-projectile aggresive-indent hungry-delete counsel swipper councel try org-journal sql-mode ng2-mode gradle-mode company-ebdb helm-ebdb ebdb abbrev-mode powershell org-edna plantuml-mode engine-mode w3m lorem-ipsum skewer-mode company-lua ac-php spotify bbdb helm-spotify flycheck-ledger erc-image erc-hl-nicks company-tern xref-js2 js2-refactor company-anaconda paredit erefactor artbollocks-mode peep-dired switch-window eclimd auto-compile web-mode web-beautify undo-tree tern tabbar sql-indent smex smartscan smartparens skype scss-mode restclient requirejs-mode rainbow-mode pdf-tools ox-twbs ox-reveal ox-ioslide org-bullets nlinum-relative neotree multiple-cursors move-text miniedit memoize markdown-preview-mode lua-mode less-css-mode ledger-mode key-chord json-mode js-comint impatient-mode iedit hydra helm-swoop helm-projectile helm-descbinds guide-key github-clone git-timemachine git-messenger git-link git-gutter git gist emmet-mode crm-custom company-ycmd company-quickhelp company-emacs-eclim column-marker change-inner buffer-move browse-at-remote bm autopair auto-package-update auto-complete-c-headers auctex android-mode anaconda-mode aggressive-indent ace-window ace-popup-menu ac-emacs-eclim)))
+    (js2-mode ob-java ob-C company-box emacs-async org-plus-contrib counsel-org-clock jinja2-mode yaml-mode magit color-theme-sanityinc-solarized color-theme-solarized erc-yank solarized-theme color-theme atomic-chrome noctilux-theme sokoban elfeed markdown-mode eclim yasnippet projectile flycheck expand-region company htmlize webpaste mu4e-alert mu4e alert helm-notmuch elfeed-goodies elfeed-org erc-youtube docker chess beacon ivy-hydra ivy-pass ivy-rich ipcalc abbrev company-auctex latex ercn erc-question erc-alert comint circle circe auth-password-store tex use-package which-key dumb-jump dump-jump counsel-projectile aggresive-indent hungry-delete counsel swipper councel try org-journal sql-mode ng2-mode gradle-mode company-ebdb helm-ebdb ebdb abbrev-mode powershell org-edna plantuml-mode engine-mode w3m lorem-ipsum skewer-mode company-lua ac-php spotify bbdb helm-spotify flycheck-ledger erc-image erc-hl-nicks company-tern xref-js2 js2-refactor company-anaconda paredit erefactor artbollocks-mode peep-dired switch-window eclimd auto-compile web-mode web-beautify undo-tree tern tabbar sql-indent smex smartscan smartparens skype scss-mode restclient requirejs-mode rainbow-mode pdf-tools ox-twbs ox-reveal ox-ioslide org-bullets nlinum-relative neotree multiple-cursors move-text miniedit memoize markdown-preview-mode lua-mode less-css-mode ledger-mode key-chord json-mode js-comint impatient-mode iedit hydra helm-swoop helm-projectile helm-descbinds guide-key github-clone git-timemachine git-messenger git-link git-gutter git gist emmet-mode crm-custom company-ycmd company-quickhelp company-emacs-eclim column-marker change-inner buffer-move browse-at-remote bm autopair auto-package-update auto-complete-c-headers auctex android-mode anaconda-mode aggressive-indent ace-window ace-popup-menu ac-emacs-eclim)))
  '(pdf-view-use-unicode-ligther nil nil nil "Customized with use-package pdf-tools")
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")
