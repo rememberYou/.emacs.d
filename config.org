@@ -1298,6 +1298,7 @@ them. Here's a sample of the output:
           (org-agenda-finalize)
           (setq buffer-read-only t)))))
 #+END_SRC
+
 ** Refiling
 *** Configuration
 
@@ -1639,7 +1640,6 @@ https://github.com/howardabrams/dot-files/blob/master/emacs-org.org
       (let ((journal-file (concat org-journal-dir (journal-last-year-file))))
         (find-file journal-file))))
 #+END_SRC
-
 
 like any good journals, we don't want other people to be able to read it.
 

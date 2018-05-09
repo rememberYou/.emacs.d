@@ -511,7 +511,7 @@ and indent it one level."
                       "~/Dropbox/shared/.personal/people.org"
                       "~/Dropbox/shared/.personal/projects.org"
                       "~/Dropbox/shared/.personal/routine.org"
-                      "~/Dropbox/shared/.personal/school.org")))
+                      "~/Dropbox/shared/.personal/school.org"))))
 (add-to-list 'auto-mode-alist '("\\.txt$" . org-mode))
 
 (defun my/org-insert-heading-for-next-day ()
@@ -1056,9 +1056,6 @@ same day of the month, but will be the same day of the week."
   :config
   (setq math-units-table nil))
 
-(use-package chess
-  :commands chess)
-
 (use-package company
   :diminish company-mode
   :defer 2
@@ -1098,33 +1095,33 @@ same day of the month, but will be the same day of the week."
   :init
   (global-git-gutter-mode +1))
 
-(defhydra hydra-git-gutter (:body-pre (git-gutter-mode 1)
-                                      :hint nil)
-"
-Git gutter:
-   _j_: next hunk        _s_tage hunk    _q_uit
-   _k_: previous hunk    _r_evert hunk   _Q_uit and dactivate
-   ^ ^
-   _h_: first hunk       _p_opup hunk
-   _l_: last hunk        set start _R_evision
-"
-  ("j" git-gutter-next-hunk)
-  ("k" git-gutter-previous-hunk)
-  ("h" (progn (goto-char (point-min))
-              (git-gutter:next-hunk 1)))
-  ("l" (progn (goto-char (point-min))
-              (git-gutter:previous-hunk 1)))
-  ("s" git-gutter:stage-hunk)
-  ("r" git-gutter:revert-hunk)
-  ("p" git-gutter:popup-hunk)
-  ("R" git-gutter:set-start-revision)
-  ("q" nil :color blue)
-  ("Q" (progn (git-gutter-mode -1)
-              (sit-for 0.1)
-              (gut-gutter:clear))
-   :color blue))
+;; (defhydra hydra-git-gutter (:body-pre (git-gutter-mode 1)
+;;                                       :hint nil)
+;;   "
+;; Git gutter:
+;;    _j_: next hunk        _s_tage hunk    _q_uit
+;;    _k_: previous hunk    _r_evert hunk   _Q_uit and dactivate
+;;    ^ ^
+;;    _h_: first hunk       _p_opup hunk
+;;    _l_: last hunk        set start _R_evision
+;; "
+;;   ("j" git-gutter-next-hunk)
+;;   ("k" git-gutter-previous-hunk)
+;;   ("h" (progn (goto-char (point-min))
+;;               (git-gutter:next-hunk 1)))
+;;   ("l" (progn (goto-char (point-min))
+;;               (git-gutter:previous-hunk 1)))
+;;   ("s" git-gutter:stage-hunk)
+;;   ("r" git-gutter:revert-hunk)
+;;   ("p" git-gutter:popup-hunk)
+;;   ("R" git-gutter:set-start-revision)
+;;   ("q" nil :color blue)
+;;   ("Q" (progn (git-gutter-mode -1)
+;;               (sit-for 0.1)
+;;               (gut-gutter:clear))
+;;    :color blue))
 
-(global-set-key (kbd "M-g M-g") 'hydra-git-gutter/body)
+;; (global-set-key (kbd "M-g M-g") 'hydra-git-gutter/body)
 
 (use-package git-timemachine
   :defer 3)
@@ -1604,9 +1601,6 @@ couldn't figure things out (ex: syntax errors)."
          ("j" . mz/make-and-run-elfeed-hydra)
          ("J" . mz/make-and-run-elfeed-hydra))
   :custom (elfeed-db-directory "~/Dropbox/shared/elfeed/db"))
-
-(defalias 'elfeed-toggle-star
-  (elfeed-expose #'elfeed-search-toggle-all 'star))
 
 (defun elfeed-load-db-and-open ()
   "Wrapper to load the elfeed db from disk before opening"
