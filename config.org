@@ -1305,12 +1305,12 @@ them. Here's a sample of the output:
 under.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-    (setq org-reverse-note-order t)
-    (setq org-refile-use-outline-path nil)
-    (setq org-refile-allow-creating-parent-nodes 'confirm)
-    (setq org-refile-use-cache nil)
-    (setq org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
-    (setq org-blank-before-new-entry nil)
+  (setq org-reverse-note-order t)
+  (setq org-refile-use-outline-path nil)
+  (setq org-refile-allow-creating-parent-nodes 'confirm)
+  (setq org-refile-use-cache nil)
+  (setq org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
+  (setq org-blank-before-new-entry nil)
 #+END_SRC
 
 *** Allow refiling in the middle(ish) of a capture
