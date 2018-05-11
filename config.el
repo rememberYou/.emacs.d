@@ -1044,7 +1044,17 @@ same day of the month, but will be the same day of the week."
 (use-package atomic-chrome
   :defer 2
   :init
-  (atomic-chrome-start-server))
+  (defun atomic-chrome-server-running-p ()
+    (cond ((executable-find "lsof")
+           (zerop (call-process "lsof" nil nil nil "-i" ":64292")))
+          ((executable-find "netstat") ; Windows
+           (zerop (call-process-shell-command "netstat -aon | grep 64292")))))
+
+  (if (atomic-chrome-server-running-p)
+      (message "Can't start atomic-chrome server, because port 64292 is already used")
+    (atomic-chrome-start-server)))
+
+(add-hook 'atomic-chrome-edit-mode-hook 'flyspell-mode)
 
 (use-package calc
   :defer t
