@@ -67,6 +67,10 @@
   :init (dumb-jump-mode)
   :custom (dump-jump-selector 'ivy))
 
+(use-package dashboard
+  :config
+  (dashboard-setup-startup-hook))
+
 (use-package async)
 (use-package org
   :defer 1
@@ -412,23 +416,24 @@ point reaches the beginning or end of the buffer, stop there."
   (bind-key "C-TAB" 'org-cycle org-mode-map)
   (bind-key "C-M-w" 'append-next-kill org-mode-map))
 
-(use-package ob-python
-  :ensure org-plus-contrib
-  :commands (org-babel-execute:python))
-
-(require' ob-C)
-(require' ob-css)
-(require' ob-dot)
-(require' ob-ditaa)
-(require' ob-emacs-lisp)
-(require' ob-gnuplot)
-(require' ob-java)
-(require' ob-js)
-(require' ob-latex)
-(require' ob-plantuml)
-(require' ob-makefile)
-(require' ob-org)
-(require' ob-ruby)
+(use-package org
+  :init
+  (use-package ob-python
+    :ensure org-plus-contrib
+    :commands (org-babel-execute:python))
+  (require' ob-C)
+  (require' ob-css)
+  (require' ob-dot)
+  (require' ob-ditaa)
+  (require' ob-emacs-lisp)
+  (require' ob-gnuplot)
+  (require' ob-java)
+  (require' ob-js)
+  (require' ob-latex)
+  (require' ob-plantuml)
+  (require' ob-makefile)
+  (require' ob-org)
+  (require' ob-ruby))
 
 (setq org-plantuml-jar-path (expand-file-name "~/dropbox/shared/lib/plantuml.jar"))
 (setq org-ditaa-jar-path "~/Dropbox/shared/lib/ditaa0_9.jar")
@@ -1095,34 +1100,6 @@ same day of the month, but will be the same day of the week."
   :init
   (global-git-gutter-mode +1))
 
-;; (defhydra hydra-git-gutter (:body-pre (git-gutter-mode 1)
-;;                                       :hint nil)
-;;   "
-;; Git gutter:
-;;    _j_: next hunk        _s_tage hunk    _q_uit
-;;    _k_: previous hunk    _r_evert hunk   _Q_uit and dactivate
-;;    ^ ^
-;;    _h_: first hunk       _p_opup hunk
-;;    _l_: last hunk        set start _R_evision
-;; "
-;;   ("j" git-gutter-next-hunk)
-;;   ("k" git-gutter-previous-hunk)
-;;   ("h" (progn (goto-char (point-min))
-;;               (git-gutter:next-hunk 1)))
-;;   ("l" (progn (goto-char (point-min))
-;;               (git-gutter:previous-hunk 1)))
-;;   ("s" git-gutter:stage-hunk)
-;;   ("r" git-gutter:revert-hunk)
-;;   ("p" git-gutter:popup-hunk)
-;;   ("R" git-gutter:set-start-revision)
-;;   ("q" nil :color blue)
-;;   ("Q" (progn (git-gutter-mode -1)
-;;               (sit-for 0.1)
-;;               (gut-gutter:clear))
-;;    :color blue))
-
-;; (global-set-key (kbd "M-g M-g") 'hydra-git-gutter/body)
-
 (use-package git-timemachine
   :defer 3)
 
@@ -1204,7 +1181,7 @@ same day of the month, but will be the same day of the week."
 
 (use-package ivy
   :defer 5
-  :diminish (ivy-mode)
+  :diminish
   :bind (("C-x b" . ivy-switch-buffer)
          ("C-x B" . ivy-switch-buffer-other-window))
   :custom
@@ -1319,7 +1296,7 @@ same day of the month, but will be the same day of the week."
 
 (use-package yasnippet
   :defer 2
-  :diminish yasnippet-mode
+  :diminish yas-minor-mode
   :bind ("C-c i" . yas-insert-snippet)
   :init
   (yas-global-mode t)
@@ -1602,65 +1579,65 @@ couldn't figure things out (ex: syntax errors)."
          ("J" . mz/make-and-run-elfeed-hydra))
   :custom (elfeed-db-directory "~/Dropbox/shared/elfeed/db"))
 
-(defun elfeed-load-db-and-open ()
-  "Wrapper to load the elfeed db from disk before opening"
-  (interactive)
-  (elfeed-db-load)
-  (elfeed)
-  (elfeed-search-update--force))
+  (defun elfeed-load-db-and-open ()
+    "Wrapper to load the elfeed db from disk before opening"
+    (interactive)
+    (elfeed-db-load)
+    (elfeed)
+    (elfeed-search-update--force))
 
-(defun elfeed-mark-all-as-read ()
-  "Mark all feeds as read"
-  (interactive)
-  (mark-whole-buffer)
-  (elfeed-search-untag-all-unread))
+  (defun elfeed-mark-all-as-read ()
+    "Mark all feeds as read"
+    (interactive)
+    (mark-whole-buffer)
+    (elfeed-search-untag-all-unread))
 
-(defun elfeed-save-db-and-bury ()
-  "Wrapper to save the elfeed db to disk before burying buffer"
-  (interactive)
-  (elfeed-db-save)
-  (quit-window))
+  (defun elfeed-save-db-and-bury ()
+    "Wrapper to save the elfeed db to disk before burying buffer"
+    (interactive)
+    (elfeed-db-save)
+    (quit-window))
 
-(defun z/hasCap (s) ""
-       (let ((case-fold-search nil))
-         (string-match-p "[[:upper:]]" s)))
+  (defun z/hasCap (s) ""
+         (let ((case-fold-search nil))
+           (string-match-p "[[:upper:]]" s)))
 
-(defun z/get-hydra-option-key (s)
-  "returns single upper case letter (converted to lower) or first"
-  (interactive)
-  (let ( (loc (z/hasCap s)))
-    (if loc
-        (downcase (substring s loc (+ loc 1)))
-      (substring s 0 1))))
+  (defun z/get-hydra-option-key (s)
+    "returns single upper case letter (converted to lower) or first"
+    (interactive)
+    (let ( (loc (z/hasCap s)))
+      (if loc
+          (downcase (substring s loc (+ loc 1)))
+        (substring s 0 1))))
 
-(defun mz/make-elfeed-cats (tags)
-  "Returns a list of lists. Each one is line for the hydra configuration in the form
-     (c function hint)"
-  (interactive)
-  (mapcar (lambda (tag)
-            (let* (
-                   (tagstring (symbol-name tag))
-                   (c (z/get-hydra-option-key tagstring))
-                   )
-              (list c (append '(elfeed-search-set-filter) (list (format "@6-months-ago +%s" tagstring) ))tagstring  )))
-          tags))
+  (defun mz/make-elfeed-cats (tags)
+    "Returns a list of lists. Each one is line for the hydra configuration in the form
+       (c function hint)"
+    (interactive)
+    (mapcar (lambda (tag)
+              (let* (
+                     (tagstring (symbol-name tag))
+                     (c (z/get-hydra-option-key tagstring))
+                     )
+                (list c (append '(elfeed-search-set-filter) (list (format "@6-months-ago +%s" tagstring) ))tagstring  )))
+            tags))
 
-(defmacro mz/make-elfeed-hydra ()
-  `(defhydra mz/hydra-elfeed ()
-     "filter"
-     ,@(mz/make-elfeed-cats (elfeed-db-get-all-tags))
-     ("*" (elfeed-search-set-filter "@6-months-ago +star") "Starred")
-     ("M" elfeed-toggle-star "Mark")
-     ("A" (elfeed-search-set-filter "@6-months-ago") "All")
-     ("T" (elfeed-search-set-filter "@1-day-ago") "Today")
-     ("Q" elfeed-save-db-and-bury "Quit Elfeed" :color blue)
-     ("q" nil "quit" :color blue)))
+  (defmacro mz/make-elfeed-hydra ()
+    `(defhydra mz/hydra-elfeed ()
+       "filter"
+       ,@(mz/make-elfeed-cats (elfeed-db-get-all-tags))
+       ("*" (elfeed-search-set-filter "@6-months-ago +star") "Starred")
+       ("M" elfeed-toggle-star "Mark")
+       ("A" (elfeed-search-set-filter "@6-months-ago") "All")
+       ("T" (elfeed-search-set-filter "@1-day-ago") "Today")
+       ("Q" elfeed-save-db-and-bury "Quit Elfeed" :color blue)
+       ("q" nil "quit" :color blue)))
 
-(defun mz/make-and-run-elfeed-hydra ()
-  ""
-  (interactive)
-  (mz/make-elfeed-hydra)
-  (mz/hydra-elfeed/body))
+  (defun mz/make-and-run-elfeed-hydra ()
+    ""
+    (interactive)
+    (mz/make-elfeed-hydra)
+    (mz/hydra-elfeed/body))
 
 (use-package hydra
   :defer 2)
