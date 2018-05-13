@@ -28,14 +28,6 @@
                      "~/.authinfo"
                      "~/.netrc"))
 
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (message "Emacs ready in %s with %d garbage collections."
-                     (format "%.2f seconds"
-                             (float-time
-                              (time-subtract after-init-time before-init-time)))
-                     gcs-done)))
-
 (if (file-exists-p abbrev-file-name)
     (quietly-read-abbrev-file))
 
@@ -67,13 +59,25 @@
   :init (dumb-jump-mode)
   :custom (dump-jump-selector 'ivy))
 
+(defun my/dashboard-banner ()
+  """Set a dashboard banner including information on package initialization
+   time and garbage collections."""
+  (setq dashboard-banner-logo-title
+        (format "Emacs ready in %.2f seconds with %d garbage collections."
+                (float-time (time-subtract after-init-time before-init-time)) gcs-done)))
+
 (use-package dashboard
+  :init
+  (add-hook 'after-init-hook 'dashboard-refresh-buffer)
+  (add-hook 'dashboard-mode-hook 'my/dashboard-banner)
   :config
+  (setq dashboard-startup-banner 'logo)
   (dashboard-setup-startup-hook))
 
 (use-package async)
 (use-package org
   :defer 1
+  :hook (after-save . my/config-tangle)
   :config
   (defvar *config-file* "~/.emacs.d/config.org"
     "The configuration file.")
@@ -113,8 +117,6 @@
                          (float-time (time-subtract (current-time)
                                                     ',init-tangle-start-time)))
               (message "ERROR: %s as tangle failed." ,org-file))))))))
-
-(add-hook 'after-save-hook 'my/config-tangle)
 
 (global-hl-line-mode)
 
@@ -1043,6 +1045,7 @@ same day of the month, but will be the same day of the week."
 
 (use-package atomic-chrome
   :defer 2
+  :hook (atomic-chrome-edit-mode . flyspell-mode)
   :init
   (defun atomic-chrome-server-running-p ()
     (cond ((executable-find "lsof")
@@ -1053,8 +1056,6 @@ same day of the month, but will be the same day of the week."
   (if (atomic-chrome-server-running-p)
       (message "Can't start atomic-chrome server, because port 64292 is already used")
     (atomic-chrome-start-server)))
-
-(add-hook 'atomic-chrome-edit-mode-hook 'flyspell-mode)
 
 (use-package calc
   :defer t
@@ -1083,7 +1084,8 @@ same day of the month, but will be the same day of the week."
   (global-company-mode t))
 
 (use-package company-box
-  :after comapany
+  :diminish
+  :after company
   :hook (company-mode . company-box-mode))
 
 (use-package docker
@@ -1183,11 +1185,10 @@ same day of the month, but will be the same day of the week."
   :commands rainbow-mode)
 
 (use-package skewer-mode
-  :defer t
-  :hook ((js2-mode-hook . skewer-mode)
-        (css-mode-hook . skewer-css-mode)
-        (html-mode-hook . skewer-html-mode)
-        (web-mode-hook . skewer-html-mode)))
+  :hook ((js2-mode . skewer-mode)
+        (css-mode . skewer-css-mode)
+        (html-mode . skewer-html-mode)
+        (web-mode . skewer-html-mode)))
 
 (use-package ivy
   :defer 5
@@ -1226,15 +1227,13 @@ same day of the month, but will be the same day of the week."
   :bind ("M-y" . counsel-yank-pop))
 
 (use-package simple-httpd
-  :defer t
   :custom
   (httpd-root "/var/www/html"))
 
   (use-package impatient-mode
-    :defer t
-    :hook ((web-mode-hook . httpd-start)
-           (web-mode-hook . impatient-mode)
-           (css-mode-hook . httpd-start)))
+    :hook ((web-mode . httpd-start)
+           (web-mode . impatient-mode)
+           (css-mode . httpd-start)))
 
 (use-package smartparens
   :defer 5)
@@ -1285,7 +1284,7 @@ same day of the month, but will be the same day of the week."
 
 (use-package web-mode
   :commands web-mode
-  :hook ((css-mode-hook web-mode-hook) . rainbow-mode)
+  :hook ((css-mode web-mode) . rainbow-mode)
   :config
   (add-to-list 'auto-mode-alist '("\\.blade\\.php\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
@@ -1318,9 +1317,9 @@ same day of the month, but will be the same day of the week."
 (use-package "eldoc"
   :diminish
   :commands turn-on-eldoc-mode
-  :hook ((abbrev-mode . emacs-lisp-mode-hook)
-         (abbrev-mode . lisp-interaction-mode-hook)
-         (abbrev-mode . ielm-mode-hook)))
+  :hook ((abbrev-mode . emacs-lisp-mode)
+         (abbrev-mode . lisp-interaction-mode)
+         (abbrev-mode . ielm-mode)))
 
 (define-key emacs-lisp-mode-map (kbd "C-c .") 'find-function-at-point)
 (bind-key "C-c f" 'find-function)
@@ -1364,7 +1363,7 @@ couldn't figure things out (ex: syntax errors)."
 
 (use-package emmet-mode
   :defer 10
-  :hook (sgml-mode-hook css-mode-hook web-mode-hook))
+  :hook (sgml-mode css-mode web-mode))
 
 (use-package less-css-mode
   :mode "\\.less\\'"
@@ -1372,7 +1371,7 @@ couldn't figure things out (ex: syntax errors)."
 
 (use-package eclim
   :defer t
-  :hook (java-mode-hook . eclim-mode)
+  :hook (java-mode . eclim-mode)
   :custom
   (eclimd-autostart t)
   (eclimd-default-workspace '"~/Documents/Projects/Java/")
@@ -1392,15 +1391,14 @@ couldn't figure things out (ex: syntax errors)."
 
 (use-package js2-mode
   :defer 40
+  :hook (js2-mode . js2-imenu-extras-mode)
   :config
   ;; Better imenu
-  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-  (add-hook 'js2-mode-hook #'js2-imenu-extras-mode))
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
 
 (use-package js2-refactor
-  :defer t
+  :hook (js2-mode . js2-refactor-mode)
   :config
-  (add-hook 'js2-mode-hook #'js2-refactor-mode)
   (js2r-add-keybindings-with-prefix "C-c C-r")
   (define-key js2-mode-map (kbd "C-k") #'js2r-kill)
 
@@ -1431,6 +1429,8 @@ couldn't figure things out (ex: syntax errors)."
 
 (use-package tex
   :ensure auctex
+  :hook ((LaTeX-mode . flyspell-mode)
+         (LaTeX-mode . reftex-mode))
   :custom
   (TeX-PDF-mode t)
   (TeX-auto-save t)
@@ -1441,9 +1441,6 @@ couldn't figure things out (ex: syntax errors)."
   (TeX-view-program-selection '((output-pdf "Evince")
                                 (output-html "xdg-open")))
   (TeX-source-correlate-mode t))
-
-(add-hook 'LaTeX-mode-hook 'flyspell-mode)
-(add-hook 'LaTeX-mode-hook 'reftex-mode)
 
 (setq-default TeX-engine 'xetex)
 
@@ -1706,9 +1703,8 @@ couldn't figure things out (ex: syntax errors)."
 
 (use-package mu4e-alert
   :defer 1
-  :init
-  (add-hook 'after-init-hook #'mu4e-alert-enable-notifications)
-  (add-hook 'after-init-hook #'mu4e-alert-enable-mode-line-display)
+  :hook ((after-init . mu4e-alert-enable-notifications)
+         (after-init . mu4e-alert-enable-mode-line-display))
   :custom (mu4e-alert-set-default-style 'libnotify))
 
 (setq send-mail-function 'smtpmail-send-it
