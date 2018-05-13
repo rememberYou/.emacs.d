@@ -1977,7 +1977,6 @@ modes.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package skewer-mode
-    :defer t
     :hook ((js2-mode . skewer-mode)
           (css-mode . skewer-css-mode)
           (html-mode . skewer-html-mode)
@@ -2045,12 +2044,10 @@ as you type!
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package simple-httpd
-    :defer t
     :custom
     (httpd-root "/var/www/html"))
 
     (use-package impatient-mode
-      :defer t
       :hook ((web-mode . httpd-start)
              (web-mode . impatient-mode)
              (css-mode . httpd-start)))
