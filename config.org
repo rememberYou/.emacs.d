@@ -1755,7 +1755,8 @@ completion candidates.
     (global-company-mode t))
 
   (use-package company-box
-    :after comapany
+    :diminish
+    :after company
     :hook (company-mode . company-box-mode))
 #+END_SRC
 
