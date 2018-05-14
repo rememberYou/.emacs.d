@@ -159,7 +159,7 @@ one.
 
 ** Dashboard
 
-Always good to have a dashboard
+Always good to have a dashboard.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (defun my/dashboard-banner ()
