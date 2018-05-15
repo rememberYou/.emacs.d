@@ -15,11 +15,11 @@
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
-(setq use-package-verbose t)
-(setq use-package-always-ensure t)
 
 (require 'use-package)
 
+(setq use-package-verbose t)
+(setq use-package-always-ensure t)
 (setq load-prefer-newer t)
 (setq vc-follow-symlinks nil)
 
