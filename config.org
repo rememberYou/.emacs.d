@@ -2485,8 +2485,9 @@ AUCTeX backend for company-mode.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package company-auctex
-    :after auctex
-    :config (company-auctex-init))
+    :after (auctex company)
+    :config
+    (company-auctex-init))
 #+END_SRC
 
 *** =reftex=

@@ -1456,8 +1456,9 @@ couldn't figure things out (ex: syntax errors)."
 (setq-default TeX-engine 'xetex)
 
 (use-package company-auctex
-  :after auctex
-  :config (company-auctex-init))
+  :after (auctex company)
+  :config
+  (company-auctex-init))
 
 (use-package reftex
   :after auctex)
