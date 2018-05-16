@@ -245,7 +245,12 @@ abort completely with `C-g'."
 
 (use-package solarized-theme
   :init
-  (load-theme 'solarized-dark t))
+  (load-theme 'solarized-dark t)
+  :config
+  (use-package smart-mode-line
+    :config
+    (setq sml/theme 'respectful)
+    (sml/setup)))
 
 (display-time-mode 1)
 
