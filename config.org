@@ -1048,28 +1048,28 @@ and other semi-structured pieces of information.
     " "Basic trade data")
 
   (setq org-capture-templates
-        `(("b" "Buy task" checkitem (file+headline "~/Dropbox/shared/.personal/various/buy.org" "To Buy")
+        `(("b" "Buy task" checkitem (file+headline "~/Sync/shared/.personal/various/buy.org" "To Buy")
            "- [ ] %^{Task}"
            :immediate-finish t)
-          ("i" "Interrupting task" entry (file+headline "~/Dropbox/shared/.personal/organizer.org" "Inbox")
+          ("i" "Interrupting task" entry (file+headline "~/Sync/shared/.personal/organizer.org" "Inbox")
            "* STARTED %^{Task}"
            :clock-in :clock-resume)
-          ("m" "Movie task" checkitem (file+headline "~/Dropbox/shared/.personal/various/movies.org" "To Watch")
+          ("m" "Movie task" checkitem (file+headline "~/Sync/shared/.personal/various/movies.org" "To Watch")
            "- [ ] %^{Task}"
            :immediate-finish t)
-          ("p" "People task" entry (file+headline "~/Dropbox/shared/.personal/people.org" "Tasks"),
+          ("p" "People task" entry (file+headline "~/Sync/shared/.personal/people.org" "Tasks"),
            my/org-basic-task-template
            :immediate-finish t)
-          ("s" "School task" entry (file+headline "~/Dropbox/shared/.personal/school.org" "Tasks"),
+          ("s" "School task" entry (file+headline "~/Sync/shared/.personal/school.org" "Tasks"),
            my/org-basic-task-template
            :immediate-finish t)
-          ("t" "Trading" entry (file+headline "~/Dropbox/shared/.personal/trading.org" "Trades/Day"),
+          ("t" "Trading" entry (file+headline "~/Sync/shared/.personal/trading.org" "Trades/Day"),
            my/org-basic-trade-template
            :immediate-finish t)
-          ("T" "Tasks" entry (file+headline "~/Dropbox/shared/.personal/organizer.org" "Tasks"),
+          ("T" "Tasks" entry (file+headline "~/Sync/shared/.personal/organizer.org" "Tasks"),
            my/org-basic-task-template
            :immediate-finish t)
-          ("F" "TFE Tasks" entry (file+headline "~/Dropbox/shared/.personal/tfe.org" "Tasks"),
+          ("F" "TFE Tasks" entry (file+headline "~/Sync/shared/.personal/tfe.org" "Tasks"),
            my/org-basic-task-template
            :immediate-finish t)))
 #+END_SRC
