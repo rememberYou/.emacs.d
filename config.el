@@ -269,6 +269,12 @@ abort completely with `C-g'."
 (setq default-major-mode 'text-mode)
 (setq text-mode-hook 'turn-on-auto-fill)
 
+(use-package diminish
+  :diminish abbrev-mode
+  :diminish auto-fill-mode
+  :diminish org-indent-mode
+  :diminish visual-line-mode)
+
 (setq browse-url-browser-function 'browse-url-chromium)
 
 (defun prelude-copy-file-name-to-clipboard ()

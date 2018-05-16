@@ -494,6 +494,18 @@ provides the best display of the code according to the scale.
   (setq text-mode-hook 'turn-on-auto-fill)
 #+END_SRC
 
+** Diminish
+
+Diminish few modes from built-in packages.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package diminish
+    :diminish abbrev-mode
+    :diminish auto-fill-mode
+    :diminish org-indent-mode
+    :diminish visual-line-mode)
+#+END_SRC
+
 * Navigation
 
 ** Chromium as default browser
