@@ -23,7 +23,7 @@
 (setq load-prefer-newer t)
 (setq vc-follow-symlinks nil)
 
-(setq auth-sources '("~/Dropbox/shared/.authinfo.gpg"
+(setq auth-sources '("~/Sync/shared/.authinfo.gpg"
                      "~/.authinfo.gpg"
                      "~/.authinfo"
                      "~/.netrc"))
@@ -334,16 +334,16 @@ abort completely with `C-g'."
 (my/defshortcut ?I "~/.config/i3/config")
 (my/defshortcut ?S "~/.config/sway/config")
 (my/defshortcut ?X "~/.Xresources")
-(my/defshortcut ?b "~/Dropbox/shared/.personal/various/buy.org")
+(my/defshortcut ?b "~/Sync/shared/.personal/various/buy.org")
 (my/defshortcut ?c "~/.emacs.d/config.org")
-(my/defshortcut ?e "~/Dropbox/shared/elfeed/elfeed.org")
+(my/defshortcut ?e "~/Sync/shared/elfeed/elfeed.org")
 (my/defshortcut ?i "~/.emacs.d/init.el")
-(my/defshortcut ?m "~/Dropbox/shared/.personal/various/movies.org")
-(my/defshortcut ?o "~/Dropbox/shared/.personal/organizer.org")
-(my/defshortcut ?p "~/Dropbox/shared/.personal/people.org")
-(my/defshortcut ?r "~/Dropbox/shared/.personal/routine.org")
-(my/defshortcut ?s "~/Dropbox/shared/.personal/school.org")
-(my/defshortcut ?t "~/Dropbox/shared/.personal/tfe.org")
+(my/defshortcut ?m "~/Sync/shared/.personal/various/movies.org")
+(my/defshortcut ?o "~/Sync/shared/.personal/organizer.org")
+(my/defshortcut ?p "~/Sync/shared/.personal/people.org")
+(my/defshortcut ?r "~/Sync/shared/.personal/routine.org")
+(my/defshortcut ?s "~/Sync/shared/.personal/school.org")
+(my/defshortcut ?t "~/Sync/shared/.personal/tfe.org")
 
 (use-package move-text
   :bind (("M-p" . move-text-up)
@@ -504,21 +504,21 @@ and indent it one level."
           (insert string "\n"))))))
 
 (require 'org-agenda)
-(setq org-directory "~/Dropbox/shared/personal")
-(setq org-default-notes-file "~/Dropbox/shared/.personal/organizer.org")
+(setq org-directory "~/Sync/shared/personal")
+(setq org-default-notes-file "~/Sync/shared/.personal/organizer.org")
 
 (setq org-agenda-files
       (delq nil
             (mapcar (lambda (x) (and (file-exists-p x) x))
-                    '("~/Dropbox/shared/.personal/101things.org"
-                      "~/Dropbox/shared/.personal/business.org"
-                      "~/Dropbox/shared/.personal/decisions.org"
-                      "~/Dropbox/shared/.personal/learning.org"
-                      "~/Dropbox/shared/.personal/organizer.org"
-                      "~/Dropbox/shared/.personal/people.org"
-                      "~/Dropbox/shared/.personal/projects.org"
-                      "~/Dropbox/shared/.personal/routine.org"
-                      "~/Dropbox/shared/.personal/school.org"))))
+                    '("~/Sync/shared/.personal/101things.org"
+                      "~/Sync/shared/.personal/business.org"
+                      "~/Sync/shared/.personal/decisions.org"
+                      "~/Sync/shared/.personal/learning.org"
+                      "~/Sync/shared/.personal/organizer.org"
+                      "~/Sync/shared/.personal/people.org"
+                      "~/Sync/shared/.personal/projects.org"
+                      "~/Sync/shared/.personal/routine.org"
+                      "~/Sync/shared/.personal/school.org"))))
 (add-to-list 'auto-mode-alist '("\\.txt$" . org-mode))
 
 (defun my/org-insert-heading-for-next-day ()
@@ -594,28 +594,28 @@ and indent it one level."
   " "Basic trade data")
 
 (setq org-capture-templates
-      `(("b" "Buy task" checkitem (file+headline "~/Dropbox/shared/.personal/various/buy.org" "To Buy")
+      `(("b" "Buy task" checkitem (file+headline "~/Sync/shared/.personal/various/buy.org" "To Buy")
          "- [ ] %^{Task}"
          :immediate-finish t)
-        ("i" "Interrupting task" entry (file+headline "~/Dropbox/shared/.personal/organizer.org" "Inbox")
+        ("i" "Interrupting task" entry (file+headline "~/Sync/shared/.personal/organizer.org" "Inbox")
          "* STARTED %^{Task}"
          :clock-in :clock-resume)
-        ("m" "Movie task" checkitem (file+headline "~/Dropbox/shared/.personal/various/movies.org" "To Watch")
+        ("m" "Movie task" checkitem (file+headline "~/Sync/shared/.personal/various/movies.org" "To Watch")
          "- [ ] %^{Task}"
          :immediate-finish t)
-        ("p" "People task" entry (file+headline "~/Dropbox/shared/.personal/people.org" "Tasks"),
+        ("p" "People task" entry (file+headline "~/Sync/shared/.personal/people.org" "Tasks"),
          my/org-basic-task-template
          :immediate-finish t)
-        ("s" "School task" entry (file+headline "~/Dropbox/shared/.personal/school.org" "Tasks"),
+        ("s" "School task" entry (file+headline "~/Sync/shared/.personal/school.org" "Tasks"),
          my/org-basic-task-template
          :immediate-finish t)
-        ("t" "Trading" entry (file+headline "~/Dropbox/shared/.personal/trading.org" "Trades/Day"),
+        ("t" "Trading" entry (file+headline "~/Sync/shared/.personal/trading.org" "Trades/Day"),
          my/org-basic-trade-template
          :immediate-finish t)
-        ("T" "Tasks" entry (file+headline "~/Dropbox/shared/.personal/organizer.org" "Tasks"),
+        ("T" "Tasks" entry (file+headline "~/Sync/shared/.personal/organizer.org" "Tasks"),
          my/org-basic-task-template
          :immediate-finish t)
-        ("F" "TFE Tasks" entry (file+headline "~/Dropbox/shared/.personal/tfe.org" "Tasks"),
+        ("F" "TFE Tasks" entry (file+headline "~/Sync/shared/.personal/tfe.org" "Tasks"),
          my/org-basic-task-template
          :immediate-finish t)))
 
@@ -963,7 +963,7 @@ the same tree node, and the headline of the tree node in the Org-mode file."
 
 (use-package org-journal
   :custom
-  (org-journal-dir "~/Dropbox/shared/.journal/2018/")
+  (org-journal-dir "~/Sync/shared/.journal/2018/")
   (org-journal-file-format "%Y%m%d")
   (org-journal-date-format "%e %b %Y (%A)")
   (org-journal-time-format "")
@@ -1584,7 +1584,7 @@ couldn't figure things out (ex: syntax errors)."
          ("M" . elfeed-toggle-star)
          ("j" . mz/make-and-run-elfeed-hydra)
          ("J" . mz/make-and-run-elfeed-hydra))
-  :custom (elfeed-db-directory "~/Dropbox/shared/elfeed/db"))
+  :custom (elfeed-db-directory "~/Sync/shared/elfeed/db"))
 
   (defun elfeed-load-db-and-open ()
     "Wrapper to load the elfeed db from disk before opening"
@@ -1669,7 +1669,7 @@ couldn't figure things out (ex: syntax errors)."
   :defer 2
   :config
   (elfeed-org)
-  (setq rmh-elfeed-org-files (list "~/Dropbox/shared/elfeed/elfeed.org")))
+  (setq rmh-elfeed-org-files (list "~/Sync/shared/elfeed/elfeed.org")))
 
 (use-package elfeed-goodies
   :after elfeed

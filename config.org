@@ -64,11 +64,11 @@ Adding main Elisp directory and install =use-package=.
   (setq vc-follow-symlinks nil)
 #+END_SRC
 
-I put my =.authinfo.gpg= file in Dropbox in order to be able to easily use my
+I put my =.authinfo.gpg= file in Syncthing in order to be able to easily use my
 configuration on other devices.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (setq auth-sources '("~/Dropbox/shared/.authinfo.gpg"
+  (setq auth-sources '("~/Sync/shared/.authinfo.gpg"
                        "~/.authinfo.gpg"
                        "~/.authinfo"
                        "~/.netrc"))
@@ -598,16 +598,16 @@ might as well add shortcuts for refiling.
   (my/defshortcut ?I "~/.config/i3/config")
   (my/defshortcut ?S "~/.config/sway/config")
   (my/defshortcut ?X "~/.Xresources")
-  (my/defshortcut ?b "~/Dropbox/shared/.personal/various/buy.org")
+  (my/defshortcut ?b "~/Sync/shared/.personal/various/buy.org")
   (my/defshortcut ?c "~/.emacs.d/config.org")
-  (my/defshortcut ?e "~/Dropbox/shared/elfeed/elfeed.org")
+  (my/defshortcut ?e "~/Sync/shared/elfeed/elfeed.org")
   (my/defshortcut ?i "~/.emacs.d/init.el")
-  (my/defshortcut ?m "~/Dropbox/shared/.personal/various/movies.org")
-  (my/defshortcut ?o "~/Dropbox/shared/.personal/organizer.org")
-  (my/defshortcut ?p "~/Dropbox/shared/.personal/people.org")
-  (my/defshortcut ?r "~/Dropbox/shared/.personal/routine.org")
-  (my/defshortcut ?s "~/Dropbox/shared/.personal/school.org")
-  (my/defshortcut ?t "~/Dropbox/shared/.personal/tfe.org")
+  (my/defshortcut ?m "~/Sync/shared/.personal/various/movies.org")
+  (my/defshortcut ?o "~/Sync/shared/.personal/organizer.org")
+  (my/defshortcut ?p "~/Sync/shared/.personal/people.org")
+  (my/defshortcut ?r "~/Sync/shared/.personal/routine.org")
+  (my/defshortcut ?s "~/Sync/shared/.personal/school.org")
+  (my/defshortcut ?t "~/Sync/shared/.personal/tfe.org")
 #+END_SRC
 
 ** =move-text=
@@ -897,13 +897,13 @@ it elsewhere in the hierarchy.
 I am a fan about the organization made by Sacha Chua, which is why most of
 the functions added above come essentially from her.
 
-My org files are in my =personal= directory from my [[https://www.dropbox.com/][Dropbox]]. That way, I can
+My org files are in my =personal= directory from my [[https://www.dropbox.com/][Sync]]. That way, I can
 update my =.org= files from multiple computers and smartphones.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (require 'org-agenda)
-  (setq org-directory "~/Dropbox/shared/personal")
-  (setq org-default-notes-file "~/Dropbox/shared/.personal/organizer.org")
+  (setq org-directory "~/Sync/shared/personal")
+  (setq org-default-notes-file "~/Sync/shared/.personal/organizer.org")
 #+END_SRC
 
 Here is the place where I put all my =.org= files that will be read by =org-agenda=.
@@ -912,15 +912,15 @@ Here is the place where I put all my =.org= files that will be read by =org-agen
   (setq org-agenda-files
         (delq nil
               (mapcar (lambda (x) (and (file-exists-p x) x))
-                      '("~/Dropbox/shared/.personal/101things.org"
-                        "~/Dropbox/shared/.personal/business.org"
-                        "~/Dropbox/shared/.personal/decisions.org"
-                        "~/Dropbox/shared/.personal/learning.org"
-                        "~/Dropbox/shared/.personal/organizer.org"
-                        "~/Dropbox/shared/.personal/people.org"
-                        "~/Dropbox/shared/.personal/projects.org"
-                        "~/Dropbox/shared/.personal/routine.org"
-                        "~/Dropbox/shared/.personal/school.org"))))
+                      '("~/Sync/shared/.personal/101things.org"
+                        "~/Sync/shared/.personal/business.org"
+                        "~/Sync/shared/.personal/decisions.org"
+                        "~/Sync/shared/.personal/learning.org"
+                        "~/Sync/shared/.personal/organizer.org"
+                        "~/Sync/shared/.personal/people.org"
+                        "~/Sync/shared/.personal/projects.org"
+                        "~/Sync/shared/.personal/routine.org"
+                        "~/Sync/shared/.personal/school.org"))))
   (add-to-list 'auto-mode-alist '("\\.txt$" . org-mode))
 #+END_SRC
 
@@ -1596,7 +1596,7 @@ https://github.com/howardabrams/dot-files/blob/master/emacs-org.org
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package org-journal
     :custom
-    (org-journal-dir "~/Dropbox/shared/.journal/2018/")
+    (org-journal-dir "~/Sync/shared/.journal/2018/")
     (org-journal-file-format "%Y%m%d")
     (org-journal-date-format "%e %b %Y (%A)")
     (org-journal-time-format "")
@@ -2705,7 +2705,7 @@ this.
            ("M" . elfeed-toggle-star)
            ("j" . mz/make-and-run-elfeed-hydra)
            ("J" . mz/make-and-run-elfeed-hydra))
-    :custom (elfeed-db-directory "~/Dropbox/shared/elfeed/db"))
+    :custom (elfeed-db-directory "~/Sync/shared/elfeed/db"))
 
     (defun elfeed-load-db-and-open ()
       "Wrapper to load the elfeed db from disk before opening"
@@ -2796,7 +2796,7 @@ In order to easily manage my RSS Feeds, I configure them using an Org file.
     :defer 2
     :config
     (elfeed-org)
-    (setq rmh-elfeed-org-files (list "~/Dropbox/shared/elfeed/elfeed.org")))
+    (setq rmh-elfeed-org-files (list "~/Sync/shared/elfeed/elfeed.org")))
 #+END_SRC
 
 Allows a better reading of RSS Feeds
