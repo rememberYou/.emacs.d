@@ -2501,10 +2501,8 @@ Minor mode with distinct support for =\label=, =\ref= and =\cite= in LaTeX.
 
 ** Lua
 
-I rarely programming in Lua, except to configurate my own windows manager
-(=AwesomeWM=).
-
-=lua-mode= satisfeat myself for my needed.
+I rarely programming in Lua, but when I do, =lua-mode= satisfeat myself for my
+needed.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package lua-mode
