@@ -1761,7 +1761,7 @@ completion candidates.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package company
-    :diminish company-mode
+    :diminish
     :defer 2
     :custom
     (company-tooltip-align-annotations 't)
@@ -1881,6 +1881,7 @@ non-whitespace character.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package hungry-delete
     :defer 2
+    :diminish
     :config
     (global-hungry-delete-mode))
 #+END_SRC

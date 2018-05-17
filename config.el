@@ -1084,7 +1084,7 @@ same day of the month, but will be the same day of the week."
   (setq math-units-table nil))
 
 (use-package company
-  :diminish company-mode
+  :diminish
   :defer 2
   :custom
   (company-tooltip-align-annotations 't)
@@ -1154,6 +1154,7 @@ same day of the month, but will be the same day of the week."
 
 (use-package hungry-delete
   :defer 2
+  :diminish
   :config
   (global-hungry-delete-mode))
 
