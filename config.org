@@ -1622,7 +1622,7 @@ https://github.com/howardabrams/dot-files/blob/master/emacs-org.org
     (org-journal-time-format "")
     :config
     (defun get-journal-file-yesterday ()
-      "Return filename for yesterday's journal entry."
+      "Gets filename for yesterday's journal entry."
       (let* ((yesterday (time-subtract (current-time) (days-to-time 1)))
              (daily-name (format-time-string "%Y%m%d" yesterday)))
         (expand-file-name (concat org-journal-dir daily-name))))
@@ -1633,7 +1633,7 @@ https://github.com/howardabrams/dot-files/blob/master/emacs-org.org
       (find-file (get-journal-file-yesterday)))
 
     (defun journal-last-year-file ()
-      "Returns the string corresponding to the journal entry that
+      "Gets the string corresponding to the journal entry that
   happened 'last year' at this same time (meaning on the same day
   of the week)."
       (let* ((last-year-seconds (- (float-time) (* 365 24 60 60)))

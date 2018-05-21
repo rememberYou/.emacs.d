@@ -983,7 +983,7 @@ the same tree node, and the headline of the tree node in the Org-mode file."
   (org-journal-time-format "")
   :config
   (defun get-journal-file-yesterday ()
-    "Return filename for yesterday's journal entry."
+    "Gets filename for yesterday's journal entry."
     (let* ((yesterday (time-subtract (current-time) (days-to-time 1)))
            (daily-name (format-time-string "%Y%m%d" yesterday)))
       (expand-file-name (concat org-journal-dir daily-name))))
@@ -994,7 +994,7 @@ the same tree node, and the headline of the tree node in the Org-mode file."
     (find-file (get-journal-file-yesterday)))
 
   (defun journal-last-year-file ()
-    "Returns the string corresponding to the journal entry that
+    "Gets the string corresponding to the journal entry that
 happened 'last year' at this same time (meaning on the same day
 of the week)."
     (let* ((last-year-seconds (- (float-time) (* 365 24 60 60)))
