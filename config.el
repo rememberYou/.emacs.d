@@ -981,7 +981,7 @@ the same tree node, and the headline of the tree node in the Org-mode file."
   (org-journal-file-format "%Y%m%d")
   (org-journal-date-format "%e %b %Y (%A)")
   (org-journal-time-format "")
-  :config
+  :preface
   (defun get-journal-file-yesterday ()
     "Gets filename for yesterday's journal entry."
     (let* ((yesterday (time-subtract (current-time) (days-to-time 1)))
