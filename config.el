@@ -974,6 +974,8 @@ the same tree node, and the headline of the tree node in the Org-mode file."
 (define-key org-agenda-mode-map "X" 'my/org-agenda-mark-done-and-add-followup)
 
 (use-package org-journal
+  :bind (("C-c t " . org-journal-new-entry)
+         ("C-c y" . journal-file-yesterday))
   :custom
   (org-journal-dir "~/Sync/shared/.journal/2018/")
   (org-journal-file-format "%Y%m%d")
@@ -1000,9 +1002,6 @@ the same tree node, and the headline of the tree node in the Org-mode file."
     "Creates and load a file based on yesterday's date."
     (interactive)
     (find-file (get-journal-file-yesterday)))
-
-  (global-set-key (kbd "C-c t") 'journal-file-today)
-  (global-set-key (kbd "C-c y") 'journal-file-yesterday)
 
   (defun journal-last-year-file ()
     "Returns the string corresponding to the journal entry that
