@@ -1028,15 +1028,13 @@ same day of the month, but will be the same day of the week."
 (require 'epa)
 (custom-set-variables '(epg-gpg-program  "/usr/bin/gpg"))
 
-(require 'org-crypt)
-(org-crypt-use-before-save-magic)
-(setq org-tags-exclude-from-inheritance (quote ("crypt")))
-;; GPG key to use for encryption
-;; Either the Key ID or set to nil to use symmetric encryption.
-(setq org-crypt-key nil)
-(setq auto-save-default nil)
-
-(global-set-key (kbd "C-c d") 'org-decrypt-entry)
+(use-package org
+  :bind ("C-c d" . org-decrypt-entry)
+  :init (org-crypt-use-before-save-magic)
+  :custom
+  (org-tags-exclude-from-inheritance (quote ("crypt")))
+  (org-crypt-key "E9AADC36E94A672D1A07D49B208FCDBB98190562")
+  (auto-save-default nil))
 
 (use-package ox-reveal
   :defer 2
