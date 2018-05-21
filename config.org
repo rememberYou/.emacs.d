@@ -1663,8 +1663,9 @@ like any good journals, we don't want other people to be able to read it.
 To use that, you should install =gnupg2=
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (require 'epa)
-  (custom-set-variables '(epg-gpg-program  "/usr/bin/gpg"))
+  (use-package epa
+    :custom
+    (epg-gpg-program  "gpg"))
 
   (use-package org
     :bind ("C-c d" . org-decrypt-entry)

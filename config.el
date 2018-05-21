@@ -1016,8 +1016,9 @@ same day of the month, but will be the same day of the week."
     (let ((journal-file (concat org-journal-dir (journal-last-year-file))))
       (find-file journal-file))))
 
-(require 'epa)
-(custom-set-variables '(epg-gpg-program  "/usr/bin/gpg"))
+(use-package epa
+  :custom
+  (epg-gpg-program  "gpg"))
 
 (use-package org
   :bind ("C-c d" . org-decrypt-entry)
