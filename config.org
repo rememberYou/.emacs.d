@@ -1658,9 +1658,16 @@ https://github.com/howardabrams/dot-files/blob/master/emacs-org.org
 
 like any good journals, we don't want other people to be able to read it.
 
-** Crypt text
+** Encryption/Decryption
 
-To use that, you should install =gnupg2=
+To be able to enable encryption and decryption of =.gpg= files with =org-mode=,
+we will need to install =gnupg2=.
+
+Once this is done, we simply configure =epa=, the EasyPG Emacs assistant and
+=org-crypt= to accept our public key identifier to allow asymmetric encryption.
+
+*NOTE:* you need to modify the =org-crypt-key= variable to replace my key
+identifier, by yours (or =nil= to allow symmetric encryption).
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package epa
