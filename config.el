@@ -452,6 +452,7 @@ point reaches the beginning or end of the buffer, stop there."
 (setq org-ditaa-jar-path "~/Dropbox/shared/lib/ditaa0_9.jar")
 
 (setq org-modules '(org-info
+                    org-crypt
                     org-habit
                     org-irc
                     org-mouse

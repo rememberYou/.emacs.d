@@ -821,6 +821,7 @@ currently experimenting with.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (setq org-modules '(org-info
+                      org-crypt
                       org-habit
                       org-irc
                       org-mouse
