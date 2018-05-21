@@ -974,7 +974,7 @@ the same tree node, and the headline of the tree node in the Org-mode file."
 (define-key org-agenda-mode-map "X" 'my/org-agenda-mark-done-and-add-followup)
 
 (use-package org-journal
-  :bind (("C-c t " . org-journal-new-entry)
+  :bind (("C-c t" . org-journal-new-entry)
          ("C-c y" . journal-file-yesterday))
   :custom
   (org-journal-dir "~/Sync/shared/.journal/2018/")
