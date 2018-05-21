@@ -1018,7 +1018,7 @@ same day of the month, but will be the same day of the week."
 
 (use-package epa
   :custom
-  (epg-gpg-program  "gpg"))
+  (epg-gpg-program "gpg"))
 
 (use-package org
   :bind ("C-c d" . org-decrypt-entry)

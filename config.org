@@ -1672,7 +1672,7 @@ identifier, by yours (or =nil= to allow symmetric encryption).
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package epa
     :custom
-    (epg-gpg-program  "gpg"))
+    (epg-gpg-program "gpg"))
 
   (use-package org
     :bind ("C-c d" . org-decrypt-entry)
