@@ -1109,15 +1109,15 @@ same day of the month, but will be the same day of the week."
 
 (use-package git-gutter
   :defer 2
-  :diminish (git-gutter-mode)
+  :diminish
   :init
   (global-git-gutter-mode +1))
 
 (use-package git-timemachine
-  :defer 3)
+  :defer 3
+  :diminish)
 
 (use-package which-key
-  :defer 2
   :diminish
   :commands which-key-mode
   :config
