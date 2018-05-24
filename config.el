@@ -1229,13 +1229,15 @@ same day of the month, but will be the same day of the week."
   :bind ("M-y" . counsel-yank-pop))
 
 (use-package simple-httpd
+  :defer 4
   :custom
   (httpd-root "/var/www/html"))
 
-  (use-package impatient-mode
-    :hook ((web-mode . httpd-start)
-           (web-mode . impatient-mode)
-           (css-mode . httpd-start)))
+(use-package impatient-mode
+  :after simple-httpd
+  :hook ((web-mode . httpd-start)
+         (web-mode . impatient-mode)
+         (css-mode . httpd-start)))
 
 (use-package smartparens
   :defer 5)

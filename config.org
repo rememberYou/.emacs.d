@@ -2037,19 +2037,21 @@ I also use =counsel= to easily find my files.
 Useful to see the effect of then HTML when you type it.
 
 To use =impatient mode= , you need to enable the web server provided by
-=simple-httpd. For that, use =M-x httpd-start=, open your browser to
+=simple-httpd=. For that, use =M-x httpd-start=, open your browser to
 =http://localhost:8080/imp/= and select your buffer to watch your changes appear
 as you type!
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package simple-httpd
+    :defer 4
     :custom
     (httpd-root "/var/www/html"))
 
-    (use-package impatient-mode
-      :hook ((web-mode . httpd-start)
-             (web-mode . impatient-mode)
-             (css-mode . httpd-start)))
+  (use-package impatient-mode
+    :after simple-httpd
+    :hook ((web-mode . httpd-start)
+           (web-mode . impatient-mode)
+           (css-mode . httpd-start)))
 #+END_SRC
 
 ** =smartparens=
