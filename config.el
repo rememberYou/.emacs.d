@@ -1653,22 +1653,110 @@ couldn't figure things out (ex: syntax errors)."
     (mz/hydra-elfeed/body))
 
 (use-package hydra
-  :defer 2)
+  :defer 2
+  :bind ("C-c f" . hydra-flycheck/body)
+        ("C-c m" . hydra-magit/body)
+        ("C-c p" . hydra-projectile/body)
+        ("C-c o" . hydra-toggle/body)
+        ("C-c w" . hydra-windows/body))
 
-(global-set-key
- (kbd "C-x t")
- (defhydra toggle (:color blue)
-   "toggle"
-   ("a" abbrev-mode "abbrev")
-   ("s" flyspell-mode "flyspell")
-   ("d" toggle-debug-on-error "debug")
-   ("w" whitespace-mode "whitespace")
-   ("q" nil "cancel")))
+(defhydra hydra-flycheck (:color pink)
+  "
+  ^
+  ^Flycheck^          ^Errors^            ^Checker^
+  ^────────^──────────^──────^────────────^───────^─────
+  _q_ quit            _<_ previous        _?_ describe
+  _m_ manual          _>_ next            _d_ disable
+  _v_ verify setup    _f_ check           _s_ select
+  ^^                  _l_ list            ^^
+  ^^                  ^^                  ^^
+  "
+  ("q" nil)
+  ("<" flycheck-previous-error)
+  (">" flycheck-next-error)
+  ("?" flycheck-describe-checker :color blue)
+  ("d" flycheck-disable-checker :color blue)
+  ("f" flycheck-buffer)
+  ("l" flycheck-list-errors :color blue)
+  ("m" flycheck-manual :color blue)
+  ("s" flycheck-select-checker :color blue)
+  ("v" flycheck-verify-setup :color blue))
 
-(defhydra hydra-zoom (global-map "<f2>")
-  "zoom"
-  ("g" text-scale-increase "in")
-  ("l" text-scale-decrease "out"))
+(defhydra hydra-magit (:color blue)
+  "
+  ^
+  ^Magit^             ^Do^
+  ^─────^─────────────^──^────────
+  _q_ quit            _b_ blame
+  ^^                  _c_ clone
+  ^^                  _i_ init
+  ^^                  _s_ status
+  ^^                  ^^
+  "
+  ("q" nil)
+  ("b" magit-blame)
+  ("c" magit-clone)
+  ("i" magit-init)
+  ("s" magit-status))
+
+(defhydra hydra-projectile (:color blue)
+  "
+  ^
+  ^Projectile^        ^Buffers^           ^Find^              ^Search^
+  ^──────────^────────^───────^───────────^────^──────────────^──────^────────────
+  _q_ quit            _b_ list            _d_ directory       _r_ replace
+  _i_ reset cache     _K_ kill all        _D_ root            _R_ regexp replace
+  ^^                  _S_ save all        _f_ file            _s_ ag
+  ^^                  ^^                  _p_ project         ^^
+  ^^                  ^^                  ^^                  ^^
+  "
+  ("q" nil)
+  ("b" counsel-projectile-switch-to-buffer)
+  ("d" counsel-projectile-find-dir)
+  ("D" projectile-dired)
+  ("f" counsel-projectile-find-file)
+  ("i" projectile-invalidate-cache :color red)
+  ("K" projectile-kill-buffers)
+  ("p" counsel-projectile-switch-project)
+  ("r" projectile-replace)
+  ("R" projectile-replace-regexp)
+  ("s" counsel-projectile-ag)
+  ("S" projectile-save-project-buffers))
+
+(defhydra hydra-toggle (:color blue)
+  "
+  ^
+  ^Toggle^             ^Do^
+  ^──────^─────────────^──^─────────
+  _q_ quit             _a_ abbrev
+  ^^                   _f_ flyspell
+  ^^                   ^^
+  "
+  ("q" nil)
+  ("a" abbrev-mode)
+  ("f" flyspell-mode))
+
+(defhydra hydra-windows (:color pink)
+  "
+  ^
+  ^Windows^           ^Window^            ^Zoom^
+  ^───────^───────────^──────^────────────^────^──────────────
+  _q_ quit            _b_ balance         _-_ out
+  ^^                  _i_ heighten        _+_ in
+  ^^                  _j_ narrow          _=_ reset
+  ^^                  _k_ lower           ^^
+  ^^                  _l_ widen           ^^
+  ^^                  ^^                  ^^
+  "
+  ("q" nil)
+  ("b" balance-windows)
+  ("i" enlarge-window)
+  ("j" shrink-window-horizontally)
+  ("k" shrink-window)
+  ("l" enlarge-window-horizontally)
+  ("-" text-scale-decrease)
+  ("+" text-scale-increase)
+  ("=" (text-scale-increase 0)))
 
 (use-package elfeed-org
   :after elfeed
