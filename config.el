@@ -1100,6 +1100,7 @@ same day of the month, but will be the same day of the week."
   (docker-global-mode))
 
 (use-package magit
+  :defer 2
   :bind (("C-c m c" . magit-commit)
          ("C-c m a" . magit-stage)
          ("C-c m s" . magit-status)

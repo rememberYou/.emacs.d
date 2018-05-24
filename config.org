@@ -1792,15 +1792,25 @@ clean.
     (docker-global-mode))
 #+END_SRC
 
-** =git=
+** Version Control
 
 It is quite common to work on Git repositories, so it is important to have a
 configuration that we like.
 
-Magit is for me the best package for to manage Git.
+#+BEGIN_QUOTE
+[[https://github.com/magit/magit][Magit]] is an interface to the version control system Git, implemented as an Emacs
+package. Magit aspires to be a complete Git porcelain. While we cannot (yet)
+claim that Magit wraps and improves upon each and every Git command, it is
+complete enough to allow even experienced Git users to perform almost all of
+their daily version control tasks directly from within Emacs. While many fine
+Git clients exist, only Magit and Git itself deserve to be called porcelains.
+
+[[https://github.com/tarsius][Jonas Bernoulli]]
+#+END_QUOTE
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package magit
+    :defer 2
     :bind (("C-c m c" . magit-commit)
            ("C-c m a" . magit-stage)
            ("C-c m s" . magit-status)
