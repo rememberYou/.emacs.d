@@ -431,25 +431,25 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package org
   :init
-  (use-package ob-python
-    :ensure org-plus-contrib
-    :commands (org-babel-execute:python))
-  (require' ob-C)
-  (require' ob-css)
-  (require' ob-dot)
-  (require' ob-ditaa)
-  (require' ob-emacs-lisp)
-  (require' ob-gnuplot)
-  (require' ob-java)
-  (require' ob-js)
-  (require' ob-latex)
-  (require' ob-plantuml)
-  (require' ob-makefile)
-  (require' ob-org)
-  (require' ob-ruby))
-
-(setq org-plantuml-jar-path (expand-file-name "~/dropbox/shared/lib/plantuml.jar"))
-(setq org-ditaa-jar-path "~/Dropbox/shared/lib/ditaa0_9.jar")
+  (require 'ob-C)
+  (require 'ob-css)
+  (require 'ob-ditaa)
+  (require 'ob-dot)
+  (require 'ob-emacs-lisp)
+  (require 'ob-gnuplot)
+  (require 'ob-java)
+  (require 'ob-js)
+  (require 'ob-latex)
+  (require 'ob-makefile)
+  (require 'ob-org)
+  (require 'ob-plantuml)
+  (require 'ob-python)
+  (require 'ob-ruby)
+  (require 'ob-shell)
+  (require 'ob-sql)
+  :custom
+  (org-plantuml-jar-path (expand-file-name "~/Sync/shared/lib/plantuml.jar"))
+  (org-ditaa-jar-path "~/Sync/shared/lib/ditaa0_9.jar"))
 
 (setq org-modules '(org-info
                     org-crypt
