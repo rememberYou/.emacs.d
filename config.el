@@ -1509,148 +1509,74 @@ couldn't figure things out (ex: syntax errors)."
   :interpreter ("yml" . yml-mode))
 
 (use-package erc
-  :defer 10
+  :defer 3
   :bind (("C-c e" . my/erc-start-or-switch)
          ("C-c n" . my/erc-count-users))
+  :hook ((ercn-notify . my/erc-notify)
+         (erc-send-pre . my/erc-preprocess))
   :custom
-  (erc-autojoin-channels-alist '(("freenode.net" "#archlinux" "#bash" "#bitcoin"
-                                  "#emacs" "#gentoo" "#i3" "#latex" "#org-mode"  "#python" "#sway")))
+  (erc-autojoin-channels-alist '(("freenode.net" "#archlinux" "#bash" "#emacs"
+                                  "#gentoo" "#i3" "#latex" "#org-mode" "#python"
+                                  "#sway")))
   (erc-autojoin-timing 'ident)
   (erc-fill-function 'erc-fill-static)
   (erc-fill-static-center 22)
-  (erc-prompt-for-nickserv-password nil)
+  (erc-header-line-format " %n on %t (%m)")
   (erc-hide-list '("JOIN" "PART" "QUIT"))
+  (erc-lurker-hide-list '("JOIN" "PART" "QUIT"))
+  (erc-lurker-threshold-time 43200)
+  (erc-prompt-for-nickserv-password nil)
   (erc-server-reconnect-attempts 5)
   (erc-server-reconnect-timeout 3)
-  (erc-lurker-hide-list (quote ("JOIN" "PART" "QUIT")))
-  (erc-lurker-threshold-time 43200)
-
   (erc-track-exclude-types '("JOIN" "MODE" "NICK" "PART" "QUIT"
                              "324" "329" "332" "333" "353" "477"))
   :config
   (add-to-list 'erc-modules 'notifications)
   (add-to-list 'erc-modules 'spelling)
   (erc-services-mode 1)
-  (erc-update-modules))
+  (erc-update-modules)
+  :preface
+  (defun my/erc-start-or-switch ()
+    "Connects to ERC, or switch to last active buffer."
+    (interactive)
+    (if (get-buffer "irc.freenode.net:6667")
+        (erc-track-switch-buffer 1)
+      (when (y-or-n-p "Start ERC? ")
+        (erc :server "irc.freenode.net" :port 6667 :nick "rememberYou"))))
+
+  (defun my/erc-count-users ()
+    "Displays the number of users connected on the current channel."
+    (interactive)
+    (if (get-buffer "irc.freenode.net:6667")
+        (let ((channel (erc-default-target)))
+          (if (and channel (erc-channel-p channel))
+              (message "%d users are online on %s"
+                       (hash-table-count erc-channel-users)
+                       channel)
+            (user-error "The current buffer is not a channel")))
+      (user-error "You must first start ERC")))
+
+  (defun my/erc-notify (nickname message)
+    "Displays a notification message for ERC."
+    (let* ((channel (buffer-name))
+           (nick (erc-hl-nicks-trim-irc-nick nickname))
+           (title (if (string-match-p (concat "^" nickname) channel)
+                      nick
+                    (concat nick " (" channel ")")))
+           (msg (s-trim (s-collapse-whitespace message))))
+      (alert (concat nick ": " msg) :title title)))
+
+  (defun my/erc-preprocess (string)
+    "Avoids channel flooding."
+    (setq str
+          (string-trim
+           (replace-regexp-in-string "\n+" " " str)))))
 
 (use-package erc-hl-nicks
   :after erc)
 
 (use-package erc-image
   :after erc)
-
-(defun my/erc-count-users ()
-  "Displays the number of users connected on the current channel."
-  (interactive)
-  (if (get-buffer "irc.freenode.net:6667")
-      (let ((channel (erc-default-target)))
-        (if (and channel (erc-channel-p channel))
-            (message "%d users are online on %s"
-                     (hash-table-count erc-channel-users)
-                     channel)
-          (user-error "The current buffer is not a channel")))
-    (user-error "You must first start ERC")))
-
-(defun my/erc-notify (nickname message)
-  "Displays a notification message for ERC."
-  (let* ((channel (buffer-name))
-         (nick (erc-hl-nicks-trim-irc-nick nickname))
-         (title (if (string-match-p (concat "^" nickname) channel)
-                    nick
-                  (concat nick " (" channel ")")))
-         (msg (s-trim (s-collapse-whitespace message))))
-
-    (alert (concat nick ": " msg) :title title)))
-
-(add-hook 'ercn-notify-hook 'my/erc-notify)
-
-(defun my/erc-preprocess (string)
-  "Avoids channel flooding"
-  (setq str
-        (string-trim
-         (replace-regexp-in-string "\n+" " " str))))
-
-(add-hook 'erc-send-pre-hook 'my/erc-preprocess)
-
-(defun my/erc-start-or-switch ()
-  "Connect to ERC, or switch to last active buffer."
-  (interactive)
-  (if (get-buffer "irc.freenode.net:6667")
-      (erc-track-switch-buffer 1)
-    (when (y-or-n-p "Start ERC? ")
-      (erc :server "irc.freenode.net" :port 6667 :nick "rememberYou"))))
-
-(use-package elfeed
-  :defer 2
-  :bind (("C-x e" . elfeed)
-         :map elfeed-search-mode-map
-         ("q" . elfeed-save-db-and-bury)
-         ("Q" . elfeed-save-db-and-bury)
-         ("m" . elfeed-toggle-star)
-         ("M" . elfeed-toggle-star)
-         ("j" . mz/make-and-run-elfeed-hydra)
-         ("J" . mz/make-and-run-elfeed-hydra))
-  :custom (elfeed-db-directory "~/Sync/shared/elfeed/db"))
-
-  (defun elfeed-load-db-and-open ()
-    "Wrapper to load the elfeed db from disk before opening"
-    (interactive)
-    (elfeed-db-load)
-    (elfeed)
-    (elfeed-search-update--force))
-
-  (defun elfeed-mark-all-as-read ()
-    "Mark all feeds as read"
-    (interactive)
-    (mark-whole-buffer)
-    (elfeed-search-untag-all-unread))
-
-  (defun elfeed-save-db-and-bury ()
-    "Wrapper to save the elfeed db to disk before burying buffer"
-    (interactive)
-    (elfeed-db-save)
-    (quit-window))
-
-  (defun z/hasCap (s) ""
-         (let ((case-fold-search nil))
-           (string-match-p "[[:upper:]]" s)))
-
-  (defun z/get-hydra-option-key (s)
-    "returns single upper case letter (converted to lower) or first"
-    (interactive)
-    (let ( (loc (z/hasCap s)))
-      (if loc
-          (downcase (substring s loc (+ loc 1)))
-        (substring s 0 1))))
-
-  (defun mz/make-elfeed-cats (tags)
-    "Returns a list of lists. Each one is line for the hydra configuration in the form
-       (c function hint)"
-    (interactive)
-    (mapcar (lambda (tag)
-              (let* (
-                     (tagstring (symbol-name tag))
-                     (c (z/get-hydra-option-key tagstring))
-                     )
-                (list c (append '(elfeed-search-set-filter) (list (format "@6-months-ago +%s" tagstring) ))tagstring  )))
-            tags))
-
-  (defmacro mz/make-elfeed-hydra ()
-    `(defhydra mz/hydra-elfeed ()
-       "filter"
-       ,@(mz/make-elfeed-cats (elfeed-db-get-all-tags))
-       ("*" (elfeed-search-set-filter "@6-months-ago +star") "Starred")
-       ("M" elfeed-toggle-star "Mark")
-       ("A" (elfeed-search-set-filter "@6-months-ago") "All")
-       ("T" (elfeed-search-set-filter "@1-day-ago") "Today")
-       ("Q" elfeed-save-db-and-bury "Quit Elfeed" :color blue)
-       ("q" nil "quit" :color blue)))
-
-  (defun mz/make-and-run-elfeed-hydra ()
-    ""
-    (interactive)
-    (mz/make-elfeed-hydra)
-    (mz/hydra-elfeed/body))
 
 (use-package hydra
   :defer 2
@@ -1757,19 +1683,6 @@ couldn't figure things out (ex: syntax errors)."
   ("-" text-scale-decrease)
   ("+" text-scale-increase)
   ("=" (text-scale-increase 0)))
-
-(use-package elfeed-org
-  :after elfeed
-  :defer 2
-  :config
-  (elfeed-org)
-  (setq rmh-elfeed-org-files (list "~/Sync/shared/elfeed/elfeed.org")))
-
-(use-package elfeed-goodies
-  :after elfeed
-  :defer 2
-  :config
-  (elfeed-goodies/setup))
 
 (require 'mu4e)
 
