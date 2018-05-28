@@ -1521,7 +1521,7 @@ couldn't figure things out (ex: syntax errors)."
   (erc-autojoin-timing 'ident)
   (erc-fill-function 'erc-fill-static)
   (erc-fill-static-center 22)
-  (erc-header-line-format " %n on %t (%m)")
+  (erc-header-line-format "%n on %t (%m)")
   (erc-hide-list '("JOIN" "PART" "QUIT"))
   (erc-lurker-hide-list '("JOIN" "PART" "QUIT"))
   (erc-lurker-threshold-time 43200)
