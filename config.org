@@ -2635,7 +2635,7 @@ Of course, don't forget to add this line in your =.authinfo.gpg= file, where
 #+END_EXAMPLE
 
 Then encrypt that file with =gpg -c .authinfo= and don't forget to delete the
-=.authinfo=. file.
+=.authinfo= file.
 
 Finally, specify to =erc= that you use a =.authinfo= file with:
 =(setq erc-prompt-for-nickserv-password nil)=.
