@@ -2895,10 +2895,6 @@ for less secure apps in your Google account.
 Before you can use this configuration, make sure you install =mu= on your
 operating system and create directories corresponding to those in your mailbox.
 
-#+BEGIN_SRC bash :tangle yes
-  trizen -S mu
-#+END_SRC
-
 Now all that remains is to configure =mu4e=:
 
 #+BEGIN_SRC emacs-lisp :tangle yes
@@ -2927,15 +2923,15 @@ Now all that remains is to configure =mu4e=:
           ("/gmail/Starred" . ?S)))
 #+END_SRC
 
-Being able to read emails is a good thing, but being notified when we receive
-emails is better! The following few lines allow you to receive desktop
+Being able to read mails is a good thing, but being notified when we receive
+mails is better! The following few lines allow you to receive desktop
 notifications and modeline display for =mu4e=:
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package mu4e-alert
     :after mu4e
-    :hook ((after-init . mu4e-alert-enable-notifications)
-           (after-init . mu4e-alert-enable-mode-line-display))
+    :hook ((after-init . mu4e-alert-enable-mode-line-display)
+           (after-init . mu4e-alert-enable-notifications))
     :config
     (mu4e-alert-set-default-style 'libnotify))
 #+END_SRC
@@ -2944,8 +2940,8 @@ notifications and modeline display for =mu4e=:
 
 For you can send mails, create the =.authinfo= file if it is not already
 done. Then add the following two lines replacing /terencio.agozzino/ (which
-corresponds to my gmail address /terencio.agozzino@gmail.com/ without the domain
-name) and password by those that match your real information:
+corresponds to my gmail address terencio.agozzino@gmail.com without the domain
+name) and /<password>/ by those that match your real information:
 
 #+BEGIN_EXAMPLE
   machine imap.gmail.com login terencio.agozzino password <password> port 993
@@ -2962,8 +2958,8 @@ Then encrypt that file with =gpg -c .authinfo= and don't forget to delete the
 #+BEGIN_SRC emacs-lisp :tangle yes
   (setq send-mail-function 'smtpmail-send-it
         smtpmail-smtp-server "smtp.gmail.com"
-        smtpmail-stream-type 'ssl
-        smtpmail-smtp-service 465)
+        smtpmail-smtp-service 465
+        smtpmail-stream-type 'ssl)
 #+END_SRC
 
 All you need now is to test sending your mails with =C-x m= or directly from

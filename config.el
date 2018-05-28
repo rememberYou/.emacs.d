@@ -1710,12 +1710,12 @@ couldn't figure things out (ex: syntax errors)."
 
 (use-package mu4e-alert
   :after mu4e
-  :hook ((after-init . mu4e-alert-enable-notifications)
-         (after-init . mu4e-alert-enable-mode-line-display))
+  :hook ((after-init . mu4e-alert-enable-mode-line-display)
+         (after-init . mu4e-alert-enable-notifications))
   :config
   (mu4e-alert-set-default-style 'libnotify))
 
 (setq send-mail-function 'smtpmail-send-it
       smtpmail-smtp-server "smtp.gmail.com"
-      smtpmail-stream-type 'ssl
-      smtpmail-smtp-service 465)
+      smtpmail-smtp-service 465
+      smtpmail-stream-type 'ssl)
