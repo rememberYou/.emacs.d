@@ -1686,18 +1686,18 @@ couldn't figure things out (ex: syntax errors)."
 
 (require 'mu4e)
 
-(setq mu4e-maildir "~/Maildir"
+(setq mu4e-attachment-dir "~/Downloads"
+      mu4e-compose-signature-auto-include nil
       mu4e-drafts-folder "/gmail/Drafts"
+      mu4e-get-mail-command "mbsync -a"
+      mu4e-maildir "~/Maildir"
+      mu4e-refile-folder "/gmail/Archive"
       mu4e-sent-folder "/gmail/Sent Mail"
       mu4e-trash-folder "/gmail/Trash"
-      mu4e-refile-folder "/gmail/Archive"
-      mu4e-get-mail-command "mbsync -a"
-      mu4e-update-interval 300 ;; second
-      mu4e-compose-signature-auto-include nil
-      mu4e-view-show-images t
-      mu4e-view-show-addresses t
-      mu4e-attachment-dir "~/Downloads"
+      mu4e-update-interval 300
       mu4e-use-fancy-chars t)
+      mu4e-view-show-addresses t
+      mu4e-view-show-images t
 
 (setq mu4e-maildir-shortcuts
       '(("/gmail/INBOX" . ?i)
@@ -1709,21 +1709,13 @@ couldn't figure things out (ex: syntax errors)."
         ("/gmail/Starred" . ?S)))
 
 (use-package mu4e-alert
-  :defer 1
+  :after mu4e
   :hook ((after-init . mu4e-alert-enable-notifications)
          (after-init . mu4e-alert-enable-mode-line-display))
-  :custom (mu4e-alert-set-default-style 'libnotify))
+  :config
+  (mu4e-alert-set-default-style 'libnotify))
 
 (setq send-mail-function 'smtpmail-send-it
       smtpmail-smtp-server "smtp.gmail.com"
       smtpmail-stream-type 'ssl
       smtpmail-smtp-service 465)
-
-(use-package ebdb
-  :commands ebdb)
-
-(use-package helm-ebdb
-  :after ebdb)
-
-(use-package company-ebdb
-  :after ebdb)

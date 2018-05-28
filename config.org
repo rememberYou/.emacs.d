@@ -2877,45 +2877,45 @@ In order to easily manage my RSS Feeds, I configure them using an Org file.
 #+END_SRC
 
 Allows a better reading of RSS Feeds
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package elfeed-goodies
-    :after elfeed
-    :defer 2
-    :config
-    (elfeed-goodies/setup))
-#+END_SRC
-
 * Mail
 
-** =mu4e=
+After trying =gnus= that I found too old and =notmuch= that in my opinion lacks
+features like the ability to delete some emails and be able to write emails
+easily with =org=, I finally found my happiness with =mu4e=.
 
-After having tried =gnus= that I found too old and =notmuch= which I thought
-lacked features like the possibility to delete some email and to be able to
-write emails easily, I finally found my happiness with =mu4e=.
+I use =mbsync= to be capable of synchronizing mail on IMAP server with local
+Maildir folder. I'm used to using =offlineimap=, but I find it slower than
+=mbsync=, that's why I separated myself from it.
 
-If you want to use this configuration, make sure to create the directories about
-the emails and install =mu= on your operating system:
+*NOTE:* to use =mbsync= with your Gmail account, you will need to enable access
+for less secure apps in your Google account.
+
+** mu4e
+
+Before you can use this configuration, make sure you install =mu= on your
+operating system and create directories corresponding to those in your mailbox.
 
 #+BEGIN_SRC bash :tangle yes
   trizen -S mu
 #+END_SRC
 
+Now all that remains is to configure =mu4e=:
+
 #+BEGIN_SRC emacs-lisp :tangle yes
   (require 'mu4e)
 
-  (setq mu4e-maildir "~/Maildir"
+  (setq mu4e-attachment-dir "~/Downloads"
+        mu4e-compose-signature-auto-include nil
         mu4e-drafts-folder "/gmail/Drafts"
+        mu4e-get-mail-command "mbsync -a"
+        mu4e-maildir "~/Maildir"
+        mu4e-refile-folder "/gmail/Archive"
         mu4e-sent-folder "/gmail/Sent Mail"
         mu4e-trash-folder "/gmail/Trash"
-        mu4e-refile-folder "/gmail/Archive"
-        mu4e-get-mail-command "mbsync -a"
-        mu4e-update-interval 300 ;; second
-        mu4e-compose-signature-auto-include nil
-        mu4e-view-show-images t
-        mu4e-view-show-addresses t
-        mu4e-attachment-dir "~/Downloads"
+        mu4e-update-interval 300
         mu4e-use-fancy-chars t)
+        mu4e-view-show-addresses t
+        mu4e-view-show-images t
 
   (setq mu4e-maildir-shortcuts
         '(("/gmail/INBOX" . ?i)
@@ -2928,34 +2928,36 @@ the emails and install =mu= on your operating system:
 #+END_SRC
 
 Being able to read emails is a good thing, but being notified when we receive
-one is a better thing.
-
-The following few lines allow you to receive Desktop notifications and modeline
-display for =mu4e=
+emails is better! The following few lines allow you to receive desktop
+notifications and modeline display for =mu4e=:
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package mu4e-alert
-    :defer 1
+    :after mu4e
     :hook ((after-init . mu4e-alert-enable-notifications)
            (after-init . mu4e-alert-enable-mode-line-display))
-    :custom (mu4e-alert-set-default-style 'libnotify))
+    :config
+    (mu4e-alert-set-default-style 'libnotify))
 #+END_SRC
 
 ** Sending Mail
 
-Small piece of code allowing me to send e-mails using SMTP with =C-x m=
-
-For you can send e-mails, Don't forget to create a =.authinfo= file in your home
-directory with the following things (example for me where
-=terencio.agozzino@gmail.com= is my own gmail address):
+For you can send mails, create the =.authinfo= file if it is not already
+done. Then add the following two lines replacing /terencio.agozzino/ (which
+corresponds to my gmail address /terencio.agozzino@gmail.com/ without the domain
+name) and password by those that match your real information:
 
 #+BEGIN_EXAMPLE
-  machine imap.gmail.com login terencio.agozzino password <GMAIL_PASSWORD> port 993
-  machine smtp.gmail.com login terencio.agozzino password <GMAIL_PASSWORD> port 465
+  machine imap.gmail.com login terencio.agozzino password <password> port 993
+  machine smtp.gmail.com login terencio.agozzino password <password> port 465
 #+END_EXAMPLE
 
-Then, I advice you to encrypt this file as it contains some credentials
-informations with =gpg -c ~/.authinfo= and remember to delete the =.authinfo= file.
+Similar to IRC, if you want to store your password in a /GPG/ file, you just
+need to specify a file priority list with =auth-sources=, to tell GNU/Emacs
+where to start looking for your password first.
+
+Then encrypt that file with =gpg -c .authinfo= and don't forget to delete the
+=.authinfo= file.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (setq send-mail-function 'smtpmail-send-it
@@ -2964,20 +2966,5 @@ informations with =gpg -c ~/.authinfo= and remember to delete the =.authinfo= fi
         smtpmail-smtp-service 465)
 #+END_SRC
 
-** =ebdb=
-
-I use it because it provides an address book for email and snail mail addresses,
-phone numbers and the like.
-
-I had trouble with =bbdb= (Big Brother Shit Database) that why I stop used it.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package ebdb
-    :commands ebdb)
-
-  (use-package helm-ebdb
-    :after ebdb)
-
-  (use-package company-ebdb
-    :after ebdb)
-#+END_SRC
+All you need now is to test sending your mails with =C-x m= or directly from
+=mu4e=!
