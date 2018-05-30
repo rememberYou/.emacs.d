@@ -744,11 +744,38 @@ seamless, it's like a minor mode that disables itself auto-magically.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package hydra
     :defer 2
-    :bind ("C-c f" . hydra-flycheck/body)
-          ("C-c m" . hydra-magit/body)
-          ("C-c p" . hydra-projectile/body)
-          ("C-c o" . hydra-toggle/body)
-          ("C-c w" . hydra-windows/body))
+    :bind (("C-c e" . hydra-erc/body)
+           ("C-c f" . hydra-flycheck/body)
+           ("C-c m" . hydra-magit/body)
+           ("C-c p" . hydra-projectile/body)
+           ("C-c o" . hydra-toggle/body)
+           ("C-c w" . hydra-windows/body)))
+#+END_SRC
+
+*** Hydra / ERC
+
+Group ERC commands.
+
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defhydra hydra-erc (:color blue)
+    "
+    ^
+    ^ERC^             ^Do^
+    ^───^─────────────^──^──────────────
+    _q_ quit            _c_ connect
+    ^^                  _d_ disconnect
+    ^^                  _j_ join
+    ^^                  _n_ names
+    ^^                  _u_ users
+    ^^                  ^^
+    "
+    ("q" nil)
+    ("c" my/erc-start-or-switch)
+    ("d" erc-quit-server :color pink)
+    ("j" erc-join-channel)
+    ("n" erc-channel-names)
+    ("u" my/erc-count-users))
 #+END_SRC
 
 *** Hydra / Flycheck
@@ -905,8 +932,6 @@ Finally, specify to =erc= that you use a =.authinfo= file with:
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package erc
     :defer 3
-    :bind (("C-c e" . my/erc-start-or-switch)
-           ("C-c n" . my/erc-count-users))
     :hook ((ercn-notify . my/erc-notify)
            (erc-send-pre . my/erc-preprocess))
     :custom
