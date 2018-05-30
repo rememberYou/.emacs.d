@@ -1,70 +1,159 @@
-#+TITLE: Terencio Agozzino's Emacs configuration
-#+OPTIONS: toc:4 h:4
+#+AUTHOR: Terencio Agozzino
+#+TITLE: GNU Emacs Configuration
+
+* Table of Content                                                    :TOC:
+- [[#about][About]]
+- [[#emacs-initialization][Emacs Initialization]]
+  - [[#packages-sources][Packages Sources]]
+  - [[#use-package][use-package]]
+- [[#start-up][Start Up]]
+  - [[#authentification][Authentification]]
+  - [[#customization][Customization]]
+  - [[#theme][Theme]]
+  - [[#turn-off-mouse-interface][Turn off mouse interface]]
+  - [[#use-better-defaults][Use better defaults]]
+- [[#programming-languages][Programming Languages]]
+  - [[#css][CSS]]
+  - [[#docker][Docker]]
+  - [[#emacs-lisp][Emacs Lisp]]
+  - [[#java][Java]]
+  - [[#javascript][JavaScript]]
+  - [[#latex][LaTeX]]
+  - [[#lua][Lua]]
+  - [[#markdown][Markdown]]
+  - [[#php][PHP]]
+  - [[#python][Python]]
+  - [[#sql][SQL]]
+  - [[#yaml][YAML]]
+- [[#advanced-configuration][Advanced Configuration]]
+  - [[#abbreviations][Abbreviations]]
+  - [[#alert][Alert]]
+  - [[#auto-completion][Auto-Completion]]
+  - [[#backups][Backups]]
+  - [[#dashboard][Dashboard]]
+  - [[#history][History]]
+  - [[#hydra][Hydra]]
+  - [[#irc][IRC]]
+  - [[#ivy][Ivy]]
+  - [[#lorem-ipsum][Lorem Ipsum]]
+  - [[#mail][Mail]]
+  - [[#paste][Paste]]
+  - [[#pdf][PDF]]
+  - [[#point-and-region][Point and Region]]
+  - [[#projectile][Projectile]]
+  - [[#spotify][Spotify]]
+  - [[#version-control][Version Control]]
+  - [[#word-wrap][Word Wrap]]
+  - [[#clean-white-spaces-after-saving][Clean white spaces after saving]]
+  - [[#ending-up][Ending up]]
+  - [[#killing-text][Killing text]]
+  - [[#ibuffer][=Ibuffer=]]
+  - [[#replace-the-current-file-with-the-saved-one][Replace the current file with the saved one]]
+  - [[#specific-a-command-after-saved-file][Specific a command after saved file]]
+- [[#navigation][Navigation]]
+  - [[#chromium-as-default-browser][Chromium as default browser]]
+  - [[#copy-filename-to-clipboard][Copy filename to clipboard]]
+  - [[#engine-mode][=engine-mode=]]
+  - [[#find-dired][=find-dired=]]
+  - [[#frequently-accessed-files][Frequently-accessed files]]
+  - [[#move-text][=move-text=]]
+  - [[#move-to-beginning-of-line][Move to beginning of line]]
+  - [[#pop-to-mark][Pop to mark]]
+  - [[#recentf][=recentf=]]
+  - [[#switch-window][=switch-window=]]
+  - [[#windmove][=windmove=]]
+- [[#org-mode][Org-Mode]]
+  - [[#basic-configuration][Basic configuration]]
+  - [[#files][Files]]
+  - [[#keyboard-shortcuts][Keyboard shortcuts]]
+  - [[#languages][Languages]]
+  - [[#modules][Modules]]
+  - [[#speed-commands][Speed commands]]
+  - [[#move-line][Move line]]
+- [[#org-agenda][Org Agenda]]
+  - [[#basic-configuration-1][Basic configuration]]
+  - [[#archiving][Archiving]]
+  - [[#capture][Capture]]
+  - [[#custom-commands][Custom commands]]
+  - [[#habits][Habits]]
+  - [[#projects][Projects]]
+  - [[#refiling][Refiling]]
+  - [[#tags][Tags]]
+  - [[#time][Time]]
+  - [[#tracking][Tracking]]
+  - [[#further][Further]]
+- [[#journal][Journal]]
+  - [[#encryptiondecryption][Encryption/Decryption]]
+  - [[#revealjs][Reveal.js]]
+- [[#plugins-configuration][Plugins configuration]]
+  - [[#aggressive-indent][=aggressive-indent=]]
+  - [[#atomic-chrome][=atomic chrome=]]
+  - [[#calc][=calc=]]
+  - [[#which-key][=which-key=]]
+  - [[#flycheck][=flycheck=]]
+  - [[#hungry-delete][=hungry-delete=]]
+  - [[#iedit][=iedit=]]
+  - [[#ipcalc][=ipcalc=]]
+  - [[#ledger][=ledger=]]
+  - [[#rainbow-mode][=rainbow-mode=]]
+  - [[#skewer-mode][=skewer-mode=]]
+  - [[#swiper][=swiper=]]
+  - [[#impatient-mode][=impatient-mode=]]
+  - [[#smartparens][=smartparens=]]
+  - [[#try][=try=]]
+  - [[#undo-tree][=undo-tree=]]
+  - [[#web-beautify][=web-beautify=]]
+  - [[#web-mode][=web-mode=]]
+  - [[#key-chord][=key-chord=]]
+  - [[#winner][=winner=]]
+  - [[#yasnippet][=yasnippet=]]
 
 * About
 
-After using Emacs for a while, I decided to create my own config to simplify
+After using GNU Emacs for a while, I decided to create my own config to simplify
 my daily life by adding scripts, useful functions, etc.
+
+For more informations about myself, you can visit my [[http://terencio-agozzino.com/][website]].
 
 To manage package configurations, I use the [[https://github.com/jwiegley/use-package/][use-package]] package from John
 Wiegley, that I recommend.
 
-This config is inspired of the Sacha Chua config which I thank her for all the
-work she has done.
+This configuration is mainly based on the following user configurations:
+- [[https://github.com/jwiegley/dot-emacs/][John Wiegley]] (=jwiegley=)
+- [[https://github.com/sachac][Sacha Chua]] (=sachac=)
+- [[https://github.com/angrybacon/dotemacs][Mathieu Marques]] (=angrybacon=)
 
-* Personal informations
+Thanks to them for their incredible work!
 
-For more informations about myself, you can visit my website
-(http://terencio-agozzino.com/).
+* Emacs Initialization
+
+** Packages Sources
+
+In order to install packages, it is useful to configure the package sources.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (setq user-full-name "Terencio Agozzino"
-        user-mail-address "terencio.agozzino@gmail.com")
+  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 #+END_SRC
 
-* Starting up
+** use-package
 
-Here's how we start.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (setq inhibit-startup-message t)
-  (setq custom-file "~/.emacs.d/custom.el")
-  (load custom-file t)
-#+END_SRC
-
-* Emacs initialization
-
-** Packages sources
-
-Adding packages sources in case it isn't already.
+To be able to manage its configuration with =use-package= it is necessary to
+first install it, if you don't already.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (unless (assoc-default "melpa" package-archives)
-    (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
-  (unless (assoc-default "org" package-archives)
-    (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t))
-#+END_SRC
-
-** Directories and others files
-
-Adding main Elisp directory and install =use-package=.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (add-to-list 'load-path "~/elisp")
-
   (unless (package-installed-p 'use-package)
     (package-refresh-contents)
     (package-install 'use-package))
 
-  (require 'use-package)
-
-  (setq use-package-verbose t)
-  (setq use-package-always-ensure t)
-  (setq load-prefer-newer t)
-  (setq vc-follow-symlinks nil)
+  (require 'diminish)
 #+END_SRC
 
-I put my =.authinfo.gpg= file in Syncthing in order to be able to easily use my
+* Start Up
+
+** Authentification
+
+I put my =.authinfo.gpg= file in [[https://github.com/syncthing/syncthing][Syncthing]] in order to be able to easily use my
 configuration on other devices.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
@@ -74,87 +163,526 @@ configuration on other devices.
                        "~/.netrc"))
 #+END_SRC
 
-* General configuration
+** Customization
 
-** =abbrev-mode=
+To avoid overloading the GNU Emacs custormization =init.el= file made by the
+user with the UI, I add the generated code in a separate file.
 
-According to a list of mispelling words, =abbrev= auto-correct these words on
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (setq-default custom-file (expand-file-name "custom.el" user-emacs-directory))
+  (when (file-exists-p custom-file)
+    (load custom-file t))
+#+END_SRC
+
+** Theme
+
+I like the light on dark because I find it to be more restful.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package solarized-theme
+    :defer 1
+    :init
+    (load-theme 'solarized-dark t))
+
+  (use-package smart-mode-line
+    :defer 1
+    :config
+    (setq sml/theme 'respectful)
+    (sml/setup))
+#+END_SRC
+
+** Turn off mouse interface
+
+Since I never use the mouse with GNU Emacs, I prefer not to use certain
+graphical elements as seen as the menu bar, toolbar, scrollbar and tooltip that
+I find invasive.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (when window-system
+    (menu-bar-mode -1)                              ; Disable the menu bar
+    (scroll-bar-mode -1)                            ; Disable the scroll bar
+    (tool-bar-mode -1)                              ; Disable the tool bar
+    (tooltip-mode -1))                              ; Disable the tooltips
+#+END_SRC
+
+** Use better defaults
+
+For a better user experience of GNU Emacs, here are the default values I use.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (setq-default
+   cursor-in-non-selected-windows t                 ; Hide the cursor in inactive windows
+   display-time-default-load-average nil            ; Don't display load average
+   fill-column 80                                   ; Set width for automatic line breaks
+   help-window-select t                             ; Focus new help windows when opened
+   inhibit-startup-screen t                         ; Disable start-up screen
+   initial-scratch-message ""                       ; Empty the initial *scratch* buffer
+   load-prefer-newer t                              ; Prefers the newest version of a file
+   scroll-conservatively most-positive-fixnum       ; Always scroll by one line
+   select-enable-clipboard t                        ; Merge system's and Emacs' clipboard
+   tab-width 4                                      ; Set width for tabs
+   user-full-name "Terencio Agozzino"               ; Set the full name of the current user
+   user-mail-address "terencio.agozzino@gmail.com"  ; Set the email address of the current user
+   use-package-always-ensure t)                     ; Avoid the :ensure keyword for each package
+  (cd "~/")                                         ; Move to the user directory
+  (column-number-mode 1)                            ; Show the column number
+  (display-time-mode 1)                             ; Enable time in the mode-line
+  (fset 'yes-or-no-p 'y-or-n-p)                     ; Replace yes/no prompts with y/n
+  (global-hl-line-mode)                             ; Hightlight current line
+  (show-paren-mode 1)                               ; Show the parent
+#+END_SRC
+
+* Programming Languages
+
+** CSS
+
+*** =emmet-mode=
+
+Powerful minor mode to produce HTML from CSS-like selector.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package emmet-mode
+    :defer 6
+    :hook (sgml-mode css-mode web-mode))
+#+END_SRC
+
+*** =less-css-mode=
+
+Awesome package to programming in LESS.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package less-css-mode
+    :mode "\\.less\\'"
+    :interpreter ("less" . less-css-mode))
+#+END_SRC
+
+** Docker
+
+I like to use Docker when I need to install various databases or other services
+that only work on a particular operating system while keeping my operating
+system clean.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package dockerfile-mode
+    :mode "Dockerfile\\'")
+#+END_SRC
+
+** Emacs Lisp
+
+*** Eldoc
+
+Provides minibuffer hints when working with Emacs Lisp.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package "eldoc"
+    :hook (emacs-lisp-mode . eldoc-mode))
+#+END_SRC
+
+** Java
+
+Configuring Java for GNU Emacs is very simple with =eclim=. All you need to do is
+install =Eclipse= and =eclim=.
+
+*** Eclim
+
+#+BEGIN_QUOTE
+Eclim is an Eclipse plugin which exposes Eclipse features through a server
+interface. When this server is started, the command line utility eclim can be
+used to issue requests to that server.
+
+[[https://github.com/senny/emacs-eclim][James Chochlinski]]
+#+END_QUOTE
+
+To use this plugin, you must download =eclim= with the Java Jar file as
+installer and put the executables =eclim= and =eclimd= in the same folder where
+you installed =Eclipse= (in my case, =/opt/eclipse=).
+
+Now all that remains is to configure =eclim=:
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package eclim
+    :defer 3
+    :hook (java-mode . eclim-mode)
+    :custom
+    (eclimd-autostart t)
+    (eclimd-default-workspace '"~/Documents/Projects/Java/")
+    (eclim-eclipse-dirs '"/opt/eclipse")
+    (eclim-executable '"/opt/eclipse/eclim")
+    (help-at-pt-display-when-idle t)
+    (help-at-pt-timer-delay 0.1)
+    (help-at-pt-set-timer))
+#+END_SRC
+
+*** =company-emacs-eclim=
+
+=eclim= backend for =company-mode=.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package company-emacs-eclim
+    :after (company eclim)
+    :commands company-emacs-eclim-setup)
+#+END_SRC
+
+*** Gradle
+
+Most of my Java projects are made with =gradle=.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package gradle-mode
+    :mode "\\.gradle\\'"
+    :interpreter ("gradle" . gradle-mode))
+#+END_SRC
+
+** JavaScript
+
+For my JavaScript configuration, I took my sources from the Nicolas Petton's
+blog which I found very well explained.
+
+[[https://emacs.cafe/emacs/javascript/setup/2017/04/23/emacs-setup-javascript.html][Setting up Emacs for JavaScript (part #1)]]
+[[https://emacs.cafe/emacs/javascript/setup/2017/05/09/emacs-setup-javascript-2.html][Setting up Emacs for JavaScript (part #2)]]
+
+*** =js2-mode2=
+
+By default, GNU Emacs uses =js-mode= as major mode for JavaScript buffers and I
+prefer use =js2-mode= instead because of his abilities to parses buffers and
+builds an AST for things like syntax highlighting.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package js2-mode
+    :defer 5
+    :hook (js2-mode . js2-imenu-extras-mode)
+    :mode "\\.js\\'")
+#+END_SRC
+
+*** =js2-refactor=
+
+Provides powerful refactoring based on the AST generated by =js2-mode=.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package js2-refactor
+    :defer 5
+    :bind (:map js2-mode-map
+                ("C-k" . js2r-kill)
+                ("M-." . nil))
+    :hook ((js2-mode . js2-refactor-mode)
+           (js2-mode . (lambda ()
+                        (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t))))
+    :config
+    (js2r-add-keybindings-with-prefix "C-c C-r"))
+#+END_SRC
+
+*** =xref-js2=
+
+Makes it easy to jump to function references or definitions.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package xref-js2
+    :defer 5)
+#+END_SRC
+
+*** =tern=
+
+Parses JavaScript files in a project and makes type inference to provide
+meaningful completion (with type clues) and cross-reference support.
+
+Unfortunately, =tern= has some problems with cross-references that explain why I am
+using =xref-js2= instead.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package tern
+    :defer 5
+    :bind (("C-c C-c" . compile)
+           :map tern-mode-keymap
+           ("M-." . nil))
+    :hook ((js2-mode . company-mode)
+           (js2-mode . tern-mode)))
+#+END_SRC
+
+If you plan to use it, don't forget to install it via =npm=:
+
+#+BEGIN_SRC bash :tangle yes
+  sudo npm install -g tern
+#+END_SRC
+
+Then, add a =.tern-project= file to the root of your project.
+
+Here is an example configuration for a project that uses =requirejs= and =jQuery=, without taking into account
+of the =bower_components= directory:
+
+#+BEGIN_SRC json
+  {
+      "libs": [
+          "jquery"
+      ],
+      "loadEagerly": [
+          "./**/*.js"
+      ],
+      "dontLoad": [
+          "./bower_components/"
+      ],
+      "plugins": {
+          "requirejs": {
+              "baseURL": "./"
+          }
+      }
+  }
+#+END_SRC
+
+*** =company-tern=
+
+=tern= backend for =company-mode=.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package company-tern
+    :after (company tern)
+    :config (add-to-list 'company-backends 'company-tern))
+#+END_SRC
+
+** LaTeX
+
+I use LaTeX for my reports, CVs, summaries, etc.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package tex
+    :ensure auctex
+    :hook ((LaTeX-mode . flyspell-mode)
+           (LaTeX-mode . reftex-mode))
+    :custom
+    (TeX-PDF-mode t)
+    (TeX-auto-save t)
+    (TeX-byte-compile t)
+    (TeX-clean-confirm nil)
+    (TeX-master 'dwim)
+    (TeX-parse-self t)
+    (TeX-source-correlate-mode t)
+    (TeX-view-program-selection '((output-pdf "Evince")
+                                  (output-html "xdg-open"))))
+#+END_SRC
+
+I want a TeX engine that can deal with Unicode and use any font I like.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (setq-default TeX-engine 'xetex)
+#+END_SRC
+
+*** =company-auctex=
+
+AUCTeX backend for company-mode.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package company-auctex
+    :after (auctex company)
+    :config
+    (company-auctex-init))
+#+END_SRC
+
+*** =reftex=
+
+Minor mode with distinct support for \label, \ref and \cite in LaTeX.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package reftex
+    :after auctex)
+#+END_SRC
+
+** Lua
+
+I rarely program in Lua, but when I do, =lua-mode= satisfies me amply.2
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package lua-mode
+    :mode "\\.lua\\'"
+    :interpreter ("lua" . lua-mode))
+#+END_SRC
+
+** Markdown
+
+Before you can use this package, make sure you install =markdown= on your
+operating system.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package markdown-mode
+    :mode
+    ("INSTALL\\'"
+     "CONTRIBUTORS\\'"
+     "LICENSE\\'"
+     "README\\'"
+     "\\.markdown\\'"
+     "\\.md\\'"))
+#+END_SRC
+
+** PHP
+
+For people who wonder, I don't use =php-mode= for its lack of indentation for
+PHP inside the HTML divs. Also, why use another package when =web-mode= already
+provides everything I need?
+
+The function below provides my own PHP configuration with =flycheck=.
+
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defun my/php-setup ()
+    (web-mode)
+
+    (make-local-variable 'web-mode-code-indent-offset)
+    (make-local-variable 'web-mode-markup-indent-offset)
+    (make-local-variable 'web-mode-css-indent-offset)
+
+    (setq web-mode-css-indent-offset 2)
+    (setq web-mode-code-indent-offset 4)
+    (setq web-mode-markup-indent-offset 2)
+
+    (flycheck-select-checker 'my-php)
+    (flycheck-mode t))
+#+END_SRC
+
+Don't forget to add the following line in the =web-mode= package configuration:
+
+#+BEGIN_EXAMPLE
+  (add-to-list 'auto-mode-alist '("\\.php$" . my/php-setup))
+#+END_EXAMPLE
+
+I like using =ac-php= to enable GNU Emacs auto-completion for PHP. Note that
+=ac-php= supports =company mode= and =auto-complete=.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package ac-php
+    :after php-mode
+    :hook (php-mode . ac-php-mode)
+    :custom
+    (ac-sources '(ac-source-php))
+    :config
+    (auto-complete-mode t)
+    (ac-php-core-eldoc-setup))
+#+END_SRC
+
+** Python
+
+I prefer to use =anaconda-mode= which I find easier to configure, because it
+supports =company-mode= better than =jedi= which is quite old.
+
+*** =anaconda-mode=
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package anaconda-mode
+    :after python
+    :hook ((anaconda-mode anaconda-eldoc-mode) . python-mode))
+#+END_SRC
+
+*** =company-anaconda=
+
+Anaconda backend for =company-mode=.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package company-anaconda
+    :after (anaconda-mode company)
+    :config
+    (add-to-list 'company-backends 'company-anaconda))
+#+END_SRC
+
+** SQL
+
+=sql-indent= gives me the possibility to easily manage =.sql= files.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package sql-indent
+    :mode "\\.sql\\'"
+    :interpreter ("sql" . sql-mode))
+#+END_SRC
+
+** YAML
+
+=yaml-mode= gives me the possibility to easily manage =.yml= files.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package yaml-mode
+    :mode "\\.yml\\'"
+    :interpreter ("yml" . yml-mode))
+#+END_SRC
+
+* Advanced Configuration
+
+** Abbreviations
+
+According to a list of misspelled words, =abbrev= auto-correct these words on
 the fly.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (if (file-exists-p abbrev-file-name)
-      (quietly-read-abbrev-file))
+  (use-package abbrev
+    :defer 2
+    :ensure nil
+    :diminish abbrev-mode
+    :config
+    (if (file-exists-p abbrev-file-name)
+        (quietly-read-abbrev-file)))
 #+END_SRC
 
-** =alert=
+** Alert
 
 Most packages use =alerts= to make notifications with =libnotify=. Don't forget
 to first install a notification daemon, like =dunst=.
 
+#+BEGIN_QUOTE
+Alert is a Growl-workalike for Emacs which uses a common notification interface
+and multiple, selectable "styles", whose use is fully customizable by the user.
+
+[[https://github.com/jwiegley/alert][John Wiegley]]
+#+END_QUOTE
+
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package alert
-    :commands alert
-    :config
-    (setq alert-default-style 'libnotify))
+    :custom
+    (alert-default-style 'libnotify))
 #+END_SRC
 
-** =auto-compile=
+** Auto-Completion
 
-With that, Emacs never loads outdated byte code files.
+=company= provides auto-completion at point and to Displays a small pop-in
+containing the candidates.
+
+#+BEGIN_QUOTE
+Company is a text completion framework for Emacs. The name stands for "complete
+anything". It uses pluggable back-ends and front-ends to retrieve and display
+completion candidates.
+
+[[http://company-mode.github.io/][Dmitry Gutov]]
+#+END_QUOTE
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package auto-compile
-    :defer 5
-    :config (auto-compile-on-load-mode))
+  (use-package company
+    :defer 2
+    :diminish
+    :custom
+    (company-begin-commands '(self-insert-command))
+    (company-idle-delay .1)
+    (company-minimum-prefix-length 2)
+    (company-show-numbers t)
+    (company-tooltip-align-annotations 't)
+    (global-company-mode t))
+#+END_SRC
+
+I use =company= with =company-box= that allows a company front-end with icons.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+   (use-package company-box
+     :after company
+     :diminish
+     :hook (company-mode . company-box-mode))
 #+END_SRC
 
 ** Backups
 
-By default, Emacs saves backup files ending by =~= in =~/.emacs.d= directory.
-Following line allows to put them to =~/.emacs.d/backups= folder for a better
-organisation.
+It is important to have a stable backup environment. Don't hesitate to save a
+lot.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
-#+END_SRC
-
-Don't hesitate to save a lot.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (setq delete-old-versions -1)
-  (setq version-control t)
-  (setq vc-make-backup-files t)
-  (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
-#+END_SRC
-
-** Clean white spaces after saving
-
-It's often annoying to see useless white spaces at the end of a line or a file.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (add-hook 'before-save-hook 'delete-trailing-whitespace)
-#+END_SRC
-
-** Clipboard Manager
-
-Emacs uses a different clipboard from the system and I'm tired to always wait
-couple of seconds when Emacs closing to save the his clipboard in to the system
-one.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (setq x-select-enable-clipboard-manager nil)
-#+END_SRC
-
-** =dump-jump=
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package dumb-jump
-    :bind (("M-g o" . dumb-jump-go-other-window)
-           ("M-g j" . dumb-jump-go)
-           ("M-g x" . dumb-jump-go-prefer-external)
-           ("M-g z" . dumb-jump-go-prefer-external-other-window))
-    :init (dumb-jump-mode)
-    :custom (dump-jump-selector 'ivy))
+  (use-package files
+	:ensure nil
+	:custom
+	(backup-directory-alist `(("." . ,(expand-file-name "backups/" user-emacs-directory))))
+	(delete-old-versions -1)
+	(vc-make-backup-files t)
+	(version-control t))
 #+END_SRC
 
 ** Dashboard
@@ -166,7 +694,7 @@ Always good to have a dashboard.
     :preface
     (defun my/dashboard-banner ()
       "Set a dashboard banner including information on package initialization
-    time and garbage collections."""
+     time and garbage collections."""
       (setq dashboard-banner-logo-title
             (format "Emacs ready in %.2f seconds with %d garbage collections."
                     (float-time (time-subtract after-init-time before-init-time)) gcs-done)))
@@ -178,10 +706,576 @@ Always good to have a dashboard.
     (dashboard-setup-startup-hook))
 #+END_SRC
 
+** History
+
+Provides the ability to have commands and their history saved so that whenever
+you return to work, you can re-run things as you need them. This is not a
+radical function, it is part of a good user experience.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (setq history-delete-duplicates t)
+  (setq history-length t)
+  (setq savehist-additional-variables
+        '(kill-ring
+          search-ring
+          regexp-search-ring))
+  (setq savehist-file (expand-file-name "history" user-emacs-directory))
+  (setq savehist-save-minibuffer-history 1)
+  (savehist-mode 1)
+#+END_SRC
+
+** Hydra
+
+Hydra allows me to display a list of all the commands implemented in the echo
+area and easily interact with them.
+
+#+BEGIN_QUOTE
+Once you summon the Hydra through the prefixed binding (the body + any one
+head), all heads can be called in succession with only a short extension.
+
+The Hydra is vanquished once Hercules, any binding that isn't the Hydra's head,
+arrives. Note that Hercules, besides vanquishing the Hydra, will still serve his
+original purpose, calling his proper command. This makes the Hydra very
+seamless, it's like a minor mode that disables itself auto-magically.
+
+[[https://github.com/abo-abo/hydra][Oleh Krehel]]
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package hydra
+    :defer 2
+    :bind ("C-c f" . hydra-flycheck/body)
+          ("C-c m" . hydra-magit/body)
+          ("C-c p" . hydra-projectile/body)
+          ("C-c o" . hydra-toggle/body)
+          ("C-c w" . hydra-windows/body))
+#+END_SRC
+
+*** Hydra / Flycheck
+
+Group Flycheck commands.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defhydra hydra-flycheck (:color pink)
+    "
+    ^
+    ^Flycheck^          ^Errors^            ^Checker^
+    ^────────^──────────^──────^────────────^───────^─────
+    _q_ quit            _<_ previous        _?_ describe
+    _m_ manual          _>_ next            _d_ disable
+    _v_ verify setup    _f_ check           _s_ select
+    ^^                  _l_ list            ^^
+    ^^                  ^^                  ^^
+    "
+    ("q" nil)
+    ("<" flycheck-previous-error)
+    (">" flycheck-next-error)
+    ("?" flycheck-describe-checker :color blue)
+    ("d" flycheck-disable-checker :color blue)
+    ("f" flycheck-buffer)
+    ("l" flycheck-list-errors :color blue)
+    ("m" flycheck-manual :color blue)
+    ("s" flycheck-select-checker :color blue)
+    ("v" flycheck-verify-setup :color blue))
+#+END_SRC
+
+*** Hydra / Magit
+
+Group Magit commands.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defhydra hydra-magit (:color blue)
+    "
+    ^
+    ^Magit^             ^Do^
+    ^─────^─────────────^──^────────
+    _q_ quit            _b_ blame
+    ^^                  _c_ clone
+    ^^                  _i_ init
+    ^^                  _s_ status
+    ^^                  ^^
+    "
+    ("q" nil)
+    ("b" magit-blame)
+    ("c" magit-clone)
+    ("i" magit-init)
+    ("s" magit-status))
+#+END_SRC
+
+*** Hydra / Projectile
+
+Group Projectile commands.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defhydra hydra-projectile (:color blue)
+    "
+    ^
+    ^Projectile^        ^Buffers^           ^Find^              ^Search^
+    ^──────────^────────^───────^───────────^────^──────────────^──────^────────────
+    _q_ quit            _b_ list            _d_ directory       _r_ replace
+    _i_ reset cache     _K_ kill all        _D_ root            _R_ regexp replace
+    ^^                  _S_ save all        _f_ file            _s_ ag
+    ^^                  ^^                  _p_ project         ^^
+    ^^                  ^^                  ^^                  ^^
+    "
+    ("q" nil)
+    ("b" counsel-projectile-switch-to-buffer)
+    ("d" counsel-projectile-find-dir)
+    ("D" projectile-dired)
+    ("f" counsel-projectile-find-file)
+    ("i" projectile-invalidate-cache :color red)
+    ("K" projectile-kill-buffers)
+    ("p" counsel-projectile-switch-project)
+    ("r" projectile-replace)
+    ("R" projectile-replace-regexp)
+    ("s" counsel-projectile-ag)
+    ("S" projectile-save-project-buffers))
+#+END_SRC
+
+*** Hydra / Toggle
+
+Group toggle commands.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defhydra hydra-toggle (:color blue)
+    "
+    ^
+    ^Toggle^             ^Do^
+    ^──────^─────────────^──^─────────
+    _q_ quit             _a_ abbrev
+    ^^                   _f_ flyspell
+    ^^                   ^^
+    "
+    ("q" nil)
+    ("a" abbrev-mode)
+    ("f" flyspell-mode))
+#+END_SRC
+
+*** Hydra / Windows
+
+Group window-related commands.
+
+#+Begin_src emacs-lisp :tangle yes
+  (defhydra hydra-windows (:color pink)
+    "
+    ^
+    ^Windows^           ^Window^            ^Zoom^
+    ^───────^───────────^──────^────────────^────^──────────────
+    _q_ quit            _b_ balance         _-_ out
+    ^^                  _i_ heighten        _+_ in
+    ^^                  _j_ narrow          _=_ reset
+    ^^                  _k_ lower           ^^
+    ^^                  _l_ widen           ^^
+    ^^                  ^^                  ^^
+    "
+    ("q" nil)
+    ("b" balance-windows)
+    ("i" enlarge-window)
+    ("j" shrink-window-horizontally)
+    ("k" shrink-window)
+    ("l" enlarge-window-horizontally)
+    ("-" text-scale-decrease)
+    ("+" text-scale-increase)
+    ("=" (text-scale-increase 0)))
+#+END_SRC
+
+** IRC
+
+IRC is the best way for me to get a quick answer to a simple question and to
+learn from more competent people than me on a subject. I'd rather use =erc= than
+=rcirc= because I find =rcirc= very minimal.
+
+Besides, for people like me, who want to store your password in a /GPG/ file,
+you just need to specify a file priority list with =auth-sources=, to tell =erc=
+where to start looking for your password first.
+
+Of course, don't forget to add this line in your =.authinfo.gpg= file, where
+/<nickname>/ and /<password>/ match your real information:
+
+#+BEGIN_EXAMPLE
+  machine irc.freenode.net login <nickname> password <password>
+#+END_EXAMPLE
+
+Then encrypt that file with =gpg -c .authinfo= and don't forget to delete the
+=.authinfo= file.
+
+Finally, specify to =erc= that you use a =.authinfo= file with:
+=(setq erc-prompt-for-nickserv-password nil)=.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package erc
+    :defer 3
+    :bind (("C-c e" . my/erc-start-or-switch)
+           ("C-c n" . my/erc-count-users))
+    :hook ((ercn-notify . my/erc-notify)
+           (erc-send-pre . my/erc-preprocess))
+    :custom
+    (erc-autojoin-channels-alist '(("freenode.net" "#archlinux" "#bash" "#emacs"
+                                    "#gentoo" "#i3" "#latex" "#org-mode" "#python"
+                                    "#sway")))
+    (erc-autojoin-timing 'ident)
+    (erc-fill-function 'erc-fill-static)
+    (erc-fill-static-center 22)
+    (erc-header-line-format "%n on %t (%m)")
+    (erc-hide-list '("JOIN" "PART" "QUIT"))
+    (erc-lurker-hide-list '("JOIN" "PART" "QUIT"))
+    (erc-lurker-threshold-time 43200)
+    (erc-prompt-for-nickserv-password nil)
+    (erc-server-reconnect-attempts 5)
+    (erc-server-reconnect-timeout 3)
+    (erc-track-exclude-types '("JOIN" "MODE" "NICK" "PART" "QUIT"
+                               "324" "329" "332" "333" "353" "477"))
+    :config
+    (add-to-list 'erc-modules 'notifications)
+    (add-to-list 'erc-modules 'spelling)
+    (erc-services-mode 1)
+    (erc-update-modules)
+    :preface
+    (defun my/erc-start-or-switch ()
+      "Connects to ERC, or switch to last active buffer."
+      (interactive)
+      (if (get-buffer "irc.freenode.net:6667")
+          (erc-track-switch-buffer 1)
+        (when (y-or-n-p "Start ERC? ")
+          (erc :server "irc.freenode.net" :port 6667 :nick "rememberYou"))))
+
+    (defun my/erc-count-users ()
+      "Displays the number of users connected on the current channel."
+      (interactive)
+      (if (get-buffer "irc.freenode.net:6667")
+          (let ((channel (erc-default-target)))
+            (if (and channel (erc-channel-p channel))
+                (message "%d users are online on %s"
+                         (hash-table-count erc-channel-users)
+                         channel)
+              (user-error "The current buffer is not a channel")))
+        (user-error "You must first start ERC")))
+
+    (defun my/erc-notify (nickname message)
+      "Displays a notification message for ERC."
+      (let* ((channel (buffer-name))
+             (nick (erc-hl-nicks-trim-irc-nick nickname))
+             (title (if (string-match-p (concat "^" nickname) channel)
+                        nick
+                      (concat nick " (" channel ")")))
+             (msg (s-trim (s-collapse-whitespace message))))
+        (alert (concat nick ": " msg) :title title)))
+
+    (defun my/erc-preprocess (string)
+      "Avoids channel flooding."
+      (setq str
+            (string-trim
+             (replace-regexp-in-string "\n+" " " str)))))
+
+  (use-package erc-hl-nicks
+    :after erc)
+
+  (use-package erc-image
+    :after erc)
+#+END_SRC
+
+** Ivy
+
+I used =helm= before, but I find =ivy= faster and lighter.
+
+#+BEGIN_QUOTE
+Eclim is an Eclipse plugin which exposes Eclipse features through a server
+interface. When this server is started, the command line utility eclim can be
+used to issue requests to that server.
+
+[[https://github.com/abo-abo/ivy][Oleh Krehel]]
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package ivy
+    :defer 1
+    :diminish
+    :bind (("C-x b" . ivy-switch-buffer)
+           ("C-x B" . ivy-switch-buffer-other-window))
+    :custom
+    (ivy-display-style 'fancy)
+    (ivy-use-virtual-buffers t)
+    :config
+    (ivy-mode))
+
+  (use-package ivy-pass
+    :after ivy
+    :commands ivy-pass)
+
+  (use-package ivy-rich
+    :after ivy
+    :custom
+    (ivy-rich-path-style 'abbrev)
+    (ivy-rich-switch-buffer-align-virtual-buffer t)
+    (ivy-set-display-transformer 'ivy-switch-buffer
+                                 'ivy-rich-switch-buffer-transformer)
+    (ivy-virtual-abbreviate 'full))
+#+END_SRC
+
+
+** Lorem Ipsum
+
+I could use =try= when I need to use =lipsum=, but since I use =defer=, the
+packet load attribute has no impact on =emacs-init-time=.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package lorem-ipsum
+    :defer 5
+    :bind (("C-c C-v l" . lorem-ipsum-insert-list)
+           ("C-c C-v p" . lorem-ipsum-insert-paragraphs)
+           ("C-c C-v s" . lorem-ipsum-insert-sentences)))
+#+END_SRC
+
+** Mail
+
+After trying =gnus= that I found too old and =notmuch= that in my opinion lacks
+features like the ability to delete some emails and be able to write emails
+easily with =org=, I finally found my happiness with =mu4e=.
+
+I use =mbsync= to be capable of synchronizing mail on IMAP server with local
+Maildir folder. I'm used to using =offlineimap=, but I find it slower than
+=mbsync=, that's why I separated myself from it.
+
+*NOTE:* to use =mbsync= with your Gmail account, you will need to enable access
+for less secure apps in your Google account.
+
+*** mu4e
+
+Before you can use this configuration, make sure you install =mu= on your
+operating system and create directories corresponding to those in your mailbox.
+
+Now all that remains is to configure =mu4e=:
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package mu4e
+    :ensure nil
+    :custom
+    (mu4e-attachment-dir "~/Downloads")
+    (mu4e-compose-signature-auto-include nil)
+    (mu4e-drafts-folder "/gmail/Drafts")
+    (mu4e-get-mail-command "mbsync -a")
+    (mu4e-maildir "~/Maildir")
+    (mu4e-maildir-shortcuts
+     '(("/gmail/INBOX" . ?i)
+       ("/gmail/All Mail" . ?a)
+       ("/gmail/Deleted Items" . ?d)
+       ("/gmail/Drafts" . ?D)
+       ("/gmail/Important" . ?i)
+       ("/gmail/Sent Mail" . ?s)
+       ("/gmail/Starred" . ?S)))
+    (mu4e-refile-folder "/gmail/Archive")
+    (mu4e-sent-folder "/gmail/Sent Mail")
+    (mu4e-trash-folder "/gmail/Trash")
+    (mu4e-update-interval 300)
+    (mu4e-use-fancy-chars t)
+    (mu4e-view-show-addresses t)
+    (mu4e-view-show-images t))
+#+END_SRC
+
+Being able to read mails is a good thing, but being notified when we receive
+mails is better! The following few lines allow you to receive desktop
+notifications and modeline display for =mu4e=:
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package mu4e-alert
+    :after mu4e
+    :hook ((after-init . mu4e-alert-enable-mode-line-display)
+           (after-init . mu4e-alert-enable-notifications))
+    :config
+    (mu4e-alert-set-default-style 'libnotify))
+#+END_SRC
+
+*** Sending Mail
+
+For you can send mails, create the =.authinfo= file if it is not already
+done. Then add the following two lines replacing /terencio.agozzino/ (which
+corresponds to my gmail address terencio.agozzino@gmail.com without the domain
+name) and /<password>/ by those that match your real information:
+
+#+BEGIN_EXAMPLE
+  machine imap.gmail.com login terencio.agozzino password <password> port 993
+  machine smtp.gmail.com login terencio.agozzino password <password> port 465
+#+END_EXAMPLE
+
+Similar to IRC, if you want to store your password in a /GPG/ file, you just
+need to specify a file priority list with =auth-sources=, to tell GNU Emacs
+where to start looking for your password first.
+
+Then encrypt that file with =gpg -c .authinfo= and don't forget to delete the
+=.authinfo= file.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (setq send-mail-function 'smtpmail-send-it
+        smtpmail-smtp-server "smtp.gmail.com"
+        smtpmail-smtp-service 465
+        smtpmail-stream-type 'ssl)
+#+END_SRC
+
+All you need now is to test sending your mails with =C-x m= or directly from
+=mu4e=!
+
+** Paste
+
+#+BEGIN_QUOTE
+This mode allows to paste whole buffers or parts of buffers to pastebin-like
+services. It supports more than one service and will failover if one service
+fails.
+
+[[https://github.com/etu/webpaste.el][Elis Hirwing]]
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package webpaste
+    :defer 3
+    :bind (("C-c C-p C-b" . webpaste-paste-buffer)
+           ("C-c C-p C-r" . webpaste-paste-region)))
+#+END_SRC
+
+** PDF
+
+#+BEGIN_QUOTE
+PDF Tools is, among other things, a replacement of DocView for PDF files. The
+key difference is that pages are not pre-rendered by e.g. ghostscript and stored
+in the file-system, but rather created on-demand and stored in memory.
+
+[[https://github.com/politza/pdf-tools][Andras Politz]]
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package pdf-tools
+    :defer 1
+    :init
+    (pdf-tools-install)
+    :custom
+    (pdf-view-use-unicode-ligther nil))
+#+END_SRC
+
+** Point and Region
+
+Increase region by semantic units. It tries to be smart about it and adapt to
+the structure of the current major mode.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package expand-region
+    :defer 2
+    :bind (("C-+" . er/contract-region)
+           ("C-=" . er/expand-region)))
+#+END_SRC
+
+
+** Projectile
+
+#+BEGIN_QUOTE
+Projectile is a project interaction library for Emacs. Its goal is to provide a
+nice set of features operating on a project level without introducing external
+dependencies (when feasible). For instance - finding project files has a
+portable implementation written in pure Emacs Lisp without the use of GNU find
+(but for performance sake an indexing mechanism backed by external commands
+exists as well).
+
+[[https://github.com/bbatsov/projectile][Bozhidar Batsov]]
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package projectile
+    :defer 1
+    :custom
+    (projectile-cache-file (expand-file-name ".projectile-cache" user-emacs-directory)
+    (projectile-completion-system 'ivy)
+    (projectile-enable-caching t)
+    (projectile-known-projects-file (expand-file-name
+                                   ".projectile-bookmarks" user-emacs-directory))
+    (projectile-mode-line '(:eval (projectile-project-name)))
+    :config
+    (define-key projectile-mode-map (kbd "C-c p") #'hydra-projectile/body)
+    (projectile-global-mode)))
+#+END_SRC
+
+** Spotify
+
+Control the spotify application from GNU Emacs.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package spotify
+    :defer 5
+    :config
+    (spotify-enable-song-notifications))
+#+END_SRC
+
+** Version Control
+
+It is quite common to work on Git repositories, so it is important to have a
+configuration that we like.
+
+#+BEGIN_QUOTE
+[[https://github.com/magit/magit][Magit]] is an interface to the version control system Git, implemented as an Emacs
+package. Magit aspires to be a complete Git porcelain. While we cannot (yet)
+claim that Magit wraps and improves upon each and every Git command, it is
+complete enough to allow even experienced Git users to perform almost all of
+their daily version control tasks directly from within Emacs. While many fine
+Git clients exist, only Magit and Git itself deserve to be called porcelains.
+
+[[https://github.com/tarsius][Jonas Bernoulli]]
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package git-commit
+	:after magit
+	:hook (git-commit-mode . me/git-commit-auto-fill-everywhere)
+	:custom
+	(git-commit-summary-max-length 50)
+	:preface
+	(defun me/git-commit-auto-fill-everywhere ()
+	  (setq fill-column 72)
+	  (setq-local comment-auto-fill-only-comments nil)))
+
+  (use-package magit
+	:defer 2)
+#+END_SRC
+
+In addition to that, I like to see the lines that are being modified in the file
+while it is being edited.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package git-gutter
+    :defer 2
+    :diminish
+    :init
+    (global-git-gutter-mode +1))
+#+END_SRC
+
+Finally, one last package that I like to use with Git to easily see the changes
+made by previous commits.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(use-package git-timemachine
+  :defer 3
+  :diminish)
+#+END_SRC
+
+** Word Wrap
+
+I like to have lines of the same length.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package simple
+    :ensure nil
+    :hook ((prog-mode . turn-on-auto-fill)
+           (text-mode . turn-on-auto-fill)))
+#+END_SRC
+
+** Clean white spaces after saving
+
+It's often annoying to see useless white spaces at the end of a line or a file.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+#+END_SRC
+
 ** Ending up
 
-I'm using a =.org= file to maintain my Emacs config. However, at his launch, he
-will loads the =config.el= source file for a faster loading.
+I'm using a =.org= file to maintain my GNU Emacs config. However, at his launch,
+he will loads the =config.el= source file for a faster loading.
 
 The code below, automatic executes =org-babel-tangle= asynchronously when
 config.org is saved.
@@ -199,22 +1293,22 @@ config.org is saved.
       "Last modification time of the configuration file.")
 
     (defvar *show-async-tangle-results* nil
-      "Keep *emacs* async buffers around for later inspection.")
+      "Keeps *emacs* async buffers around for later inspection.")
 
     (defun my/config-updated ()
-      "Check if the configuration file has been updated since the last time."
+      "Checks if the configuration file has been updated since the last time."
       (time-less-p *config-last-change*
                    (nth 5 (file-attributes *config-file*))))
 
     (defun my/config-tangle ()
-      "Tangle the org file asynchronously."
+      "Tangles the org file asynchronously."
       (when (my/config-updated)
         (setq *config-last-change*
               (nth 5 (file-attributes *config-file*)))
         (my/async-babel-tangle *config-file*)))
 
     (defun my/async-babel-tangle (org-file)
-      "Tangle the org file asynchronously."
+      "Tangles the org file asynchronously."
       (let ((init-tangle-start-time (current-time))
             (file (buffer-file-name))
             (async-quiet-switch "-q"))
@@ -230,32 +1324,6 @@ config.org is saved.
                            (float-time (time-subtract (current-time)
                                                       ',init-tangle-start-time)))
                 (message "ERROR: %s as tangle failed." ,org-file))))))))
-#+END_SRC
-
-** Highlight the current line
-
-More easier to find ourself.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (global-hl-line-mode)
-#+END_SRC
-
-** History
-
-Gives the possibility to have commands and their history saved so that every time
-you get back to work, you can re-run stuff as you need it. It isn't a radical
-feature, it is part of a good user experience.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (setq savehist-file "~/.emacs.d/history")
-  (savehist-mode 1)
-  (setq history-length t)
-  (setq history-delete-duplicates t)
-  (setq savehist-save-minibuffer-history 1)
-  (setq savehist-additional-variables
-        '(kill-ring
-          search-ring
-          regexp-search-ring))
 #+END_SRC
 
 ** Killing text
@@ -280,8 +1348,9 @@ like to be able to easily find my way around.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package ibuffer
+    :defer 2
     :bind ("C-x C-b" . ibuffer)
-    :init
+    :config
     (setq ibuffer-saved-filter-groups
           (quote (("default"
                    ("Dired" (mode . dired-mode))
@@ -301,84 +1370,6 @@ like to be able to easily find my way around.
                 (ibuffer-switch-to-saved-filter-groups "default"))))
 #+END_SRC
 
-** =ispell=
-
-I often write reports and =ispell= provides me a powerful dictionary when I need
-to overview the document.
-
-These functions saves me couple of minutes when I need to switch between French
-and English when typing.
-#+BEGIN_SRC emacs-lisp :tangle yes
-
-  (define-key ctl-x-map "\C-i"
-    #'endless/ispell-word-then-abbrev)
-
-  (defun endless/simple-get-word ()
-    (car-safe (save-excursion (ispell-get-word nil))))
-
-  (defun endless/ispell-word-then-abbrev (p)
-    "Call `ispell-word', then create an abbrev for it.
-  With prefix P, create local abbrev. Otherwise it will
-  be global.
-  If there's nothing wrong with the word at point, keep
-  looking for a typo until the beginning of buffer. You can
-  skip typos you don't want to fix with `SPC', and you can
-  abort completely with `C-g'."
-    (interactive "P")
-    (let (bef aft)
-      (save-excursion
-        (while (if (setq bef (endless/simple-get-word))
-                   ;; Word was corrected or used quit.
-                   (if (ispell-word nil 'quiet)
-                       nil ; End the loop.
-                     ;; Also end if we reach `bob'.
-                     (not (bobp)))
-                 ;; If there's no word at point, keep looking
-                 ;; until `bob'.
-                 (not (bobp)))
-          (backward-word)
-          (backward-char))
-        (setq aft (endless/simple-get-word)))
-      (if (and aft bef (not (equal aft bef)))
-          (let ((aft (downcase aft))
-                (bef (downcase bef)))
-            (define-abbrev
-              (if p local-abbrev-table global-abbrev-table)
-              bef aft)
-            (message "\"%s\" now expands to \"%s\" %sally"
-                     bef aft (if p "loc" "glob")))
-        (user-error "No typo at or before point"))))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (defun my/french ()
-    "Set up French words for Abbrev and dictionary for ispell"
-    (interactive)
-    (setq ispell-dictionary "french")
-    (setq abbrev-file-name "~/.emacs.d/.abbrev__french"
-          save-abbrevs 'silently))
-
-  (defun my/english ()
-    "Set up English words for Abbrev and dictionary for ispell"
-    (interactive)
-    (setq ispell-dictionary "english")
-    (setq abbrev-file-name "~/.emacs.d/.abbrev_defs"
-          save-abbrevs 'silently))
-#+END_SRC
-
-** =lorem-ipsum=
-
-I could use =try= when I need to use =lipsum=, but as I'm using =defer=, the
-loading of the package doesn't impact the =emacs-init-time=.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package lorem-ipsum
-    :defer 10
-    :bind (("C-c C-v s" . lorem-ipsum-insert-sentences)
-           ("C-c C-v p" . lorem-ipsum-insert-paragraphs)
-           ("C-c C-v l" . lorem-ipsum-insert-list)))
-#+END_SRC
-
 ** Replace the current file with the saved one
 
 Avoids call the function or reload Emacs.
@@ -387,33 +1378,6 @@ Avoids call the function or reload Emacs.
   (global-auto-revert-mode 1)
   (setq auto-revert-verbose nil)
   (global-set-key (kbd "C-x R") 'revert-buffer)
-#+END_SRC
-
-** Replace "yes or no" with "y or n"
-
-I'm too lazy...
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (fset 'yes-or-no-p 'y-or-n-p)
-#+END_SRC
-
-** Set UTF-8
-
-These commands permit to set UTF-8 everywhere.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (prefer-coding-system 'utf-8)
-  (when (display-graphic-p)
-    (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
-#+END_SRC
-
-** Show the column number and the parent
-
-Useful for programming.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (column-number-mode 1)
-  (show-paren-mode 1)
 #+END_SRC
 
 ** Specific a command after saved file
@@ -435,75 +1399,6 @@ specific file.
         (shell-command (cdr match)))))
 
   (add-hook 'after-save-hook 'my/cmd-after-saved-file)
-#+END_SRC
-
-** Theme
-
-I like the light on dark because I find it to be more restful.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package solarized-theme
-    :init
-    (load-theme 'solarized-dark t)
-    :config
-    (use-package smart-mode-line
-      :config
-      (setq sml/theme 'respectful)
-      (sml/setup)))
-#+END_SRC
-
-** Time
-
-Having the clock in the modeline is always cool.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (display-time-mode 1)
-#+END_SRC
-
-** Turn off mouse interface
-
-Disables menu bar, tool bar, scroll bar and tooltip.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (when window-system
-    (menu-bar-mode -1)
-    (tool-bar-mode -1)
-    (scroll-bar-mode -1)
-    (tooltip-mode -1))
-#+END_SRC
-
-** =webpaste=
-
-paste region or buffer become easy with this package.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package webpaste
-    :bind (("C-c C-p C-b" . webpaste-paste-buffer)
-           ("C-c C-p C-r" . webpaste-paste-region)))
-#+END_SRC
-
-** Word wrap at 80 characters
-
-Even if the 80 characters convention is less to less use, it still
-provides the best display of the code according to the scale.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (add-hook 'after-init-hook 'auto-fill-mode)
-  (setq-default fill-column 80)
-  (setq default-major-mode 'text-mode)
-  (setq text-mode-hook 'turn-on-auto-fill)
-#+END_SRC
-
-** Diminish
-
-Diminish few modes from built-in packages.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package diminish
-    :diminish abbrev-mode
-    :diminish auto-fill-mode
-    :diminish org-indent-mode
-    :diminish visual-line-mode)
 #+END_SRC
 
 * Navigation
@@ -633,6 +1528,7 @@ Moves the current line (or if marked, the current region’s, whole lines).
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package move-text
+    :defer 2
     :bind (("M-p" . move-text-up)
            ("M-n" . move-text-down))
     :config (move-text-default-bindings))
@@ -693,7 +1589,9 @@ Provides fast access to the recent files.
     :init (recentf-mode)
     :custom
     (recentf-max-saved-items 200)
-    (recentf-max-menu-items 15))
+    (recentf-max-menu-items 15)
+    :config
+    (run-at-time nil (* 5 60) 'recentf-save-list))
 #+END_SRC
 
 ** =switch-window=
@@ -722,6 +1620,7 @@ good complementary to it.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package windmove
+    :defer 2
     :bind (("C-c h" . windmove-left)
            ("C-c j" . windmove-down)
            ("C-c k" . windmove-up)
@@ -745,6 +1644,14 @@ Few lines for a basic confortable configuration.
         org-yank-adjusted-subtrees t)
 
   (add-hook 'org-mode-hook #'visual-line-mode)
+#+END_SRC
+
+If like me, you're tired of manually updating your tables of contents, =toc-org
+will maintain a table of contents at the first heading that has a =:TOC:= tag.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package toc-org
+    :after org)
 #+END_SRC
 
 ** Files
@@ -792,6 +1699,7 @@ With that, I can compile many languages.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package org
+    :hook (org-mode . toc-org-enable)
     :init
     (require 'ob-C)
     (require 'ob-css)
@@ -934,11 +1842,13 @@ Here is the place where I put all my =.org= files that will be read by =org-agen
                         "~/Sync/shared/.personal/business.org"
                         "~/Sync/shared/.personal/decisions.org"
                         "~/Sync/shared/.personal/learning.org"
+                        "~/Sync/shared/.personal/internship.org"
                         "~/Sync/shared/.personal/organizer.org"
                         "~/Sync/shared/.personal/people.org"
                         "~/Sync/shared/.personal/projects.org"
                         "~/Sync/shared/.personal/routine.org"
-                        "~/Sync/shared/.personal/school.org"))))
+                        "~/Sync/shared/.personal/school.org"
+                        "~/Sync/shared/.personal/tfe.org"))))
   (add-to-list 'auto-mode-alist '("\\.txt$" . org-mode))
 #+END_SRC
 
@@ -979,7 +1889,7 @@ appointments are spread out.
   ;;       '((daily today require-timed)
   ;;         "----------------"
   ;;         (800 1000 1200 1400 1600 1800)))
-#+END_SRC
+#+end_SRC
 
 *** Task dependencies
 
@@ -1086,7 +1996,7 @@ This allow to capture a task based on the agenda.
     (org-agenda-switch-to)
     (org-capture 0))
 
-  (define-key org-agenda-mode-map "N" 'my/org-agenda-new)
+;;  (define-key org-agenda-mode-map "N" 'my/org-agenda-new)
 #+END_SRC
 
 ** Custom commands
@@ -1494,7 +2404,7 @@ That way, it's easy to see short tasks that I can finish.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (add-to-list 'org-global-properties
                '("Effort_ALL". "0:05 0:15 0:30 1:00 2:00 3:00 4:00"))
-#+END_SRC
+#+end_SRC
 
 From "Add an effort estimate on the fly when clocking in" on the [[http://orgmode.org/worg/org-hacks.html][Org Hacks]]
 page.
@@ -1652,7 +2562,7 @@ https://github.com/howardabrams/dot-files/blob/master/emacs-org.org
       "Loads last year's journal entry, which is not necessary the
   same day of the month, but will be the same day of the week."
       (interactive)
-      (let ((journal-file (concat org-journal-dir (journal-last-year-file))))
+      (let ((journal-file (concat org-journal-dir (journal-last-file))))
         (find-file journal-file))))
 #+END_SRC
 
@@ -1671,12 +2581,13 @@ identifier, by yours (or =nil= to allow symmetric encryption).
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package epa
+    :defer 2
     :custom
     (epg-gpg-program "gpg"))
 
   (use-package org
     :bind ("C-c d" . org-decrypt-entry)
-    :init (org-crypt-use-before-save-magic)
+    ;; :init (org-crypt-use-before-save-magic)
     :custom
     (org-tags-exclude-from-inheritance (quote ("crypt")))
     (org-crypt-key "E9AADC36E94A672D1A07D49B208FCDBB98190562")
@@ -1692,27 +2603,38 @@ identifier, by yours (or =nil= to allow symmetric encryption).
     (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
     (setq org-reveal-mathjax t))
 
-  (use-package htmlize
-    :defer 2)
+  (use-package htmlize :defer 2)
 #+END_SRC
 
 * Plugins configuration
 
 ** =aggressive-indent=
 
-Minor mode that keeps your code always indented. It reindents after every
-change.
+Auto-indent code as you write.
+
+#+BEGIN_QUOTE
+=electric-indent-mode= is enough to keep your code nicely aligned when all you
+do is type. However, once you start shifting blocks around, transposing lines,
+or slurping and barfing sexps, indentation is bound to go wrong.
+
+=aggressive-indent-mode= is a minor mode that keeps your code *always* indented.
+It reindents after every change, making it more reliable than
+electric-indent-mode.
+
+[[https://github.com/Malabarba/aggressive-indent-mode][Artur Malabarba]]
+#+END_QUOTE
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package aggressive-indent
     :defer 2
-    :diminish
-    :init
-    (global-aggressive-indent-mode 1)
-    (add-to-list 'aggressive-indent-excluded-modes 'html-mode))
+    :hook (python-mode . aggressive-indent-mode)
+    :custom
+    (aggressive-indent-comments-too))
 #+END_SRC
 
 ** =atomic chrome=
+
+Helpful when I need to edit text areas of the browser in Emacs.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package atomic-chrome
@@ -1729,9 +2651,10 @@ change.
         (message "Can't start atomic-chrome server, because port 64292 is already used")
       (atomic-chrome-start-server)))
 #+END_SRC
+
 ** =calc=
 
-May be useful in a timely manner
+May be useful in a timely manner.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package calc
@@ -1746,97 +2669,7 @@ May be useful in a timely manner
        (Mib "1024 * Kib" "Mega Bit")
        (Kib "1024 * b" "Kilo Bit")
        (b "B / 8" "Bit")))
-    :config
-    (setq math-units-table nil))
-#+END_SRC
-
-** =company=
-
-Company is a text completion framework for Emacs. The name stands for "complete
-anything". It uses pluggable back-ends and front-ends to retrieve and display
-completion candidates.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package company
-    :diminish
-    :defer 2
-    :custom
-    (company-tooltip-align-annotations 't)
-    (company-idle-delay .1)
-    (company-minimum-prefix-length 2)
-    (company-begin-commands '(self-insert-command))
-    (company-show-numbers t)
-    (global-company-mode t))
-
-  (use-package company-box
-    :diminish
-    :after company
-    :hook (company-mode . company-box-mode))
-#+END_SRC
-
-** =docker=
-
-I like to use Docker when I need to install various databases or other services
-that only run on a particular operating system while keeping my operating system
-clean.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package docker
-    :defer 15
-    :diminish
-    :config
-    (require 'docker-images)
-    (require 'docker-containers)
-    (require 'docker-volumes)
-    (require 'docker-networks)
-    (docker-global-mode))
-#+END_SRC
-
-** Version Control
-
-It is quite common to work on Git repositories, so it is important to have a
-configuration that we like.
-
-#+BEGIN_QUOTE
-[[https://github.com/magit/magit][Magit]] is an interface to the version control system Git, implemented as an Emacs
-package. Magit aspires to be a complete Git porcelain. While we cannot (yet)
-claim that Magit wraps and improves upon each and every Git command, it is
-complete enough to allow even experienced Git users to perform almost all of
-their daily version control tasks directly from within Emacs. While many fine
-Git clients exist, only Magit and Git itself deserve to be called porcelains.
-
-[[https://github.com/tarsius][Jonas Bernoulli]]
-#+END_QUOTE
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package magit
-    :defer 2
-    :bind (("C-c m c" . magit-commit)
-           ("C-c m a" . magit-stage)
-           ("C-c m s" . magit-status)
-           ("C-c m u" . magit-unstage)
-           ("C-c m U" . magit-unstage-all)
-           ("C-c m p" . magit-push)))
-#+END_SRC
-
-In addition to that, I like to see the lines that are being modified in the file
-while it is being edited.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package git-gutter
-    :defer 2
-    :diminish
-    :init
-    (global-git-gutter-mode +1))
-#+END_SRC
-
-Finally, one last package that I like to use with Git to easily see the changes
-made by previous commits.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-(use-package git-timemachine
-  :defer 3
-  :diminish)
+    (math-units-table nil))
 #+END_SRC
 
 ** =which-key=
@@ -1848,38 +2681,31 @@ I used =guide-key= in my past days, but =which-key= is a good replacement.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package which-key
-    :defer 2
     :diminish
     :commands which-key-mode
     :config
     (which-key-mode))
 #+END_SRC
-
-** =expend-region=
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package expand-region
-    :defer 2
-    :bind ("C-=" . er/expand-region))
-#+END_SRC
-
 ** =flycheck=
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-    (use-package flycheck
-      :defer 2
-      :diminish (flycheck-mode)
-      :init (global-flycheck-mode t)
-      :config
-      (flycheck-define-checker my-php
-        "A PHP syntax checker using the PHP command line interpreter.
+  (use-package flycheck
+    :defer 2
+    :hook ((emacs-lisp-mode python-mode) . flycheck-mode)
+    :config
+    (setq-default
+     flycheck-check-syntax-automatically '(save mode-enabled)
+     flycheck-disabled-checkers '(emacs-lisp-checkdoc)
+     flycheck-display-errors-delay .3)
+    (flycheck-define-checker my-php
+      "A PHP syntax checker using the PHP command line interpreter.
         See URL `http://php.net/manual/en/features.commandline.php'."
-        :command ("php" "-l" "-d" "error_reporting=E_ALL" "-d" "display_errors=1"
-                  "-d" "log_errors=0" source)
-        :error-patterns
-        ((error line-start (or "Parse" "Fatal" "syntax") " error" (any ":" ",") " "
-                (message) " in " (file-name) " on line " line line-end))
-        :modes (php-mode php+-mode web-mode)))
+      :command ("php" "-l" "-d" "error_reporting=E_ALL" "-d" "display_errors=1"
+                "-d" "log_errors=0" source)
+      :error-patterns
+      ((error line-start (or "Parse" "Fatal" "syntax") " error" (any ":" ",") " "
+              (message) " in " (file-name) " on line " line line-end))
+      :modes (php-mode php+-mode web-mode)))
 #+END_SRC
 
 ** =hungry-delete=
@@ -1900,8 +2726,7 @@ non-whitespace character.
 Edit multiple regions in the same way simultaneously
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package iedit
-    :defer t)
+  (use-package iedit :defer t)
 #+END_SRC
 
 ** =ipcalc=
@@ -1912,7 +2737,6 @@ Allows me to avoid calculating network ranges.
   (use-package ipcalc
     :commands ipcalc)
 #+END_SRC
-
 ** =ledger=
 
 I usually use ledger to take a track of my finance.
@@ -1936,45 +2760,14 @@ if you using =Arch Linux= like I do. Otherwise, see for your case.
   trizen -S ledger
 #+END_SRC
 
-** =pdf-tools=
-
-PDF Tools is, among other things, a replacement of DocView for PDF files. The
-key difference is, that pages are not pre-rendered by e.g. ghostscript and
-stored in the file-system, but rather created on-demand and stored in memory.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package pdf-tools
-    :defer 2
-    :init
-    (pdf-tools-install)
-    :custom
-    ;; Disable unicode support in mode line for more speed.
-    (pdf-view-use-unicode-ligther nil))
-#+END_SRC
-
-** =projectile=
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package projectile
-    :defer 5
-    :diminish
-    :config
-    (projectile-global-mode)
-    (setq projectile-completion-system 'ivy))
-
-  (use-package counsel-projectile
-    :after (counsel projectile)
-    (counsel-projectile-on))
-#+END_SRC
-
 ** =rainbow-mode=
 
 Minor mode for Emacs which displays strings representing
 colors with the color they represent as background.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-    (use-package rainbow-mode
-      :commands rainbow-mode)
+  (use-package rainbow-mode
+    :commands rainbow-mode)
 #+END_SRC
 
 ** =skewer-mode=
@@ -1986,42 +2779,12 @@ modes.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package skewer-mode
+    :defer 3
     :hook ((js2-mode . skewer-mode)
-          (css-mode . skewer-css-mode)
-          (html-mode . skewer-html-mode)
-          (web-mode . skewer-html-mode)))
+           (css-mode . skewer-css-mode)
+           (html-mode . skewer-html-mode)
+           (web-mode . skewer-html-mode)))
 #+END_SRC
-
-** =ivy=
-
-I used =helm= before, but I find =ivy= more faster and lighter.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package ivy
-    :defer 5
-    :diminish
-    :bind (("C-x b" . ivy-switch-buffer)
-           ("C-x B" . ivy-switch-buffer-other-window))
-    :custom
-    (ivy-mode 1)
-    (ivy-use-virtual-buffers t)
-    (ivy-display-style 'fancy))
-
-  (use-package ivy-pass
-    :after ivy
-    :commands ivy-pass)
-
-  (use-package ivy-rich
-    :defer 6
-    :after ivy
-    :config
-    (ivy-set-display-transformer 'ivy-switch-buffer
-                                 'ivy-rich-switch-buffer-transformer)
-    (setq ivy-virtual-abbreviate 'full
-          ivy-rich-switch-buffer-align-virtual-buffer t
-          ivy-rich-path-style 'abbrev))
-#+END_SRC
-
 ** =swiper=
 
 Provides to myself isearch with an overview.
@@ -2070,28 +2833,14 @@ According to myself, this is most powerful package to deal with parenthesis.
 Anyway, if you don't like it you can try take a look to =paredit= or =autopair=
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package smartparens
-    :defer 5)
+  (use-package smartparens :defer 2)
 #+END_SRC
-
-** =spotify=
-
-Control the spotify application from Emacs.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-    (use-package spotify
-      :defer 5
-      :config
-      (spotify-enable-song-notifications))
-#+END_SRC
-
 ** =try=
 
 Useful to temporary use a package.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package try
-    :defer 5)
+  (use-package try :defer 5)
 #+END_SRC
 
 ** =undo-tree=
@@ -2101,7 +2850,7 @@ this, Emacs treats "undo itself as another editing that can be undone.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package undo-tree
-    :diminish undo-tree-mode
+    :diminish
     :bind ("C--" . undo-tree-redo)
     :init (global-undo-tree-mode)
     :custom
@@ -2208,759 +2957,3 @@ Very useful when you need to work with some boilerplatey languages like Java.
     (yas-snippet-dirs '("~/.emacs.d/snippets"))
     (yas-installed-snippets-dir "~/.emacs.d/snippets"))
 #+END_SRC
-
-* Programming languages
-
-** Emacs Lisp
-
-*** Eldoc
-
-Provides minibuffer hints when working with Emacs Lisp.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package "eldoc"
-    :diminish
-    :commands turn-on-eldoc-mode
-    :hook ((abbrev-mode . emacs-lisp-mode)
-           (abbrev-mode . lisp-interaction-mode)
-           (abbrev-mode . ielm-mode)))
-#+END_SRC
-
-*** Jumping to code
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (define-key emacs-lisp-mode-map (kbd "C-c .") 'find-function-at-point)
-  (bind-key "C-c f" 'find-function)
-#+END_SRC
-
-*** Sorting
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (defun my/sort-sexps-in-region (beg end)
-    "Can be handy for sorting out duplicates.
-  Sorts the sexps from BEG to END. Leaves the point at where it
-  couldn't figure things out (ex: syntax errors)."
-    (interactive "r")
-    (let ((input (buffer-substring beg end))
-          list last-point form result)
-      (save-restriction
-        (save-excursion
-          (narrow-to-region beg end)
-          (goto-char (point-min))
-          (setq last-point (point-min))
-          (setq form t)
-          (while (and form (not (eobp)))
-            (setq form (ignore-errors (read (current-buffer))))
-            (when form
-              (add-to-list
-               'list
-               (cons
-                (prin1-to-string form)
-                (buffer-substring last-point (point))))
-              (setq last-point (point))))
-          (setq list (sort list (lambda (a b) (string< (car a) (car b)))))
-          (delete-region (point-min) (point))
-          (insert (mapconcat 'cdr list "\n"))))))
-#+END_SRC
-
-*** Evaluation
-
-Borrowed from Steve Purcell’s config. This pretty-prints the results.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  '(bind-key "M-:" 'pp-eval-expression)
-
-  (defun sanityinc/eval-last-sexp-or-region (prefix)
-    "Eval region from BEG to END if active, otherwise the last sexp."
-    (interactive "P")
-    (if (and (mark) (use-region-p))
-        (eval-region (min (point) (mark)) (max (point) (mark)))
-      (pp-eval-last-sexp prefix)))
-
-  (bind-key "C-x C-e" 'sanityinc/eval-last-sexp-or-region emacs-lisp-mode-map)
-#+END_SRC
-
-** HTML/CSS
-
-*** =emmet-mode=
-
-Powerful minor mode to produce HTML from CSS-like selector.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package emmet-mode
-    :defer 10
-    :hook (sgml-mode css-mode web-mode))
-#+END_SRC
-
-*** =less-css-mode= is an awesome package to programming in LESS.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package less-css-mode
-    :mode "\\.less\\'"
-    :interpreter ("less" . less-css-mode))
-#+END_SRC
-
-** Java
-
-Configurate Java for Emacs is quite simple =eclim=. All you need to do, it's to
-install =Eclipse= and =eclim=.
-
-*** =eclim=
-
-Is a protocol for communicating with an =Eclipse= server from vim. Fortunately,
-Emacs can also use =eclim= as an emacs port exists called =emacs-eclim=.
-
-First of all, you need to download [[http://eclim.org/install.html][eclim]] with the Java Jar file as an installer
-and put the =eclim= and =eclimd= executables in the same folder where you
-installed =Eclipse= (for my case, =/opt/eclipse=).
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package eclim
-    :defer t
-    :hook (java-mode . eclim-mode)
-    :custom
-    (eclimd-autostart t)
-    (eclimd-default-workspace '"~/Documents/Projects/Java/")
-    (eclim-eclipse-dirs '"/opt/eclipse")
-    (eclim-executable '"/opt/eclipse/eclim")
-    (help-at-pt-display-when-idle t)
-    (help-at-pt-timer-delay 0.1)
-    (help-at-pt-set-timer))
-#+END_SRC
-
-*** =company-emacs-eclim=
-
-From =company-mode= and provides auto-completion with =eclim=.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package company-emacs-eclim
-    :after eclim
-    :commands company-emacs-eclim-setup)
-#+END_SRC
-
-*** =gradle-mode=
-
-Most of my Java projects are made with =gradle=
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package gradle-mode
-    :mode "\\.gradle\\'"
-    :interpreter ("gradle" . gradle-mode))
-#+END_SRC
-
-** JavaScript
-
-I don't often programming in JavaScript, but when I do, I like to have a
-confortable setup. For my JavaScript configuration, I took my sources from the
-blog of Nicolas Petton that I found really well explain.
-
-[[https://emacs.cafe/emacs/javascript/setup/2017/04/23/emacs-setup-javascript.html][Setting up Emacs for JavaScript (part #1)]]
-
-[[https://emacs.cafe/emacs/javascript/setup/2017/05/09/emacs-setup-javascript-2.html][Setting up Emacs for JavaScript (part #2)]]
-
-*** =js2-mode=
-
-By default, Emacs use =js-mode= as major mode for JavaScript buffers and I
-prefer use =js2-mode= instead because of his abilities to parses buffers and
-builds an AST for things like syntax highlighting.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package js2-mode
-    :defer 40
-    :hook (js2-mode . js2-imenu-extras-mode)
-    :config
-    ;; Better imenu
-    (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
-#+END_SRC
-
-*** =js2-refactor=
-
-Provides powerful refactoring based on the AST generated by =js2-mode=
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package js2-refactor
-    :hook (js2-mode . js2-refactor-mode)
-    :config
-    (js2r-add-keybindings-with-prefix "C-c C-r")
-    (define-key js2-mode-map (kbd "C-k") #'js2r-kill)
-
-    ;; js-mode (which js2 is based on) binds "M-." which conflicts with xref, so
-    ;; unbind it.
-    (define-key js-mode-map (kbd "M-.") nil)
-
-    (add-hook 'js2-mode-hook (lambda ()
-                               (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t))))
-#+END_SRC
-
-*** =xref-js2=
-
-Makes it easy to jump to function references or definitions.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package xref-js2 :defer 40)
-#+END_SRC
-
-*** =tern=
-
-Parses JavaScript files in a project and does type inference to provide
-meaningful completion (with type hints) and support for cross-references.
-
-Unfortunately, =tern= has some problems with the cross-references that why I'm
-using =xref-js2= instead for that.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package tern
-    :defer 30
-    :config
-    (bind-key "C-c C-c" 'compile tern-mode-keymap)
-    (add-hook 'js2-mode-hook (lambda ()
-                               (tern-mode)
-                               (company-mode)))
-
-    ;; Disable completion keybindings, as we use xref-js2 instead
-    (define-key tern-mode-keymap (kbd "M-.") nil)
-    (define-key tern-mode-keymap (kbd "M-,") nil))
-#+END_SRC
-
-If you plan to use it, don’t forget installing it via =npm=
-
-#+BEGIN_SRC bash :tangle yes
-  sudo npm install -g tern
-#+END_SRC
-
-Then adding a =.tern-project= file to your project root.
-
-Here’s an example setup for a project that uses =requirejs= and =jQuery=, ignoring
-files from the =bower_components= directory:
-
-#+BEGIN_SRC json
-  {
-      "libs": [
-          "jquery"
-      ],
-      "loadEagerly": [
-          "./**/*.js"
-      ],
-      "dontLoad": [
-          "./bower_components/"
-      ],
-      "plugins": {
-          "requirejs": {
-              "baseURL": "./"
-          }
-      }
-  }
-#+END_SRC
-
-*** =company-tern=
-
-From =company-mode= and provides auto-completion with =tern=
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package company-tern
-    :after (company tern)
-    :config (add-to-list 'company-backends 'company-tern))
-#+END_SRC
-
-** LaTeX
-
-*** Configuration
-
-I use LaTeX for my reports, resume, synthesis, etc.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package tex
-    :ensure auctex
-    :hook ((LaTeX-mode . flyspell-mode)
-           (LaTeX-mode . reftex-mode))
-    :custom
-    (TeX-PDF-mode t)
-    (TeX-auto-save t)
-    (TeX-parse-self t)
-    (TeX-byte-compile t)
-    (TeX-clean-confirm nil)
-    (TeX-master 'dwim)
-    (TeX-view-program-selection '((output-pdf "Evince")
-                                  (output-html "xdg-open")))
-    (TeX-source-correlate-mode t))
-#+END_SRC
-
-I want a TeX engine that can deal with Unicode and use any font I like.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (setq-default TeX-engine 'xetex)
-#+END_SRC
-
-***  =company-auctex=
-
-AUCTeX backend for company-mode.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package company-auctex
-    :after (auctex company)
-    :config
-    (company-auctex-init))
-#+END_SRC
-
-*** =reftex=
-
-Minor mode with distinct support for =\label=, =\ref= and =\cite= in LaTeX.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package reftex
-    :after auctex)
-#+END_SRC
-
-** Lua
-
-I rarely programming in Lua, but when I do, =lua-mode= satisfeat myself for my
-needed.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package lua-mode
-    :mode "\\.lua\\'"
-    :interpreter ("lua" . lua-mode))
-#+END_SRC
-
-** Markdown
-
-To use that mode, don't forget to install =markdown= package on your OS.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package markdown-mode
-    :mode (("\\`README\\.md\\'" . gfm-mode)
-           ("\\.md\\'"          . markdown-mode)
-           ("\\.markdown\\'"    . markdown-mode)))
-
-  (use-package markdown-preview-mode
-    :after markdown-mode)
-#+END_SRC
-
-** PHP
-
-For people wondering, I don't use =php-mode= for his lack of indentation for PHP
-blocks inside HTML divs. Also, why using another package when
-[[https://github.com/fxbois/web-mode/][web-mode]] already provides all that I need?
-
-The function below provides my own PHP configuration with [[https://github.com/xcwen/ac-php/][ac-php]] and
-=flycheck=.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (defun my/php-setup ()
-    (web-mode)
-
-    (make-local-variable 'web-mode-code-indent-offset)
-    (make-local-variable 'web-mode-markup-indent-offset)
-    (make-local-variable 'web-mode-css-indent-offset)
-
-    (setq web-mode-code-indent-offset 4)
-    (setq web-mode-css-indent-offset 2)
-    (setq web-mode-markup-indent-offset 2)
-
-    (use-package ac-php
-      :config
-      (auto-complete-mode t)
-      (setq ac-sources '(ac-source-php))
-      (yas-global-mode 1)
-      (ac-php-core-eldoc-setup))
-
-    (flycheck-select-checker 'my-php)
-    (flycheck-mode t))
-#+END_SRC
-
-** Python
-
-*** =anaconda-mode=
-
-=anaconda-mode= is a mode for code navigation, documentation lookup and completion
-for Python.
-
-I prefer use Anaconda that is more easier to configurate and support
-=company-mode= than =Jedi= that I find quite old.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package anaconda-mode
-    :after python
-    :hook ((python-mode . anaconda-mode)
-           (python-mode . anaconda-eldoc-mode)))
-#+END_SRC
-
-*** =company-anaconda=
-
-Anaconda backend for company-mode
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-
-  (use-package company-anaconda
-    :after (anaconda-mode company)
-    :config
-    (add-to-list 'company-backends 'company-anaconda))
-#+END_SRC
-
-** SQL
-
-=sql-indent= give me the possibility to easily manage =.sql= files.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package sql-indent
-    :mode "\\.sql\\'"
-    :interpreter ("sql" . sql-mode))
-#+END_SRC
-
-** YAML
-
-=yaml-mode= give me the possibility to easily manage =.yml= files.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package yaml-mode
-    :mode "\\.yml\\'"
-    :interpreter ("yml" . yml-mode))
-#+END_SRC
-
-* Internet Relay Chat (IRC)
-
-IRC is the best way for me to get a quick answer to a simple question and to
-learn from more competent people than me on a subject. I'd rather use =erc= than
-=rcirc= because I find =rcirc= very minimal.
-
-Besides, for people like me, who want to store your password in a /GPG/ file,
-you just need to specify a file priority list with =auth-sources=, to tell =erc=
-where to start looking for your password first.
-
-Of course, don't forget to add this line in your =.authinfo.gpg= file, where
-/<nickname>/ and /<password>/ match your real information:
-
-#+BEGIN_EXAMPLE
-  machine irc.freenode.net login <nickname> password <password>
-#+END_EXAMPLE
-
-Then encrypt that file with =gpg -c .authinfo= and don't forget to delete the
-=.authinfo= file.
-
-Finally, specify to =erc= that you use a =.authinfo= file with:
-=(setq erc-prompt-for-nickserv-password nil)=.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package erc
-    :defer 3
-    :bind (("C-c e" . my/erc-start-or-switch)
-           ("C-c n" . my/erc-count-users))
-    :hook ((ercn-notify . my/erc-notify)
-           (erc-send-pre . my/erc-preprocess))
-    :custom
-    (erc-autojoin-channels-alist '(("freenode.net" "#archlinux" "#bash" "#emacs"
-                                    "#gentoo" "#i3" "#latex" "#org-mode" "#python"
-                                    "#sway")))
-    (erc-autojoin-timing 'ident)
-    (erc-fill-function 'erc-fill-static)
-    (erc-fill-static-center 22)
-    (erc-header-line-format "%n on %t (%m)")
-    (erc-hide-list '("JOIN" "PART" "QUIT"))
-    (erc-lurker-hide-list '("JOIN" "PART" "QUIT"))
-    (erc-lurker-threshold-time 43200)
-    (erc-prompt-for-nickserv-password nil)
-    (erc-server-reconnect-attempts 5)
-    (erc-server-reconnect-timeout 3)
-    (erc-track-exclude-types '("JOIN" "MODE" "NICK" "PART" "QUIT"
-                               "324" "329" "332" "333" "353" "477"))
-    :config
-    (add-to-list 'erc-modules 'notifications)
-    (add-to-list 'erc-modules 'spelling)
-    (erc-services-mode 1)
-    (erc-update-modules)
-    :preface
-    (defun my/erc-start-or-switch ()
-      "Connects to ERC, or switch to last active buffer."
-      (interactive)
-      (if (get-buffer "irc.freenode.net:6667")
-          (erc-track-switch-buffer 1)
-        (when (y-or-n-p "Start ERC? ")
-          (erc :server "irc.freenode.net" :port 6667 :nick "rememberYou"))))
-
-    (defun my/erc-count-users ()
-      "Displays the number of users connected on the current channel."
-      (interactive)
-      (if (get-buffer "irc.freenode.net:6667")
-          (let ((channel (erc-default-target)))
-            (if (and channel (erc-channel-p channel))
-                (message "%d users are online on %s"
-                         (hash-table-count erc-channel-users)
-                         channel)
-              (user-error "The current buffer is not a channel")))
-        (user-error "You must first start ERC")))
-
-    (defun my/erc-notify (nickname message)
-      "Displays a notification message for ERC."
-      (let* ((channel (buffer-name))
-             (nick (erc-hl-nicks-trim-irc-nick nickname))
-             (title (if (string-match-p (concat "^" nickname) channel)
-                        nick
-                      (concat nick " (" channel ")")))
-             (msg (s-trim (s-collapse-whitespace message))))
-        (alert (concat nick ": " msg) :title title)))
-
-    (defun my/erc-preprocess (string)
-      "Avoids channel flooding."
-      (setq str
-            (string-trim
-             (replace-regexp-in-string "\n+" " " str)))))
-
-  (use-package erc-hl-nicks
-    :after erc)
-
-  (use-package erc-image
-    :after erc)
-#+END_SRC
-
-** Hydra
-
-Hydra allows me to display a list of all the commands implemented in the echo
-area and easily interact with them.
-
-#+BEGIN_QUOTE
-Once you summon the [[https://github.com/abo-abo/hydra][Hydra]] through the prefixed binding (the body + any one
-head), all heads can be called in succession with only a short extension.
-
-The Hydra is vanquished once Hercules, any binding that isn't the Hydra's head,
-arrives. Note that Hercules, besides vanquishing the Hydra, will still serve his
-original purpose, calling his proper command. This makes the Hydra very
-seamless, it's like a minor mode that disables itself auto-magically.
-
-[[https://github.com/abo-abo][Oleh Krehel]]
-#+END_QUOTE
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package hydra
-    :defer 2
-    :bind ("C-c f" . hydra-flycheck/body)
-          ("C-c m" . hydra-magit/body)
-          ("C-c p" . hydra-projectile/body)
-          ("C-c o" . hydra-toggle/body)
-          ("C-c w" . hydra-windows/body))
-#+END_SRC
-
-*** Hydra / Flycheck
-
-Group Flycheck commands.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (defhydra hydra-flycheck (:color pink)
-    "
-    ^
-    ^Flycheck^          ^Errors^            ^Checker^
-    ^────────^──────────^──────^────────────^───────^─────
-    _q_ quit            _<_ previous        _?_ describe
-    _m_ manual          _>_ next            _d_ disable
-    _v_ verify setup    _f_ check           _s_ select
-    ^^                  _l_ list            ^^
-    ^^                  ^^                  ^^
-    "
-    ("q" nil)
-    ("<" flycheck-previous-error)
-    (">" flycheck-next-error)
-    ("?" flycheck-describe-checker :color blue)
-    ("d" flycheck-disable-checker :color blue)
-    ("f" flycheck-buffer)
-    ("l" flycheck-list-errors :color blue)
-    ("m" flycheck-manual :color blue)
-    ("s" flycheck-select-checker :color blue)
-    ("v" flycheck-verify-setup :color blue))
-#+END_SRC
-
-*** Hydra / Magit
-
-Group Magit commands.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (defhydra hydra-magit (:color blue)
-    "
-    ^
-    ^Magit^             ^Do^
-    ^─────^─────────────^──^────────
-    _q_ quit            _b_ blame
-    ^^                  _c_ clone
-    ^^                  _i_ init
-    ^^                  _s_ status
-    ^^                  ^^
-    "
-    ("q" nil)
-    ("b" magit-blame)
-    ("c" magit-clone)
-    ("i" magit-init)
-    ("s" magit-status))
-#+END_SRC
-
-*** Hydra / Projectile
-
-Group Projectile commands.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (defhydra hydra-projectile (:color blue)
-    "
-    ^
-    ^Projectile^        ^Buffers^           ^Find^              ^Search^
-    ^──────────^────────^───────^───────────^────^──────────────^──────^────────────
-    _q_ quit            _b_ list            _d_ directory       _r_ replace
-    _i_ reset cache     _K_ kill all        _D_ root            _R_ regexp replace
-    ^^                  _S_ save all        _f_ file            _s_ ag
-    ^^                  ^^                  _p_ project         ^^
-    ^^                  ^^                  ^^                  ^^
-    "
-    ("q" nil)
-    ("b" counsel-projectile-switch-to-buffer)
-    ("d" counsel-projectile-find-dir)
-    ("D" projectile-dired)
-    ("f" counsel-projectile-find-file)
-    ("i" projectile-invalidate-cache :color red)
-    ("K" projectile-kill-buffers)
-    ("p" counsel-projectile-switch-project)
-    ("r" projectile-replace)
-    ("R" projectile-replace-regexp)
-    ("s" counsel-projectile-ag)
-    ("S" projectile-save-project-buffers))
-#+END_SRC
-
-*** Hydra / Toggle
-
-Group toggle commands.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (defhydra hydra-toggle (:color blue)
-    "
-    ^
-    ^Toggle^             ^Do^
-    ^──────^─────────────^──^─────────
-    _q_ quit             _a_ abbrev
-    ^^                   _f_ flyspell
-    ^^                   ^^
-    "
-    ("q" nil)
-    ("a" abbrev-mode)
-    ("f" flyspell-mode))
-#+END_SRC
-
-Group window-related commands.
-
-#+Begin_src emacs-lisp :tangle yes
-  (defhydra hydra-windows (:color pink)
-    "
-    ^
-    ^Windows^           ^Window^            ^Zoom^
-    ^───────^───────────^──────^────────────^────^──────────────
-    _q_ quit            _b_ balance         _-_ out
-    ^^                  _i_ heighten        _+_ in
-    ^^                  _j_ narrow          _=_ reset
-    ^^                  _k_ lower           ^^
-    ^^                  _l_ widen           ^^
-    ^^                  ^^                  ^^
-    "
-    ("q" nil)
-    ("b" balance-windows)
-    ("i" enlarge-window)
-    ("j" shrink-window-horizontally)
-    ("k" shrink-window)
-    ("l" enlarge-window-horizontally)
-    ("-" text-scale-decrease)
-    ("+" text-scale-increase)
-    ("=" (text-scale-increase 0)))
-#+END_SRC
-
-In order to easily manage my RSS Feeds, I configure them using an Org file.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package elfeed-org
-    :after elfeed
-    :defer 2
-    :config
-    (elfeed-org)
-    (setq rmh-elfeed-org-files (list "~/Sync/shared/elfeed/elfeed.org")))
-#+END_SRC
-
-Allows a better reading of RSS Feeds
-* Mail
-
-After trying =gnus= that I found too old and =notmuch= that in my opinion lacks
-features like the ability to delete some emails and be able to write emails
-easily with =org=, I finally found my happiness with =mu4e=.
-
-I use =mbsync= to be capable of synchronizing mail on IMAP server with local
-Maildir folder. I'm used to using =offlineimap=, but I find it slower than
-=mbsync=, that's why I separated myself from it.
-
-*NOTE:* to use =mbsync= with your Gmail account, you will need to enable access
-for less secure apps in your Google account.
-
-** mu4e
-
-Before you can use this configuration, make sure you install =mu= on your
-operating system and create directories corresponding to those in your mailbox.
-
-Now all that remains is to configure =mu4e=:
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (require 'mu4e)
-
-  (setq mu4e-attachment-dir "~/Downloads"
-        mu4e-compose-signature-auto-include nil
-        mu4e-drafts-folder "/gmail/Drafts"
-        mu4e-get-mail-command "mbsync -a"
-        mu4e-maildir "~/Maildir"
-        mu4e-refile-folder "/gmail/Archive"
-        mu4e-sent-folder "/gmail/Sent Mail"
-        mu4e-trash-folder "/gmail/Trash"
-        mu4e-update-interval 300
-        mu4e-use-fancy-chars t)
-        mu4e-view-show-addresses t
-        mu4e-view-show-images t
-
-  (setq mu4e-maildir-shortcuts
-        '(("/gmail/INBOX" . ?i)
-          ("/gmail/All Mail" . ?a)
-          ("/gmail/Deleted Items" . ?d)
-          ("/gmail/Drafts" . ?D)
-          ("/gmail/Important" . ?i)
-          ("/gmail/Sent Mail" . ?s)
-          ("/gmail/Starred" . ?S)))
-#+END_SRC
-
-Being able to read mails is a good thing, but being notified when we receive
-mails is better! The following few lines allow you to receive desktop
-notifications and modeline display for =mu4e=:
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package mu4e-alert
-    :after mu4e
-    :hook ((after-init . mu4e-alert-enable-mode-line-display)
-           (after-init . mu4e-alert-enable-notifications))
-    :config
-    (mu4e-alert-set-default-style 'libnotify))
-#+END_SRC
-
-** Sending Mail
-
-For you can send mails, create the =.authinfo= file if it is not already
-done. Then add the following two lines replacing /terencio.agozzino/ (which
-corresponds to my gmail address terencio.agozzino@gmail.com without the domain
-name) and /<password>/ by those that match your real information:
-
-#+BEGIN_EXAMPLE
-  machine imap.gmail.com login terencio.agozzino password <password> port 993
-  machine smtp.gmail.com login terencio.agozzino password <password> port 465
-#+END_EXAMPLE
-
-Similar to IRC, if you want to store your password in a /GPG/ file, you just
-need to specify a file priority list with =auth-sources=, to tell GNU/Emacs
-where to start looking for your password first.
-
-Then encrypt that file with =gpg -c .authinfo= and don't forget to delete the
-=.authinfo= file.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (setq send-mail-function 'smtpmail-send-it
-        smtpmail-smtp-server "smtp.gmail.com"
-        smtpmail-smtp-service 465
-        smtpmail-stream-type 'ssl)
-#+END_SRC
-
-All you need now is to test sending your mails with =C-x m= or directly from
-=mu4e=!

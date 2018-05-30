@@ -1,69 +1,243 @@
-(setq user-full-name "Terencio Agozzino"
-      user-mail-address "terencio.agozzino@gmail.com")
-
-(setq inhibit-startup-message t)
-(setq custom-file "~/.emacs.d/custom.el")
-(load custom-file t)
-
-(unless (assoc-default "melpa" package-archives)
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
-(unless (assoc-default "org" package-archives)
-  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t))
-
-(add-to-list 'load-path "~/elisp")
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
 
-(require 'use-package)
-
-(setq use-package-verbose t)
-(setq use-package-always-ensure t)
-(setq load-prefer-newer t)
-(setq vc-follow-symlinks nil)
+(require 'diminish)
 
 (setq auth-sources '("~/Sync/shared/.authinfo.gpg"
                      "~/.authinfo.gpg"
                      "~/.authinfo"
                      "~/.netrc"))
 
-(if (file-exists-p abbrev-file-name)
-    (quietly-read-abbrev-file))
+(setq-default custom-file (expand-file-name "custom.el" user-emacs-directory))
+(when (file-exists-p custom-file)
+  (load custom-file t))
+
+(use-package solarized-theme
+  :defer 1
+  :init
+  (load-theme 'solarized-dark t))
+
+(use-package smart-mode-line
+  :defer 1
+  :config
+  (setq sml/theme 'respectful)
+  (sml/setup))
+
+(when window-system
+  (menu-bar-mode -1)                              ; Disable the menu bar
+  (scroll-bar-mode -1)                            ; Disable the scroll bar
+  (tool-bar-mode -1)                              ; Disable the tool bar
+  (tooltip-mode -1))                              ; Disable the tooltips
+
+(setq-default
+ cursor-in-non-selected-windows t                 ; Hide the cursor in inactive windows
+ display-time-default-load-average nil            ; Don't display load average
+ fill-column 80                                   ; Set width for automatic line breaks
+ help-window-select t                             ; Focus new help windows when opened
+ inhibit-startup-screen t                         ; Disable start-up screen
+ initial-scratch-message ""                       ; Empty the initial *scratch* buffer
+ load-prefer-newer t                              ; Prefers the newest version of a file
+ scroll-conservatively most-positive-fixnum       ; Always scroll by one line
+ select-enable-clipboard t                        ; Merge system's and Emacs' clipboard
+ tab-width 4                                      ; Set width for tabs
+ user-full-name "Terencio Agozzino"               ; Set the full name of the current user
+ user-mail-address "terencio.agozzino@gmail.com"  ; Set the email address of the current user
+ use-package-always-ensure t)                     ; Avoid the :ensure keyword for each package
+(cd "~/")                                         ; Move to the user directory
+(column-number-mode 1)                            ; Show the column number
+(display-time-mode 1)                             ; Enable time in the mode-line
+(fset 'yes-or-no-p 'y-or-n-p)                     ; Replace yes/no prompts with y/n
+(global-hl-line-mode)                             ; Hightlight current line
+(show-paren-mode 1)                               ; Show the parent
+
+(use-package emmet-mode
+  :defer 6
+  :hook (sgml-mode css-mode web-mode))
+
+(use-package less-css-mode
+  :mode "\\.less\\'"
+  :interpreter ("less" . less-css-mode))
+
+(use-package dockerfile-mode
+  :mode "Dockerfile\\'")
+
+(use-package "eldoc"
+  :hook (emacs-lisp-mode . eldoc-mode))
+
+(use-package eclim
+  :defer 3
+  :hook (java-mode . eclim-mode)
+  :custom
+  (eclimd-autostart t)
+  (eclimd-default-workspace '"~/Documents/Projects/Java/")
+  (eclim-eclipse-dirs '"/opt/eclipse")
+  (eclim-executable '"/opt/eclipse/eclim")
+  (help-at-pt-display-when-idle t)
+  (help-at-pt-timer-delay 0.1)
+  (help-at-pt-set-timer))
+
+(use-package company-emacs-eclim
+  :after (company eclim)
+  :commands company-emacs-eclim-setup)
+
+(use-package gradle-mode
+  :mode "\\.gradle\\'"
+  :interpreter ("gradle" . gradle-mode))
+
+(use-package js2-mode
+  :defer 5
+  :hook (js2-mode . js2-imenu-extras-mode)
+  :mode "\\.js\\'")
+
+(use-package js2-refactor
+  :defer 5
+  :bind (:map js2-mode-map
+              ("C-k" . js2r-kill)
+              ("M-." . nil))
+  :hook ((js2-mode . js2-refactor-mode)
+         (js2-mode . (lambda ()
+                      (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t))))
+  :config
+  (js2r-add-keybindings-with-prefix "C-c C-r"))
+
+(use-package xref-js2
+  :defer 5)
+
+(use-package tern
+  :defer 5
+  :bind (("C-c C-c" . compile)
+         :map tern-mode-keymap
+         ("M-." . nil))
+  :hook ((js2-mode . company-mode)
+         (js2-mode . tern-mode)))
+
+(use-package company-tern
+  :after (company tern)
+  :config (add-to-list 'company-backends 'company-tern))
+
+(use-package tex
+  :ensure auctex
+  :hook ((LaTeX-mode . flyspell-mode)
+         (LaTeX-mode . reftex-mode))
+  :custom
+  (TeX-PDF-mode t)
+  (TeX-auto-save t)
+  (TeX-byte-compile t)
+  (TeX-clean-confirm nil)
+  (TeX-master 'dwim)
+  (TeX-parse-self t)
+  (TeX-source-correlate-mode t)
+  (TeX-view-program-selection '((output-pdf "Evince")
+                                (output-html "xdg-open"))))
+
+(setq-default TeX-engine 'xetex)
+
+(use-package company-auctex
+  :after (auctex company)
+  :config
+  (company-auctex-init))
+
+(use-package reftex
+  :after auctex)
+
+(use-package lua-mode
+  :mode "\\.lua\\'"
+  :interpreter ("lua" . lua-mode))
+
+(use-package markdown-mode
+  :mode
+  ("INSTALL\\'"
+   "CONTRIBUTORS\\'"
+   "LICENSE\\'"
+   "README\\'"
+   "\\.markdown\\'"
+   "\\.md\\'"))
+
+(defun my/php-setup ()
+  (web-mode)
+
+  (make-local-variable 'web-mode-code-indent-offset)
+  (make-local-variable 'web-mode-markup-indent-offset)
+  (make-local-variable 'web-mode-css-indent-offset)
+
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 4)
+  (setq web-mode-markup-indent-offset 2)
+
+  (flycheck-select-checker 'my-php)
+  (flycheck-mode t))
+
+(use-package ac-php
+  :after php-mode
+  :hook (php-mode . ac-php-mode)
+  :custom
+  (ac-sources '(ac-source-php))
+  :config
+  (auto-complete-mode t)
+  (ac-php-core-eldoc-setup))
+
+(use-package anaconda-mode
+  :after python
+  :hook ((anaconda-mode anaconda-eldoc-mode) . python-mode))
+
+(use-package company-anaconda
+  :after (anaconda-mode company)
+  :config
+  (add-to-list 'company-backends 'company-anaconda))
+
+(use-package sql-indent
+  :mode "\\.sql\\'"
+  :interpreter ("sql" . sql-mode))
+
+(use-package yaml-mode
+  :mode "\\.yml\\'"
+  :interpreter ("yml" . yml-mode))
+
+(use-package abbrev
+  :defer 2
+  :ensure nil
+  :diminish abbrev-mode
+  :config
+  (if (file-exists-p abbrev-file-name)
+      (quietly-read-abbrev-file)))
 
 (use-package alert
-  :commands alert
-  :config
-  (setq alert-default-style 'libnotify))
+  :custom
+  (alert-default-style 'libnotify))
 
-(use-package auto-compile
-  :defer 5
-  :config (auto-compile-on-load-mode))
+(use-package company
+  :defer 2
+  :diminish
+  :custom
+  (company-begin-commands '(self-insert-command))
+  (company-idle-delay .1)
+  (company-minimum-prefix-length 2)
+  (company-show-numbers t)
+  (company-tooltip-align-annotations 't)
+  (global-company-mode t))
 
-(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
+(use-package company-box
+  :after company
+  :diminish
+  :hook (company-mode . company-box-mode))
 
-(setq delete-old-versions -1)
-(setq version-control t)
-(setq vc-make-backup-files t)
-(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
-
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
-
-(setq x-select-enable-clipboard-manager nil)
-
-(use-package dumb-jump
-  :bind (("M-g o" . dumb-jump-go-other-window)
-         ("M-g j" . dumb-jump-go)
-         ("M-g x" . dumb-jump-go-prefer-external)
-         ("M-g z" . dumb-jump-go-prefer-external-other-window))
-  :init (dumb-jump-mode)
-  :custom (dump-jump-selector 'ivy))
+(use-package files
+      :ensure nil
+      :custom
+      (backup-directory-alist `(("." . ,(expand-file-name "backups/" user-emacs-directory))))
+      (delete-old-versions -1)
+      (vc-make-backup-files t)
+      (version-control t))
 
 (use-package dashboard
   :preface
   (defun my/dashboard-banner ()
     "Set a dashboard banner including information on package initialization
-  time and garbage collections."""
+   time and garbage collections."""
     (setq dashboard-banner-logo-title
           (format "Emacs ready in %.2f seconds with %d garbage collections."
                   (float-time (time-subtract after-init-time before-init-time)) gcs-done)))
@@ -73,6 +247,323 @@
   :config
   (setq dashboard-startup-banner 'logo)
   (dashboard-setup-startup-hook))
+
+(setq history-delete-duplicates t)
+(setq history-length t)
+(setq savehist-additional-variables
+      '(kill-ring
+        search-ring
+        regexp-search-ring))
+(setq savehist-file (expand-file-name "history" user-emacs-directory))
+(setq savehist-save-minibuffer-history 1)
+(savehist-mode 1)
+
+(use-package hydra
+  :defer 2
+  :bind ("C-c f" . hydra-flycheck/body)
+        ("C-c m" . hydra-magit/body)
+        ("C-c p" . hydra-projectile/body)
+        ("C-c o" . hydra-toggle/body)
+        ("C-c w" . hydra-windows/body))
+
+(defhydra hydra-flycheck (:color pink)
+  "
+  ^
+  ^Flycheck^          ^Errors^            ^Checker^
+  ^────────^──────────^──────^────────────^───────^─────
+  _q_ quit            _<_ previous        _?_ describe
+  _m_ manual          _>_ next            _d_ disable
+  _v_ verify setup    _f_ check           _s_ select
+  ^^                  _l_ list            ^^
+  ^^                  ^^                  ^^
+  "
+  ("q" nil)
+  ("<" flycheck-previous-error)
+  (">" flycheck-next-error)
+  ("?" flycheck-describe-checker :color blue)
+  ("d" flycheck-disable-checker :color blue)
+  ("f" flycheck-buffer)
+  ("l" flycheck-list-errors :color blue)
+  ("m" flycheck-manual :color blue)
+  ("s" flycheck-select-checker :color blue)
+  ("v" flycheck-verify-setup :color blue))
+
+(defhydra hydra-magit (:color blue)
+  "
+  ^
+  ^Magit^             ^Do^
+  ^─────^─────────────^──^────────
+  _q_ quit            _b_ blame
+  ^^                  _c_ clone
+  ^^                  _i_ init
+  ^^                  _s_ status
+  ^^                  ^^
+  "
+  ("q" nil)
+  ("b" magit-blame)
+  ("c" magit-clone)
+  ("i" magit-init)
+  ("s" magit-status))
+
+(defhydra hydra-projectile (:color blue)
+  "
+  ^
+  ^Projectile^        ^Buffers^           ^Find^              ^Search^
+  ^──────────^────────^───────^───────────^────^──────────────^──────^────────────
+  _q_ quit            _b_ list            _d_ directory       _r_ replace
+  _i_ reset cache     _K_ kill all        _D_ root            _R_ regexp replace
+  ^^                  _S_ save all        _f_ file            _s_ ag
+  ^^                  ^^                  _p_ project         ^^
+  ^^                  ^^                  ^^                  ^^
+  "
+  ("q" nil)
+  ("b" counsel-projectile-switch-to-buffer)
+  ("d" counsel-projectile-find-dir)
+  ("D" projectile-dired)
+  ("f" counsel-projectile-find-file)
+  ("i" projectile-invalidate-cache :color red)
+  ("K" projectile-kill-buffers)
+  ("p" counsel-projectile-switch-project)
+  ("r" projectile-replace)
+  ("R" projectile-replace-regexp)
+  ("s" counsel-projectile-ag)
+  ("S" projectile-save-project-buffers))
+
+(defhydra hydra-toggle (:color blue)
+  "
+  ^
+  ^Toggle^             ^Do^
+  ^──────^─────────────^──^─────────
+  _q_ quit             _a_ abbrev
+  ^^                   _f_ flyspell
+  ^^                   ^^
+  "
+  ("q" nil)
+  ("a" abbrev-mode)
+  ("f" flyspell-mode))
+
+(defhydra hydra-windows (:color pink)
+  "
+  ^
+  ^Windows^           ^Window^            ^Zoom^
+  ^───────^───────────^──────^────────────^────^──────────────
+  _q_ quit            _b_ balance         _-_ out
+  ^^                  _i_ heighten        _+_ in
+  ^^                  _j_ narrow          _=_ reset
+  ^^                  _k_ lower           ^^
+  ^^                  _l_ widen           ^^
+  ^^                  ^^                  ^^
+  "
+  ("q" nil)
+  ("b" balance-windows)
+  ("i" enlarge-window)
+  ("j" shrink-window-horizontally)
+  ("k" shrink-window)
+  ("l" enlarge-window-horizontally)
+  ("-" text-scale-decrease)
+  ("+" text-scale-increase)
+  ("=" (text-scale-increase 0)))
+
+(use-package erc
+  :defer 3
+  :bind (("C-c e" . my/erc-start-or-switch)
+         ("C-c n" . my/erc-count-users))
+  :hook ((ercn-notify . my/erc-notify)
+         (erc-send-pre . my/erc-preprocess))
+  :custom
+  (erc-autojoin-channels-alist '(("freenode.net" "#archlinux" "#bash" "#emacs"
+                                  "#gentoo" "#i3" "#latex" "#org-mode" "#python"
+                                  "#sway")))
+  (erc-autojoin-timing 'ident)
+  (erc-fill-function 'erc-fill-static)
+  (erc-fill-static-center 22)
+  (erc-header-line-format "%n on %t (%m)")
+  (erc-hide-list '("JOIN" "PART" "QUIT"))
+  (erc-lurker-hide-list '("JOIN" "PART" "QUIT"))
+  (erc-lurker-threshold-time 43200)
+  (erc-prompt-for-nickserv-password nil)
+  (erc-server-reconnect-attempts 5)
+  (erc-server-reconnect-timeout 3)
+  (erc-track-exclude-types '("JOIN" "MODE" "NICK" "PART" "QUIT"
+                             "324" "329" "332" "333" "353" "477"))
+  :config
+  (add-to-list 'erc-modules 'notifications)
+  (add-to-list 'erc-modules 'spelling)
+  (erc-services-mode 1)
+  (erc-update-modules)
+  :preface
+  (defun my/erc-start-or-switch ()
+    "Connects to ERC, or switch to last active buffer."
+    (interactive)
+    (if (get-buffer "irc.freenode.net:6667")
+        (erc-track-switch-buffer 1)
+      (when (y-or-n-p "Start ERC? ")
+        (erc :server "irc.freenode.net" :port 6667 :nick "rememberYou"))))
+
+  (defun my/erc-count-users ()
+    "Displays the number of users connected on the current channel."
+    (interactive)
+    (if (get-buffer "irc.freenode.net:6667")
+        (let ((channel (erc-default-target)))
+          (if (and channel (erc-channel-p channel))
+              (message "%d users are online on %s"
+                       (hash-table-count erc-channel-users)
+                       channel)
+            (user-error "The current buffer is not a channel")))
+      (user-error "You must first start ERC")))
+
+  (defun my/erc-notify (nickname message)
+    "Displays a notification message for ERC."
+    (let* ((channel (buffer-name))
+           (nick (erc-hl-nicks-trim-irc-nick nickname))
+           (title (if (string-match-p (concat "^" nickname) channel)
+                      nick
+                    (concat nick " (" channel ")")))
+           (msg (s-trim (s-collapse-whitespace message))))
+      (alert (concat nick ": " msg) :title title)))
+
+  (defun my/erc-preprocess (string)
+    "Avoids channel flooding."
+    (setq str
+          (string-trim
+           (replace-regexp-in-string "\n+" " " str)))))
+
+(use-package erc-hl-nicks
+  :after erc)
+
+(use-package erc-image
+  :after erc)
+
+(use-package ivy
+  :defer 1
+  :diminish
+  :bind (("C-x b" . ivy-switch-buffer)
+         ("C-x B" . ivy-switch-buffer-other-window))
+  :custom
+  (ivy-display-style 'fancy)
+  (ivy-use-virtual-buffers t)
+  :config
+  (ivy-mode))
+
+(use-package ivy-pass
+  :after ivy
+  :commands ivy-pass)
+
+(use-package ivy-rich
+  :after ivy
+  :custom
+  (ivy-rich-path-style 'abbrev)
+  (ivy-rich-switch-buffer-align-virtual-buffer t)
+  (ivy-set-display-transformer 'ivy-switch-buffer
+                               'ivy-rich-switch-buffer-transformer)
+  (ivy-virtual-abbreviate 'full))
+
+(use-package lorem-ipsum
+  :defer 5
+  :bind (("C-c C-v l" . lorem-ipsum-insert-list)
+         ("C-c C-v p" . lorem-ipsum-insert-paragraphs)
+         ("C-c C-v s" . lorem-ipsum-insert-sentences)))
+
+(use-package mu4e
+  :ensure nil
+  :custom
+  (mu4e-attachment-dir "~/Downloads")
+  (mu4e-compose-signature-auto-include nil)
+  (mu4e-drafts-folder "/gmail/Drafts")
+  (mu4e-get-mail-command "mbsync -a")
+  (mu4e-maildir "~/Maildir")
+  (mu4e-maildir-shortcuts
+   '(("/gmail/INBOX" . ?i)
+     ("/gmail/All Mail" . ?a)
+     ("/gmail/Deleted Items" . ?d)
+     ("/gmail/Drafts" . ?D)
+     ("/gmail/Important" . ?i)
+     ("/gmail/Sent Mail" . ?s)
+     ("/gmail/Starred" . ?S)))
+  (mu4e-refile-folder "/gmail/Archive")
+  (mu4e-sent-folder "/gmail/Sent Mail")
+  (mu4e-trash-folder "/gmail/Trash")
+  (mu4e-update-interval 300)
+  (mu4e-use-fancy-chars t)
+  (mu4e-view-show-addresses t)
+  (mu4e-view-show-images t))
+
+(use-package mu4e-alert
+  :after mu4e
+  :hook ((after-init . mu4e-alert-enable-mode-line-display)
+         (after-init . mu4e-alert-enable-notifications))
+  :config
+  (mu4e-alert-set-default-style 'libnotify))
+
+(setq send-mail-function 'smtpmail-send-it
+      smtpmail-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-service 465
+      smtpmail-stream-type 'ssl)
+
+(use-package webpaste
+  :defer 3
+  :bind (("C-c C-p C-b" . webpaste-paste-buffer)
+         ("C-c C-p C-r" . webpaste-paste-region)))
+
+(use-package pdf-tools
+  :defer 1
+  :init
+  (pdf-tools-install)
+  :custom
+  (pdf-view-use-unicode-ligther nil))
+
+(use-package expand-region
+  :defer 2
+  :bind (("C-+" . er/contract-region)
+         ("C-=" . er/expand-region)))
+
+(use-package projectile
+  :defer 1
+  :custom
+  (projectile-cache-file (expand-file-name ".projectile-cache" user-emacs-directory)
+  (projectile-completion-system 'ivy)
+  (projectile-enable-caching t)
+  (projectile-known-projects-file (expand-file-name
+                                 ".projectile-bookmarks" user-emacs-directory))
+  (projectile-mode-line '(:eval (projectile-project-name)))
+  :config
+  (define-key projectile-mode-map (kbd "C-c p") #'hydra-projectile/body)
+  (projectile-global-mode)))
+
+(use-package spotify
+  :defer 5
+  :config
+  (spotify-enable-song-notifications))
+
+(use-package git-commit
+      :after magit
+      :hook (git-commit-mode . me/git-commit-auto-fill-everywhere)
+      :custom
+      (git-commit-summary-max-length 50)
+      :preface
+      (defun me/git-commit-auto-fill-everywhere ()
+	(setq fill-column 72)
+	(setq-local comment-auto-fill-only-comments nil)))
+
+(use-package magit
+      :defer 2)
+
+(use-package git-gutter
+  :defer 2
+  :diminish
+  :init
+  (global-git-gutter-mode +1))
+
+(use-package git-timemachine
+  :defer 3
+  :diminish)
+
+(use-package simple
+  :ensure nil
+  :hook ((prog-mode . turn-on-auto-fill)
+         (text-mode . turn-on-auto-fill)))
+
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 (use-package async)
 (use-package org
@@ -86,22 +577,22 @@
     "Last modification time of the configuration file.")
 
   (defvar *show-async-tangle-results* nil
-    "Keep *emacs* async buffers around for later inspection.")
+    "Keeps *emacs* async buffers around for later inspection.")
 
   (defun my/config-updated ()
-    "Check if the configuration file has been updated since the last time."
+    "Checks if the configuration file has been updated since the last time."
     (time-less-p *config-last-change*
                  (nth 5 (file-attributes *config-file*))))
 
   (defun my/config-tangle ()
-    "Tangle the org file asynchronously."
+    "Tangles the org file asynchronously."
     (when (my/config-updated)
       (setq *config-last-change*
             (nth 5 (file-attributes *config-file*)))
       (my/async-babel-tangle *config-file*)))
 
   (defun my/async-babel-tangle (org-file)
-    "Tangle the org file asynchronously."
+    "Tangles the org file asynchronously."
     (let ((init-tangle-start-time (current-time))
           (file (buffer-file-name))
           (async-quiet-switch "-q"))
@@ -118,18 +609,6 @@
                                                     ',init-tangle-start-time)))
               (message "ERROR: %s as tangle failed." ,org-file))))))))
 
-(global-hl-line-mode)
-
-(setq savehist-file "~/.emacs.d/history")
-(savehist-mode 1)
-(setq history-length t)
-(setq history-delete-duplicates t)
-(setq savehist-save-minibuffer-history 1)
-(setq savehist-additional-variables
-      '(kill-ring
-        search-ring
-        regexp-search-ring))
-
 (defadvice kill-region (before slick-cut activate compile)
   "When called interactively with no active region, kill a single line instead."
   (interactive
@@ -138,8 +617,9 @@
            (line-beginning-position 2)))))
 
 (use-package ibuffer
+  :defer 2
   :bind ("C-x C-b" . ibuffer)
-  :init
+  :config
   (setq ibuffer-saved-filter-groups
         (quote (("default"
                  ("Dired" (mode . dired-mode))
@@ -158,77 +638,9 @@
               (ibuffer-auto-mode 1)
               (ibuffer-switch-to-saved-filter-groups "default"))))
 
-(define-key ctl-x-map "\C-i"
-  #'endless/ispell-word-then-abbrev)
-
-(defun endless/simple-get-word ()
-  (car-safe (save-excursion (ispell-get-word nil))))
-
-(defun endless/ispell-word-then-abbrev (p)
-  "Call `ispell-word', then create an abbrev for it.
-With prefix P, create local abbrev. Otherwise it will
-be global.
-If there's nothing wrong with the word at point, keep
-looking for a typo until the beginning of buffer. You can
-skip typos you don't want to fix with `SPC', and you can
-abort completely with `C-g'."
-  (interactive "P")
-  (let (bef aft)
-    (save-excursion
-      (while (if (setq bef (endless/simple-get-word))
-                 ;; Word was corrected or used quit.
-                 (if (ispell-word nil 'quiet)
-                     nil ; End the loop.
-                   ;; Also end if we reach `bob'.
-                   (not (bobp)))
-               ;; If there's no word at point, keep looking
-               ;; until `bob'.
-               (not (bobp)))
-        (backward-word)
-        (backward-char))
-      (setq aft (endless/simple-get-word)))
-    (if (and aft bef (not (equal aft bef)))
-        (let ((aft (downcase aft))
-              (bef (downcase bef)))
-          (define-abbrev
-            (if p local-abbrev-table global-abbrev-table)
-            bef aft)
-          (message "\"%s\" now expands to \"%s\" %sally"
-                   bef aft (if p "loc" "glob")))
-      (user-error "No typo at or before point"))))
-
-(defun my/french ()
-  "Set up French words for Abbrev and dictionary for ispell"
-  (interactive)
-  (setq ispell-dictionary "french")
-  (setq abbrev-file-name "~/.emacs.d/.abbrev__french"
-        save-abbrevs 'silently))
-
-(defun my/english ()
-  "Set up English words for Abbrev and dictionary for ispell"
-  (interactive)
-  (setq ispell-dictionary "english")
-  (setq abbrev-file-name "~/.emacs.d/.abbrev_defs"
-        save-abbrevs 'silently))
-
-(use-package lorem-ipsum
-  :defer 10
-  :bind (("C-c C-v s" . lorem-ipsum-insert-sentences)
-         ("C-c C-v p" . lorem-ipsum-insert-paragraphs)
-         ("C-c C-v l" . lorem-ipsum-insert-list)))
-
 (global-auto-revert-mode 1)
 (setq auto-revert-verbose nil)
 (global-set-key (kbd "C-x R") 'revert-buffer)
-
-(fset 'yes-or-no-p 'y-or-n-p)
-
-(prefer-coding-system 'utf-8)
-(when (display-graphic-p)
-  (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
-
-(column-number-mode 1)
-(show-paren-mode 1)
 
 (defvar *afilename-cmd*
   '(("/home/someone/.Xresources" . "xrdb -merge ~/.Xresources")
@@ -242,38 +654,6 @@ abort completely with `C-g'."
       (shell-command (cdr match)))))
 
 (add-hook 'after-save-hook 'my/cmd-after-saved-file)
-
-(use-package solarized-theme
-  :init
-  (load-theme 'solarized-dark t)
-  :config
-  (use-package smart-mode-line
-    :config
-    (setq sml/theme 'respectful)
-    (sml/setup)))
-
-(display-time-mode 1)
-
-(when window-system
-  (menu-bar-mode -1)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
-  (tooltip-mode -1))
-
-(use-package webpaste
-  :bind (("C-c C-p C-b" . webpaste-paste-buffer)
-         ("C-c C-p C-r" . webpaste-paste-region)))
-
-(add-hook 'after-init-hook 'auto-fill-mode)
-(setq-default fill-column 80)
-(setq default-major-mode 'text-mode)
-(setq text-mode-hook 'turn-on-auto-fill)
-
-(use-package diminish
-  :diminish abbrev-mode
-  :diminish auto-fill-mode
-  :diminish org-indent-mode
-  :diminish visual-line-mode)
 
 (setq browse-url-browser-function 'browse-url-chromium)
 
@@ -357,6 +737,7 @@ abort completely with `C-g'."
 (my/defshortcut ?t "~/Sync/shared/.personal/tfe.org")
 
 (use-package move-text
+  :defer 2
   :bind (("M-p" . move-text-up)
          ("M-n" . move-text-down))
   :config (move-text-default-bindings))
@@ -396,13 +777,16 @@ point reaches the beginning or end of the buffer, stop there."
   :init (recentf-mode)
   :custom
   (recentf-max-saved-items 200)
-  (recentf-max-menu-items 15))
+  (recentf-max-menu-items 15)
+  :config
+  (run-at-time nil (* 5 60) 'recentf-save-list))
 
 (use-package switch-window
   :bind (("C-x o" . switch-window)
          ("C-x w" . switch-window-then-swap-buffer)))
 
 (use-package windmove
+  :defer 2
   :bind (("C-c h" . windmove-left)
          ("C-c j" . windmove-down)
          ("C-c k" . windmove-up)
@@ -414,6 +798,9 @@ point reaches the beginning or end of the buffer, stop there."
       org-yank-adjusted-subtrees t)
 
 (add-hook 'org-mode-hook #'visual-line-mode)
+
+(use-package toc-org
+  :after org)
 
 (with-eval-after-load 'org
   (bind-key "C-c a" 'org-agenda)
@@ -430,6 +817,7 @@ point reaches the beginning or end of the buffer, stop there."
   (bind-key "C-M-w" 'append-next-kill org-mode-map))
 
 (use-package org
+  :hook (org-mode . toc-org-enable)
   :init
   (require 'ob-C)
   (require 'ob-css)
@@ -526,11 +914,13 @@ and indent it one level."
                       "~/Sync/shared/.personal/business.org"
                       "~/Sync/shared/.personal/decisions.org"
                       "~/Sync/shared/.personal/learning.org"
+                      "~/Sync/shared/.personal/internship.org"
                       "~/Sync/shared/.personal/organizer.org"
                       "~/Sync/shared/.personal/people.org"
                       "~/Sync/shared/.personal/projects.org"
                       "~/Sync/shared/.personal/routine.org"
-                      "~/Sync/shared/.personal/school.org"))))
+                      "~/Sync/shared/.personal/school.org"
+                      "~/Sync/shared/.personal/tfe.org"))))
 (add-to-list 'auto-mode-alist '("\\.txt$" . org-mode))
 
 (defun my/org-insert-heading-for-next-day ()
@@ -632,14 +1022,14 @@ and indent it one level."
          :immediate-finish t)))
 
 (defun my/org-agenda-new ()
-  "Create a new note or task at the current agenda item.
-Creates it at the same level as the previous task, so it's better to use
-this with to-do items than with projects or headings."
-  (interactive)
-  (org-agenda-switch-to)
-  (org-capture 0))
+    "Create a new note or task at the current agenda item.
+  Creates it at the same level as the previous task, so it's better to use
+  this with to-do items than with projects or headings."
+    (interactive)
+    (org-agenda-switch-to)
+    (org-capture 0))
 
-(define-key org-agenda-mode-map "N" 'my/org-agenda-new)
+;;  (define-key org-agenda-mode-map "N" 'my/org-agenda-new)
 
 (defvar my/org-agenda-contexts
   '((tags-todo "+@phone")
@@ -1013,16 +1403,17 @@ of the week)."
     "Loads last year's journal entry, which is not necessary the
 same day of the month, but will be the same day of the week."
     (interactive)
-    (let ((journal-file (concat org-journal-dir (journal-last-year-file))))
+    (let ((journal-file (concat org-journal-dir (journal-last-file))))
       (find-file journal-file))))
 
 (use-package epa
+  :defer 2
   :custom
   (epg-gpg-program "gpg"))
 
 (use-package org
   :bind ("C-c d" . org-decrypt-entry)
-  :init (org-crypt-use-before-save-magic)
+  ;; :init (org-crypt-use-before-save-magic)
   :custom
   (org-tags-exclude-from-inheritance (quote ("crypt")))
   (org-crypt-key "E9AADC36E94A672D1A07D49B208FCDBB98190562")
@@ -1034,15 +1425,13 @@ same day of the month, but will be the same day of the week."
   (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
   (setq org-reveal-mathjax t))
 
-(use-package htmlize
-  :defer 2)
+(use-package htmlize :defer 2)
 
 (use-package aggressive-indent
   :defer 2
-  :diminish
-  :init
-  (global-aggressive-indent-mode 1)
-  (add-to-list 'aggressive-indent-excluded-modes 'html-mode))
+  :hook (python-mode . aggressive-indent-mode)
+  :custom
+  (aggressive-indent-comments-too))
 
 (use-package atomic-chrome
   :defer 2
@@ -1070,53 +1459,7 @@ same day of the month, but will be the same day of the week."
      (Mib "1024 * Kib" "Mega Bit")
      (Kib "1024 * b" "Kilo Bit")
      (b "B / 8" "Bit")))
-  :config
-  (setq math-units-table nil))
-
-(use-package company
-  :diminish
-  :defer 2
-  :custom
-  (company-tooltip-align-annotations 't)
-  (company-idle-delay .1)
-  (company-minimum-prefix-length 2)
-  (company-begin-commands '(self-insert-command))
-  (company-show-numbers t)
-  (global-company-mode t))
-
-(use-package company-box
-  :diminish
-  :after company
-  :hook (company-mode . company-box-mode))
-
-(use-package docker
-  :defer 15
-  :diminish
-  :config
-  (require 'docker-images)
-  (require 'docker-containers)
-  (require 'docker-volumes)
-  (require 'docker-networks)
-  (docker-global-mode))
-
-(use-package magit
-  :defer 2
-  :bind (("C-c m c" . magit-commit)
-         ("C-c m a" . magit-stage)
-         ("C-c m s" . magit-status)
-         ("C-c m u" . magit-unstage)
-         ("C-c m U" . magit-unstage-all)
-         ("C-c m p" . magit-push)))
-
-(use-package git-gutter
-  :defer 2
-  :diminish
-  :init
-  (global-git-gutter-mode +1))
-
-(use-package git-timemachine
-  :defer 3
-  :diminish)
+  (math-units-table nil))
 
 (use-package which-key
   :diminish
@@ -1124,18 +1467,17 @@ same day of the month, but will be the same day of the week."
   :config
   (which-key-mode))
 
-(use-package expand-region
-  :defer 2
-  :bind ("C-=" . er/expand-region))
-
 (use-package flycheck
   :defer 2
-  :diminish (flycheck-mode)
-  :init (global-flycheck-mode t)
+  :hook ((emacs-lisp-mode python-mode) . flycheck-mode)
   :config
+  (setq-default
+   flycheck-check-syntax-automatically '(save mode-enabled)
+   flycheck-disabled-checkers '(emacs-lisp-checkdoc)
+   flycheck-display-errors-delay .3)
   (flycheck-define-checker my-php
     "A PHP syntax checker using the PHP command line interpreter.
-    See URL `http://php.net/manual/en/features.commandline.php'."
+      See URL `http://php.net/manual/en/features.commandline.php'."
     :command ("php" "-l" "-d" "error_reporting=E_ALL" "-d" "display_errors=1"
               "-d" "log_errors=0" source)
     :error-patterns
@@ -1149,8 +1491,7 @@ same day of the month, but will be the same day of the week."
   :config
   (global-hungry-delete-mode))
 
-(use-package iedit
-  :defer t)
+(use-package iedit :defer t)
 
 (use-package ipcalc
   :commands ipcalc)
@@ -1165,57 +1506,15 @@ same day of the month, but will be the same day of the week."
   (use-package flycheck-ledger
     :after ledger-mode)
 
-(use-package pdf-tools
-  :defer 2
-  :init
-  (pdf-tools-install)
-  :custom
-  ;; Disable unicode support in mode line for more speed.
-  (pdf-view-use-unicode-ligther nil))
-
-(use-package projectile
-  :defer 5
-  :diminish
-  :config
-  (projectile-global-mode)
-  (setq projectile-completion-system 'ivy))
-
-(use-package counsel-projectile
-  :after (counsel projectile)
-  (counsel-projectile-on))
-
 (use-package rainbow-mode
   :commands rainbow-mode)
 
 (use-package skewer-mode
+  :defer 3
   :hook ((js2-mode . skewer-mode)
-        (css-mode . skewer-css-mode)
-        (html-mode . skewer-html-mode)
-        (web-mode . skewer-html-mode)))
-
-(use-package ivy
-  :defer 5
-  :diminish
-  :bind (("C-x b" . ivy-switch-buffer)
-         ("C-x B" . ivy-switch-buffer-other-window))
-  :custom
-  (ivy-mode 1)
-  (ivy-use-virtual-buffers t)
-  (ivy-display-style 'fancy))
-
-(use-package ivy-pass
-  :after ivy
-  :commands ivy-pass)
-
-(use-package ivy-rich
-  :defer 6
-  :after ivy
-  :config
-  (ivy-set-display-transformer 'ivy-switch-buffer
-                               'ivy-rich-switch-buffer-transformer)
-  (setq ivy-virtual-abbreviate 'full
-        ivy-rich-switch-buffer-align-virtual-buffer t
-        ivy-rich-path-style 'abbrev))
+         (css-mode . skewer-css-mode)
+         (html-mode . skewer-html-mode)
+         (web-mode . skewer-html-mode)))
 
 (use-package swiper
   :after ivy
@@ -1240,19 +1539,12 @@ same day of the month, but will be the same day of the week."
          (web-mode . impatient-mode)
          (css-mode . httpd-start)))
 
-(use-package smartparens
-  :defer 5)
+(use-package smartparens :defer 2)
 
-(use-package spotify
-  :defer 5
-  :config
-  (spotify-enable-song-notifications))
-
-(use-package try
-  :defer 5)
+(use-package try :defer 5)
 
 (use-package undo-tree
-  :diminish undo-tree-mode
+  :diminish
   :bind ("C--" . undo-tree-redo)
   :init (global-undo-tree-mode)
   :custom
@@ -1318,404 +1610,3 @@ same day of the month, but will be the same day of the week."
   :custom
   (yas-snippet-dirs '("~/.emacs.d/snippets"))
   (yas-installed-snippets-dir "~/.emacs.d/snippets"))
-
-(use-package "eldoc"
-  :diminish
-  :commands turn-on-eldoc-mode
-  :hook ((abbrev-mode . emacs-lisp-mode)
-         (abbrev-mode . lisp-interaction-mode)
-         (abbrev-mode . ielm-mode)))
-
-(define-key emacs-lisp-mode-map (kbd "C-c .") 'find-function-at-point)
-(bind-key "C-c f" 'find-function)
-
-(defun my/sort-sexps-in-region (beg end)
-  "Can be handy for sorting out duplicates.
-Sorts the sexps from BEG to END. Leaves the point at where it
-couldn't figure things out (ex: syntax errors)."
-  (interactive "r")
-  (let ((input (buffer-substring beg end))
-        list last-point form result)
-    (save-restriction
-      (save-excursion
-        (narrow-to-region beg end)
-        (goto-char (point-min))
-        (setq last-point (point-min))
-        (setq form t)
-        (while (and form (not (eobp)))
-          (setq form (ignore-errors (read (current-buffer))))
-          (when form
-            (add-to-list
-             'list
-             (cons
-              (prin1-to-string form)
-              (buffer-substring last-point (point))))
-            (setq last-point (point))))
-        (setq list (sort list (lambda (a b) (string< (car a) (car b)))))
-        (delete-region (point-min) (point))
-        (insert (mapconcat 'cdr list "\n"))))))
-
-'(bind-key "M-:" 'pp-eval-expression)
-
-(defun sanityinc/eval-last-sexp-or-region (prefix)
-  "Eval region from BEG to END if active, otherwise the last sexp."
-  (interactive "P")
-  (if (and (mark) (use-region-p))
-      (eval-region (min (point) (mark)) (max (point) (mark)))
-    (pp-eval-last-sexp prefix)))
-
-(bind-key "C-x C-e" 'sanityinc/eval-last-sexp-or-region emacs-lisp-mode-map)
-
-(use-package emmet-mode
-  :defer 10
-  :hook (sgml-mode css-mode web-mode))
-
-(use-package less-css-mode
-  :mode "\\.less\\'"
-  :interpreter ("less" . less-css-mode))
-
-(use-package eclim
-  :defer t
-  :hook (java-mode . eclim-mode)
-  :custom
-  (eclimd-autostart t)
-  (eclimd-default-workspace '"~/Documents/Projects/Java/")
-  (eclim-eclipse-dirs '"/opt/eclipse")
-  (eclim-executable '"/opt/eclipse/eclim")
-  (help-at-pt-display-when-idle t)
-  (help-at-pt-timer-delay 0.1)
-  (help-at-pt-set-timer))
-
-(use-package company-emacs-eclim
-  :after eclim
-  :commands company-emacs-eclim-setup)
-
-(use-package gradle-mode
-  :mode "\\.gradle\\'"
-  :interpreter ("gradle" . gradle-mode))
-
-(use-package js2-mode
-  :defer 40
-  :hook (js2-mode . js2-imenu-extras-mode)
-  :config
-  ;; Better imenu
-  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
-
-(use-package js2-refactor
-  :hook (js2-mode . js2-refactor-mode)
-  :config
-  (js2r-add-keybindings-with-prefix "C-c C-r")
-  (define-key js2-mode-map (kbd "C-k") #'js2r-kill)
-
-  ;; js-mode (which js2 is based on) binds "M-." which conflicts with xref, so
-  ;; unbind it.
-  (define-key js-mode-map (kbd "M-.") nil)
-
-  (add-hook 'js2-mode-hook (lambda ()
-                             (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t))))
-
-(use-package xref-js2 :defer 40)
-
-(use-package tern
-  :defer 30
-  :config
-  (bind-key "C-c C-c" 'compile tern-mode-keymap)
-  (add-hook 'js2-mode-hook (lambda ()
-                             (tern-mode)
-                             (company-mode)))
-
-  ;; Disable completion keybindings, as we use xref-js2 instead
-  (define-key tern-mode-keymap (kbd "M-.") nil)
-  (define-key tern-mode-keymap (kbd "M-,") nil))
-
-(use-package company-tern
-  :after (company tern)
-  :config (add-to-list 'company-backends 'company-tern))
-
-(use-package tex
-  :ensure auctex
-  :hook ((LaTeX-mode . flyspell-mode)
-         (LaTeX-mode . reftex-mode))
-  :custom
-  (TeX-PDF-mode t)
-  (TeX-auto-save t)
-  (TeX-parse-self t)
-  (TeX-byte-compile t)
-  (TeX-clean-confirm nil)
-  (TeX-master 'dwim)
-  (TeX-view-program-selection '((output-pdf "Evince")
-                                (output-html "xdg-open")))
-  (TeX-source-correlate-mode t))
-
-(setq-default TeX-engine 'xetex)
-
-(use-package company-auctex
-  :after (auctex company)
-  :config
-  (company-auctex-init))
-
-(use-package reftex
-  :after auctex)
-
-(use-package lua-mode
-  :mode "\\.lua\\'"
-  :interpreter ("lua" . lua-mode))
-
-(use-package markdown-mode
-  :mode (("\\`README\\.md\\'" . gfm-mode)
-         ("\\.md\\'"          . markdown-mode)
-         ("\\.markdown\\'"    . markdown-mode)))
-
-(use-package markdown-preview-mode
-  :after markdown-mode)
-
-(defun my/php-setup ()
-  (web-mode)
-
-  (make-local-variable 'web-mode-code-indent-offset)
-  (make-local-variable 'web-mode-markup-indent-offset)
-  (make-local-variable 'web-mode-css-indent-offset)
-
-  (setq web-mode-code-indent-offset 4)
-  (setq web-mode-css-indent-offset 2)
-  (setq web-mode-markup-indent-offset 2)
-
-  (use-package ac-php
-    :config
-    (auto-complete-mode t)
-    (setq ac-sources '(ac-source-php))
-    (yas-global-mode 1)
-    (ac-php-core-eldoc-setup))
-
-  (flycheck-select-checker 'my-php)
-  (flycheck-mode t))
-
-(use-package anaconda-mode
-  :after python
-  :hook ((python-mode . anaconda-mode)
-         (python-mode . anaconda-eldoc-mode)))
-
-(use-package company-anaconda
-  :after (anaconda-mode company)
-  :config
-  (add-to-list 'company-backends 'company-anaconda))
-
-(use-package sql-indent
-  :mode "\\.sql\\'"
-  :interpreter ("sql" . sql-mode))
-
-(use-package yaml-mode
-  :mode "\\.yml\\'"
-  :interpreter ("yml" . yml-mode))
-
-(use-package erc
-  :defer 3
-  :bind (("C-c e" . my/erc-start-or-switch)
-         ("C-c n" . my/erc-count-users))
-  :hook ((ercn-notify . my/erc-notify)
-         (erc-send-pre . my/erc-preprocess))
-  :custom
-  (erc-autojoin-channels-alist '(("freenode.net" "#archlinux" "#bash" "#emacs"
-                                  "#gentoo" "#i3" "#latex" "#org-mode" "#python"
-                                  "#sway")))
-  (erc-autojoin-timing 'ident)
-  (erc-fill-function 'erc-fill-static)
-  (erc-fill-static-center 22)
-  (erc-header-line-format "%n on %t (%m)")
-  (erc-hide-list '("JOIN" "PART" "QUIT"))
-  (erc-lurker-hide-list '("JOIN" "PART" "QUIT"))
-  (erc-lurker-threshold-time 43200)
-  (erc-prompt-for-nickserv-password nil)
-  (erc-server-reconnect-attempts 5)
-  (erc-server-reconnect-timeout 3)
-  (erc-track-exclude-types '("JOIN" "MODE" "NICK" "PART" "QUIT"
-                             "324" "329" "332" "333" "353" "477"))
-  :config
-  (add-to-list 'erc-modules 'notifications)
-  (add-to-list 'erc-modules 'spelling)
-  (erc-services-mode 1)
-  (erc-update-modules)
-  :preface
-  (defun my/erc-start-or-switch ()
-    "Connects to ERC, or switch to last active buffer."
-    (interactive)
-    (if (get-buffer "irc.freenode.net:6667")
-        (erc-track-switch-buffer 1)
-      (when (y-or-n-p "Start ERC? ")
-        (erc :server "irc.freenode.net" :port 6667 :nick "rememberYou"))))
-
-  (defun my/erc-count-users ()
-    "Displays the number of users connected on the current channel."
-    (interactive)
-    (if (get-buffer "irc.freenode.net:6667")
-        (let ((channel (erc-default-target)))
-          (if (and channel (erc-channel-p channel))
-              (message "%d users are online on %s"
-                       (hash-table-count erc-channel-users)
-                       channel)
-            (user-error "The current buffer is not a channel")))
-      (user-error "You must first start ERC")))
-
-  (defun my/erc-notify (nickname message)
-    "Displays a notification message for ERC."
-    (let* ((channel (buffer-name))
-           (nick (erc-hl-nicks-trim-irc-nick nickname))
-           (title (if (string-match-p (concat "^" nickname) channel)
-                      nick
-                    (concat nick " (" channel ")")))
-           (msg (s-trim (s-collapse-whitespace message))))
-      (alert (concat nick ": " msg) :title title)))
-
-  (defun my/erc-preprocess (string)
-    "Avoids channel flooding."
-    (setq str
-          (string-trim
-           (replace-regexp-in-string "\n+" " " str)))))
-
-(use-package erc-hl-nicks
-  :after erc)
-
-(use-package erc-image
-  :after erc)
-
-(use-package hydra
-  :defer 2
-  :bind ("C-c f" . hydra-flycheck/body)
-        ("C-c m" . hydra-magit/body)
-        ("C-c p" . hydra-projectile/body)
-        ("C-c o" . hydra-toggle/body)
-        ("C-c w" . hydra-windows/body))
-
-(defhydra hydra-flycheck (:color pink)
-  "
-  ^
-  ^Flycheck^          ^Errors^            ^Checker^
-  ^────────^──────────^──────^────────────^───────^─────
-  _q_ quit            _<_ previous        _?_ describe
-  _m_ manual          _>_ next            _d_ disable
-  _v_ verify setup    _f_ check           _s_ select
-  ^^                  _l_ list            ^^
-  ^^                  ^^                  ^^
-  "
-  ("q" nil)
-  ("<" flycheck-previous-error)
-  (">" flycheck-next-error)
-  ("?" flycheck-describe-checker :color blue)
-  ("d" flycheck-disable-checker :color blue)
-  ("f" flycheck-buffer)
-  ("l" flycheck-list-errors :color blue)
-  ("m" flycheck-manual :color blue)
-  ("s" flycheck-select-checker :color blue)
-  ("v" flycheck-verify-setup :color blue))
-
-(defhydra hydra-magit (:color blue)
-  "
-  ^
-  ^Magit^             ^Do^
-  ^─────^─────────────^──^────────
-  _q_ quit            _b_ blame
-  ^^                  _c_ clone
-  ^^                  _i_ init
-  ^^                  _s_ status
-  ^^                  ^^
-  "
-  ("q" nil)
-  ("b" magit-blame)
-  ("c" magit-clone)
-  ("i" magit-init)
-  ("s" magit-status))
-
-(defhydra hydra-projectile (:color blue)
-  "
-  ^
-  ^Projectile^        ^Buffers^           ^Find^              ^Search^
-  ^──────────^────────^───────^───────────^────^──────────────^──────^────────────
-  _q_ quit            _b_ list            _d_ directory       _r_ replace
-  _i_ reset cache     _K_ kill all        _D_ root            _R_ regexp replace
-  ^^                  _S_ save all        _f_ file            _s_ ag
-  ^^                  ^^                  _p_ project         ^^
-  ^^                  ^^                  ^^                  ^^
-  "
-  ("q" nil)
-  ("b" counsel-projectile-switch-to-buffer)
-  ("d" counsel-projectile-find-dir)
-  ("D" projectile-dired)
-  ("f" counsel-projectile-find-file)
-  ("i" projectile-invalidate-cache :color red)
-  ("K" projectile-kill-buffers)
-  ("p" counsel-projectile-switch-project)
-  ("r" projectile-replace)
-  ("R" projectile-replace-regexp)
-  ("s" counsel-projectile-ag)
-  ("S" projectile-save-project-buffers))
-
-(defhydra hydra-toggle (:color blue)
-  "
-  ^
-  ^Toggle^             ^Do^
-  ^──────^─────────────^──^─────────
-  _q_ quit             _a_ abbrev
-  ^^                   _f_ flyspell
-  ^^                   ^^
-  "
-  ("q" nil)
-  ("a" abbrev-mode)
-  ("f" flyspell-mode))
-
-(defhydra hydra-windows (:color pink)
-  "
-  ^
-  ^Windows^           ^Window^            ^Zoom^
-  ^───────^───────────^──────^────────────^────^──────────────
-  _q_ quit            _b_ balance         _-_ out
-  ^^                  _i_ heighten        _+_ in
-  ^^                  _j_ narrow          _=_ reset
-  ^^                  _k_ lower           ^^
-  ^^                  _l_ widen           ^^
-  ^^                  ^^                  ^^
-  "
-  ("q" nil)
-  ("b" balance-windows)
-  ("i" enlarge-window)
-  ("j" shrink-window-horizontally)
-  ("k" shrink-window)
-  ("l" enlarge-window-horizontally)
-  ("-" text-scale-decrease)
-  ("+" text-scale-increase)
-  ("=" (text-scale-increase 0)))
-
-(require 'mu4e)
-
-(setq mu4e-attachment-dir "~/Downloads"
-      mu4e-compose-signature-auto-include nil
-      mu4e-drafts-folder "/gmail/Drafts"
-      mu4e-get-mail-command "mbsync -a"
-      mu4e-maildir "~/Maildir"
-      mu4e-refile-folder "/gmail/Archive"
-      mu4e-sent-folder "/gmail/Sent Mail"
-      mu4e-trash-folder "/gmail/Trash"
-      mu4e-update-interval 300
-      mu4e-use-fancy-chars t)
-      mu4e-view-show-addresses t
-      mu4e-view-show-images t
-
-(setq mu4e-maildir-shortcuts
-      '(("/gmail/INBOX" . ?i)
-        ("/gmail/All Mail" . ?a)
-        ("/gmail/Deleted Items" . ?d)
-        ("/gmail/Drafts" . ?D)
-        ("/gmail/Important" . ?i)
-        ("/gmail/Sent Mail" . ?s)
-        ("/gmail/Starred" . ?S)))
-
-(use-package mu4e-alert
-  :after mu4e
-  :hook ((after-init . mu4e-alert-enable-mode-line-display)
-         (after-init . mu4e-alert-enable-notifications))
-  :config
-  (mu4e-alert-set-default-style 'libnotify))
-
-(setq send-mail-function 'smtpmail-send-it
-      smtpmail-smtp-server "smtp.gmail.com"
-      smtpmail-smtp-service 465
-      smtpmail-stream-type 'ssl)
