@@ -1,14 +1,19 @@
+# GNU Emacs
 *~
 *.elc
 /anaconda-mode/
 /auto-save-list/
 /backups/
 /elpa/
+config.el
+custom.el
 history
 org-clock-save.el
 plantuml.jar
-projectile-bookmarks.eld
-projectile.cache
+
+# Third-party packages
+.projectile-bookmarks
+.projectile-cache
 recentf
 smex-items
 /url/
