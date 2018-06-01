@@ -690,6 +690,7 @@ lot.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package files
 	:ensure nil
+    :hook (after-save . my/cmd-after-saved-file)
 	:custom
 	(backup-directory-alist `(("." . ,(expand-file-name "backups/" user-emacs-directory))))
 	(delete-old-versions -1)
@@ -1290,8 +1291,6 @@ Automatic executes a specific bash command after saved a specific file.
     (let* ((match (assoc (buffer-file-name) *afilename-cmd*)))
       (when match
         (shell-command (cdr match)))))
-
-  (add-hook 'after-save-hook 'my/cmd-after-saved-file)
 #+END_SRC
 
 *** =ipcalc=
