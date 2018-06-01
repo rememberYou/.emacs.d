@@ -951,15 +951,18 @@ you return to work, you can re-run things as you need them. This is not a
 radical function, it is part of a good user experience.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (setq history-delete-duplicates t)
-  (setq history-length t)
-  (setq savehist-additional-variables
-        '(kill-ring
-          search-ring
-          regexp-search-ring))
-  (setq savehist-file (expand-file-name "history" user-emacs-directory))
-  (setq savehist-save-minibuffer-history 1)
-  (savehist-mode 1)
+  (use-package savehist
+    :ensure nil
+    :custom
+    (history-delete-duplicates t)
+    (history-length t)
+    (savehist-additional-variables
+     '(kill-ring
+       search-ring
+       regexp-search-ring))
+    (savehist-file (expand-file-name "history" user-emacs-directory))
+    (savehist-save-minibuffer-history 1)
+    :config (savehist-mode 1))
 #+END_SRC
 
 ** Hydra
