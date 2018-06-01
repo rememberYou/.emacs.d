@@ -48,6 +48,7 @@
   - [[#linters][Linters]]
   - [[#lorem-ipsum][Lorem Ipsum]]
   - [[#mail][Mail]]
+  - [[#navigation][Navigation]]
   - [[#parenthesis][Parenthesis]]
   - [[#paste][Paste]]
   - [[#pdf][PDF]]
@@ -1285,43 +1286,6 @@ Allows to calculate the network ranges.
   (use-package ipcalc :defer 4)
 #+END_SRC
 
-*** Move to beginning of line
-
-From: http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line/
-
-This function is a mix of =C-a= and =M-m=.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (defun my/smarter-move-beginning-of-line (arg)
-    "Moves point back to indentation of beginning of line.
-
-  Move point to the first non-whitespace character on this line.
-  If point is already there, move to the beginning of the line.
-  Effectively toggle between the first non-whitespace character and
-  the beginning of the line.
-
-  If ARG is not nil or 1, move forward ARG - 1 lines first.  If
-  point reaches the beginning or end of the buffer, stop there."
-    (interactive "^p")
-    (setq arg (or arg 1))
-
-    ;; Move lines first
-    (when (/= arg 1)
-      (let ((line-move-visual nil))
-        (forward-line (1- arg))))
-
-    (let ((orig-point (point)))
-      (back-to-indentation)
-      (when (= orig-point (point))
-        (move-beginning-of-line 1))))
-
-(global-set-key [remap org-beginning-of-line]
-                'my/smarter-move-beginning-of-line)
-
-(global-set-key [remap move-beginning-of-line]
-                'my/smarter-move-beginning-of-line)
-#+END_SRC
-
 *** =move-text=
 
 Moves the current line (or if marked, the current region's, whole lines).
@@ -1369,7 +1333,7 @@ Colorize colors as text with their value.
     :hook (prog-mode))
 #+END_SRC
 
-*** Replace the current file with the saved one
+**** Replace the current file with the saved one
 
 Avoids call the function or reload Emacs.
 
@@ -1403,8 +1367,7 @@ modes.
 Useful to temporary use a package.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package try
-    :defer 5)
+  (use-package try :defer 5)
 #+END_SRC
 
 *** =undo-tree=
@@ -1754,6 +1717,40 @@ Then encrypt that file with =gpg -c .authinfo= and don't forget to delete the
 
 All you need now is to test sending your mails with =C-x m= or directly from
 =mu4e=!
+
+** Navigation
+
+This function is a mix of =C-a= and =M-m=.
+
+From: http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line/
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defun my/smarter-move-beginning-of-line (arg)
+    "Moves point back to indentation of beginning of line.
+
+  Move point to the first non-whitespace character on this line.
+  If point is already there, move to the beginning of the line.
+  Effectively toggle between the first non-whitespace character and
+  the beginning of the line.
+
+  If ARG is not nil or 1, move forward ARG - 1 lines first.  If
+  point reaches the beginning or end of the buffer, stop there."
+    (interactive "^p")
+    (setq arg (or arg 1))
+
+    ;; Move lines first
+    (when (/= arg 1)
+      (let ((line-move-visual nil))
+        (forward-line (1- arg))))
+
+    (let ((orig-point (point)))
+      (back-to-indentation)
+      (when (= orig-point (point))
+        (move-beginning-of-line 1))))
+
+(global-set-key [remap org-beginning-of-line] #'my/smarter-move-beginning-of-line)
+(global-set-key [remap move-beginning-of-line] #'my/smarter-move-beginning-of-line)
+#+END_SRC
 
 ** Parenthesis
 
