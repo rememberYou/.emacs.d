@@ -687,15 +687,29 @@ I use =company= with =company-box= that allows a company front-end with icons.
 It is important to have a stable backup environment. Don't hesitate to save a
 lot.
 
+**NOTE**: the functions defined below avoid running a bash command when saving
+certain files with GNU Emacs.
+
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package files
-	:ensure nil
+    :ensure nil
     :hook (after-save . my/cmd-after-saved-file)
-	:custom
-	(backup-directory-alist `(("." . ,(expand-file-name "backups/" user-emacs-directory))))
-	(delete-old-versions -1)
-	(vc-make-backup-files t)
-	(version-control t))
+    :preface
+    (defvar *afilename-cmd*
+      '(("/home/someone/.Xresources" . "xrdb -merge ~/.Xresources")
+        ("/home/someone/.xbindkeysrc" . "xbindkeys -p"))
+      "File association list with their respective command.")
+
+    (defun my/cmd-after-saved-file ()
+      "Execute a command after saved a specific file."
+      (let* ((match (assoc (buffer-file-name) *afilename-cmd*)))
+        (when match
+          (shell-command (cdr match)))))
+    :custom
+    (backup-directory-alist `(("." . ,(expand-file-name "backups/" user-emacs-directory))))
+    (delete-old-versions -1)
+    (vc-make-backup-files t)
+    (version-control t))
 #+END_SRC
 
 ** Browser
@@ -1276,21 +1290,6 @@ electric-indent-mode.
     (aggressive-indent-comments-too))
 #+END_SRC
 
-*** Execute a command after saved file
-
-Automatic executes a specific bash command after saved a specific file.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (defvar *afilename-cmd*
-    '(("/home/someone/.Xresources" . "xrdb -merge ~/.Xresources")
-      ("/home/someone/.xbindkeysrc" . "xbindkeys -p"))
-    "File association list with their respective command.")
-
-  (defun my/cmd-after-saved-file ()
-    "Execute a command after saved a specific file."
-    (let* ((match (assoc (buffer-file-name) *afilename-cmd*)))
-      (when match
-        (shell-command (cdr match)))))
 #+END_SRC
 
 *** =ipcalc=
