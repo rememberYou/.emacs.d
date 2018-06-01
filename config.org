@@ -12,16 +12,18 @@
   - [[#theme][Theme]]
   - [[#turn-off-mouse-interface][Turn off mouse interface]]
   - [[#use-better-defaults][Use better defaults]]
-- [[#programming-languages][Programming Languages]]
+- [[#languages][Languages]]
   - [[#css][CSS]]
   - [[#docker][Docker]]
   - [[#emacs-lisp][Emacs Lisp]]
+  - [[#html][HTML]]
   - [[#java][Java]]
   - [[#javascript][JavaScript]]
   - [[#latex][LaTeX]]
   - [[#lua][Lua]]
   - [[#markdown][Markdown]]
   - [[#php][PHP]]
+  - [[#plantuml][PlantUML]]
   - [[#python][Python]]
   - [[#sql][SQL]]
   - [[#yaml][YAML]]
@@ -30,83 +32,42 @@
   - [[#alert][Alert]]
   - [[#auto-completion][Auto-Completion]]
   - [[#backups][Backups]]
+  - [[#browser][Browser]]
+  - [[#buffers][Buffers]]
+  - [[#calculator][Calculator]]
   - [[#dashboard][Dashboard]]
+  - [[#dired][Dired]]
+  - [[#ending-up][Ending Up]]
+  - [[#files-frequently-consulted][Files Frequently Consulted]]
   - [[#history][History]]
   - [[#hydra][Hydra]]
+  - [[#general][General]]
   - [[#irc][IRC]]
   - [[#ivy][Ivy]]
+  - [[#ledger][Ledger]]
+  - [[#linters][Linters]]
   - [[#lorem-ipsum][Lorem Ipsum]]
   - [[#mail][Mail]]
+  - [[#parenthesis][Parenthesis]]
   - [[#paste][Paste]]
   - [[#pdf][PDF]]
   - [[#point-and-region][Point and Region]]
   - [[#projectile][Projectile]]
-  - [[#spotify][Spotify]]
-  - [[#version-control][Version Control]]
-  - [[#word-wrap][Word Wrap]]
-  - [[#clean-white-spaces-after-saving][Clean white spaces after saving]]
-  - [[#ending-up][Ending up]]
-  - [[#killing-text][Killing text]]
-  - [[#ibuffer][=Ibuffer=]]
-  - [[#replace-the-current-file-with-the-saved-one][Replace the current file with the saved one]]
-  - [[#specific-a-command-after-saved-file][Specific a command after saved file]]
-- [[#navigation][Navigation]]
-  - [[#chromium-as-default-browser][Chromium as default browser]]
-  - [[#copy-filename-to-clipboard][Copy filename to clipboard]]
-  - [[#engine-mode][=engine-mode=]]
-  - [[#find-dired][=find-dired=]]
-  - [[#frequently-accessed-files][Frequently-accessed files]]
-  - [[#move-text][=move-text=]]
-  - [[#move-to-beginning-of-line][Move to beginning of line]]
-  - [[#pop-to-mark][Pop to mark]]
-  - [[#recentf][=recentf=]]
-  - [[#switch-window][=switch-window=]]
-  - [[#windmove][=windmove=]]
-- [[#org-mode][Org-Mode]]
-  - [[#basic-configuration][Basic configuration]]
-  - [[#files][Files]]
-  - [[#keyboard-shortcuts][Keyboard shortcuts]]
-  - [[#languages][Languages]]
-  - [[#modules][Modules]]
-  - [[#speed-commands][Speed commands]]
-  - [[#move-line][Move line]]
-- [[#org-agenda][Org Agenda]]
-  - [[#basic-configuration-1][Basic configuration]]
-  - [[#archiving][Archiving]]
-  - [[#capture][Capture]]
-  - [[#custom-commands][Custom commands]]
-  - [[#habits][Habits]]
-  - [[#projects][Projects]]
-  - [[#refiling][Refiling]]
-  - [[#tags][Tags]]
-  - [[#time][Time]]
-  - [[#tracking][Tracking]]
-  - [[#further][Further]]
-- [[#journal][Journal]]
-  - [[#encryptiondecryption][Encryption/Decryption]]
+  - [[#recent-files][Recent Files]]
   - [[#revealjs][Reveal.js]]
-- [[#plugins-configuration][Plugins configuration]]
-  - [[#aggressive-indent][=aggressive-indent=]]
-  - [[#atomic-chrome][=atomic chrome=]]
-  - [[#calc][=calc=]]
-  - [[#which-key][=which-key=]]
-  - [[#flycheck][=flycheck=]]
-  - [[#hungry-delete][=hungry-delete=]]
-  - [[#iedit][=iedit=]]
-  - [[#ipcalc][=ipcalc=]]
-  - [[#ledger][=ledger=]]
-  - [[#rainbow-mode][=rainbow-mode=]]
-  - [[#skewer-mode][=skewer-mode=]]
-  - [[#swiper][=swiper=]]
-  - [[#impatient-mode][=impatient-mode=]]
-  - [[#smartparens][=smartparens=]]
-  - [[#try][=try=]]
-  - [[#undo-tree][=undo-tree=]]
-  - [[#web-beautify][=web-beautify=]]
-  - [[#web-mode][=web-mode=]]
-  - [[#key-chord][=key-chord=]]
-  - [[#winner][=winner=]]
-  - [[#yasnippet][=yasnippet=]]
+  - [[#version-control][Version Control]]
+  - [[#whitespaces][Whitespaces]]
+  - [[#windows][Windows]]
+  - [[#word-wrap][Word Wrap]]
+  - [[#yasnippet][YASnippet]]
+- [[#org-mode][Org-Mode]]
+  - [[#agenda][Agenda]]
+  - [[#clock][Clock]]
+  - [[#capture][Capture]]
+  - [[#custormization][Custormization]]
+  - [[#encryption--decryption][Encryption / Decryption]]
+  - [[#journal][Journal]]
+  - [[#languages-1][Languages]]
 
 * About
 
@@ -146,8 +107,9 @@ first install it, if you don't already.
     (package-refresh-contents)
     (package-install 'use-package))
 
+  (require 'delight)
   (require 'diminish)
-#+END_SRC
+   #+END_SRC
 
 * Start Up
 
@@ -211,6 +173,7 @@ For a better user experience of GNU Emacs, here are the default values I use.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (setq-default
+   ad-redefinition-action 'accept                   ; Silence warnings for redefinition
    cursor-in-non-selected-windows t                 ; Hide the cursor in inactive windows
    display-time-default-load-average nil            ; Don't display load average
    fill-column 80                                   ; Set width for automatic line breaks
@@ -232,7 +195,7 @@ For a better user experience of GNU Emacs, here are the default values I use.
   (show-paren-mode 1)                               ; Show the parent
 #+END_SRC
 
-* Programming Languages
+* Languages
 
 ** CSS
 
@@ -264,18 +227,50 @@ system clean.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package dockerfile-mode
+    :delight dockerfile-mode "δ"
     :mode "Dockerfile\\'")
 #+END_SRC
 
 ** Emacs Lisp
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package elisp-mode
+    :ensure nil
+    :delight emacs-lisp-mode "ξ")
+#+END_SRC
 
 *** Eldoc
 
 Provides minibuffer hints when working with Emacs Lisp.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package "eldoc"
+  (use-package eldoc
+    :diminish
     :hook (emacs-lisp-mode . eldoc-mode))
+#+END_SRC
+
+** HTML
+
+*** =impatient-mode=
+
+Useful to see the effect of HTML when you type it.
+
+To use =impatient mode=, you must enable the web server provided by
+=simple-httpd=. To do this, use =M-x httpd-start=, open your browser to
+=http://localhost:8080/imp/= and select your buffer to watch your changes appear
+as you type!
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package simple-httpd
+    :defer 4
+    :custom
+    (httpd-root "/var/www/html"))
+
+  (use-package impatient-mode
+    :after simple-httpd
+    :hook ((web-mode . httpd-start)
+           (web-mode . impatient-mode)
+           (css-mode . httpd-start)))
 #+END_SRC
 
 ** Java
@@ -329,6 +324,7 @@ Most of my Java projects are made with =gradle=.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package gradle-mode
+    :delight gradle-mode "γ"
     :mode "\\.gradle\\'"
     :interpreter ("gradle" . gradle-mode))
 #+END_SRC
@@ -491,6 +487,7 @@ I rarely program in Lua, but when I do, =lua-mode= satisfies me amply.2
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package lua-mode
+    :delight lua-mode "Λ"
     :mode "\\.lua\\'"
     :interpreter ("lua" . lua-mode))
 #+END_SRC
@@ -502,6 +499,7 @@ operating system.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package markdown-mode
+    :delight markdown-mode "μ"
     :mode
     ("INSTALL\\'"
      "CONTRIBUTORS\\'"
@@ -518,7 +516,6 @@ PHP inside the HTML divs. Also, why use another package when =web-mode= already
 provides everything I need?
 
 The function below provides my own PHP configuration with =flycheck=.
-
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (defun my/php-setup ()
@@ -556,10 +553,23 @@ I like using =ac-php= to enable GNU Emacs auto-completion for PHP. Note that
     (ac-php-core-eldoc-setup))
 #+END_SRC
 
+** PlantUML
+
+All my diagrams are made with PlantUML.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package plantuml-mode :defer 3)
+#+END_SRC
+
 ** Python
 
 I prefer to use =anaconda-mode= which I find easier to configure, because it
 supports =company-mode= better than =jedi= which is quite old.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package python
+    :delight python-mode "π")
+#+END_SRC
 
 *** =anaconda-mode=
 
@@ -586,6 +596,7 @@ Anaconda backend for =company-mode=.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package sql-indent
+    :delight sql-mode "Σ"
     :mode "\\.sql\\'"
     :interpreter ("sql" . sql-mode))
 #+END_SRC
@@ -596,6 +607,7 @@ Anaconda backend for =company-mode=.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package yaml-mode
+    :delight yaml-mode "ψ"
     :mode "\\.yml\\'"
     :interpreter ("yml" . yml-mode))
 #+END_SRC
@@ -685,6 +697,120 @@ lot.
 	(version-control t))
 #+END_SRC
 
+** Browser
+
+I prefer to use Chromium, the open-source version of Google Chrome that I find
+faster than Firefox. Maybe I should switch for qutebrowser.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (setq browse-url-browser-function 'browse-url-chromium)
+#+END_SRC
+
+*** =atomic chrome=
+
+Helpful when I need to edit text areas of the browser in GNU Emacs.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package atomic-chrome
+    :defer 2
+    :hook (atomic-chrome-edit-mode . flyspell-mode)
+    :init
+    (defun atomic-chrome-server-running-p ()
+      (cond ((executable-find "lsof")
+             (zerop (call-process "lsof" nil nil nil "-i" ":64292")))
+            ((executable-find "netstat") ; Windows
+             (zerop (call-process-shell-command "netstat -aon | grep 64292")))))
+
+    (if (atomic-chrome-server-running-p)
+        (message "Can't start atomic-chrome server, because port 64292 is already used")
+      (atomic-chrome-start-server)))
+#+END_SRC
+
+*** =engine-mode=
+
+I use it to do most of my web searches without leaving GNU Emacs.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package engine-mode
+    :defer 5
+    :config
+    (defengine amazon
+      "http://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=%s"
+      :keybinding "a")
+
+    (defengine duckduckgo
+      "https://duckduckgo.com/?q=%s"
+      :keybinding "d")
+
+    (defengine github
+      "https://github.com/search?ref=simplesearch&q=%s"
+      :keybinding "g")
+
+    (defengine google-images
+      "http://www.google.com/images?hl=en&source=hp&biw=1440&bih=795&gbv=2&aq=f&aqi=&aql=&oq=&q=%s"
+      :keybinding "i")
+
+    (defengine google-maps
+      "http://maps.google.com/maps?q=%s"
+      :keybinding "m"
+      :docstring "Mappin' it up.")
+
+    (defengine stack-overflow
+      "https://stackoverflow.com/search?q=%s"
+      :keybinding "s")
+
+    (defengine wikipedia
+      "http://www.wikipedia.org/search-redirect.php?language=en&go=Go&search=%s"
+      :keybinding "w"
+      :docstring "Searchin' the wikis.")
+
+    (defengine youtube
+      "http://www.youtube.com/results?aq=f&oq=&search_query=%s"
+      :keybinding "y")
+    (engine-mode t))
+#+END_SRC
+
+
+** Buffers
+
+Buffers can quickly become a mess. For some people, it's not a problem, but I
+like being able to find my way easily.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package ibuffer
+    :defer 1
+    :bind ("C-x C-b" . ibuffer))
+
+  (use-package ibuffer-projectile
+    :after ibuffer
+    :hook (ibuffer . my/ibuffer-projectile)
+    :preface
+    (defun my/ibuffer-projectile ()
+      (ibuffer-projectile-set-filter-groups)
+      (unless (eq ibuffer-sorting-mode 'alphabetic)
+        (ibuffer-do-sort-by-alphabetic))))
+#+END_SRC
+
+** Calculator
+
+May be useful in a timely manner.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package calc
+    :defer t
+    :custom
+    (math-additional-units
+     '((GiB "1024 * MiB" "Giga Byte")
+       (MiB "1024 * KiB" "Mega Byte")
+       (KiB "1024 * B" "Kilo Byte")
+       (B nil "Byte")
+       (Gib "1024 * Mib" "Giga Bit")
+       (Mib "1024 * Kib" "Mega Bit")
+       (Kib "1024 * b" "Kilo Bit")
+       (b "B / 8" "Bit")))
+    (math-units-table nil))
+#+END_SRC
+
 ** Dashboard
 
 Always good to have a dashboard.
@@ -704,6 +830,118 @@ Always good to have a dashboard.
     :config
     (setq dashboard-startup-banner 'logo)
     (dashboard-setup-startup-hook))
+#+END_SRC
+
+** Dired
+
+For those who didn't know, GNU Emacs is also a file explorer.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package dired
+    :ensure nil
+    :delight dired-mode "Dired"
+    :custom
+    (dired-auto-revert-buffer t)
+    (dired-dwim-target t)
+    (dired-hide-details-hide-symlink-targets nil)
+    (dired-listing-switches "-alh")
+    (dired-ls-F-marks-symlinks nil)
+    (dired-recursive-copies 'always))
+
+  (use-package dired-x
+    :ensure nil
+    :preface
+    (defun my/dired-revert-after-cmd (command &optional output error)
+      (revert-buffer))
+    :config
+    (advice-add 'dired-smart-shell-command :after #'my/dired-revert-after-cmd))
+#+END_SRC
+
+** Ending Up
+
+I'm using an =.org= file to maintain my GNU Emacs configuration. However, at his
+launch, it will loads the =config.el= source file for a faster loading.
+
+The code below, executes =org-babel-tangle= asynchronously when
+=config.org= is saved.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package async)
+
+  (defvar *config-file* (expand-file-name "config.org" user-emacs-directory)
+    "The configuration file.")
+
+  (defvar *config-last-change* (nth 5 (file-attributes *config-file*))
+    "Last modification time of the configuration file.")
+
+  (defvar *show-async-tangle-results* nil
+    "Keeps *emacs* async buffers around for later inspection.")
+
+  (defun my/config-updated ()
+    "Checks if the configuration file has been updated since the last time."
+    (time-less-p *config-last-change*
+                 (nth 5 (file-attributes *config-file*))))
+
+  (defun my/config-tangle ()
+    "Tangles the org file asynchronously."
+    (when (my/config-updated)
+      (setq *config-last-change*
+            (nth 5 (file-attributes *config-file*)))
+      (my/async-babel-tangle *config-file*)))
+
+  (defun my/async-babel-tangle (org-file)
+    "Tangles the org file asynchronously."
+    (let ((init-tangle-start-time (current-time))
+          (file (buffer-file-name))
+          (async-quiet-switch "-q"))
+      (async-start
+       `(lambda ()
+          (require 'org)
+          (org-babel-tangle-file ,org-file))
+       (unless *show-async-tangle-results*
+         `(lambda (result)
+            (if result
+                (message "SUCCESS: %s successfully tangled (%.2fs)."
+                         ,org-file
+                         (float-time (time-subtract (current-time)
+                                                    ',init-tangle-start-time)))
+              (message "ERROR: %s as tangle failed." ,org-file)))))))
+#+END_SRC
+
+** Files Frequently Consulted
+
+Registers allow you to jump quickly to a file or other location. To switch to a
+registry, use =C-x r j= followed by the registry letter. Using registers for all
+these file shortcuts is probably a bit unnecessary since I can easily define my
+own keymap, but anyway, I rarely go beyond the register.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defvar my/refile-map (make-sparse-keymap))
+
+  (defmacro my/defshortcut (key file)
+    `(progn
+       (set-register ,key (cons 'file ,file))
+       (define-key my/refile-map
+         (char-to-string ,key)
+         (lambda (prefix)
+           (interactive "p")
+           (let ((org-refile-targets '(((,file) :maxlevel . 6)))
+                 (current-prefix-arg (or current-prefix-arg '(4))))
+             (call-interactively 'org-refile))))))
+
+  (my/defshortcut ?I "~/.config/i3/config")
+  (my/defshortcut ?S "~/.config/sway/config")
+  (my/defshortcut ?X "~/.Xresources")
+  (my/defshortcut ?b "~/Sync/shared/.personal/various/buy.org")
+  (my/defshortcut ?c "~/.emacs.d/config.org")
+  (my/defshortcut ?e "~/Sync/shared/elfeed/elfeed.org")
+  (my/defshortcut ?i "~/.emacs.d/init.el")
+  (my/defshortcut ?m "~/Sync/shared/.personal/various/movies.org")
+  (my/defshortcut ?o "~/Sync/shared/.personal/organizer.org")
+  (my/defshortcut ?p "~/Sync/shared/.personal/people.org")
+  (my/defshortcut ?r "~/Sync/shared/.personal/routine.org")
+  (my/defshortcut ?s "~/Sync/shared/.personal/school.org")
+  (my/defshortcut ?t "~/Sync/shared/.personal/tfe.org")
 #+END_SRC
 
 ** History
@@ -744,18 +982,72 @@ seamless, it's like a minor mode that disables itself auto-magically.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package hydra
     :defer 2
-    :bind (("C-c e" . hydra-erc/body)
+    :bind (("C-c b" . hydra-buffer/body)
+           ("C-c c" . hydra-clock/body)
+           ("C-c e" . hydra-erc/body)
            ("C-c f" . hydra-flycheck/body)
            ("C-c m" . hydra-magit/body)
            ("C-c p" . hydra-projectile/body)
-           ("C-c o" . hydra-toggle/body)
+           ("C-c o" . hydra-org/body)
+           ("C-c g" . hydra-toggle/body)
            ("C-c w" . hydra-windows/body)))
+#+END_SRC
+
+*** Hydra / Buffer
+
+Group Buffer commands.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defhydra hydra-buffer (:color blue)
+    "
+    ^
+    ^Buffer^             ^Do^
+    ^──────^─────────────^──^─────────
+    _q_ quit            _k_ kill
+    ^^                  _l_ list
+    ^^                  _n_ next
+    ^^                  _p_ previous
+    ^^                  ^^
+    "
+    ("q" nil)
+    ("k" kill-buffer)
+    ("l" ibuffer)
+    ("n" next-buffer)
+    ("p" previous-buffer))
+#+END_SRC
+
+*** Hydra / Clock
+
+Group clock commands.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defhydra hydra-clock (:color blue)
+    "
+    ^
+    ^Clock^             ^Do^
+    ^─────^─────────────^──^─────────
+    _q_ quit            _c_ cancel
+    ^^                  _d_ display
+    ^^                  _e_ effort
+    ^^                  _i_ in
+    ^^                  _j_ jump
+    ^^                  _o_ out
+    ^^                  _r_ report
+    ^^                  ^^
+    "
+    ("q" nil)
+    ("c" org-clock-cancel :color pink)
+    ("d" org-clock-display)
+    ("e" org-clock-modify-effort-estimate)
+    ("i" org-clock-in)
+    ("j" org-clock-goto)
+    ("o" org-clock-out)
+    ("r" org-clock-report))
 #+END_SRC
 
 *** Hydra / ERC
 
 Group ERC commands.
-
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (defhydra hydra-erc (:color blue)
@@ -829,6 +1121,43 @@ Group Magit commands.
     ("s" magit-status))
 #+END_SRC
 
+*** Hydra / Org
+
+Group Org commands.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defhydra hydra-org (:color blue)
+    "
+    ^
+    ^Org^             ^Do^
+    ^───^─────────────^──^──────────
+    _q_ quit            _A_ archive
+    ^^                  _a_ agenda
+    ^^                  _c_ capture
+    ^^                  _d_ decrypt
+    ^^                  _i_ insert-link
+    ^^                  _j_ jump-task
+    ^^                  _k_ cut-subtree
+    ^^                  _o_ open-link
+    ^^                  _r_ refile
+    ^^                  _s_ store-link
+    ^^                  _t_ todo-tree
+    ^^                  ^^
+    "
+    ("q" nil)
+    ("A" my/org-archive-done-task)
+    ("a" org-agenda)
+    ("c" org-capture)
+    ("d" org-decrypt-entry)
+    ("k" org-cut-subtree)
+    ("i" org-insert-link-global)
+    ("j" my/org-jump)
+    ("o" org-open-at-point-global)
+    ("r" org-refile)
+    ("s" org-store-link)
+    ("t" org-show-todo-tree))
+#+END_SRC
+
 *** Hydra / Projectile
 
 Group Projectile commands.
@@ -868,26 +1197,34 @@ Group toggle commands.
     "
     ^
     ^Toggle^             ^Do^
-    ^──────^─────────────^──^─────────
+    ^──────^─────────────^──^────────────────────
     _q_ quit             _a_ abbrev
     ^^                   _f_ flyspell
+    ^^                   _r_ rainbow-delimiters
+    ^^                   _s_ smartparens
+    ^^                   _w_ winner
+    ^^                   _y_ yasnippet
     ^^                   ^^
     "
     ("q" nil)
     ("a" abbrev-mode)
-    ("f" flyspell-mode))
+    ("f" flyspell-mode)
+    ("r" rainbow-delimiters-mode)
+    ("s" smartparens-mode)
+    ("w" winner-mode)
+    ("y" yas-minor-mode))
 #+END_SRC
 
 *** Hydra / Windows
 
 Group window-related commands.
 
-#+Begin_src emacs-lisp :tangle yes
+#+BEGIN_SRC emacs-lisp :tangle yes
   (defhydra hydra-windows (:color pink)
     "
     ^
     ^Windows^           ^Window^            ^Zoom^
-    ^───────^───────────^──────^────────────^────^──────────────
+    ^───────^───────────^──────^────────────^────^──────
     _q_ quit            _b_ balance         _-_ out
     ^^                  _i_ heighten        _+_ in
     ^^                  _j_ narrow          _=_ reset
@@ -906,6 +1243,244 @@ Group window-related commands.
     ("=" (text-scale-increase 0)))
 #+END_SRC
 
+** General
+
+*** =aggressive-indent=
+
+Auto-indent code as you write.
+
+#+BEGIN_QUOTE
+=electric-indent-mode= is enough to keep your code nicely aligned when all you
+do is type. However, once you start shifting blocks around, transposing lines,
+or slurping and barfing sexps, indentation is bound to go wrong.
+
+=aggressive-indent-mode= is a minor mode that keeps your code *always* indented.
+It reindents after every change, making it more reliable than
+electric-indent-mode.
+
+[[https://github.com/Malabarba/aggressive-indent-mode][Artur Malabarba]]
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package aggressive-indent
+    :defer 2
+    :hook ((css-mode . aggressive-indent-mode)
+           (emacs-lisp-mode . aggressive-indent-mode)
+           (js-mode . aggressive-indent-mode)
+           (lisp-mode . aggressive-indent-mode))
+    :custom
+    (aggressive-indent-comments-too))
+#+END_SRC
+
+*** Execute a command after saved file
+
+Automatic executes a specific bash command after saved a specific file.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defvar *afilename-cmd*
+    '(("/home/someone/.Xresources" . "xrdb -merge ~/.Xresources")
+      ("/home/someone/.xbindkeysrc" . "xbindkeys -p"))
+    "File association list with their respective command.")
+
+  (defun my/cmd-after-saved-file ()
+    "Execute a command after saved a specific file."
+    (let* ((match (assoc (buffer-file-name) *afilename-cmd*)))
+      (when match
+        (shell-command (cdr match)))))
+
+  (add-hook 'after-save-hook 'my/cmd-after-saved-file)
+#+END_SRC
+
+*** =ipcalc=
+
+Allows to calculate the network ranges.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package ipcalc
+    :defer 4)
+#+END_SRC
+*** Move to beginning of line
+
+From: http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line/
+
+This function is a mix of =C-a= and =M-m=.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defun my/smarter-move-beginning-of-line (arg)
+    "Moves point back to indentation of beginning of line.
+
+  Move point to the first non-whitespace character on this line.
+  If point is already there, move to the beginning of the line.
+  Effectively toggle between the first non-whitespace character and
+  the beginning of the line.
+
+  If ARG is not nil or 1, move forward ARG - 1 lines first.  If
+  point reaches the beginning or end of the buffer, stop there."
+    (interactive "^p")
+    (setq arg (or arg 1))
+
+    ;; Move lines first
+    (when (/= arg 1)
+      (let ((line-move-visual nil))
+        (forward-line (1- arg))))
+
+    (let ((orig-point (point)))
+      (back-to-indentation)
+      (when (= orig-point (point))
+        (move-beginning-of-line 1))))
+
+(global-set-key [remap org-beginning-of-line]
+                'my/smarter-move-beginning-of-line)
+
+(global-set-key [remap move-beginning-of-line]
+                'my/smarter-move-beginning-of-line)
+#+END_SRC
+
+*** =move-text=
+
+Moves the current line (or if marked, the current region's, whole lines).
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package move-text
+    :defer 2
+    :bind (("M-p" . move-text-up)
+           ("M-n" . move-text-down))
+    :config
+    (move-text-default-bindings))
+#+END_SRC
+
+*** =paradox=
+
+Improved GNU Emacs standard package menu.
+
+#+BEGIN_QUOTE
+Project for modernizing Emacs' Package Menu. With improved appearance, mode-line
+information. Github integration, customizability, asynchronous upgrading, and
+more.
+
+[[https://github.com/Malabarba/paradox][Artur Malabarba]]
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package paradox
+    :defer 2
+    :custom
+    (paradox-column-width-package 27)
+    (paradox-column-width-version 13)
+    (paradox-execute-asynchronously t)
+    (paradox-hide-wiki-packages t)
+    :config
+    (paradox-enable)
+    (remove-hook 'paradox-after-execute-functions #'paradox--report-buffer-print))
+#+END_SRC
+*** Pop to mark
+
+Jumps to mark, and pop a new position for mark off the ring. Notice that it
+doesn't affect global mark ring.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (bind-key "C-x p" 'pop-to-mark-command)
+  (setq set-mark-command-repeat-pop t)
+#+END_SRC
+
+*** =rainbow-mode=
+
+Colorize colors as text with their value.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package rainbow-mode
+    :defer 2
+    :hook (prog-mode))
+#+END_SRC
+
+*** Replace the current file with the saved one
+
+Avoids call the function or reload Emacs.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package autorevert
+    :ensure nil
+    :diminish auto-revert-mode
+    :bind ("C-x R" . revert-buffer)
+    :custom (auto-revert-verbose nil)
+    :config (global-auto-revert-mode 1))
+#+END_SRC
+
+*** =skewer-mode=
+
+Provides live interaction with JavaScript, CSS, and HTML in a web
+browser. Expressions are sent on-the-fly from an editing buffer to be evaluated
+in the browser, like GNU Emacs does with an inferior Lisp process in Lisp
+modes.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package skewer-mode
+    :defer 3
+    :hook ((js2-mode . skewer-mode)
+           (css-mode . skewer-css-mode)
+           (html-mode . skewer-html-mode)
+           (web-mode . skewer-html-mode)))
+#+END_SRC
+
+*** =try=
+
+Useful to temporary use a package.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package try
+    :defer 5)
+#+END_SRC
+
+*** =undo-tree=
+
+GNU Emacs's undo system allows you to recover any past state of a buffer. To do
+this, Emacs treats "undo itself as another editing that can be undone".
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package undo-tree
+    :diminish
+    :bind ("C--" . undo-tree-redo)
+    :init (global-undo-tree-mode)
+    :custom
+    (undo-tree-visualizer-timestamps t)
+    (undo-tree-visualizer-diff t))
+#+END_SRC
+
+*** =web-mode=
+
+An autonomous emacs major-mode for editing web templates.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package web-mode
+    :defer 2
+    :hook ((css-mode web-mode) . rainbow-mode)
+    :config
+    (add-to-list 'auto-mode-alist '("\\.blade\\.php\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.php$" . my/php-setup))
+    (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode)))
+#+END_SRC
+
+*** =which-key=
+
+It's difficult to remember all the keyboard shortcuts. The =which-key= package
+helps to solve this.
+
+I used =guide-key= in my past days, but =which-key= is a good replacement.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package which-key
+    :diminish
+    :config
+    (which-key-mode))
+#+END_SRC
 ** IRC
 
 IRC is the best way for me to get a quick answer to a simple question and to
@@ -932,6 +1507,7 @@ Finally, specify to =erc= that you use a =.authinfo= file with:
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package erc
     :defer 3
+    :delight erc-mode "ε"
     :hook ((ercn-notify . my/erc-notify)
            (erc-send-pre . my/erc-preprocess))
     :custom
@@ -961,8 +1537,7 @@ Finally, specify to =erc= that you use a =.authinfo= file with:
       (interactive)
       (if (get-buffer "irc.freenode.net:6667")
           (erc-track-switch-buffer 1)
-        (when (y-or-n-p "Start ERC? ")
-          (erc :server "irc.freenode.net" :port 6667 :nick "rememberYou"))))
+          (erc :server "irc.freenode.net" :port 6667 :nick "rememberYou")))
 
     (defun my/erc-count-users ()
       "Displays the number of users connected on the current channel."
@@ -992,11 +1567,8 @@ Finally, specify to =erc= that you use a =.authinfo= file with:
             (string-trim
              (replace-regexp-in-string "\n+" " " str)))))
 
-  (use-package erc-hl-nicks
-    :after erc)
-
-  (use-package erc-image
-    :after erc)
+  (use-package erc-hl-nicks :after erc)
+  (use-package erc-image :after erc)
 #+END_SRC
 
 ** Ivy
@@ -1012,10 +1584,17 @@ used to issue requests to that server.
 #+END_QUOTE
 
 #+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package counsel
+    :after ivy
+    :bind (("C-x C-f" . counsel-find-file)
+           ("M-x" . counsel-M-x)
+           ("M-y" . counsel-yank-pop)))
+
   (use-package ivy
     :defer 1
     :diminish
-    :bind (("C-x b" . ivy-switch-buffer)
+    :bind (("C-c C-r" . ivy-resume)
+           ("C-x b" . ivy-switch-buffer)
            ("C-x B" . ivy-switch-buffer-other-window))
     :custom
     (ivy-display-style 'fancy)
@@ -1035,8 +1614,65 @@ used to issue requests to that server.
     (ivy-set-display-transformer 'ivy-switch-buffer
                                  'ivy-rich-switch-buffer-transformer)
     (ivy-virtual-abbreviate 'full))
+
+  (use-package swiper
+    :after ivy
+    :bind (("C-s" . swiper)
+           ("C-r" . swiper)))
 #+END_SRC
 
+** Ledger
+
+#+BEGIN_QUOTE
+Ledger is a powerful, double-entry accounting system that is accessed from the
+UNIX command-line.
+
+[[https://github.com/ledger/ledger][John Wiegley]]
+#+END_QUOTE
+
+Before you can use this configuration, make sure you install =ledger= on your
+operating system.
+
+Now all that remains is to configure =ledger-mode=:
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package ledger-mode
+    :mode "\\.ledger\\'"
+    :custom
+    (ledger-clear-whole-transactions 1)
+    ;; https://xkcd.com/1179/
+    (ledger-use-iso-dates t))
+
+    (use-package flycheck-ledger :after ledger-mode)
+#+END_SRC
+
+** Linters
+
+Flycheck lints warnings and errors directly within buffers.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package flycheck
+    :defer 2
+    :hook ((css-mode . flycheck-mode)
+           (emacs-lisp-mode . flycheck-mode)
+           (js-mode . flycheck-mode)
+           (python-mode . flycheck-mode))
+    :config
+    (setq-default
+     flycheck-check-syntax-automatically '(save mode-enabled)
+     flycheck-disabled-checkers '(emacs-lisp-checkdoc)
+     flycheck-display-errors-delay .3)
+
+    (flycheck-define-checker my-php
+      "A PHP syntax checker using the PHP command line interpreter.
+        See URL `http://php.net/manual/en/features.commandline.php'."
+      :command ("php" "-l" "-d" "error_reporting=E_ALL" "-d" "display_errors=1"
+                "-d" "log_errors=0" source)
+      :error-patterns
+      ((error line-start (or "Parse" "Fatal" "syntax") " error" (any ":" ",") " "
+              (message) " in " (file-name) " on line " line line-end))
+      :modes (php-mode php+-mode web-mode)))
+#+END_SRC
 
 ** Lorem Ipsum
 
@@ -1139,6 +1775,40 @@ Then encrypt that file with =gpg -c .authinfo= and don't forget to delete the
 All you need now is to test sending your mails with =C-x m= or directly from
 =mu4e=!
 
+** Parenthesis
+
+*** =rainbow-delimiters=
+
+#+BEGIN_QUOTE
+rainbow-delimiters is a "rainbow parentheses"-like mode which highlights
+delimiters such as parentheses, brackets or braces according to their
+depth. Each successive level is highlighted in a different color. This makes it
+easy to spot matching delimiters, orient yourself in the code, and tell which
+statements are at a given depth.
+
+[[https://github.com/Fanael/rainbow-delimiters][Fanael Linithien]]
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package rainbow-delimiters
+    :defer 1
+    :hook (prog-mode . rainbow-delimiters-mode))
+#+END_SRC
+
+*** =smartparens=
+
+In my opinion, it is the most powerful package to deal with the
+parenthesis. Anyway, if you don't like it, you can try taking a look at
+=paredit= or =autopair=.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package smartparens
+    :defer 1
+    :diminish
+    :config
+    (smartparens-global-mode 1))
+#+END_SRC
+
 ** Paste
 
 #+BEGIN_QUOTE
@@ -1187,6 +1857,16 @@ the structure of the current major mode.
            ("C-=" . er/expand-region)))
 #+END_SRC
 
+I find useful to delete a line and a region with only =C-w=.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defadvice kill-region (before slick-cut activate compile)
+    "When called interactively with no active region, kill a single line instead."
+    (interactive
+     (if mark-active (list (region-beginning) (region-end))
+       (list (line-beginning-position)
+             (line-beginning-position 2)))))
+#+END_SRC
 
 ** Projectile
 
@@ -1216,15 +1896,33 @@ exists as well).
     (projectile-global-mode)))
 #+END_SRC
 
-** Spotify
+** Recent Files
 
-Control the spotify application from GNU Emacs.
+Provides fast access to the recent files.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package spotify
-    :defer 5
+  (use-package recentf
+    :defer 2
+    :bind ("C-c r" . recentf-open-files)
+    :init (recentf-mode)
+    :custom
+    (recentf-max-menu-items 15)
+    (recentf-max-saved-items 200)
     :config
-    (spotify-enable-song-notifications))
+    (run-at-time nil (* 5 60) 'recentf-save-list))
+#+END_SRC
+
+** Reveal.js
+
+I tend to use Beamer for scientific presentations, and Reveal.js for others.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package ox-reveal
+    :defer 3
+    :after org
+    :custom
+    (org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
+    (org-reveal-mathjax t))
 #+END_SRC
 
 ** Version Control
@@ -1246,11 +1944,11 @@ Git clients exist, only Magit and Git itself deserve to be called porcelains.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package git-commit
 	:after magit
-	:hook (git-commit-mode . me/git-commit-auto-fill-everywhere)
+	:hook (git-commit-mode . my/git-commit-auto-fill-everywhere)
 	:custom
 	(git-commit-summary-max-length 50)
 	:preface
-	(defun me/git-commit-auto-fill-everywhere ()
+	(defun my/git-commit-auto-fill-everywhere ()
 	  (setq fill-column 72)
 	  (setq-local comment-auto-fill-only-comments nil)))
 
@@ -1278,6 +1976,90 @@ made by previous commits.
   :diminish)
 #+END_SRC
 
+** Whitespaces
+
+It is often annoying to see unnecessary blank spaces at the end of a line or file.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+#+END_SRC
+
+*** =hungry-delete=
+
+#+BEGIN_QUOTE
+Deleting a whitespace character will delete all whitespace until the next
+non-whitespace character.
+
+[[https://github.com/nflath/hungry-delete][Nathaniel Flath]]
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package hungry-delete
+    :defer 2
+    :diminish
+    :config
+    (global-hungry-delete-mode))
+#+END_SRC
+
+** Windows
+
+Don't ask before killing a buffer. I know what I'm doing.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (global-set-key [remap kill-buffer] #'kill-this-buffer)
+#+END_SRC
+
+*** =switch-window=
+
+Displays an overlay in each window showing a unique key, then asks the user
+where to move in the window.
+
+Most people use =ace-window=, but I prefer =switch-window= because I find this
+package more ergonomic by using the fact of displaying the buffer number by
+hiding its contents.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package switch-window
+    :defer 1
+    :bind (("C-x o" . switch-window)
+           ("C-x w" . switch-window-then-swap-buffer)))
+#+END_SRC
+
+*** =windmove=
+
+Allows you to move from one window to another with something more natural than
+cycling through =C-x o= (=other-window=).
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package windmove
+    :defer 1
+    :bind (("C-c h" . windmove-left)
+           ("C-c j" . windmove-down)
+           ("C-c k" . windmove-up)
+           ("C-c l" . windmove-right)))
+#+END_SRC
+
+*** =winner=
+
+I often undo's and redo's with window configurations.
+
+#+BEGIN_QUOTE
+Winner mode is a global minor mode that records the changes in the window
+configuration (i.e. how the frames are partitioned into windows) so that the
+changes can be "undone" using the command =winner-undo=. By default this one is
+bound to the key sequence ctrl-c left. If you change your mind (while undoing),
+you can press ctrl-c right (calling =winner-redo=).
+
+[[https://github.com/emacs-mirror/emacs/blob/master/lisp/winner.el][Ivar Rummelhoff]]
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package winner
+    :defer 2
+    :config
+    (winner-mode 1))
+#+END_SRC
+
 ** Word Wrap
 
 I like to have lines of the same length.
@@ -1285,1277 +2067,350 @@ I like to have lines of the same length.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package simple
     :ensure nil
+    :diminish (auto-fill-function)
     :hook ((prog-mode . turn-on-auto-fill)
            (text-mode . turn-on-auto-fill)))
 #+END_SRC
 
-** Clean white spaces after saving
+** YASnippet
 
-It's often annoying to see useless white spaces at the end of a line or a file.
+#+BEGIN_QUOTE
+YASnippet is a template system for Emacs. It allows you to type an abbreviation
+and automatically expand it into function templates.
 
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (add-hook 'before-save-hook 'delete-trailing-whitespace)
-#+END_SRC
-
-** Ending up
-
-I'm using a =.org= file to maintain my GNU Emacs config. However, at his launch,
-he will loads the =config.el= source file for a faster loading.
-
-The code below, automatic executes =org-babel-tangle= asynchronously when
-config.org is saved.
+[[https://github.com/joaotavora/yasnippet][João Távora]]
+#+END_QUOTE
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package async)
-  (use-package org
-    :defer 1
-    :hook (after-save . my/config-tangle)
-    :config
-    (defvar *config-file* "~/.emacs.d/config.org"
-      "The configuration file.")
-
-    (defvar *config-last-change* (nth 5 (file-attributes *config-file*))
-      "Last modification time of the configuration file.")
-
-    (defvar *show-async-tangle-results* nil
-      "Keeps *emacs* async buffers around for later inspection.")
-
-    (defun my/config-updated ()
-      "Checks if the configuration file has been updated since the last time."
-      (time-less-p *config-last-change*
-                   (nth 5 (file-attributes *config-file*))))
-
-    (defun my/config-tangle ()
-      "Tangles the org file asynchronously."
-      (when (my/config-updated)
-        (setq *config-last-change*
-              (nth 5 (file-attributes *config-file*)))
-        (my/async-babel-tangle *config-file*)))
-
-    (defun my/async-babel-tangle (org-file)
-      "Tangles the org file asynchronously."
-      (let ((init-tangle-start-time (current-time))
-            (file (buffer-file-name))
-            (async-quiet-switch "-q"))
-        (async-start
-         `(lambda ()
-            (require 'org)
-            (org-babel-tangle-file ,org-file))
-         (unless *show-async-tangle-results*
-           `(lambda (result)
-              (if result
-                  (message "SUCCESS: %s successfully tangled (%.2fs)."
-                           ,org-file
-                           (float-time (time-subtract (current-time)
-                                                      ',init-tangle-start-time)))
-                (message "ERROR: %s as tangle failed." ,org-file))))))))
-#+END_SRC
-
-** Killing text
-
-From: https://github.com/itsjeyd/emacs-config/blob/emacs24/init.el
-
-I find useful to delete a line and a region with only =C-w=
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (defadvice kill-region (before slick-cut activate compile)
-    "When called interactively with no active region, kill a single line instead."
-    (interactive
-     (if mark-active (list (region-beginning) (region-end))
-       (list (line-beginning-position)
-             (line-beginning-position 2)))))
-#+END_SRC
-
-** =Ibuffer=
-
-Buffers can quickly become a mess. For some people, that's not a problem, but I
-like to be able to easily find my way around.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package ibuffer
+  (use-package yasnippet
     :defer 2
-    :bind ("C-x C-b" . ibuffer)
-    :config
-    (setq ibuffer-saved-filter-groups
-          (quote (("default"
-                   ("Dired" (mode . dired-mode))
-                   ("Org" (name . "^.*org$"))
-                   ("Web" (or (mode . web-mode) (mode . js2-mode)))
-                   ("Shell" (or (mode . eshell-mode) (mode . shell-mode)))
-                   ("Programming" (or
-                                   (mode . python-mode)))
-                   ("Emacs" (or
-                             (name . "^\\*scratch\\*$")
-                             (name . "^\\*Messages\\*$")))
-                   ))))
-
-    (add-hook 'ibuffer-mode-hook
-              (lambda ()
-                (ibuffer-auto-mode 1)
-                (ibuffer-switch-to-saved-filter-groups "default"))))
-#+END_SRC
-
-** Replace the current file with the saved one
-
-Avoids call the function or reload Emacs.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (global-auto-revert-mode 1)
-  (setq auto-revert-verbose nil)
-  (global-set-key (kbd "C-x R") 'revert-buffer)
-#+END_SRC
-
-** Specific a command after saved file
-
-I didn't see someone that implemented that before, that why I decided to created
-my own function that automatic executes a specific bash command after saved a
-specific file.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (defvar *afilename-cmd*
-    '(("/home/someone/.Xresources" . "xrdb -merge ~/.Xresources")
-      ("/home/someone/.xbindkeysrc" . "xbindkeys -p"))
-    "File association list with their respective command.")
-
-  (defun my/cmd-after-saved-file ()
-    "Execute a command after saved a specific file."
-    (let* ((match (assoc (buffer-file-name) *afilename-cmd*)))
-      (when match
-        (shell-command (cdr match)))))
-
-  (add-hook 'after-save-hook 'my/cmd-after-saved-file)
-#+END_SRC
-
-* Navigation
-
-** Chromium as default browser
-
-I prefer using Chromium the open-source version of Google Chrome that I find
-more faster than Firefox.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (setq browse-url-browser-function 'browse-url-chromium)
-#+END_SRC
-
-** Copy filename to clipboard
-
-From: http://emacsredux.com/blog/2013/03/27/copy-filename-to-the-clipboard/
-
-Gives the possibility to copy the name of the currently visited file to the
-clipboard.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (defun prelude-copy-file-name-to-clipboard ()
-    "Copy the current buffer file name to the clipboard."
-    (interactive)
-    (let ((filename (if (equal major-mode 'dired-mode)
-                        default-directory
-                      (buffer-file-name))))
-      (when filename
-        (kill-new filename)
-        (message "Copied buffer file name '%s' to the clipboard." filename))))
-#+END_SRC
-
-** =engine-mode=
-
-I use it to do most of my querying search without leaving Emacs.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package engine-mode
-    :defer 10
-    :config
-    (defengine amazon
-      "http://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=%s"
-      :keybinding "a")
-
-    (defengine duckduckgo
-      "https://duckduckgo.com/?q=%s"
-      :keybinding "d")
-
-    (defengine github
-      "https://github.com/search?ref=simplesearch&q=%s"
-      :keybinding "g")
-
-    (defengine google-images
-      "http://www.google.com/images?hl=en&source=hp&biw=1440&bih=795&gbv=2&aq=f&aqi=&aql=&oq=&q=%s"
-      :keybinding "i")
-
-    (defengine google-maps
-      "http://maps.google.com/maps?q=%s"
-      :keybinding "m"
-      :docstring "Mappin' it up.")
-
-    (defengine stack-overflow
-      "https://stackoverflow.com/search?q=%s"
-      :keybinding "s")
-
-    (defengine wikipedia
-      "http://www.wikipedia.org/search-redirect.php?language=en&go=Go&search=%s"
-      :keybinding "w"
-      :docstring "Searchin' the wikis.")
-
-    (defengine youtube
-      "http://www.youtube.com/results?aq=f&oq=&search_query=%s"
-      :keybinding "y")
-    (engine-mode t))
-#+END_SRC
-
-** =find-dired=
-
-=find-dired= gives the possibility to display files from a directory.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package find-dired
-    :defer 20
-    :custom (find-ls-option '("-print0 | xargs -0 ls -ld" . "-ld")))
-#+END_SRC
-
-** Frequently-accessed files
-
-Registers allow you to jump to a file or other location quickly. To jump to a
-register, use =C-x r j= followed by the letter of the register. Using registers
-for all these file shortcuts is probably a bit of a waste since I can easily
-define my own keymap, but anyway, I rarely go beyond register. Also, I
-might as well add shortcuts for refiling.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (defvar my/refile-map (make-sparse-keymap))
-
-  (defmacro my/defshortcut (key file)
-    `(progn
-       (set-register ,key (cons 'file ,file))
-       (define-key my/refile-map
-         (char-to-string ,key)
-         (lambda (prefix)
-           (interactive "p")
-           (let ((org-refile-targets '(((,file) :maxlevel . 6)))
-                 (current-prefix-arg (or current-prefix-arg '(4))))
-             (call-interactively 'org-refile))))))
-
-  (my/defshortcut ?I "~/.config/i3/config")
-  (my/defshortcut ?S "~/.config/sway/config")
-  (my/defshortcut ?X "~/.Xresources")
-  (my/defshortcut ?b "~/Sync/shared/.personal/various/buy.org")
-  (my/defshortcut ?c "~/.emacs.d/config.org")
-  (my/defshortcut ?e "~/Sync/shared/elfeed/elfeed.org")
-  (my/defshortcut ?i "~/.emacs.d/init.el")
-  (my/defshortcut ?m "~/Sync/shared/.personal/various/movies.org")
-  (my/defshortcut ?o "~/Sync/shared/.personal/organizer.org")
-  (my/defshortcut ?p "~/Sync/shared/.personal/people.org")
-  (my/defshortcut ?r "~/Sync/shared/.personal/routine.org")
-  (my/defshortcut ?s "~/Sync/shared/.personal/school.org")
-  (my/defshortcut ?t "~/Sync/shared/.personal/tfe.org")
-#+END_SRC
-
-** =move-text=
-
-Moves the current line (or if marked, the current region’s, whole lines).
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package move-text
-    :defer 2
-    :bind (("M-p" . move-text-up)
-           ("M-n" . move-text-down))
-    :config (move-text-default-bindings))
-#+END_SRC
-
-** Move to beginning of line
-
-From: http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line/
-
-This function is a mix of =C-a= and =M-m=
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (defun my/smarter-move-beginning-of-line (arg)
-    "Move point back to indentation of beginning of line.
-
-  Move point to the first non-whitespace character on this line.
-  If point is already there, move to the beginning of the line.
-  Effectively toggle between the first non-whitespace character and
-  the beginning of the line.
-
-  If ARG is not nil or 1, move forward ARG - 1 lines first.  If
-  point reaches the beginning or end of the buffer, stop there."
-    (interactive "^p")
-    (setq arg (or arg 1))
-
-    ;; Move lines first
-    (when (/= arg 1)
-      (let ((line-move-visual nil))
-        (forward-line (1- arg))))
-
-    (let ((orig-point (point)))
-      (back-to-indentation)
-      (when (= orig-point (point))
-        (move-beginning-of-line 1))))
-
-  (global-set-key [remap move-beginning-of-line]
-                  'my/smarter-move-beginning-of-line)
-#+END_SRC
-
-** Pop to mark
-
-Jumps to mark, and pop a new position for mark off the ring.
-Notice that it doesn't affect global mark ring.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (bind-key "C-x p" 'pop-to-mark-command)
-  (setq set-mark-command-repeat-pop t)
-#+END_SRC
-
-** =recentf=
-
-Provides fast access to the recent files.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package recentf
-    :defer 2
-    :bind ("C-c r" . recentf-open-files)
-    :init (recentf-mode)
+    :diminish yas-minor-mode
+    :bind ("C-c i" . yas-insert-snippet)
+    :hook ((emacs-lisp-mode . yas-minor-mode)
+           (html-mode . yas-minor-mode)
+           (js-mode . yas-minor-mode)
+           (org-mode . yas-minor-mode)
+           (python-mode . yas-minor-mode))
     :custom
-    (recentf-max-saved-items 200)
-    (recentf-max-menu-items 15)
-    :config
-    (run-at-time nil (* 5 60) 'recentf-save-list))
-#+END_SRC
-
-** =switch-window=
-
-Displays an overlay in each window showing a unique key, then ask user for the
-window where move to.
-
-Most of people use =ace-window=, but I prefer =switch-window= because I find
-this package more ergonomic by using the fact of displaying the number of the
-buffer by hiding his contents.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package switch-window
-    :bind (("C-x o" . switch-window)
-           ("C-x w" . switch-window-then-swap-buffer)))
-#+END_SRC
-
-** =windmove=
-
-Lets you move between windows with something more natural than cycling through
-=C-x o= (=other-window=). Windmove doesn't behave well with Org, so we need to
-use different keybindings.
-
-Honestly, I most of times switch my windows with =switch-window=, but could be a
-good complementary to it.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package windmove
-    :defer 2
-    :bind (("C-c h" . windmove-left)
-           ("C-c j" . windmove-down)
-           ("C-c k" . windmove-up)
-           ("C-c l" . windmove-right)))
+    (yas-snippet-dirs `(,(expand-file-name "snippets/" user-emacs-directory)))
+    (yas-reload-all))
 #+END_SRC
 
 * Org-Mode
 
-One of my favorite mode in Emacs. I mainly use it to organize my life, takes
-notes and make my presentations, but you can do plenty of stuff with
-it. =org-mode= it's like the sky, without limit.
+One of my favorite modes in GNU Emacs. I mainly use it to organize my life, take
+notes and make my presentations, but you can do lots of things with
+it. =org-mode= it's like the sky, without limits.
 
-** Basic configuration
+#+BEGIN_QUOTE
+Org mode is for keeping notes, maintaining TODO lists, planning projects, and
+authoring documents with a fast and effective plain-text system.
 
-Few lines for a basic confortable configuration.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (setq org-cycle-include-plain-lists 'integrate
-        org-startup-folded nil
-        org-startup-indented t
-        org-yank-adjusted-subtrees t)
-
-  (add-hook 'org-mode-hook #'visual-line-mode)
-#+END_SRC
-
-If like me, you're tired of manually updating your tables of contents, =toc-org
-will maintain a table of contents at the first heading that has a =:TOC:= tag.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package toc-org
-    :after org)
-#+END_SRC
-
-** Files
-
-Here are the =.org= files stored in my =~/personal= folder that I use. I was
-inspired by Sacha Chua for the structure that was already most of my needed.
-
-| 101things.org | Goals for 101 things in 1001 days with my love                           |
-| archive.org   | Archived subtrees                                                        |
-| business.org  | Business-related notes and TODOs                                         |
-| buy.org       | Things to buy                                                            |
-| decisions.org | Pending, current, and reviewed decisions                                 |
-| learning.org  | Learning plan                                                            |
-| movies.org    | Movies watched and that I should watch                                   |
-| organizer.org | My main Org file. Inbox for M-x org-capture, tasks, weekly reviews, etc. |
-| people.org    | Tasks relatives to people                                                |
-| projects.org  | Projects I work on                                                       |
-| routine.org   | Daily tasks                                                              |
-| school.org    | School tasks                                                             |
-| trading.org   | trading notes                                                            |
-
-** Keyboard shortcuts
-
-Useful to speed up my daily life, I enjoy it!
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (with-eval-after-load 'org
-    (bind-key "C-c a" 'org-agenda)
-    (bind-key "C-c J" 'org-clock-goto)
-    (bind-key "C-c K" 'org-cut-subtree org-mode-map)
-    (bind-key "C-c c" 'org-capture)
-    (bind-key "C-c s" 'org-store-link)
-    (bind-key "C-c v" 'org-show-todo-tree org-mode-map)
-    (bind-key "C-c C-w" 'org-refile)
-    (bind-key "C-c L" 'org-insert-link-global)
-    (bind-key "C-c O" 'org-open-at-point-global)
-    (bind-key "C-c R" 'org-reveal org-mode-map)
-    (bind-key "C-TAB" 'org-cycle org-mode-map)
-    (bind-key "C-M-w" 'append-next-kill org-mode-map))
-#+END_SRC
-
-** Languages
-
-With that, I can compile many languages.
+[[http://orgmode.org/][Carsten Dominik]]
+#+END_QUOTE
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package org
-    :hook (org-mode . toc-org-enable)
-    :init
-    (require 'ob-C)
-    (require 'ob-css)
-    (require 'ob-ditaa)
-    (require 'ob-dot)
-    (require 'ob-emacs-lisp)
-    (require 'ob-gnuplot)
-    (require 'ob-java)
-    (require 'ob-js)
-    (require 'ob-latex)
-    (require 'ob-makefile)
-    (require 'ob-org)
-    (require 'ob-plantuml)
-    (require 'ob-python)
-    (require 'ob-ruby)
-    (require 'ob-shell)
-    (require 'ob-sql)
+    :ensure nil
+    :delight org-mode "Ø"
+    :hook ((after-save . my/config-tangle)
+           (org-mode . toc-org-enable))
     :custom
+    (org-blank-before-new-entry nil)
+    (org-cycle-include-plain-lists 'integrate)
+    (org-ditaa-jar-path "~/Sync/shared/lib/ditaa0_9.jar")
+    (org-expiry-inactive-timestamps t)
+    (org-export-backends '(ascii beamer html icalendar latex man md org texinfo))
+    (org-log-done 'time)
+    (org-log-into-drawer "LOGBOOK")
+    (org-modules '(org-info
+                   org-crypt
+                   org-habit
+                   org-irc
+                   org-mouse
+                   org-protocol))
     (org-plantuml-jar-path (expand-file-name "~/Sync/shared/lib/plantuml.jar"))
-    (org-ditaa-jar-path "~/Sync/shared/lib/ditaa0_9.jar"))
-#+END_SRC
-
-** Modules
-
-Org has a whole bunch of optional modules. These are the ones I'm
-currently experimenting with.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (setq org-modules '(org-info
-                      org-crypt
-                      org-habit
-                      org-irc
-                      org-mouse
-                      org-protocol))
-  '(org-load-modules-maybe t)
-  (setq org-export-backends '(ascii beamer html icalendar latex man md org texinfo))
-#+END_SRC
-
-** Speed commands
-
-Useful to generate the header of my =org= files.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (defun header-org-mode ()
-    (interactive)
-    (insert "#+TITLE: " (file-name-nondirectory (file-name-sans-extension (buffer-file-name))) "\n")
-    (insert "#+AUTHOR: " (user-full-name) "\n")
-    (insert "#+EMAIL: " "terencio.agozzino@gmail.com" "\n")
-    (insert "#+OPTIONS: H:2 num:t toc:nil\n")
-    (insert "#+OPTIONS: ^:nil\n")
-    (insert "#+OPTIONS: <:nil todo:nil *:t ^:{} @:t ::t |:t TeX:t\n"))
-#+END_SRC
-
-These are great for quickly acting on tasks.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (setq org-use-effective-time t)
-
-  (defun my/org-use-speed-commands-for-headings-and-lists ()
-    "Activate speed commands on list items too."
-    (or (and (looking-at org-outline-regexp) (looking-back "^\**"))
-        (save-excursion (and (looking-at (org-item-re)) (looking-back "^[ \t]*")))))
-  (setq org-use-speed-commands 'my/org-use-speed-commands-for-headings-and-lists)
-
-  (with-eval-after-load 'org
-    (add-to-list 'org-speed-commands-user '("x" org-todo "DONE"))
-    (add-to-list 'org-speed-commands-user '("y" org-todo-yesterday "DONE"))
+    (org-refile-allow-creating-parent-nodes 'confirm)
+    (org-refile-use-cache nil)
+    (org-refile-use-outline-path nil)
+    (org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
+    (org-startup-folded nil)
+    (org-startup-indented t)
+    (org-tag-alist '(("@coding" . ?c)
+                     ("@computer" . ?l)
+                     ("@errands" . ?e)
+                     ("@home" . ?h)
+                     ("@love" . ?d)
+                     ("@phone" . ?p)
+                     ("@reading" . ?r)
+                     ("@school" . ?s)
+                     ("@work" . ?b)
+                     ("@writing" . ?w)
+                     ("crypt" . ?C)
+                     ("fuzzy" . ?0)
+                     ("highenergy" . ?1)))
+    (org-tags-exclude-from-inheritance '("crypt" "project"))
+    (org-todo-keywords '((sequence "TODO(t)"
+                                   "STARTED(s)"
+                                   "WAITING(w@/!)"
+                                   "SOMEDAY(.)" "|" "DONE(x!)" "CANCELLED(c@)")
+                         (sequence "TOBUY"
+                                   "TOSHRINK"
+                                   "TOCUT"
+                                   "TOSEW" "|" "DONE(x)")))
+    (org-use-effective-time t)
+    (org-use-speed-commands 'my/org-use-speed-commands-for-headings-and-lists)
+    (org-yank-adjusted-subtrees t)
+    :config
+    (add-to-list 'org-global-properties '("Effort_ALL". "0:05 0:15 0:30 1:00 2:00 3:00 4:00"))
     (add-to-list 'org-speed-commands-user '("!" my/org-clock-in-and-track))
-    (add-to-list 'org-speed-commands-user '("s" call-interactively 'org-schedule))
+    (add-to-list 'org-speed-commands-user '("$" call-interactively 'org-archive-subtree))
     (add-to-list 'org-speed-commands-user '("d" my/org-move-line-to-destination))
     (add-to-list 'org-speed-commands-user '("i" call-interactively 'org-clock-in))
     (add-to-list 'org-speed-commands-user '("o" call-interactively 'org-clock-out))
-    (add-to-list 'org-speed-commands-user '("$" call-interactively 'org-archive-subtree)))
-#+END_SRC
-
-From: http://stackoverflow.com/questions/15011703/is-there-an-emacs-org-mode-command-to-jump-to-an-org-heading
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (setq org-goto-interface 'outline
-        org-goto-max-level 10)
-#+END_SRC
-
-I often cut and paste subtrees. This makes it easier to cut something and paste
-it elsewhere in the hierarchy.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (setq org-startup-folded nil)
-  (setq org-cycle-include-plain-lists 'integrate)
-  (setq org-yank-adjusted-subtrees t)
-#+END_SRC
-
-** Move line
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-    (defun my/org-move-line-to-destination ()
-      "Moves the current list item to <<destination>> in the current buffer.
-    If no <<destination>> is found, move it to the end of the list
-    and indent it one level."
+    (add-to-list 'org-speed-commands-user '("s" call-interactively 'org-schedule))
+    (add-to-list 'org-speed-commands-user '("x" org-todo "DONE"))
+    (add-to-list 'org-speed-commands-user '("y" org-todo-yesterday "DONE"))
+    (org-clock-persistence-insinuate)
+    (org-load-modules-maybe t)
+    :preface
+    (defun my/org-archive-done-tasks ()
+      "Archives finished or cancelled tasks."
       (interactive)
-      (save-window-excursion
-        (save-excursion
-          (let ((string
-                 (buffer-substring-no-properties
-                  (line-beginning-position) (line-end-position)))
-                found)
-            (delete-region (line-beginning-position) (1+ (line-end-position)))
-            (save-excursion
-              (goto-char (point-min))
-              (when (re-search-forward "<<destination>>" nil t)
-                (insert "\n" (make-string (- (match-beginning 0) (line-beginning-position)) ?\ ) (s-trim string))
-                (setq found t)))
-            (unless found
-              (org-end-of-item-list)
-              (insert string "\n"))))))
+      (org-map-entries
+       (lambda ()
+         (org-archive-subtree)
+         (setq org-map-continue-from (outline-previous-heading)))
+       "TODO=\"DONE\"|TODO=\"CANCELLED\"" (if (org-before-first-heading-p) 'file 'tree)))
+
+    (defun my/org-jump ()
+      "Jumps to a specific task."
+      (interactive)
+      (let ((current-prefix-arg '(4)))
+        (call-interactively 'org-refile)))
+
+    (defun my/org-use-speed-commands-for-headings-and-lists ()
+      "Activates speed commands on list items too."
+      (or (and (looking-at org-outline-regexp) (looking-back "^\**"))
+          (save-excursion (and (looking-at (org-item-re)) (looking-back "^[ \t]*"))))))
 #+END_SRC
 
-* Org Agenda
-
-** Basic configuration
-
-I am a fan about the organization made by Sacha Chua, which is why most of
-the functions added above come essentially from her.
-
-My org files are in my =personal= directory from my [[https://www.dropbox.com/][Sync]]. That way, I can
-update my =.org= files from multiple computers and smartphones.
+If like me, you're tired of manually updating your tables of contents, =toc-org=
+will maintain a table of contents at the first heading that has a =:TOC:= tag.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (require 'org-agenda)
-  (setq org-directory "~/Sync/shared/personal")
-  (setq org-default-notes-file "~/Sync/shared/.personal/organizer.org")
+  (use-package toc-org :after org)
 #+END_SRC
 
-Here is the place where I put all my =.org= files that will be read by =org-agenda=.
+For a cleaner online mode.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (setq org-agenda-files
-        (delq nil
-              (mapcar (lambda (x) (and (file-exists-p x) x))
-                      '("~/Sync/shared/.personal/101things.org"
-                        "~/Sync/shared/.personal/business.org"
-                        "~/Sync/shared/.personal/decisions.org"
-                        "~/Sync/shared/.personal/learning.org"
-                        "~/Sync/shared/.personal/internship.org"
-                        "~/Sync/shared/.personal/organizer.org"
-                        "~/Sync/shared/.personal/people.org"
-                        "~/Sync/shared/.personal/projects.org"
-                        "~/Sync/shared/.personal/routine.org"
-                        "~/Sync/shared/.personal/school.org"
-                        "~/Sync/shared/.personal/tfe.org"))))
-  (add-to-list 'auto-mode-alist '("\\.txt$" . org-mode))
+  (use-package org-indent :after org :ensure nil :diminish)
 #+END_SRC
 
-This quickly adds a same-level heading for the succeeding day.
+** Agenda
+
+Nowadays, it is crucial to be organized. Even more than before. That is why it
+is important to take the time to make a configuration that is simple to use and
+that makes your life easier with an irreproachable organization.
+
+=org-agenda= allows me to be organized with daily tasks. As a result, I can use
+my time to the fullest.
+
+I put my =org= files in [[https://github.com/syncthing/syncthing][Syncthing]] in order to be able to check my agenda and
+update it from several computers and smartphones.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (defun my/org-insert-heading-for-next-day ()
-    "Insert a same-level heading for the following day."
-    (interactive)
-    (let ((new-date
-           (seconds-to-time
-            (+ 86400.0
-               (float-time
-                (org-read-date nil 'to-time (elt (org-heading-components) 4)))))))
-      (org-insert-heading-after-current)
-      (insert (format-time-string "%Y-%m-%d\n\n" new-date))))
+  (use-package org-agenda
+    :ensure nil
+    :after org
+    :bind (:map org-agenda-mode-map
+                ("X" . my/org-agenda-mark-done-and-add-followup)
+                ("x" . my/org-agenda-done))
+    :custom
+    (org-agenda-dim-blocked-tasks t)
+    (org-agenda-files '("~/Sync/shared/.personal"))
+    (org-agenda-inhibit-startup t)
+    (org-agenda-show-log t)
+    (org-agenda-skip-scheduled-if-done t)
+    (org-agenda-skip-deadline-if-done t)
+    (org-agenda-skip-deadline-prewarning-if-scheduled 'pre-scheduled)
+    (org-agenda-span 2)
+    (org-agenda-start-on-weekday 6)
+    (org-agenda-sticky nil)
+    (org-agenda-tags-column -100)
+    (org-agenda-time-grid '((daily today require-timed)))
+    (org-agenda-use-tag-inheritance t)
+    (org-columns-default-format "%14SCHEDULED %Effort{:} %1PRIORITY %TODO %50ITEM %TAGS")
+    (org-default-notes-file "~/Sync/shared/.personal/organizer.org")
+    (org-directory "~/Sync/shared/personal")
+    (org-enforce-todo-dependencies t)
+    (org-habit-graph-column 80)
+    (org-habit-show-habits-only-for-today nil)
+    (org-track-ordered-property-with-tag t)
+    :preface
+    (defun my/org-agenda-done (&optional arg)
+      "Mark current TODO as done.
+    This changes the line at point, all other lines in the agenda referring to
+    the same tree node, and the headline of the tree node in the Org-mode file."
+      (interactive "P")
+      (org-agenda-todo "DONE"))
+
+    (defun my/org-agenda-mark-done-and-add-followup ()
+      "Mark the current TODO as done and add another task after it.
+     Creates it at the same level as the previous task, so it's better to use
+     this with to-do items than with projects or headings."
+      (interactive)
+      (org-agenda-todo "DONE")
+      (org-agenda-switch-to)
+      (org-capture 0 "t")))
 #+END_SRC
 
-I like looking at two days at a time when I plan using the Org agenda. I want to
-see my log entries, but I don't want to see scheduled items that I've
-finished. I like seeing a time grid so that I can get a sense of how
-appointments are spread out.
+** Clock
+
+Being organized is one thing, but being optimal is another. =org-clock= allows
+you to estimate your tasks and time them. This is useful, since with experience,
+you can have a better estimate of the time that needs to be given to each task.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (setq org-agenda-span 2)
-  (setq org-agenda-tags-column -100) ; take advantage of the screen width
-  (setq org-agenda-sticky nil)
-  (setq org-agenda-inhibit-startup t)
-  (setq org-agenda-use-tag-inheritance t)
-  (setq org-agenda-show-log t)
-  (setq org-agenda-skip-scheduled-if-done t)
-  (setq org-agenda-skip-deadline-if-done t)
-  (setq org-agenda-skip-deadline-prewarning-if-scheduled 'pre-scheduled)
-  (setq org-agenda-time-grid
-        '((daily today require-timed)))
-  (setq org-columns-default-format "%14SCHEDULED %Effort{:} %1PRIORITY %TODO %50ITEM %TAGS")
-  ;; (setq org-agenda-time-grid
-  ;;       '((daily today require-timed)
-  ;;         "----------------"
-  ;;         (800 1000 1200 1400 1600 1800)))
-#+end_SRC
-
-*** Task dependencies
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (setq org-enforce-todo-dependencies t)
-  (setq org-track-ordered-property-with-tag t)
-  (setq org-agenda-dim-blocked-tasks t)
-#+END_SRC
-
-*** Starting my weeks on Saturday
-
-I want the Org agenda to start on Saturday, because I like looking at weekends
-as week beginnings instead.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (setq org-agenda-start-on-weekday 6)
-#+END_SRC
-
-** Archiving
-
-I will automate the archiving of my done tasks in the future.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (defun my/org-archive-done-tasks ()
-    "Archive finished or cancelled tasks."
-    (interactive)
-    (org-map-entries
-     (lambda ()
-       (org-archive-subtree)
-       (setq org-map-continue-from (outline-previous-heading)))
-     "TODO=\"DONE\"|TODO=\"CANCELLED\"" (if (org-before-first-heading-p) 'file 'tree)))
+  (use-package org-clock
+    :ensure nil
+    :after org
+    :hook (org-clock-in-prepare-hook . my/org-mode-ask-effort)
+    :custom
+    (org-clock-continuously nil)
+    (org-clock-in-switch-to-state "STARTED")
+    (org-clock-persist t)
+    (org-clock-report-include-clocking-task t)
+    (org-show-notification-handler (lambda (msg) (alert msg)))
+    :preface
+    (defun my/org-mode-ask-effort ()
+      "Ask for an effort estimate when clocking in."
+      (unless (org-entry-get (point) "Effort")
+        (let ((effort
+               (completing-read
+                "Effort: "
+                (org-entry-get-multivalued-property (point) "Effort"))))
+          (unless (equal effort "")
+            (org-set-property "Effort" effort))))))
 #+END_SRC
 
 ** Capture
 
-I use =org-capture= templates to quickly jot down tasks, ledger entries, notes,
-and other semi-structured pieces of information.
+=org-capture= templates saves you a lot of time when adding new entries. I use
+it to quickly record tasks, ledger entries, notes and other semi-structured
+information.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (defun my/org-contacts-template-email (&optional return-value)
-    "Try to return the contact email for a template.
-          If not found return RETURN-VALUE or something that would ask the user."
-    (or (cadr (if (gnus-alive-p)
-                  (gnus-with-article-headers
-                   (mail-extract-address-components
-                    (or (mail-fetch-field "Reply-To") (mail-fetch-field "From") "")))))
-        return-value
-        (concat "%^{" org-contacts-email-property "}p")))
+  (use-package org-capture
+    :ensure nil
+    :after org
+    :custom
+    (org-capture-templates
+     `(("F" "TFE Tasks" entry (file+headline "~/Sync/shared/.personal/tfe.org" "Tasks"),
+        my/org-basic-task-template
+        :immediate-finish t)
 
-  (defvar my/org-basic-task-template "* TODO %^{Task}
-    :PROPERTIES:
-    :Effort: %^{effort|1:00|0:05|0:15|0:30|2:00|4:00}
-    :END:
-    Captured %<%Y-%m-%d %H:%M>
-    %?
+       ("T" "Tasks" entry (file+headline "~/Sync/shared/.personal/organizer.org" "Tasks"),
+        my/org-basic-task-template
+        :immediate-finish t)
 
-    %i
-    " "Basic task data")
+       ("b" "Buy task" checkitem (file+headline "~/Sync/shared/.personal/various/buy.org" "To Buy")
+        "- [ ] %^{Task}"
+        :immediate-finish t)
 
-  (defvar my/org-basic-trade-template "* Trade
-    Previous Balance: %^{PreviousBalance}
-    Next Balance: %^{NextBalance}
-    Captured %<%Y-%m-%d>
-    %?
+       ("i" "Interrupting task" entry (file+headline "~/Sync/shared/.personal/organizer.org" "Inbox")
+        "* STARTED %^{Task}"
+        :clock-in :clock-resume)
 
-    %i
-    " "Basic trade data")
+       ("m" "Movie task" checkitem (file+headline "~/Sync/shared/.personal/various/movies.org" "To Watch")
+        "- [ ] %^{Task}"
+        :immediate-finish t)
 
-  (setq org-capture-templates
-        `(("b" "Buy task" checkitem (file+headline "~/Sync/shared/.personal/various/buy.org" "To Buy")
-           "- [ ] %^{Task}"
-           :immediate-finish t)
-          ("i" "Interrupting task" entry (file+headline "~/Sync/shared/.personal/organizer.org" "Inbox")
-           "* STARTED %^{Task}"
-           :clock-in :clock-resume)
-          ("m" "Movie task" checkitem (file+headline "~/Sync/shared/.personal/various/movies.org" "To Watch")
-           "- [ ] %^{Task}"
-           :immediate-finish t)
-          ("p" "People task" entry (file+headline "~/Sync/shared/.personal/people.org" "Tasks"),
-           my/org-basic-task-template
-           :immediate-finish t)
-          ("s" "School task" entry (file+headline "~/Sync/shared/.personal/school.org" "Tasks"),
-           my/org-basic-task-template
-           :immediate-finish t)
-          ("t" "Trading" entry (file+headline "~/Sync/shared/.personal/trading.org" "Trades/Day"),
-           my/org-basic-trade-template
-           :immediate-finish t)
-          ("T" "Tasks" entry (file+headline "~/Sync/shared/.personal/organizer.org" "Tasks"),
-           my/org-basic-task-template
-           :immediate-finish t)
-          ("F" "TFE Tasks" entry (file+headline "~/Sync/shared/.personal/tfe.org" "Tasks"),
-           my/org-basic-task-template
-           :immediate-finish t)))
+       ("p" "People task" entry (file+headline "~/Sync/shared/.personal/people.org" "Tasks"),
+        my/org-basic-task-template
+        :immediate-finish t)
+
+       ("s" "School task" entry (file+headline "~/Sync/shared/.personal/school.org" "Tasks"),
+        my/org-basic-task-template
+        :immediate-finish t)
+
+       ("t" "Trading" entry (file+headline "~/Sync/shared/.personal/trading.org" "Trades/Day"),
+        my/org-basic-trade-template
+        :immediate-finish t)))
+    :preface
+    (defvar my/org-basic-task-template "* TODO %^{Task}
+        :PROPERTIES:
+        :Effort: %^{effort|1:00|0:05|0:15|0:30|2:00|4:00}
+        :END:
+        Captured %<%Y-%m-%d %H:%M>
+        %?
+
+        %i
+        " "Basic task data")
+
+    (defvar my/org-basic-trade-template "* Trade
+        Previous Balance: %^{PreviousBalance}
+        Next Balance: %^{NextBalance}
+        Captured %<%Y-%m-%d>
+        %?
+
+        %i
+        " "Basic trade data"))
 #+END_SRC
 
-This allow to capture a task based on the agenda.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (defun my/org-agenda-new ()
-    "Create a new note or task at the current agenda item.
-  Creates it at the same level as the previous task, so it's better to use
-  this with to-do items than with projects or headings."
-    (interactive)
-    (org-agenda-switch-to)
-    (org-capture 0))
-
-;;  (define-key org-agenda-mode-map "N" 'my/org-agenda-new)
-#+END_SRC
-
-** Custom commands
-
-There are quite a few custom commands here, and I often forget to use them. =)
-But it's good to define them, and over time, I'll get the hang of using these
-more!
-
-| Key         | Description                                                                                    |
-| .           | What am I waiting for?                                                                         |
-| T           | Not really an agenda command - shows the to-do tree in the current file                        |
-| b           | Shows business-related tasks                                                                   |
-| o           | Shows personal tasks and miscellaneous tasks (o: organizer)                                    |
-| w           | Show all tasks for the upcoming week                                                           |
-| W           | Show all tasks for the upcoming week, aside from the routine ones                              |
-| g ...       | Show tasks by context: b - business; c - coding; w - writing; p - phone; d - drawing, h - home |
-| 0           | Show common contexts with up to 3 tasks each, so that I can choose what I feel like working on |
-| ) (shift-0) | Show common contexts with all the tasks associated with them                                   |
-| 9           | Show common contexts with up to 3 unscheduled tasks each                                       |
-| ( (shift-9) | Show common contexts with all the unscheduled tasks associated with them                       |
-| d           | Timeline for today (agenda, clock summary)                                                     |
-| u           | Unscheduled tasks to do if I have free time                                                    |
-| U           | Unscheduled tasks that are not part of projects                                                |
-| P           | Tasks by priority                                                                              |
-| p           | My projects                                                                                    |
-| 2           | Projects with tasks                                                                            |
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (defvar my/org-agenda-contexts
-    '((tags-todo "+@phone")
-      (tags-todo "+@work")
-      (tags-todo "+@love")
-      (tags-todo "+@coding")
-      (tags-todo "+@writing")
-      (tags-todo "+@computer")
-      (tags-todo "+@home")
-      (tags-todo "+@school")
-      (tags-todo "+@errands"))
-    "Usual list of contexts.")
-  (bind-key "<apps> a" 'org-agenda)
-#+END_SRC
-
-** Habits
-
-I like using [[http://orgmode.org/manual/Tracking-your-habits.html][org-habit]] to track my routine life. My task names tend to be a bit
-long, though, so I've configured the graph column to show a little bit more to
-the right.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (setq org-habit-graph-column 80)
-  (setq org-habit-show-habits-only-for-today nil)
-#+END_SRC
-
-If you want to use habits, be sure to schedule your tasks and add a =STYLE=
-property with the value of =habit= to the tasks you want displayed.
-
-** Projects
-
-Headings with the =:project:= tag, so we generally don't want that tag
-inherited, except when we display unscheduled tasks that don't belong to any
-projects.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (setq org-tags-exclude-from-inheritance '("project"))
-#+END_SRC
-
-This code makes it easy for me to focus on one project and its tasks.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (add-to-list 'org-speed-commands-user '("N" org-narrow-to-subtree))
-  (add-to-list 'org-speed-commands-user '("W" widen))
-
-  (defmacro my/org-with-current-task (&rest body)
-    "Execute BODY with the point at the subtree of the current task."
-    `(if (derived-mode-p 'org-agenda-mode)
-         (save-window-excursion
-           (org-agenda-switch-to)
-           ,@body)
-       ,@body))
-
-  (defun my/org-agenda-for-subtree ()
-    (interactive)
-    (when (derived-mode-p 'org-agenda-mode) (org-agenda-switch-to))
-    (my/org-with-current-task
-     (let ((org-agenda-view-columns-initially t))
-       (org-agenda nil "t" 'subtree))))
-  (add-to-list 'org-speed-commands-user '("T" my/org-agenda-for-subtree))
-#+END_SRC
-
-There's a proper way to do this, with =<=. Oh, that would work
-nicely. =< C-c a t= too.
-
-*** Viewing
-**** Projects
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (defun my/org-show-active-projects ()
-    "Show my current projects."
-    (interactive)
-    (org-tags-view nil "project-inactive-someday"))
-#+END_SRC
-
-**** Associated subtasks
-
-I wanted a view that showed projects with a few subtasks underneath
-them. Here's a sample of the output:
-
-#+BEGIN_EXAMPLE
-  Headlines with TAGS match: +PROJECT
-  Press `C-u r' to search again with new search string
-  organizer:  Set up communication processes for Awesome Foundation Toronto
-  organizer:  TODO Announce the next pitch night
-  organizer:  TODO Follow up with the winner of the previous pitch night for any news to include in the updates
-
-  organizer:  Tidy up the house so that I can find things quickly
-  organizer:  TODO Inventory all the things in closets and boxes         :@home:
-  organizer:  TODO Drop things off for donation                       :@errands:
-
-  organizer:  Learn how to develop for Android devices
-#+END_EXAMPLE
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (defun my/org-agenda-project-agenda ()
-    "Return the project headline and up to `my/org-agenda-limit-items' tasks."
-    (save-excursion
-      (let* ((marker (org-agenda-new-marker))
-             (heading
-              (org-agenda-format-item "" (org-get-heading) (org-get-category) nil))
-             (org-agenda-restrict t)
-             (org-agenda-restrict-begin (point))
-             (org-agenda-restrict-end (org-end-of-subtree 'invisible))
-             ;; Find the TODO items in this subtree
-             (list (org-agenda-get-day-entries (buffer-file-name) (calendar-current-date) :todo)))
-        (org-add-props heading
-            (list 'face 'defaults
-                  'done-face 'org-agenda-done
-                  'undone-face 'default
-                  'mouse-face 'highlight
-                  'org-not-done-regexp org-not-done-regexp
-                  'org-todo-regexp org-todo-regexp
-                  'org-complex-heading-regexp org-complex-heading-regexp
-                  'help-echo
-                  (format "mouse-2 or RET jump to org file %s"
-                          (abbreviate-file-name
-                           (or (buffer-file-name (buffer-base-buffer))
-                               (buffer-name (buffer-base-buffer))))))
-          'org-marker marker
-          'org-hd-marker marker
-          'org-category (org-get-category)
-          'type "tagsmatch")
-        (concat heading "\n"
-                (org-agenda-finalize-entries list)))))
-
-  (defun my/org-agenda-projects-and-tasks (match)
-    "Show TODOs for all `org-agenda-files' headlines matching MATCH."
-    (interactive "MString: ")
-    (let ((todo-only nil))
-      (if org-agenda-overriding-arguments
-          (setq todo-only (car org-agenda-overriding-arguments)
-                match (nth 1 org-agenda-overriding-arguments)))
-      (let* ((org-tags-match-list-sublevels
-              org-tags-match-list-sublevels)
-             (completion-ignore-case t)
-             rtn rtnall files file pos matcher
-             buffer)
-        (when (and (stringp match) (not (string-match "\\S-" match)))
-          (setq match nil))
-        (when match
-          (setq matcher (org-make-tags-matcher match)
-                match (car matcher) matcher (cdr matcher)))
-        (catch 'exit
-          (if org-agenda-sticky
-              (setq org-agenda-buffer-name
-                    (if (stringp match)
-                        (format "*Org Agenda(%s:%s)*"
-                                (or org-keys (or (and todo-only "M") "m")) match)
-                      (format "*Org Agenda(%s)*" (or (and todo-only "M") "m")))))
-          (org-agenda-prepare (concat "TAGS " match))
-          (org-compile-prefix-format 'tags)
-          (org-set-sorting-strategy 'tags)
-          (setq org-agenda-query-string match)
-          (setq org-agenda-redo-command
-                (list 'org-tags-view `(quote ,todo-only)
-                      (list 'if 'current-prefix-arg nil `(quote ,org-agenda-query-string))))
-          (setq files (org-agenda-files nil 'ifmode)
-                rtnall nil)
-          (while (setq file (pop files))
-            (catch 'nextfile
-              (org-check-agenda-file file)
-              (setq buffer (if (file-exists-p file)
-                               (org-get-agenda-file-buffer file)
-                             (error "No such file %s" file)))
-              (if (not buffer)
-                  ;; If file does not exist, error message to agenda
-                  (setq rtn (list
-                             (format "ORG-AGENDA-ERROR: No such org-file %s" file))
-                        rtnall (append rtnall rtn))
-                (with-current-buffer buffer
-                  (unless (derived-mode-p 'org-mode)
-                    (error "Agenda file %s is not in `org-mode'" file))
-                  (save-excursion
-                    (save-restriction
-                      (if org-agenda-restrict
-                          (narrow-to-region org-agenda-restrict-begin
-                                            org-agenda-restrict-end)
-                        (widen))
-                      (setq rtn (org-scan-tags 'my/org-agenda-project-agenda matcher todo-only))
-                      (setq rtnall (append rtnall rtn))))))))
-          (if org-agenda-overriding-header
-              (insert (org-add-props (copy-sequence org-agenda-overriding-header)
-                          nil 'face 'org-agenda-structure) "\n")
-            (insert "Headlines with TAGS match: ")
-            (add-text-properties (point-min) (1- (point))
-                                 (list 'face 'org-agenda-structure
-                                       'short-heading
-                                       (concat "Match: " match)))
-            (setq pos (point))
-            (insert match "\n")
-            (add-text-properties pos (1- (point)) (list 'face 'org-warning))
-            (setq pos (point))
-            (unless org-agenda-multi
-              (insert "Press `C-u r' to search again with new search string\n"))
-            (add-text-properties pos (1- (point)) (list 'face 'org-agenda-structure)))
-          (org-agenda-mark-header-line (point-min))
-          (when rtnall
-            (insert (mapconcat 'identity rtnall "\n") ""))
-          (goto-char (point-min))
-          (or org-agenda-multi (org-agenda-fit-window-to-buffer))
-          (add-text-properties (point-min) (point-max)
-                               `(org-agenda-type tags
-                                                 org-last-args (,todo-only ,match)
-                                                 org-redo-cmd ,org-agenda-redo-command
-                                                 org-series-cmd ,org-cmd))
-          (org-agenda-finalize)
-          (setq buffer-read-only t)))))
-#+END_SRC
-
-** Refiling
-*** Configuration
-
-=org-refile= lets you organize notes by typing in the headline to file them
-under.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (setq org-reverse-note-order t)
-  (setq org-refile-use-outline-path nil)
-  (setq org-refile-allow-creating-parent-nodes 'confirm)
-  (setq org-refile-use-cache nil)
-  (setq org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
-  (setq org-blank-before-new-entry nil)
-#+END_SRC
-
-*** Allow refiling in the middle(ish) of a capture
-
-This lets me use =C-c C-r= to refile a capture and then jump to the new
-location. I wanted to be able to file tasks under projects so that they could
-inherit the QUANTIFIED property that I use to track time (and any
-Beeminder-related properties too), but I also wanted to be able to clock in on
-them.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-    (defun my/org-refile-and-jump ()
-      (interactive)
-      (if (derived-mode-p 'org-capture-mode)
-        (org-capture-refile)
-        (call-interactively 'org-refile))
-      (org-refile-goto-last-stored))
-;;    (eval-after-load 'org-capture
-  ;;    '(bind-key "C-c C-r" 'my/org-refile-and-jump org-capture-mode-map))
-#+END_SRC
-
-*** Jump
-**** Quick way to jump
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-    (defun my/org-jump ()
-      (interactive)
-      (let ((current-prefix-arg '(4)))
-        (call-interactively 'org-refile)))
-#+END_SRC
-
-**** Jump to Org location by substring
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-    ;; Example: (org-refile 4 nil (my/org-refile-get-location-by-substring "Other Emacs"))
-    (defun my/org-refile-get-location-by-substring (regexp &optional file)
-      "Return the refile location identified by REGEXP."
-      (let ((org-refile-targets org-refile-targets) tbl)
-        (setq org-refile-target-table (org-refile-get-targets)))
-      (unless org-refile-target-table
-        (user-error "No refile targets"))
-      (cl-find regexp org-refile-target-table
-               :test
-               (lambda (a b)
-                 (and
-                (string-match a (car b))
-                (or (null file)
-                      (string-match file (elt b 1)))))))
-    (defun my/org-refile-subtree-to (name)
-      (org-refile nil nil (my/org-refile-get-location-exact name)))
-
-    (defun my/org-refile-get-location-exact (name &optional file)
-      "Return the refile location identified by NAME."
-      (let ((org-refile-targets org-refile-targets) tbl)
-        (setq org-refile-target-table (org-refile-get-targets)))
-      (unless org-refile-target-table
-        (user-error "No refile targets"))
-      (cl-find name org-refile-target-table
-               :test (lambda (a b)
-                     (and (string-equal a (car b))
-                          (or (null file)
-                              (string-match file (elt b 1)))))))
-    ;; Example: (my/org-clock-in-refile "Off my computer")
-    (defun my/org-clock-in-refile (location &optional file)
-      "Clocks into LOCATION.
-    LOCATION and FILE can also be regular expressions for `my/org-refile-get-location-by-substring'."
-      (interactive (list (my/org-refile-get-location)))
-      (save-window-excursion
-        (save-excursion
-        (if (stringp location) (setq location (my/org-refile-get-location-by-substring location file)))
-        (org-refile 4 nil location)
-        (org-clock-in))))
-
-    (defun my/org-finish-previous-task-and-clock-in-new-one (location &optional file)
-      (interactive (list (my/org-refile-get-location)))
-      (save-window-excursion
-        (org-clock-goto)
-        (org-todo 'done))
-      (my/org-clock-in-and-track-by-name location file))
-
-    (defun my/org-clock-in-and-track-by-name (location &optional file)
-      (interactive (list (my/org-refile-get-location)))
-      (save-window-excursion
-        (save-excursion
-        (if (stringp location) (setq location (my/org-refile-get-location-exact location file)))
-        (org-refile 4 nil location)
-        (my/org-clock-in-and-track))))
-    (defun my/org-off-computer (category)
-      (interactive "MCategory: ")
-      (my/org-clock-in-refile "Off my computer")
-      (quantified-track category))
-#+END_SRC
-
-** Tags
-
-This defines keyboard shortcuts for those, too.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (setq org-tag-alist '(("@work" . ?b)
-                        ("@home" . ?h)
-                        ("@writing" . ?w)
-                        ("@errands" . ?e)
-                        ("@love" . ?d)
-                        ("@coding" . ?c)
-                        ("@phone" . ?p)
-                        ("@reading" . ?r)
-                        ("@computer" . ?l)
-                        ("@school" . ?s)
-                        ("crypt" . ?C)
-                        ("fuzzy" . ?0)
-                        ("highenergy" . ?1)))
-#+END_SRC
-
-** Time
-*** Configuration
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (progn
-    (setq org-expiry-inactive-timestamps t)
-    (setq org-clock-idle-time nil)
-    (setq org-log-done 'time)
-    (setq org-clock-continuously nil)
-    (setq org-clock-persist t)
-    (setq org-clock-in-switch-to-state "STARTED")
-    (setq org-clock-in-resume nil)
-    (setq org-show-notification-handler 'message)
-    (setq org-clock-report-include-clocking-task t))
-  (org-clock-persistence-insinuate)
-#+END_SRC
-
-Too many clock entries clutter up a heading.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (setq org-log-into-drawer "LOGBOOK")
-  (setq org-clock-into-drawer 1)
-#+END_SRC
-
-Useful function that mark the task as =STARTED= and start the clock.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (defun my/org-clock-in-and-track ()
-    "Start the clock running. Clock into Quantified Awesome."
-    (interactive)
-    (my/org-with-current-task
-     (org-clock-in)
-     ;;(call-interactively 'my/org-quantified-track)
-     (when (org-entry-get (point) "AUTO")
-       (org-open-link-from-string (org-entry-get (point) "AUTO")))))
-#+END_SRC
-
-*** Effort estimation
-
-That way, it's easy to see short tasks that I can finish.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (add-to-list 'org-global-properties
-               '("Effort_ALL". "0:05 0:15 0:30 1:00 2:00 3:00 4:00"))
-#+end_SRC
-
-From "Add an effort estimate on the fly when clocking in" on the [[http://orgmode.org/worg/org-hacks.html][Org Hacks]]
-page.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (add-hook 'org-clock-in-prepare-hook
-            'my/org-mode-ask-effort)
-
-  (defun my/org-mode-ask-effort ()
-    "Ask for an effort estimate when clocking in."
-    (unless (org-entry-get (point) "Effort")
-      (let ((effort
-             (completing-read
-              "Effort: "
-              (org-entry-get-multivalued-property (point) "Effort"))))
-        (unless (equal effort "")
-          (org-set-property "Effort" effort)))))
-#+END_SRC
-
-*** Compare times and effort estimates
-
-This is for comparing times in column view and in tables.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (defun my/compare-times (clocked estimated)
-    (if (and (> (length clocked) 0) estimated)
-        (format "%.2f"
-                (/ (* 1.0 (org-hh:mm-string-to-minutes clocked))
-                   (org-hh:mm-string-to-minutes estimated)))
-      ""))
-#+END_SRC
-
-Use with =#+COLUMNS: %40ITEM %17Effort(Estimated){:} %CLOCKSUM=, =#+BEGIN: columnview :hlines 1= ... =#+END:=, and
-
-#+BEGIN_SRC org
-,#+TBLFM: $4='(my/compare-times $3 $2)
-#+END_SRC
-
-** Tracking
-
-The parentheses indicate keyboard shortcuts that I can use to set the task
-state. =@= and =!= toggle logging. =@= prompts you for a note, and =!=
-automatically logs the timestamp of the state change.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (setq org-todo-keywords
-        '((sequence
-           "TODO(t)"
-           "STARTED(s)"
-           "WAITING(w@/!)"
-           "SOMEDAY(.)" "|" "DONE(x!)" "CANCELLED(c@)")
-          (sequence "TOBUY" "TOSHRINK" "TOCUT"  "TOSEW" "|" "DONE(x)")))
-#+END_SRC
-
-*** Customization
+** Custormization
 
 Let's change the foreground and the weight of each keywords.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (setq org-todo-keyword-faces
-        '(("TODO" . (:foreground "green" :weight bold))
-          ("DONE" . (:foreground "cyan" :weight bold))
-          ("WAITING" . (:foreground "red" :weight bold))
-          ("SOMEDAY" . (:foreground "gray" :weight bold))))
+  (use-package org-faces
+    :ensure nil
+    :after org
+    :custom
+    (org-todo-keyword-faces
+     '(("DONE" . (:foreground "cyan" :weight bold))
+       ("SOMEDAY" . (:foreground "gray" :weight bold))
+       ("TODO" . (:foreground "green" :weight bold))
+       ("WAITING" . (:foreground "red" :weight bold)))))
 #+END_SRC
 
-When a record is over, add a time stamp to the task.
+** Encryption / Decryption
+
+To be able to enable encryption and decryption of =.gpg= files with =org-mode=,
+we will need to install =gnupg2=.
+
+Once this is done, we simply configure =org-crypt= to accept our public key
+identifier to allow asymmetric encryption.
+
+*NOTE:* you need to modify the =org-crypt-key= variable to replace my key
+identifier, by yours (or =nil= to allow symmetric encryption).
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-    (setq org-log-done 'time)
+  (use-package org-crypt
+    :ensure nil
+    :init (org-crypt-use-before-save-magic)
+    :custom
+    (org-crypt-key "E9AADC36E94A672D1A07D49B208FCDBB98190562"))
 #+END_SRC
 
-** Further
-*** Make it easy to mark a task as done
-
-Great for quickly going through the todo list. Gets rid of one
-extra keystroke.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (defun my/org-agenda-done (&optional arg)
-    "Mark current TODO as done.
-  This changes the line at point, all other lines in the agenda referring to
-  the same tree node, and the headline of the tree node in the Org-mode file."
-    (interactive "P")
-    (org-agenda-todo "DONE"))
-  ;; Override the key definition for org-exit
-  (define-key org-agenda-mode-map "x" 'my/org-agenda-done)
-#+END_SRC
-
-*** Make it easy to mark a task as done and create a follow-up task
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (defun my/org-agenda-mark-done-and-add-followup ()
-    "Mark the current TODO as done and add another task after it.
-   Creates it at the same level as the previous task, so it's better to use
-   this with to-do items than with projects or headings."
-    (interactive)
-    (org-agenda-todo "DONE")
-    (org-agenda-switch-to)
-    (org-capture 0 "t"))
-  ;; Override the key definition
-  (define-key org-agenda-mode-map "X" 'my/org-agenda-mark-done-and-add-followup)
-#+END_SRC
-
-* Journal
+** Journal
 
 Recently, I started writing a journal about my daily life as I read that
 journals improve mental claritym, help solve problems, improve overall focus,
 insight and understanding, track the overall development and facilitate personal
 growth.
 
-Think so that it can be only benefit for myself.
-
-Most of useful functions below are from:
-https://github.com/howardabrams/dot-files/blob/master/emacs-org.org
-
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package org-journal
     :bind (("C-c t" . org-journal-new-entry)
            ("C-c y" . journal-file-yesterday))
     :custom
-    (org-journal-dir "~/Sync/shared/.journal/2018/")
-    (org-journal-file-format "%Y%m%d")
     (org-journal-date-format "%e %b %Y (%A)")
-    (org-journal-time-format "")
+    (org-journal-dir "~/Sync/shared/.journal/2018/")
     (org-journal-enable-encryption t)
+    (org-journal-file-format "%Y%m%d")
+    (org-journal-time-format "")
     :preface
     (defun get-journal-file-yesterday ()
       "Gets filename for yesterday's journal entry."
@@ -2566,419 +2421,28 @@ https://github.com/howardabrams/dot-files/blob/master/emacs-org.org
     (defun journal-file-yesterday ()
       "Creates and load a file based on yesterday's date."
       (interactive)
-      (find-file (get-journal-file-yesterday)))
-
-    (defun journal-last-year-file ()
-      "Gets the string corresponding to the journal entry that
-  happened 'last year' at this same time (meaning on the same day
-  of the week)."
-      (let* ((last-year-seconds (- (float-time) (* 365 24 60 60)))
-             (last-year (seconds-to-time last-year-seconds))
-             (last-year-dow (nth 6 (decode-time last-year)))
-             (this-year-dow (nth 6 (decode-time)))
-             (difference (if (> this-year-dow last-year-dow)
-                             (- this-year-dow last-year-dow)
-                           (- last-year-dow this-year-dow)))
-             (target-date-seconds (+ last-year-seconds (* difference 24 60 60)))
-             (target-date (seconds-to-time target-date-seconds)))
-        (format-time-string "%Y%m%d" target-date)))
-
-    (defun journal-last-year ()
-      "Loads last year's journal entry, which is not necessary the
-  same day of the month, but will be the same day of the week."
-      (interactive)
-      (let ((journal-file (concat org-journal-dir (journal-last-file))))
-        (find-file journal-file))))
+      (find-file (get-journal-file-yesterday))))
 #+END_SRC
 
-like any good journals, we don't want other people to be able to read it.
+** Languages
 
-** Encryption/Decryption
-
-To be able to enable encryption and decryption of =.gpg= files with =org-mode=,
-we will need to install =gnupg2=.
-
-Once this is done, we simply configure =epa=, the EasyPG Emacs assistant and
-=org-crypt= to accept our public key identifier to allow asymmetric encryption.
-
-*NOTE:* you need to modify the =org-crypt-key= variable to replace my key
-identifier, by yours (or =nil= to allow symmetric encryption).
+With that, I can compile many languages with =org-mode=.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package epa
-    :defer 2
-    :custom
-    (epg-gpg-program "gpg"))
-
-  (use-package org
-    :bind ("C-c d" . org-decrypt-entry)
-    ;; :init (org-crypt-use-before-save-magic)
-    :custom
-    (org-tags-exclude-from-inheritance (quote ("crypt")))
-    (org-crypt-key "E9AADC36E94A672D1A07D49B208FCDBB98190562")
-    (auto-save-default nil))
-#+END_SRC
-
-** Reveal.js
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package ox-reveal
-    :defer 2
-    :config
-    (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
-    (setq org-reveal-mathjax t))
-
-  (use-package htmlize :defer 2)
-#+END_SRC
-
-* Plugins configuration
-
-** =aggressive-indent=
-
-Auto-indent code as you write.
-
-#+BEGIN_QUOTE
-=electric-indent-mode= is enough to keep your code nicely aligned when all you
-do is type. However, once you start shifting blocks around, transposing lines,
-or slurping and barfing sexps, indentation is bound to go wrong.
-
-=aggressive-indent-mode= is a minor mode that keeps your code *always* indented.
-It reindents after every change, making it more reliable than
-electric-indent-mode.
-
-[[https://github.com/Malabarba/aggressive-indent-mode][Artur Malabarba]]
-#+END_QUOTE
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package aggressive-indent
-    :defer 2
-    :hook (python-mode . aggressive-indent-mode)
-    :custom
-    (aggressive-indent-comments-too))
-#+END_SRC
-
-** =atomic chrome=
-
-Helpful when I need to edit text areas of the browser in Emacs.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package atomic-chrome
-    :defer 2
-    :hook (atomic-chrome-edit-mode . flyspell-mode)
-    :init
-    (defun atomic-chrome-server-running-p ()
-      (cond ((executable-find "lsof")
-             (zerop (call-process "lsof" nil nil nil "-i" ":64292")))
-            ((executable-find "netstat") ; Windows
-             (zerop (call-process-shell-command "netstat -aon | grep 64292")))))
-
-    (if (atomic-chrome-server-running-p)
-        (message "Can't start atomic-chrome server, because port 64292 is already used")
-      (atomic-chrome-start-server)))
-#+END_SRC
-
-** =calc=
-
-May be useful in a timely manner.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package calc
-    :defer t
-    :custom
-    (math-additional-units
-     '((GiB "1024 * MiB" "Giga Byte")
-       (MiB "1024 * KiB" "Mega Byte")
-       (KiB "1024 * B" "Kilo Byte")
-       (B nil "Byte")
-       (Gib "1024 * Mib" "Giga Bit")
-       (Mib "1024 * Kib" "Mega Bit")
-       (Kib "1024 * b" "Kilo Bit")
-       (b "B / 8" "Bit")))
-    (math-units-table nil))
-#+END_SRC
-
-** =which-key=
-
-It's difficult to remember all the keyboard shortcuts. The =which-key= package
-helps to solve this.
-
-I used =guide-key= in my past days, but =which-key= is a good replacement.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package which-key
-    :diminish
-    :commands which-key-mode
-    :config
-    (which-key-mode))
-#+END_SRC
-** =flycheck=
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package flycheck
-    :defer 2
-    :hook ((emacs-lisp-mode python-mode) . flycheck-mode)
-    :config
-    (setq-default
-     flycheck-check-syntax-automatically '(save mode-enabled)
-     flycheck-disabled-checkers '(emacs-lisp-checkdoc)
-     flycheck-display-errors-delay .3)
-    (flycheck-define-checker my-php
-      "A PHP syntax checker using the PHP command line interpreter.
-        See URL `http://php.net/manual/en/features.commandline.php'."
-      :command ("php" "-l" "-d" "error_reporting=E_ALL" "-d" "display_errors=1"
-                "-d" "log_errors=0" source)
-      :error-patterns
-      ((error line-start (or "Parse" "Fatal" "syntax") " error" (any ":" ",") " "
-              (message) " in " (file-name) " on line " line line-end))
-      :modes (php-mode php+-mode web-mode)))
-#+END_SRC
-
-** =hungry-delete=
-
-Deleting a whitespace character will delete all whitespace until the next
-non-whitespace character.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package hungry-delete
-    :defer 2
-    :diminish
-    :config
-    (global-hungry-delete-mode))
-#+END_SRC
-
-** =iedit=
-
-Edit multiple regions in the same way simultaneously
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package iedit :defer t)
-#+END_SRC
-
-** =ipcalc=
-
-Allows me to avoid calculating network ranges.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package ipcalc
-    :commands ipcalc)
-#+END_SRC
-** =ledger=
-
-I usually use ledger to take a track of my finance.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package ledger-mode
-    :mode "\\.ledger\\'"
-    :custom
-    (ledger-clear-whole-transactions 1)
-    ;; https://xkcd.com/1179/
-    (ledger-use-iso-dates t))
-
-    (use-package flycheck-ledger
-      :after ledger-mode)
-#+END_SRC
-
-If you plan to use it, don’t forget installing it via your favorte AUR helpers
-if you using =Arch Linux= like I do. Otherwise, see for your case.
-
-#+BEGIN_SRC bash :tangle yes
-  trizen -S ledger
-#+END_SRC
-
-** =rainbow-mode=
-
-Minor mode for Emacs which displays strings representing
-colors with the color they represent as background.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package rainbow-mode
-    :commands rainbow-mode)
-#+END_SRC
-
-** =skewer-mode=
-
-Provides live interaction with JavaScript, CSS, and HTML in a web
-browser. Expressions are sent on-the-fly from an editing buffer to be evaluated
-in the browser, like Emacs does with an inferior Lisp process in Lisp
-modes.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package skewer-mode
-    :defer 3
-    :hook ((js2-mode . skewer-mode)
-           (css-mode . skewer-css-mode)
-           (html-mode . skewer-html-mode)
-           (web-mode . skewer-html-mode)))
-#+END_SRC
-** =swiper=
-
-Provides to myself isearch with an overview.
-
-I also use =counsel= to easily find my files.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package swiper
-    :after ivy
-    :bind (("C-s" . swiper)
-           ("C-r" . swiper)
-           ("C-c C-r" . ivy-resume)
-           ("M-x" . counsel-M-x)
-           ("C-x C-f" . counsel-find-file)))
-
-  (use-package counsel
-    :after ivy
-    :bind ("M-y" . counsel-yank-pop))
-#+END_SRC
-
-** =impatient-mode=
-
-Useful to see the effect of then HTML when you type it.
-
-To use =impatient mode= , you need to enable the web server provided by
-=simple-httpd=. For that, use =M-x httpd-start=, open your browser to
-=http://localhost:8080/imp/= and select your buffer to watch your changes appear
-as you type!
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package simple-httpd
-    :defer 4
-    :custom
-    (httpd-root "/var/www/html"))
-
-  (use-package impatient-mode
-    :after simple-httpd
-    :hook ((web-mode . httpd-start)
-           (web-mode . impatient-mode)
-           (css-mode . httpd-start)))
-#+END_SRC
-
-** =smartparens=
-
-According to myself, this is most powerful package to deal with parenthesis.
-Anyway, if you don't like it you can try take a look to =paredit= or =autopair=
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package smartparens :defer 2)
-#+END_SRC
-** =try=
-
-Useful to temporary use a package.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package try :defer 5)
-#+END_SRC
-
-** =undo-tree=
-
-Emacs's undo system allows you to recover any past state of a buffer. To do
-this, Emacs treats "undo itself as another editing that can be undone.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package undo-tree
-    :diminish
-    :bind ("C--" . undo-tree-redo)
-    :init (global-undo-tree-mode)
-    :custom
-    (undo-tree-visualizer-timestamps t)
-    (undo-tree-visualizer-diff t))
-#+END_SRC
-
-** =web-beautify=
-
-A formatting package of HTML, CSS and JavaScript/JSON for Emacs. It uses the
-command-line/node.js javascript formatter from http://jsbeautifier.org/ to
-format whole html, css, js or json files, or region.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package web-beautify
-    :disabled
-    :config
-    (eval-after-load 'js2-mode
-      '(add-hook 'js2-mode-hook
-                 (lambda ()
-                   (add-hook 'before-save-hook 'web-beautify-js-buffer t t))))
-
-    (eval-after-load 'json-mode
-      '(add-hook 'json-mode-hook
-                 (lambda ()
-                   (add-hook 'before-save-hook 'web-beautify-js-buffer t t))))
-
-    (eval-after-load 'sgml-mode
-      '(add-hook 'html-mode-hook
-                 (lambda ()
-                   (add-hook 'before-save-hook 'web-beautify-html-buffer t t))))
-
-    (eval-after-load 'web-mode
-      '(add-hook 'web-mode-hook
-                 (lambda ()
-                   (add-hook 'before-save-hook 'web-beautify-html-buffer t t))))
-
-    (eval-after-load 'css-mode
-      '(add-hook 'css-mode-hook
-                 (lambda ()
-                   (add-hook 'before-save-hook 'web-beautify-css-buffer t t)))))
-#+END_SRC
-
-If you plan to use it, don’t forget installing it via =npm=
-
-#+BEGIN_SRC bash :tangle yes
-  sudo npm install -g js-beautify
-#+END_SRC
-
-** =web-mode=
-
-An autonomous emacs major-mode for editing web templates.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package web-mode
-    :commands web-mode
-    :hook ((css-mode web-mode) . rainbow-mode)
-    :config
-    (add-to-list 'auto-mode-alist '("\\.blade\\.php\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.php$" . my/php-setup))
-    (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode)))
-#+END_SRC
-
-** =key-chord=
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package key-chord
-    :commands key-chord-mord)
-#+END_SRC
-
-** =winner=
-
-Global minor mode. When activated, it allows you to “undo”
-(and “redo”) changes in the window configuration.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package winner :defer 5)
-#+END_SRC
-
-** =yasnippet=
-
-YASnippet is a template system for Emacs. It allows you to type an
-abbreviation and automatically expand it into function templates.
-
-Very useful when you need to work with some boilerplatey languages like Java.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package yasnippet
-    :defer 2
-    :diminish yas-minor-mode
-    :bind ("C-c i" . yas-insert-snippet)
-    :init
-    (yas-global-mode t)
-    (add-to-list 'yas-snippet-dirs "~/.emacs.d/snippets")
-    :custom
-    (yas-snippet-dirs '("~/.emacs.d/snippets"))
-    (yas-installed-snippets-dir "~/.emacs.d/snippets"))
+  (use-package ob-C :ensure nil :after org)
+  (use-package ob-css :ensure nil :after org)
+  (use-package ob-ditaa :ensure nil :after org)
+  (use-package ob-dot :ensure nil :after org)
+  (use-package ob-emacs-lisp :ensure nil :after org)
+  (use-package ob-gnuplot :ensure nil :after org)
+  (use-package ob-java :ensure nil :after org)
+  (use-package ob-js :ensure nil :after org)
+  (use-package ob-latex :ensure nil :after org)
+  (use-package ob-makefile :ensure nil :after org)
+  (use-package ob-org :ensure nil :after org)
+  (use-package ob-plantuml :ensure nil :after org)
+  (use-package ob-python :ensure nil :after org)
+  (use-package ob-ruby :ensure nil :after org)
+  (use-package ob-shell :ensure nil :after org)
+  (use-package ob-sql :ensure nil :after org)
 #+END_SRC
