@@ -1758,10 +1758,17 @@ Then encrypt that file with =gpg -c .authinfo= and don't forget to delete the
 =.authinfo= file.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (setq send-mail-function 'smtpmail-send-it
-        smtpmail-smtp-server "smtp.gmail.com"
-        smtpmail-smtp-service 465
-        smtpmail-stream-type 'ssl)
+  (use-package message
+    :ensure nil
+    :custom
+    (send-mail-function 'smtpmail-send-it))
+
+  (use-package smtpmail
+    :ensure nil
+    :custom
+    (smtpmail-smtp-server "smtp.gmail.com")
+    (smtpmail-smtp-service 465)
+    (smtpmail-stream-type 'ssl))
 #+END_SRC
 
 All you need now is to test sending your mails with =C-x m= or directly from
