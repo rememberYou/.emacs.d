@@ -992,10 +992,10 @@ seamless, it's like a minor mode that disables itself auto-magically.
            ("C-c c" . hydra-clock/body)
            ("C-c e" . hydra-erc/body)
            ("C-c f" . hydra-flycheck/body)
-           ("C-c m" . hydra-magit/body)
-           ("C-c p" . hydra-projectile/body)
-           ("C-c o" . hydra-org/body)
            ("C-c g" . hydra-toggle/body)
+           ("C-c m" . hydra-magit/body)
+           ("C-c o" . hydra-org/body)
+           ("C-c p" . hydra-projectile/body)
            ("C-c w" . hydra-windows/body)))
 #+END_SRC
 
@@ -1284,6 +1284,7 @@ Allows to calculate the network ranges.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package ipcalc :defer 4)
 #+END_SRC
+
 *** Move to beginning of line
 
 From: http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line/
