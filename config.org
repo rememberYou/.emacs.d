@@ -1130,7 +1130,7 @@ Group Org commands.
     "
     ^
     ^Org^             ^Do^
-    ^───^─────────────^──^──────────
+    ^───^─────────────^──^───────────────
     _q_ quit            _A_ archive
     ^^                  _a_ agenda
     ^^                  _c_ capture
