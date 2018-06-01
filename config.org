@@ -1145,7 +1145,7 @@ Group Org commands.
     ^^                  ^^
     "
     ("q" nil)
-    ("A" my/org-archive-done-task)
+    ("A" my/org-archive-done-tasks :color pink)
     ("a" org-agenda)
     ("c" org-capture)
     ("d" org-decrypt-entry)
