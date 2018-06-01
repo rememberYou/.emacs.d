@@ -1374,15 +1374,6 @@ more.
     (paradox-enable)
     (remove-hook 'paradox-after-execute-functions #'paradox--report-buffer-print))
 #+END_SRC
-*** Pop to mark
-
-Jumps to mark, and pop a new position for mark off the ring. Notice that it
-doesn't affect global mark ring.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (bind-key "C-x p" 'pop-to-mark-command)
-  (setq set-mark-command-repeat-pop t)
-#+END_SRC
 
 *** =rainbow-mode=
 
@@ -2069,8 +2060,10 @@ I like to have lines of the same length.
   (use-package simple
     :ensure nil
     :diminish (auto-fill-function)
+    :bind ("C-x p" . pop-to-mark-command)
     :hook ((prog-mode . turn-on-auto-fill)
-           (text-mode . turn-on-auto-fill)))
+           (text-mode . turn-on-auto-fill))
+    :custom (set-mark-command-repeat-pop t))
 #+END_SRC
 
 ** YASnippet
