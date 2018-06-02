@@ -474,7 +474,7 @@ Minor mode with distinct support for \label, \ref and \cite in LaTeX.
 
 ** Lua
 
-I rarely program in Lua, but when I do, =lua-mode= satisfies me amply.2
+I rarely program in Lua, but when I do, =lua-mode= satisfies me amply.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package lua-mode
