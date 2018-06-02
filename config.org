@@ -2379,7 +2379,6 @@ growth.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package org-journal
-    :ensure nil
     :after org
     :bind (("C-c t" . org-journal-new-entry)
            ("C-c y" . journal-file-yesterday))
