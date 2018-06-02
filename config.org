@@ -8,10 +8,10 @@
   - [[#use-package][use-package]]
 - [[#start-up][Start Up]]
   - [[#authentification][Authentification]]
+  - [[#better-defaults][Better defaults]]
   - [[#customization][Customization]]
   - [[#theme][Theme]]
   - [[#turn-off-mouse-interface][Turn off mouse interface]]
-  - [[#use-better-defaults][Use better defaults]]
 - [[#languages][Languages]]
   - [[#css][CSS]]
   - [[#docker][Docker]]
@@ -108,8 +108,9 @@ first install it, if you don't already.
     (package-refresh-contents)
     (package-install 'use-package))
 
-  (require 'delight)
-  (require 'diminish)
+  (use-package delight :ensure t)
+  (use-package diminish :ensure t)
+  (use-package use-package-ensure-system-package :ensure t)
 #+END_SRC
 
 * Start Up
@@ -126,47 +127,7 @@ configuration on other devices.
                        "~/.netrc"))
 #+END_SRC
 
-** Customization
-
-To avoid overloading the GNU Emacs custormization =init.el= file made by the
-user with the UI, I add the generated code in a separate file.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (setq-default custom-file (expand-file-name "custom.el" user-emacs-directory))
-  (when (file-exists-p custom-file)
-    (load custom-file t))
-#+END_SRC
-
-** Theme
-
-I like the light on dark because I find it to be more restful.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package solarized-theme
-    :defer 1
-    :init (load-theme 'solarized-dark t))
-
-  (use-package smart-mode-line
-    :defer 1
-    :custom (sml/theme 'respectful)
-    :config (sml/setup))
-#+END_SRC
-
-** Turn off mouse interface
-
-Since I never use the mouse with GNU Emacs, I prefer not to use certain
-graphical elements as seen as the menu bar, toolbar, scrollbar and tooltip that
-I find invasive.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (when window-system
-    (menu-bar-mode -1)                              ; Disable the menu bar
-    (scroll-bar-mode -1)                            ; Disable the scroll bar
-    (tool-bar-mode -1)                              ; Disable the tool bar
-    (tooltip-mode -1))                              ; Disable the tooltips
-#+END_SRC
-
-** Use better defaults
+** Better defaults
 
 For a better user experience of GNU Emacs, here are the default values I use.
 
@@ -192,6 +153,46 @@ For a better user experience of GNU Emacs, here are the default values I use.
   (fset 'yes-or-no-p 'y-or-n-p)                     ; Replace yes/no prompts with y/n
   (global-hl-line-mode)                             ; Hightlight current line
   (show-paren-mode 1)                               ; Show the parent
+#+END_SRC
+
+** Customization
+
+To avoid overloading the GNU Emacs custormization =init.el= file made by the
+user with the UI, I add the generated code in a separate file.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (setq-default custom-file (expand-file-name "custom.el" user-emacs-directory))
+  (when (file-exists-p custom-file)
+    (load custom-file t))
+#+END_SRC
+
+** Theme
+
+I like the light on dark because I find it to be more restful.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package solarized-theme
+    :defer 1
+    :config (load-theme 'solarized-dark t))
+
+  (use-package smart-mode-line
+    :defer 1
+    :custom (sml/theme 'respectful)
+    :config (sml/setup))
+#+END_SRC
+
+** Turn off mouse interface
+
+Since I never use the mouse with GNU Emacs, I prefer not to use certain
+graphical elements as seen as the menu bar, toolbar, scrollbar and tooltip that
+I find invasive.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (when window-system
+    (menu-bar-mode -1)                              ; Disable the menu bar
+    (scroll-bar-mode -1)                            ; Disable the scroll bar
+    (tool-bar-mode -1)                              ; Disable the tool bar
+    (tooltip-mode -1))                              ; Disable the tooltips
 #+END_SRC
 
 * Languages
@@ -382,18 +383,13 @@ using =xref-js2= instead.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package tern
+    :ensure-system-package (tern . "npm install -g tern")
     :defer 5
     :bind (("C-c C-c" . compile)
            :map tern-mode-keymap
            ("M-." . nil))
     :hook ((js2-mode . company-mode)
            (js2-mode . tern-mode)))
-#+END_SRC
-
-If you plan to use it, don't forget to install it via =npm=:
-
-#+BEGIN_SRC bash :tangle yes
-  sudo npm install -g tern
 #+END_SRC
 
 Then, add a =.tern-project= file to the root of your project.
@@ -1126,6 +1122,7 @@ Group Magit commands.
     ("c" magit-clone)
     ("i" magit-init)
     ("s" magit-status))
+(setq lv-use-separator nil)
 #+END_SRC
 
 *** Hydra / Org
@@ -1575,6 +1572,8 @@ Now all that remains is to configure =ledger-mode=:
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package ledger-mode
+    :defer 2
+    :ensure-system-package (ledger . "trizen -S --noconfirm ledger")
     :mode "\\.ledger\\'"
     :custom
     (ledger-clear-whole-transactions 1)
@@ -1648,6 +1647,7 @@ Now all that remains is to configure =mu4e=:
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package mu4e
     :ensure nil
+    :ensure-system-package mu
     :custom
     (mu4e-attachment-dir "~/Downloads")
     (mu4e-compose-signature-auto-include nil)
@@ -2108,8 +2108,7 @@ authoring documents with a fast and effective plain-text system.
       "Activates speed commands on list items too."
       (or (and (looking-at org-outline-regexp) (looking-back "^\**"))
           (save-excursion (and (looking-at (org-item-re)) (looking-back "^[ \t]*")))))
-    :hook ((after-save . my/config-tangle)
-           (org-mode . toc-org-enable))
+    :hook (after-save . my/config-tangle)
     :custom
     (org-blank-before-new-entry nil)
     (org-cycle-include-plain-lists 'integrate)
@@ -2124,7 +2123,6 @@ authoring documents with a fast and effective plain-text system.
                    org-irc
                    org-mouse
                    org-protocol))
-    (org-plantuml-jar-path (expand-file-name "~/Sync/shared/lib/plantuml.jar"))
     (org-refile-allow-creating-parent-nodes 'confirm)
     (org-refile-use-cache nil)
     (org-refile-use-outline-path nil)
@@ -2174,7 +2172,9 @@ If like me, you're tired of manually updating your tables of contents, =toc-org=
 will maintain a table of contents at the first heading that has a =:TOC:= tag.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package toc-org :after org)
+  (use-package toc-org
+    :after org
+    :hook (org-mode . toc-org-enable))
 #+END_SRC
 
 For a cleaner online mode.
@@ -2364,6 +2364,7 @@ identifier, by yours (or =nil= to allow symmetric encryption).
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package org-crypt
     :ensure nil
+	:after org
     :init (org-crypt-use-before-save-magic)
     :custom (org-crypt-key "E9AADC36E94A672D1A07D49B208FCDBB98190562"))
 #+END_SRC
@@ -2377,6 +2378,8 @@ growth.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package org-journal
+    :ensure nil
+    :after org
     :bind (("C-c t" . org-journal-new-entry)
            ("C-c y" . journal-file-yesterday))
     :preface
@@ -2414,7 +2417,12 @@ With that, I can compile many languages with =org-mode=.
   (use-package ob-latex :ensure nil :after org)
   (use-package ob-makefile :ensure nil :after org)
   (use-package ob-org :ensure nil :after org)
-  (use-package ob-plantuml :ensure nil :after org)
+
+  (use-package ob-plantuml
+    :ensure nil
+    :after org
+    :custom (org-plantuml-jar-path (expand-file-name "~/Sync/shared/lib/plantuml.jar")))
+
   (use-package ob-python :ensure nil :after org)
   (use-package ob-ruby :ensure nil :after org)
   (use-package ob-shell :ensure nil :after org)
