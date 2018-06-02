@@ -8,9 +8,6 @@ the most trivial keyboard possible.
 
 List of files:
 
-* [`config.bash`](https://github.com/rememberYou/.emacs.d/blob/master/config.bash/):
-  file containing the packages installed in Bash with Arch Linux.
-
 * [`config.org`](https://github.com/rememberYou/.emacs.d/blob/master/config.org/):
   main configuration file.
 
