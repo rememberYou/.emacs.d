@@ -304,6 +304,7 @@ Now all that remains is to configure =eclim=:
     (eclim-executable '"/opt/eclipse/eclim")
     (help-at-pt-display-when-idle t)
     (help-at-pt-timer-delay 0.1)
+    :config
     (help-at-pt-set-timer))
 #+END_SRC
 
