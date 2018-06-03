@@ -1006,12 +1006,12 @@ Group Buffer commands.
     "
     ^
     ^Buffer^             ^Do^
-    ^──────^─────────────^──^─────────
-    _q_ quit            _k_ kill
-    ^^                  _l_ list
-    ^^                  _n_ next
-    ^^                  _p_ previous
-    ^^                  ^^
+    ^──────^─────────────^──^──────────
+    _q_ quit             _k_ kill
+    ^^                   _l_ list
+    ^^                   _n_ next
+    ^^                   _p_ previous
+    ^^                   ^^
     "
     ("q" nil)
     ("k" kill-buffer)
@@ -1058,13 +1058,13 @@ Group ERC commands.
     "
     ^
     ^ERC^             ^Do^
-    ^───^─────────────^──^──────────────
-    _q_ quit            _c_ connect
-    ^^                  _d_ disconnect
-    ^^                  _j_ join
-    ^^                  _n_ names
-    ^^                  _u_ users
-    ^^                  ^^
+    ^───^─────────────^──^────────────
+    _q_ quit          _c_ connect
+    ^^                _d_ disconnect
+    ^^                _j_ join
+    ^^                _n_ names
+    ^^                _u_ users
+    ^^                ^^
     "
     ("q" nil)
     ("c" my/erc-start-or-switch)
@@ -1135,19 +1135,19 @@ Group Org commands.
     "
     ^
     ^Org^             ^Do^
-    ^───^─────────────^──^───────────────
-    _q_ quit            _A_ archive
-    ^^                  _a_ agenda
-    ^^                  _c_ capture
-    ^^                  _d_ decrypt
-    ^^                  _i_ insert-link
-    ^^                  _j_ jump-task
-    ^^                  _k_ cut-subtree
-    ^^                  _o_ open-link
-    ^^                  _r_ refile
-    ^^                  _s_ store-link
-    ^^                  _t_ todo-tree
-    ^^                  ^^
+    ^───^─────────────^──^─────────────
+    _q_ quit          _A_ archive
+    ^^                _a_ agenda
+    ^^                _c_ capture
+    ^^                _d_ decrypt
+    ^^                _i_ insert-link
+    ^^                _j_ jump-task
+    ^^                _k_ cut-subtree
+    ^^                _o_ open-link
+    ^^                _r_ refile
+    ^^                _s_ store-link
+    ^^                _t_ todo-tree
+    ^^                ^^
     "
     ("q" nil)
     ("A" my/org-archive-done-tasks :color pink)
