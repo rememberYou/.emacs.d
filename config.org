@@ -1816,14 +1816,14 @@ in the file-system, but rather created on-demand and stored in memory.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package pdf-tools
     :defer 1
-    :init (pdf-tools-install :no-query)
-    :custom (pdf-view-use-unicode-ligther nil))
+    :init (pdf-tools-install :no-query))
 
-  (use-package pdf-isearch
+  (use-package pdf-view
     :ensure nil
     :after pdf-tools
     :bind (:map pdf-view-mode-map
-                ("C-s" . isearch-forward)))
+                ("C-s" . isearch-forward))
+    :custom (pdf-view-use-unicode-ligther nil))
 
 #+END_SRC
 
