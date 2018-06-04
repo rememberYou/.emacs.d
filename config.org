@@ -94,8 +94,8 @@ Thanks to them for their incredible work!
 In order to install packages, it is useful to configure the package sources.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+  (setq package-archives '(("melpa" . "http://melpa.org/packages/")
+                           ("org" . "http://orgmode.org/elpa/")))
 #+END_SRC
 
 ** use-package
