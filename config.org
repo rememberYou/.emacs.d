@@ -1513,9 +1513,9 @@ Finally, specify to =erc= that you use a =.authinfo= file with:
 I used =helm= before, but I find =ivy= faster and lighter.
 
 #+BEGIN_QUOTE
-Eclim is an Eclipse plugin which exposes Eclipse features through a server
-interface. When this server is started, the command line utility eclim can be
-used to issue requests to that server.
+Ivy is a generic completion mechanism for Emacs. While it operates similarly to
+other completion schemes such as icomplete-mode, Ivy aims to be more efficient,
+smaller, simpler, and smoother to use yet highly customizable.
 
 [[https://github.com/abo-abo/ivy][Oleh Krehel]]
 #+END_QUOTE
