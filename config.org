@@ -1235,6 +1235,7 @@ Group window-related commands.
     ^^                  _j_ narrow          _=_ reset
     ^^                  _k_ lower           ^^
     ^^                  _l_ widen           ^^
+    ^^                  _s_ swap            ^^
     ^^                  ^^                  ^^
     "
     ("q" nil)
@@ -1243,6 +1244,7 @@ Group window-related commands.
     ("j" shrink-window-horizontally)
     ("k" shrink-window)
     ("l" enlarge-window-horizontally)
+    ("s" switch-window-then-swap-buffer :color blue)
     ("-" text-scale-decrease)
     ("+" text-scale-increase)
     ("=" (text-scale-increase 0)))
