@@ -1651,9 +1651,12 @@ Now all that remains is to configure =mu4e=:
   (use-package mu4e
     :ensure nil
     :ensure-system-package mu
+    :hook (mu4e-compose-mode . flyspell-mode)
     :custom
     (mu4e-attachment-dir "~/Downloads")
+    (mu4e-confirm-quit nil)
     (mu4e-compose-signature-auto-include nil)
+    (mu4e-completing-read-function 'ivy-completing-read)
     (mu4e-drafts-folder "/gmail/Drafts")
     (mu4e-get-mail-command "mbsync -a")
     (mu4e-maildir "~/Maildir")
@@ -1665,11 +1668,14 @@ Now all that remains is to configure =mu4e=:
        ("/gmail/Important" . ?i)
        ("/gmail/Sent Mail" . ?s)
        ("/gmail/Starred" . ?S)))
+    (mu4e-html2text-command "iconv -c -t utf-8 | pandoc -f html -t plain")
     (mu4e-refile-folder "/gmail/Archive")
     (mu4e-sent-folder "/gmail/Sent Mail")
+    (mu4e-sent-messages-behavior 'delete)
     (mu4e-trash-folder "/gmail/Trash")
     (mu4e-update-interval 300)
     (mu4e-use-fancy-chars t)
+    (mail-user-agent 'mu4e-user-agent)
     (mu4e-view-show-addresses t)
     (mu4e-view-show-images t))
 
