@@ -1672,6 +1672,11 @@ Now all that remains is to configure =mu4e=:
     (mu4e-use-fancy-chars t)
     (mu4e-view-show-addresses t)
     (mu4e-view-show-images t))
+
+  (use-package org-mu4e
+    :ensure nil
+    :custom
+    (org-mu4e-convert-to-html t))
 #+END_SRC
 
 Being able to read mails is a good thing, but being notified when we receive
