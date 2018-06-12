@@ -558,7 +558,9 @@ supports =company-mode= better than =jedi= which is quite old.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package python
-    :delight python-mode "π")
+    :delight python-mode "π"
+    :bind (("M-[" . python-nav-backward-block)
+           ("M-]" . python-nav-forward-block)))
 #+END_SRC
 
 *** =anaconda-mode=
