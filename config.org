@@ -1042,7 +1042,7 @@ Group clock commands.
     ^^                  ^^
     "
     ("q" nil)
-    ("c" org-clock-cancel :color pink)
+    ("c" org-clock-cancel)
     ("d" org-clock-display)
     ("e" org-clock-modify-effort-estimate)
     ("i" org-clock-in)
