@@ -172,11 +172,11 @@ I like the light on dark because I find it to be more restful.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package solarized-theme
-    :defer 1
+    :defer 0.1
     :config (load-theme 'solarized-dark t))
 
   (use-package smart-mode-line
-    :defer 1
+    :defer 0.1
     :custom (sml/theme 'respectful)
     :config (sml/setup))
 #+END_SRC
