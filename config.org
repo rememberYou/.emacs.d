@@ -144,9 +144,10 @@ For a better user experience of GNU Emacs, here are the default values I use.
    scroll-conservatively most-positive-fixnum       ; Always scroll by one line
    select-enable-clipboard t                        ; Merge system's and Emacs' clipboard
    tab-width 4                                      ; Set width for tabs
+   use-package-always-ensure t                      ; Avoid the :ensure keyword for each package
    user-full-name "Terencio Agozzino"               ; Set the full name of the current user
    user-mail-address "terencio.agozzino@gmail.com"  ; Set the email address of the current user
-   use-package-always-ensure t)                     ; Avoid the :ensure keyword for each package
+   vc-follow-symlinks t)                            ; Always follow the symlinks
   (cd "~/")                                         ; Move to the user directory
   (column-number-mode 1)                            ; Show the column number
   (display-time-mode 1)                             ; Enable time in the mode-line
