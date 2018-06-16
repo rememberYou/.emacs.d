@@ -2133,11 +2133,10 @@ authoring documents with a fast and effective plain-text system.
     (org-export-backends '(ascii beamer html icalendar latex man md org texinfo))
     (org-log-done 'time)
     (org-log-into-drawer "LOGBOOK")
-    (org-modules '(org-info
-                   org-crypt
+    (org-modules '(org-crypt
                    org-habit
+                   org-info
                    org-irc
-                   org-mouse
                    org-protocol))
     (org-refile-allow-creating-parent-nodes 'confirm)
     (org-refile-use-cache nil)
