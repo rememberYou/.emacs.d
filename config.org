@@ -936,16 +936,14 @@ own keymap, but anyway, I rarely go beyond the register.
   (my/defshortcut ?I "~/.config/i3/config")
   (my/defshortcut ?S "~/.config/sway/config")
   (my/defshortcut ?X "~/.Xresources")
-  (my/defshortcut ?b "~/Sync/shared/.personal/various/buy.org")
+  (my/defshortcut ?b "~/.personal/various/buy.org")
   (my/defshortcut ?c "~/.emacs.d/config.org")
-  (my/defshortcut ?e "~/Sync/shared/elfeed/elfeed.org")
   (my/defshortcut ?i "~/.emacs.d/init.el")
-  (my/defshortcut ?m "~/Sync/shared/.personal/various/movies.org")
-  (my/defshortcut ?o "~/Sync/shared/.personal/organizer.org")
-  (my/defshortcut ?p "~/Sync/shared/.personal/people.org")
-  (my/defshortcut ?r "~/Sync/shared/.personal/routine.org")
-  (my/defshortcut ?s "~/Sync/shared/.personal/school.org")
-  (my/defshortcut ?t "~/Sync/shared/.personal/tfe.org")
+  (my/defshortcut ?m "~/.personal/various/movies.org")
+  (my/defshortcut ?o "~/.personal/organizer.org")
+  (my/defshortcut ?p "~/.personal/people.org")
+  (my/defshortcut ?r "~/.personal/routine.org")
+  (my/defshortcut ?s "~/.personal/school.org")
 #+END_SRC
 
 ** History
@@ -2129,7 +2127,7 @@ authoring documents with a fast and effective plain-text system.
     :custom
     (org-blank-before-new-entry nil)
     (org-cycle-include-plain-lists 'integrate)
-    (org-ditaa-jar-path "~/Sync/shared/lib/ditaa0_9.jar")
+    (org-ditaa-jar-path "~/lib/ditaa0_9.jar")
     (org-expiry-inactive-timestamps t)
     (org-export-backends '(ascii beamer html icalendar latex man md org texinfo))
     (org-log-done 'time)
@@ -2237,7 +2235,7 @@ update it from several computers and smartphones.
       (org-capture 0 "t"))
     :custom
     (org-agenda-dim-blocked-tasks t)
-    (org-agenda-files '("~/Sync/shared/.personal"))
+    (org-agenda-files '("~/.personal"))
     (org-agenda-inhibit-startup t)
     (org-agenda-show-log t)
     (org-agenda-skip-deadline-if-done t)
@@ -2250,8 +2248,8 @@ update it from several computers and smartphones.
     (org-agenda-time-grid '((daily today require-timed)))
     (org-agenda-use-tag-inheritance t)
     (org-columns-default-format "%14SCHEDULED %Effort{:} %1PRIORITY %TODO %50ITEM %TAGS")
-    (org-default-notes-file "~/Sync/shared/.personal/organizer.org")
-    (org-directory "~/Sync/shared/personal")
+    (org-default-notes-file "~/.personal/organizer.org")
+    (org-directory "~/Sync/personal")
     (org-enforce-todo-dependencies t)
     (org-habit-graph-column 80)
     (org-habit-show-habits-only-for-today nil)
@@ -2289,15 +2287,11 @@ information.
         " "Basic trade data")
     :custom
     (org-capture-templates
-     `(("F" "TFE Tasks" entry (file+headline "~/Sync/shared/.personal/tfe.org" "Tasks"),
+     `(("T" "Tasks" entry (file+headline "~/.personal/organizer.org" "Tasks"),
         my/org-basic-task-template
         :immediate-finish t)
 
-       ("T" "Tasks" entry (file+headline "~/Sync/shared/.personal/organizer.org" "Tasks"),
-        my/org-basic-task-template
-        :immediate-finish t)
-
-       ("b" "Buy task" checkitem (file+headline "~/Sync/shared/.personal/various/buy.org" "To Buy")
+       ("b" "Buy task" checkitem (file+headline "~/.personal/various/buy.org" "To Buy")
         "- [ ] %^{Task}"
         :immediate-finish t)
 
@@ -2305,19 +2299,19 @@ information.
         "* STARTED %^{Task}"
         :clock-in :clock-resume)
 
-       ("m" "Movie task" checkitem (file+headline "~/Sync/shared/.personal/various/movies.org" "To Watch")
+       ("m" "Movie task" checkitem (file+headline "~/.personal/various/movies.org" "To Watch")
         "- [ ] %^{Task}"
         :immediate-finish t)
 
-       ("p" "People task" entry (file+headline "~/Sync/shared/.personal/people.org" "Tasks"),
+       ("p" "People task" entry (file+headline "~/.personal/people.org" "Tasks"),
         my/org-basic-task-template
         :immediate-finish t)
 
-       ("s" "School task" entry (file+headline "~/Sync/shared/.personal/school.org" "Tasks"),
+       ("s" "School task" entry (file+headline "~/.personal/school.org" "Tasks"),
         my/org-basic-task-template
         :immediate-finish t)
 
-       ("t" "Trading" entry (file+headline "~/Sync/shared/.personal/trading.org" "Trades/Day"),
+       ("t" "Trading" entry (file+headline "~/.personal/trading.org" "Trades/Day"),
         my/org-basic-trade-template
         :immediate-finish t))))
 #+END_SRC
@@ -2411,7 +2405,7 @@ growth.
       (find-file (get-journal-file-yesterday)))
     :custom
     (org-journal-date-format "%e %b %Y (%A)")
-    (org-journal-dir "~/Sync/shared/.journal/2018/")
+    (org-journal-dir "~/.personal/journal/2018/")
     (org-journal-enable-encryption t)
     (org-journal-file-format "%Y%m%d")
     (org-journal-time-format ""))
@@ -2437,7 +2431,7 @@ With that, I can compile many languages with =org-mode=.
   (use-package ob-plantuml
     :ensure nil
     :after org
-    :custom (org-plantuml-jar-path (expand-file-name "~/Sync/shared/lib/plantuml.jar")))
+    :custom (org-plantuml-jar-path (expand-file-name "~/lib/plantuml.jar")))
 
   (use-package ob-python :ensure nil :after org)
   (use-package ob-ruby :ensure nil :after org)
