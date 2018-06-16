@@ -2268,42 +2268,36 @@ information.
     :after org
     :preface
     (defvar my/org-basic-task-template "* TODO %^{Task}
-        :PROPERTIES:
-        :Effort: %^{effort|1:00|0:05|0:15|0:30|2:00|4:00}
-        :END:
-        Captured %<%Y-%m-%d %H:%M>
-        %?
+  :PROPERTIES:
+  :Effort: %^{effort|1:00|0:05|0:15|0:30|2:00|4:00}
+  :END:
+  Captured %<%Y-%m-%d %H:%M>
+  %?
 
-        %i
-        " "Basic task data")
-
-    (defvar my/org-basic-trade-template "* Trade
-        Previous Balance: %^{PreviousBalance}
-        Next Balance: %^{NextBalance}
-        Captured %<%Y-%m-%d>
-        %?
-
-        %i
-        " "Basic trade data")
+  %i" "Template for basic task.")
+    (defvar my/org-contacts-template "* %(org-contacts-template-name)
+  :PROPERTIES:
+  :ADDRESS: %^{289 Cleveland St. Brooklyn, 11206 NY, USA}
+  :BIRTHDAY: %^{yyyy-mm-dd}
+  :EMAIL: %(org-contacts-template-email)
+  :NOTE: %^{NOTE}
+  :END:" "Template for org-contacts.")
     :custom
     (org-capture-templates
      `(("T" "Tasks" entry (file+headline "~/.personal/organizer.org" "Tasks"),
         my/org-basic-task-template
+        :empty-lines 1
         :immediate-finish t)
 
        ("b" "Buy task" checkitem (file+headline "~/.personal/various/buy.org" "To Buy")
         "- [ ] %^{Task}"
+        :empty-lines 1
         :immediate-finish t)
-        ("c" "Contact"
-        entry (file+headline "~/.personal/contacts.org" "Friends")
-        "* %(org-contacts-template-name)
-:PROPERTIES:
-:ADDRESS: %^{289 Cleveland St. Brooklyn, 11206 NY, USA}
-:BIRTHDAY: %^{yyyy-mm-dd}
-:EMAIL: %(org-contacts-template-email)
-:NOTE: %^{NOTE}
-:END:"
-         :immediate-finish t)
+
+       ("c" "Contact" entry (file+headline "~/.personal/contacts.org" "Friends"),
+        my/org-contacts-template
+        :empty-lines 1
+        :immediate-finish t)
 
        ("i" "Interrupting task" entry (file+headline "~/.personal/organizer.org" "Inbox")
         "* STARTED %^{Task}"
@@ -2315,14 +2309,12 @@ information.
 
        ("p" "People task" entry (file+headline "~/.personal/people.org" "Tasks"),
         my/org-basic-task-template
+        :empty-lines 1
         :immediate-finish t)
 
        ("s" "School task" entry (file+headline "~/.personal/school.org" "Tasks"),
         my/org-basic-task-template
-        :immediate-finish t)
-
-       ("t" "Trading" entry (file+headline "~/.personal/trading.org" "Trades/Day"),
-        my/org-basic-trade-template
+        :empty-lines 1
         :immediate-finish t))))
 #+END_SRC
 
