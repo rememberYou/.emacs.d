@@ -28,7 +28,6 @@
   - [[#sql][SQL]]
   - [[#yaml][YAML]]
 - [[#advanced-configuration][Advanced Configuration]]
-  - [[#abbreviations][Abbreviations]]
   - [[#alert][Alert]]
   - [[#auto-completion][Auto-Completion]]
   - [[#backups][Backups]]
@@ -39,6 +38,7 @@
   - [[#dired][Dired]]
   - [[#ending-up][Ending Up]]
   - [[#files-frequently-consulted][Files Frequently Consulted]]
+  - [[#spelling][Spelling]]
   - [[#history][History]]
   - [[#hydra][Hydra]]
   - [[#general][General]]
@@ -607,21 +607,6 @@ Anaconda backend for =company-mode=.
 
 * Advanced Configuration
 
-** Abbreviations
-
-According to a list of misspelled words, =abbrev= auto-correct these words on
-the fly.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package abbrev
-    :defer 2
-    :ensure nil
-    :diminish abbrev-mode
-    :config
-    (if (file-exists-p abbrev-file-name)
-        (quietly-read-abbrev-file)))
-#+END_SRC
-
 ** Alert
 
 Most packages use =alerts= to make notifications with =libnotify=. Don't forget
@@ -947,6 +932,42 @@ own keymap, but anyway, I rarely go beyond the register.
   (my/defshortcut ?s "~/.personal/school.org")
 #+END_SRC
 
+** Spelling
+
+*** Abbreviations
+
+According to a list of misspelled words, =abbrev= auto-correct these words on
+the fly.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package abbrev
+    :defer 1
+    :ensure nil
+    :custom (abbrev-file-name (expand-file-name ".abbrev-defs" user-emacs-directory))
+    :config
+    (if (file-exists-p abbrev-file-name)
+        (quietly-read-abbrev-file)))
+#+END_SRC
+
+*** Fly Spell
+
+For the other words that would not be in my list of abbreviations, =flyspell=
+enables on-the-fly spell checking in GNU Emacs.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package flyspell
+    :defer 1
+    :custom
+    (flyspell-issue-message-flag nil)
+    (flyspell-mode 1))
+
+  (use-package flyspell-correct-ivy
+    :after flyspell
+    :bind (:map flyspell-mode-map
+          ("C-;" . flyspell-correct-word-generic))
+    :custom (flyspell-correct-interface 'flyspell-correct-ivy))
+#+END_SRC
+
 ** History
 
 Provides the ability to have commands and their history saved so that whenever
@@ -996,6 +1017,7 @@ seamless, it's like a minor mode that disables itself auto-magically.
            ("C-c m" . hydra-magit/body)
            ("C-c o" . hydra-org/body)
            ("C-c p" . hydra-projectile/body)
+           ("C-c s" . hydra-spelling/body)
            ("C-c w" . hydra-windows/body)))
 #+END_SRC
 
@@ -1193,6 +1215,30 @@ Group Projectile commands.
     ("R" projectile-replace-regexp)
     ("s" counsel-projectile-ag)
     ("S" projectile-save-project-buffers))
+#+END_SRC
+
+*** Hydra / Spelling
+
+Group spelling commands.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defhydra hydra-spelling (:color blue)
+    "
+    ^
+    ^Spelling^          ^Errors^            ^Checker^
+    ^────────^──────────^──────^────────────^───────^───────
+    _q_ quit            _<_ previous        _c_ correction
+    ^^                  _>_ next            _d_ dictionary
+    ^^                  _f_ check           _m_ mode
+    ^^                  ^^                  ^^
+    "
+    ("q" nil)
+    ("<" flyspell-correct-previous :color pink)
+    (">" flyspell-correct-next :color pink)
+    ("c" ispell)
+    ("d" ispell-change-dictionary)
+    ("f" flyspell-buffer)
+    ("m" flyspell-mode))
 #+END_SRC
 
 *** Hydra / Toggle
