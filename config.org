@@ -2137,6 +2137,7 @@ authoring documents with a fast and effective plain-text system.
                    org-habit
                    org-info
                    org-irc
+                   org-mouse
                    org-protocol))
     (org-refile-allow-creating-parent-nodes 'confirm)
     (org-refile-use-cache nil)
