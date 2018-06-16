@@ -2285,13 +2285,8 @@ information.
   :END:" "Template for org-contacts.")
     :custom
     (org-capture-templates
-     `(("T" "Tasks" entry (file+headline "~/.personal/organizer.org" "Tasks"),
-        my/org-basic-task-template
-        :empty-lines 1
-        :immediate-finish t)
-
-       ("b" "Buy task" checkitem (file+headline "~/.personal/various/buy.org" "To Buy")
-        "- [ ] %^{Task}"
+     `(("b" "Buy" checkitem (file+headline "~/.personal/various/buy.org" "To Buy")
+        "- [ ] %^{Item}"
         :empty-lines 1
         :immediate-finish t)
 
@@ -2300,20 +2295,21 @@ information.
         :empty-lines 1
         :immediate-finish t)
 
-       ("i" "Interrupting task" entry (file+headline "~/.personal/organizer.org" "Inbox")
-        "* STARTED %^{Task}"
-        :clock-in :clock-resume)
-
-       ("m" "Movie task" checkitem (file+headline "~/.personal/various/movies.org" "To Watch")
-        "- [ ] %^{Task}"
+       ("m" "Movie" checkitem (file+headline "~/.personal/various/movies.org" "To Watch")
+        "- [ ] %^{Movie}"
         :immediate-finish t)
 
-       ("p" "People task" entry (file+headline "~/.personal/people.org" "Tasks"),
+       ("p" "People" entry (file+headline "~/.personal/people.org" "Tasks"),
         my/org-basic-task-template
         :empty-lines 1
         :immediate-finish t)
 
-       ("s" "School task" entry (file+headline "~/.personal/school.org" "Tasks"),
+       ("s" "School" entry (file+headline "~/.personal/school.org" "Tasks"),
+        my/org-basic-task-template
+        :empty-lines 1
+        :immediate-finish t)
+
+        ("t" "Task" entry (file+headline "~/.personal/organizer.org" "Tasks"),
         my/org-basic-task-template
         :empty-lines 1
         :immediate-finish t))))
