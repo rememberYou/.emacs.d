@@ -63,8 +63,8 @@
   - [[#yasnippet][YASnippet]]
 - [[#org-mode][Org-Mode]]
   - [[#agenda][Agenda]]
-  - [[#clock][Clock]]
   - [[#capture][Capture]]
+  - [[#clock][Clock]]
   - [[#custormization][Custormization]]
   - [[#encryption--decryption][Encryption / Decryption]]
   - [[#journal][Journal]]
@@ -2240,9 +2240,9 @@ update it from several computers and smartphones.
     (org-agenda-files '("~/Sync/shared/.personal"))
     (org-agenda-inhibit-startup t)
     (org-agenda-show-log t)
-    (org-agenda-skip-scheduled-if-done t)
     (org-agenda-skip-deadline-if-done t)
     (org-agenda-skip-deadline-prewarning-if-scheduled 'pre-scheduled)
+    (org-agenda-skip-scheduled-if-done t)
     (org-agenda-span 2)
     (org-agenda-start-on-weekday 6)
     (org-agenda-sticky nil)
@@ -2256,35 +2256,6 @@ update it from several computers and smartphones.
     (org-habit-graph-column 80)
     (org-habit-show-habits-only-for-today nil)
     (org-track-ordered-property-with-tag t))
-#+END_SRC
-
-** Clock
-
-Being organized is one thing, but being optimal is another. =org-clock= allows
-you to estimate your tasks and time them. This is useful, since with experience,
-you can have a better estimate of the time that needs to be given to each task.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package org-clock
-    :ensure nil
-    :after org
-    :preface
-    (defun my/org-mode-ask-effort ()
-      "Ask for an effort estimate when clocking in."
-      (unless (org-entry-get (point) "Effort")
-        (let ((effort
-               (completing-read
-                "Effort: "
-                (org-entry-get-multivalued-property (point) "Effort"))))
-          (unless (equal effort "")
-            (org-set-property "Effort" effort)))))
-    :hook (org-clock-in-prepare-hook . my/org-mode-ask-effort)
-    :custom
-    (org-clock-continuously nil)
-    (org-clock-in-switch-to-state "STARTED")
-    (org-clock-persist t)
-    (org-clock-report-include-clocking-task t)
-    (org-show-notification-handler (lambda (msg) (alert msg))))
 #+END_SRC
 
 ** Capture
@@ -2349,6 +2320,35 @@ information.
        ("t" "Trading" entry (file+headline "~/Sync/shared/.personal/trading.org" "Trades/Day"),
         my/org-basic-trade-template
         :immediate-finish t))))
+#+END_SRC
+
+** Clock
+
+Being organized is one thing, but being optimal is another. =org-clock= allows
+you to estimate your tasks and time them. This is useful, since with experience,
+you can have a better estimate of the time that needs to be given to each task.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package org-clock
+    :ensure nil
+    :after org
+    :preface
+    (defun my/org-mode-ask-effort ()
+      "Ask for an effort estimate when clocking in."
+      (unless (org-entry-get (point) "Effort")
+        (let ((effort
+               (completing-read
+                "Effort: "
+                (org-entry-get-multivalued-property (point) "Effort"))))
+          (unless (equal effort "")
+            (org-set-property "Effort" effort)))))
+    :hook (org-clock-in-prepare-hook . my/org-mode-ask-effort)
+    :custom
+    (org-clock-continuously nil)
+    (org-clock-in-switch-to-state "STARTED")
+    (org-clock-persist t)
+    (org-clock-report-include-clocking-task t)
+    (org-show-notification-handler (lambda (msg) (alert msg))))
 #+END_SRC
 
 ** Custormization
