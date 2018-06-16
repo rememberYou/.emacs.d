@@ -1147,7 +1147,6 @@ Group Magit commands.
     ("c" magit-clone)
     ("i" magit-init)
     ("s" magit-status))
-(setq lv-use-separator nil)
 #+END_SRC
 
 *** Hydra / Org
