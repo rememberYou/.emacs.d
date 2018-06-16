@@ -2350,14 +2350,13 @@ you can have a better estimate of the time that needs to be given to each task.
 ** Contacts
 
 The best solution to maintain your contacts. I tend to use =org-contacts= to
-remember their birthdays to be the first one to wish it to them.
+remember their birthdays so I can be the first to wish them that.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package org-contacts
     :ensure nil
     :after org
-    :custom
-    (org-contacts-files '("~/.personal/contacts.org")))
+    :custom (org-contacts-files '("~/.personal/contacts.org")))
 #+END_SRC
 
 ** Custormization
