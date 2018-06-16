@@ -65,6 +65,7 @@
   - [[#agenda][Agenda]]
   - [[#capture][Capture]]
   - [[#clock][Clock]]
+  - [[#contacts][Contacts]]
   - [[#custormization][Custormization]]
   - [[#encryption--decryption][Encryption / Decryption]]
   - [[#journal][Journal]]
@@ -2294,8 +2295,18 @@ information.
        ("b" "Buy task" checkitem (file+headline "~/.personal/various/buy.org" "To Buy")
         "- [ ] %^{Task}"
         :immediate-finish t)
+        ("c" "Contact"
+        entry (file+headline "~/.personal/contacts.org" "Friends")
+        "* %(org-contacts-template-name)
+:PROPERTIES:
+:ADDRESS: %^{289 Cleveland St. Brooklyn, 11206 NY, USA}
+:BIRTHDAY: %^{yyyy-mm-dd}
+:EMAIL: %(org-contacts-template-email)
+:NOTE: %^{NOTE}
+:END:"
+         :immediate-finish t)
 
-       ("i" "Interrupting task" entry (file+headline "~/Sync/shared/.personal/organizer.org" "Inbox")
+       ("i" "Interrupting task" entry (file+headline "~/.personal/organizer.org" "Inbox")
         "* STARTED %^{Task}"
         :clock-in :clock-resume)
 
@@ -2343,6 +2354,19 @@ you can have a better estimate of the time that needs to be given to each task.
     (org-clock-persist t)
     (org-clock-report-include-clocking-task t)
     (org-show-notification-handler (lambda (msg) (alert msg))))
+#+END_SRC
+
+** Contacts
+
+The best solution to maintain your contacts. I tend to use =org-contacts= to
+remember their birthdays to be the first one to wish it to them.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package org-contacts
+    :ensure nil
+    :after org
+    :custom
+    (org-contacts-files '("~/.personal/contacts.org")))
 #+END_SRC
 
 ** Custormization
