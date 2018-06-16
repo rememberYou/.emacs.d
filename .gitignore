@@ -5,6 +5,7 @@
 /auto-save-list/
 /backups/
 /elpa/
+.abbrev_defs
 config.el
 custom.el
 history
