@@ -1070,7 +1070,7 @@ Group ERC commands.
     "
     ("q" nil)
     ("c" my/erc-start-or-switch)
-    ("d" erc-quit-server :color pink)
+    ("d" erc-quit-server)
     ("j" erc-join-channel)
     ("n" erc-channel-names)
     ("u" my/erc-count-users))
