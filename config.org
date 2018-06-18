@@ -1003,7 +1003,7 @@ the fly.
 *** Fly Spell
 
 For the other words that would not be in my list of abbreviations, =flyspell=
-enables on-the-fly spell checking in GNU Emacs.
+enables spell checking on-the-fly in GNU Emacs.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package flyspell
