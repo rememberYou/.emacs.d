@@ -1009,7 +1009,9 @@ enables spell checking on-the-fly in GNU Emacs.
   (use-package flyspell
     :defer 1
     :custom
+    (flyspell-abbrev-p t)
     (flyspell-issue-message-flag nil)
+    (flyspell-issue-welcome-flag nil)
     (flyspell-mode 1))
 
   (use-package flyspell-correct-ivy
