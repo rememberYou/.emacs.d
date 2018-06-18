@@ -438,7 +438,6 @@ I use LaTeX for my reports, CVs, summaries, etc.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package tex
     :ensure auctex
-    :hook ((LaTeX-mode . flyspell-mode)
            (LaTeX-mode . reftex-mode))
     :custom
     (TeX-PDF-mode t)
@@ -713,7 +712,6 @@ Helpful when I need to edit text areas of the browser in GNU Emacs.
              (zerop (call-process "lsof" nil nil nil "-i" ":64292")))
             ((executable-find "netstat") ; Windows
              (zerop (call-process-shell-command "netstat -aon | grep 64292")))))
-    :hook (atomic-chrome-edit-mode . flyspell-mode)
     :init
     (if (atomic-chrome-server-running-p)
         (message "Can't start atomic-chrome server, because port 64292 is already used")
@@ -1752,7 +1750,6 @@ Now all that remains is to configure =mu4e=:
   (use-package mu4e
     :ensure nil
     :ensure-system-package mu
-    :hook (mu4e-compose-mode . flyspell-mode)
     :custom
     (mu4e-attachment-dir "~/Downloads")
     (mu4e-confirm-quit nil)
