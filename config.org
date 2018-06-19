@@ -439,7 +439,7 @@ I use LaTeX for my reports, CVs, summaries, etc.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package tex
     :ensure auctex
-           (LaTeX-mode . reftex-mode))
+    :hook (LaTeX-mode . reftex-mode)
     :custom
     (TeX-PDF-mode t)
     (TeX-auto-save t)
