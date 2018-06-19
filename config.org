@@ -1020,6 +1020,10 @@ enables spell checking on-the-fly in GNU Emacs.
     :bind (:map flyspell-mode-map
           ("C-;" . flyspell-correct-word-generic))
     :custom (flyspell-correct-interface 'flyspell-correct-ivy))
+
+  (use-package ispell
+    :custom
+    (ispell-silently-savep t))
 #+END_SRC
 
 ** History
