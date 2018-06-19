@@ -1,10 +1,13 @@
-![GNU Emacs Logo](assets/emacs.png "GNU Emacs logo") GNU Emacs Configuration
-===============================
+<p align="center"><img src="assets/emacs-logo.svg" width=150 height=150/></p>
+<p align="center"><a href="https://www.gnu.org/software/emacs/"><b>GNU Emacs</b></a></p>
+<p align="center">This repository contains all my GNU Emacs configuration.</p>
 
-This repository contains all my GNU Emacs configuration.
+---
 
 I wanted to make this configuration simple, powerful and ergonomic by choosing
 the most trivial keyboard possible.
+
+<p align="center"><img src="assets/emacs-preview.png"/></p>
 
 List of files:
 
