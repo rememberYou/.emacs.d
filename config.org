@@ -1526,6 +1526,7 @@ I used =guide-key= in my past days, but =which-key= is a good replacement.
     :config
     (which-key-mode))
 #+END_SRC
+
 ** IRC
 
 IRC is the best way for me to get a quick answer to a simple question and to
@@ -1590,6 +1591,12 @@ Finally, specify to =erc= that you use a =.authinfo= file with:
              (replace-regexp-in-string "\n+" " " str))))
     :hook ((ercn-notify . my/erc-notify)
            (erc-send-pre . my/erc-preprocess))
+    :custom-face
+    (erc-action-face ((t (:foreground "#8fbcbb"))))
+    (erc-error-face ((t (:foreground "#bf616a"))))
+    (erc-input-face ((t (:foreground "#ebcb8b"))))
+    (erc-notice-face ((t (:foreground "#ebcb8b"))))
+    (erc-timestamp-face ((t (:foreground "#a3be8c"))))
     :custom
     (erc-autojoin-channels-alist '(("freenode.net" "#archlinux" "#bash" "#emacs"
                                     "#gentoo" "#i3" "#latex" "#org-mode" "#python"
