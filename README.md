@@ -17,9 +17,7 @@ List of files:
 * [`init.el`](https://github.com/rememberYou/.emacs.d/blob/master/init.el/):
   load the generated configuration file.
 
---------------------
-
-### Getting Started ###
+## Getting Started
 
 If you are new to GNU Emacs, I advise you to take code blocks from the
 [`config.org`](https://github.com/rememberYou/.emacs.d/blob/master/config.org/)
@@ -33,25 +31,34 @@ For the most curious, you can test my complete configuration with:
 **NOTE:** the first time GNU Emacs starts, it will install additional packages
 that will be better managed by the package manager.
 
---------------------
+## TIPs
 
-### TODO ###
+You can see all the tips I wrote on Reddit sorted from the most recent to the
+oldest according to the following links:
+
+* [How to better manage your spelling mistakes](https://www.reddit.com/r/emacs/comments/8rxm7h/tip_how_to_better_manage_your_spelling_mistakes/)
+* [How to easily manage your emails with mu4e](https://www.reddit.com/r/emacs/comments/8q84dl/tip_how_to_easily_manage_your_emails_with_mu4e/)
+* [How to be a beast with hydra](https://www.reddit.com/r/emacs/comments/8of6tx/tip_how_to_be_a_beast_with_hydra/)
+* [How to make ERC fun to use](https://www.reddit.com/r/emacs/comments/8ml6na/tip_how_to_make_erc_fun_to_use/)
+* [How I use org-journal to improve my productivity](https://www.reddit.com/r/emacs/comments/8kz8dv/tip_how_i_use_orgjournal_to_improve_my/)
+* [How to use your dashboard properly](https://www.reddit.com/r/emacs/comments/8jaflq/tip_how_to_use_your_dashboard_properly/)
+* [How to speed up your Emacs config by 0.3 seconds](https://www.reddit.com/r/emacs/comments/8gbopk/tip_how_to_speed_up_your_emacs_config_by_03/)
+* [How to execute a bash function when saving a specific file](https://www.reddit.com/r/emacs/comments/8hpyp5/tip_how_to_execute_a_bash_function_when_saving_a/)
+
+## TODO
 
 Here is a list of tasks I intend to do in my spare time to improve this configuration:
 
 *  Show images on `erc` in the center of the buffer with `magic-buffer`.
 *  Show images on `erc` only if they are not large with `imagemagick`.
 
---------------------
-
-### Contributions ###
+## Contributions
 
 Various functions may be optimized or spelling errors may occur. If you want to
-make your own correction on this configuration, you are free to do so.
+make your own correction on this configuration, you are free to do so in the
+[issue tracker](https://github.com/rememberYou/.emacs.d/issues).
 
---------------------
-
-### License ###
+## License
 
 The code is not licensed, take what you like and hope that this configuration
 can be so useful to you that it is for me.
