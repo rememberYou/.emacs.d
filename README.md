@@ -11,6 +11,11 @@ the most trivial keyboard possible.
 
 <p align="center"><img src="assets/emacs-preview.png"/></p>
 
+<blockquote>
+	Font: <a href="https://adobe-fonts.github.io/source-code-pro">Source Code Pro</a> 20px <br>
+    Theme: <a href="https://github.com/arcticicestudio/nord-emacs">Nord Emacs</a>
+</blockquote>
+
 List of files:
 
 * [`config.org`](https://github.com/rememberYou/.emacs.d/blob/master/config.org/):
