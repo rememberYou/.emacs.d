@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: Function returning nothing
-# key: void
-# --
-fun $1($2) {
-    $0
-}

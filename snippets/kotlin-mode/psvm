@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: psvm
-# key: psvm
-# --
-fun main(args: Array<string>) {
-    $0
-}

@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: Singleton
-# key: singleton
-# --
-object $1 {
-    $0
-}

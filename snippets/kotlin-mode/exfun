@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: Extension function
-# key: exfun
-# --
-fun $1.$2($3): $4 {
-    $0
-}

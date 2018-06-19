@@ -1,7 +1,0 @@
-## -*- mode: snippet -*-
-# name : receive
-# key: rcv
-# --
-receive do
-  $0
-end

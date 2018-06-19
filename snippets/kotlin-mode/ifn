@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: Inserts 'if null' expression
-# key: ifn
-# --
-if ($1 == null) {
-   $0
-}

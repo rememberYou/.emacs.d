@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: Anonymous class
-# key: object
-# --
-object: $1 {
-    $0
-}

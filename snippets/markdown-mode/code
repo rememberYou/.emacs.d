@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: Code block
-# key: code
-# --
-\`\`\`$1
-$0
-\`\`\`

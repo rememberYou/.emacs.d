@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: Prints a string to System.err
-# key: serr
-# --
-System.err.println($0)
