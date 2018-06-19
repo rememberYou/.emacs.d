@@ -175,9 +175,10 @@ user with the UI, I add the generated code in a separate file.
 I like the light on dark because I find it to be more restful.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package solarized-theme
-    :defer 0.1
-    :config (load-theme 'solarized-dark t))
+  (use-package nord-theme
+    :config
+    (add-to-list 'custom-theme-load-path (expand-file-name "~/.emacs.d/themes/"))
+    (load-theme 'nord t))
 
   (use-package smart-mode-line
     :defer 0.1
