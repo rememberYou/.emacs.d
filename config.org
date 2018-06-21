@@ -2184,17 +2184,14 @@ and automatically expand it into function templates.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package yasnippet
-    :defer 2
+    :defer 1
     :diminish yas-minor-mode
-    :bind ("C-c i" . yas-insert-snippet)
-    :hook ((emacs-lisp-mode . yas-minor-mode)
-           (html-mode . yas-minor-mode)
-           (js-mode . yas-minor-mode)
-           (org-mode . yas-minor-mode)
-           (python-mode . yas-minor-mode))
-    :custom
-    (yas-snippet-dirs `(,(expand-file-name "snippets/" user-emacs-directory)))
-    (yas-reload-all))
+    :config
+    (yas-global-mode))
+
+  (use-package yasnippet-snippets
+    :after yasnippet
+    :config (yasnippet-snippets-initialize))
 #+END_SRC
 
 * Org-Mode
