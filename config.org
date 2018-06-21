@@ -2397,7 +2397,6 @@ information.
     (org-capture-templates
      `(("b" "Buy" checkitem (file+headline "~/.personal/various/buy.org" "To Buy")
         "- [ ] %^{Item}"
-        :empty-lines 1
         :immediate-finish t)
 
        ("c" "Contact" entry (file+headline "~/.personal/contacts.org" "Friends"),
