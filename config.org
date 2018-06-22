@@ -1076,6 +1076,7 @@ seamless, it's like a minor mode that disables itself auto-magically.
            ("C-c o" . hydra-org/body)
            ("C-c p" . hydra-projectile/body)
            ("C-c s" . hydra-spelling/body)
+           ("C-c y" . hydra-yasnippet/body)
            ("C-c w" . hydra-windows/body)))
 #+END_SRC
 
@@ -1314,16 +1315,34 @@ Group toggle commands.
     ^^                   _r_ rainbow-delimiters
     ^^                   _s_ smartparens
     ^^                   _w_ winner
-    ^^                   _y_ yasnippet
     ^^                   ^^
     "
     ("q" nil)
     ("a" abbrev-mode)
-    ("f" flyspell-mode)
     ("r" rainbow-delimiters-mode)
     ("s" smartparens-mode)
-    ("w" winner-mode)
-    ("y" yas-minor-mode))
+    ("w" winner-mode))
+#+END_SRC
+
+*** Hydra / YASnippet
+
+Group YASnippet commands.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defhydra hydra-yasnippet (:color blue)
+    "
+    ^
+    ^YASnippet^          ^Do^
+    ^─────────^──────────^──^────────
+    _q_ quit             _i_ insert
+    ^^                   _m_ mode
+    ^^                   _n_ new
+    ^^                   ^^
+    "
+    ("q" nil)
+    ("i" yas-insert-snippet)
+    ("m" yas-minor-mode)
+    ("n" yas-new-snippet))
 #+END_SRC
 
 *** Hydra / Windows
