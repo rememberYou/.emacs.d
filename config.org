@@ -124,7 +124,7 @@ I put my =.authinfo.gpg= file in [[https://github.com/syncthing/syncthing][Synct
 configuration on other devices.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (setq auth-sources '("~/Sync/shared/.authinfo.gpg"
+  (setq auth-sources '("~/.gnupg/shared/.authinfo.gpg"
                        "~/.authinfo.gpg"
                        "~/.authinfo"
                        "~/.netrc"))
@@ -309,8 +309,7 @@ Now all that remains is to configure =eclim=:
     (eclim-executable '"/opt/eclipse/eclim")
     (help-at-pt-display-when-idle t)
     (help-at-pt-timer-delay 0.1)
-    :config
-    (help-at-pt-set-timer))
+    :config (help-at-pt-set-timer))
 #+END_SRC
 
 *** =company-emacs-eclim=
@@ -711,7 +710,7 @@ Helpful when I need to edit text areas of the browser in GNU Emacs.
     (defun atomic-chrome-server-running-p ()
       (cond ((executable-find "lsof")
              (zerop (call-process "lsof" nil nil nil "-i" ":64292")))
-            ((executable-find "netstat") ; Windows
+            ((executable-find "netstat")
              (zerop (call-process-shell-command "netstat -aon | grep 64292")))))
     :init
     (if (atomic-chrome-server-running-p)
@@ -1233,7 +1232,7 @@ Group Org commands.
     ^^                ^^
     "
     ("q" nil)
-    ("A" my/org-archive-done-tasks :color pink)
+    ("A" my/org-archive-done-tasks)
     ("a" org-agenda)
     ("c" org-capture)
     ("d" org-decrypt-entry)
@@ -1311,7 +1310,6 @@ Group toggle commands.
     ^Toggle^             ^Do^
     ^──────^─────────────^──^────────────────────
     _q_ quit             _a_ abbrev
-    ^^                   _f_ flyspell
     ^^                   _r_ rainbow-delimiters
     ^^                   _s_ smartparens
     ^^                   _w_ winner
