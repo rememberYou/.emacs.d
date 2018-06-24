@@ -971,14 +971,14 @@ own keymap, but anyway, I rarely go beyond the register.
   (my/defshortcut ?I "~/.config/i3/config")
   (my/defshortcut ?S "~/.config/sway/config")
   (my/defshortcut ?X "~/.Xresources")
-  (my/defshortcut ?b "~/.personal/various/buy.org")
+  (my/defshortcut ?b "~/.personal/other/purchases.org")
   (my/defshortcut ?c "~/.emacs.d/config.org")
   (my/defshortcut ?i "~/.emacs.d/init.el")
-  (my/defshortcut ?m "~/.personal/various/movies.org")
-  (my/defshortcut ?o "~/.personal/organizer.org")
-  (my/defshortcut ?p "~/.personal/people.org")
-  (my/defshortcut ?r "~/.personal/routine.org")
-  (my/defshortcut ?s "~/.personal/school.org")
+  (my/defshortcut ?m "~/.personal/other/movies.org")
+  (my/defshortcut ?o "~/.personal/agenda/organizer.org")
+  (my/defshortcut ?p "~/.personal/agenda/people.org")
+  (my/defshortcut ?r "~/.personal/agenda/routine.org")
+  (my/defshortcut ?s "~/.personal/agenda/school.org")
 #+END_SRC
 
 ** Spelling
@@ -2229,7 +2229,7 @@ authoring documents with a fast and effective plain-text system.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package org
-    :ensure nil
+    :ensure org-plus-contrib
     :delight org-mode "Ø"
     :preface
     (defun my/org-archive-done-tasks ()
@@ -2276,7 +2276,6 @@ authoring documents with a fast and effective plain-text system.
                      ("@computer" . ?l)
                      ("@errands" . ?e)
                      ("@home" . ?h)
-                     ("@love" . ?d)
                      ("@phone" . ?p)
                      ("@reading" . ?r)
                      ("@school" . ?s)
@@ -2363,7 +2362,7 @@ update it from several computers and smartphones.
       (org-capture 0 "t"))
     :custom
     (org-agenda-dim-blocked-tasks t)
-    (org-agenda-files '("~/.personal"))
+    (org-agenda-files '("~/.personal/agenda"))
     (org-agenda-inhibit-startup t)
     (org-agenda-show-log t)
     (org-agenda-skip-deadline-if-done t)
@@ -2376,8 +2375,8 @@ update it from several computers and smartphones.
     (org-agenda-time-grid '((daily today require-timed)))
     (org-agenda-use-tag-inheritance t)
     (org-columns-default-format "%14SCHEDULED %Effort{:} %1PRIORITY %TODO %50ITEM %TAGS")
-    (org-default-notes-file "~/.personal/organizer.org")
-    (org-directory "~/Sync/personal")
+    (org-default-notes-file "~/.personal/agenda/organizer.org")
+    (org-directory "~/.personal")
     (org-enforce-todo-dependencies t)
     (org-habit-graph-column 80)
     (org-habit-show-habits-only-for-today nil)
@@ -2412,33 +2411,37 @@ information.
   :END:" "Template for org-contacts.")
     :custom
     (org-capture-templates
-     `(("b" "Buy" checkitem (file+headline "~/.personal/various/buy.org" "To Buy")
-        "- [ ] %^{Item}"
+     `(("B" "Book" checkitem (file+headline "~/.personal/other/books.org" "Books")
+        "- [ ] %^{Book}"
         :immediate-finish t)
 
-       ("c" "Contact" entry (file+headline "~/.personal/contacts.org" "Friends"),
-        my/org-contacts-template
-        :empty-lines 1
+       ("L" "Learning" checkitem (file+headline "~/.personal/other/learning.org" "Things")
+        "- [ ] %^{Thing}"
         :immediate-finish t)
 
-       ("m" "Movie" checkitem (file+headline "~/.personal/various/movies.org" "To Watch")
+       ("M" "Movie" checkitem (file+headline "~/.personal/other/movies.org" "Movies")
         "- [ ] %^{Movie}"
         :immediate-finish t)
 
-       ("p" "People" entry (file+headline "~/.personal/people.org" "Tasks"),
-        my/org-basic-task-template
-        :empty-lines 1
+       ("P" "Purchase" checkitem (file+headline "~/.personal/other/purchases.org" "Purchases")
+        "- [ ] %^{Item}"
         :immediate-finish t)
 
-       ("s" "School" entry (file+headline "~/.personal/school.org" "Tasks"),
-        my/org-basic-task-template
-        :empty-lines 1
-        :immediate-finish t)
+       ("c" "Contact" entry (file+headline "~/.personal/agenda/contacts.org" "Friends"),
+        my/org-contacts-template
+        :empty-lines 1)
 
-        ("t" "Task" entry (file+headline "~/.personal/organizer.org" "Tasks"),
+       ("p" "People" entry (file+headline "~/.personal/agenda/people.org" "Tasks"),
         my/org-basic-task-template
-        :empty-lines 1
-        :immediate-finish t))))
+        :empty-lines 1)
+
+       ("s" "School" entry (file+headline "~/.personal/agenda/school.org" "Tasks"),
+        my/org-basic-task-template
+        :empty-lines 1)
+
+       ("t" "Task" entry (file+headline "~/.personal/agenda/organizer.org" "Tasks"),
+        my/org-basic-task-template
+        :empty-lines 1))))
 #+END_SRC
 
 ** Clock
@@ -2465,7 +2468,9 @@ you can have a better estimate of the time that needs to be given to each task.
     :custom
     (org-clock-continuously nil)
     (org-clock-in-switch-to-state "STARTED")
+    (org-clock-out-remove-zero-time-clocks t)
     (org-clock-persist t)
+    (org-clock-persist-query-resume nil)
     (org-clock-report-include-clocking-task t)
     (org-show-notification-handler (lambda (msg) (alert msg))))
 #+END_SRC
@@ -2473,13 +2478,14 @@ you can have a better estimate of the time that needs to be given to each task.
 ** Contacts
 
 The best solution to maintain your contacts. I tend to use =org-contacts= to
-remember their birthdays so I can be the first to wish them that.
+remember their birthdays so I can be the first to wish them that. Be careful
+that to install it, this one is available with =org-plus-contrib=.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package org-contacts
     :ensure nil
     :after org
-    :custom (org-contacts-files '("~/.personal/contacts.org")))
+    :custom (org-contacts-files '("~/.personal/agenda/contacts.org")))
 #+END_SRC
 
 ** Custormization
@@ -2528,7 +2534,7 @@ growth.
   (use-package org-journal
     :after org
     :bind (("C-c t" . org-journal-new-entry)
-           ("C-c y" . journal-file-yesterday))
+           ("C-c Y" . journal-file-yesterday))
     :preface
     (defun get-journal-file-yesterday ()
       "Gets filename for yesterday's journal entry."
