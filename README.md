@@ -46,6 +46,7 @@ that will be better managed by the package manager.
 You can see all the tips I wrote on Reddit sorted from the most recent to the
 oldest according to the following links:
 
+* [How to manage your contacts with org-contacts](https://www.reddit.com/r/emacs/comments/8toivy/tip_how_to_manage_your_contacts_with_orgcontacts/)
 * [How to better manage your spelling mistakes](https://www.reddit.com/r/emacs/comments/8rxm7h/tip_how_to_better_manage_your_spelling_mistakes/)
 * [How to easily manage your emails with mu4e](https://www.reddit.com/r/emacs/comments/8q84dl/tip_how_to_easily_manage_your_emails_with_mu4e/)
 * [How to be a beast with hydra](https://www.reddit.com/r/emacs/comments/8of6tx/tip_how_to_be_a_beast_with_hydra/)
