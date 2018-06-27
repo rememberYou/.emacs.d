@@ -665,7 +665,7 @@ I use =company= with =company-box= that allows a company front-end with icons.
 It is important to have a stable backup environment. Don't hesitate to save a
 lot.
 
-**NOTE**: the functions defined below avoid running a bash command when saving
+*NOTE*: the functions defined below avoid running a bash command when saving
 certain files with GNU Emacs.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
