@@ -1025,6 +1025,21 @@ enables spell checking on-the-fly in GNU Emacs.
     (ispell-silently-savep t))
 #+END_SRC
 
+*** Grammar Checker
+
+[[https://languagetool.org/][LanguageTool]] is great for correcting your grammar. Combined with =abbrev-mode=
+and =flyspell=, you will have better documents. In order to be able to use it
+locally, download the desktop version and change the paths indicated below.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package langtool
+    :defer 2
+    :diminish
+    :custom
+    (langtool-language-tool-jar "~/lib/LangueageTool-4.2/languagetool-commandline.jar")
+    (langtool-language-tool-server-jar "~/lib/LanguageTool-4.2/languagetool-server.jar"))
+#+END_SRC
+
 ** History
 
 Provides the ability to have commands and their history saved so that whenever
