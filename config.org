@@ -501,13 +501,12 @@ operating system.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package markdown-mode
     :delight markdown-mode "μ"
-    :mode
-    ("INSTALL\\'"
-     "CONTRIBUTORS\\'"
-     "LICENSE\\'"
-     "README\\'"
-     "\\.markdown\\'"
-     "\\.md\\'"))
+    :mode ("INSTALL\\'"
+           "CONTRIBUTORS\\'"
+           "LICENSE\\'"
+           "README\\'"
+           "\\.markdown\\'"
+           "\\.md\\'"))
 #+END_SRC
 
 ** PHP
@@ -1734,13 +1733,12 @@ Now all we have to do is configure =ledger-mode=:
     :ensure-system-package (ledger . "trizen -S --noconfirm ledger")
     :mode ("\\.dat\\'"
            "\\.ledger\\'")
-    :custom
-    (ledger-clear-whole-transactions 1))
+    :custom (ledger-clear-whole-transactions 1))
 
   (use-package flycheck-ledger :after ledger-mode)
 #+END_SRC
 
-*NOTE:* by default, =ledger= use the [[ https://xkcd.com/1179/][ISO 8601]] format to write dates, which is the recommended
+*NOTE:* by default, =ledger= uses the [[ https://xkcd.com/1179/][ISO 8601]] format to write dates, which is the recommended
 format.
 
 ** Linters
