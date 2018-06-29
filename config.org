@@ -2592,6 +2592,7 @@ With that, I can compile many languages with =org-mode=.
   (use-package ob-java :ensure nil :after org)
   (use-package ob-js :ensure nil :after org)
   (use-package ob-latex :ensure nil :after org)
+  (use-package ob-ledger :ensure nil :after org)
   (use-package ob-makefile :ensure nil :after org)
   (use-package ob-org :ensure nil :after org)
 
