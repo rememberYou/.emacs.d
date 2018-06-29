@@ -224,6 +224,12 @@ Awesome package to programming in LESS.
     :interpreter ("less" . less-css-mode))
 #+END_SRC
 
+** CSV
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package csv-mode)
+#+END_SRC
+
 ** Docker
 
 I like to use Docker when I need to install various databases or other services
