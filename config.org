@@ -136,7 +136,7 @@ configuration on other devices.
 For a better user experience of GNU Emacs, here are the default values I use.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (setq-default
+  (setq
    ad-redefinition-action 'accept                   ; Silence warnings for redefinition
    cursor-in-non-selected-windows t                 ; Hide the cursor in inactive windows
    display-time-default-load-average nil            ; Don't display load average
