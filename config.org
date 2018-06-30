@@ -1970,6 +1970,14 @@ fails.
            ("C-c C-p C-r" . webpaste-paste-region)))
 #+END_SRC
 
+Same principle for images with =imgbb=. This package selects an image
+and upload it to [[https://imgbb.com/][imgbb]], making sure to display the URL of the image in
+the minibuffer and place it in the kill ring.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package imgbb :defer 2)
+#+END_SRC
+
 ** PDF
 
 #+BEGIN_QUOTE
