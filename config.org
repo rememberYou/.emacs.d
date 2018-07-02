@@ -1359,7 +1359,7 @@ Group YASnippet commands.
     ^^                   ^^
     "
     ("q" nil)
-    ("i" yas-insert-snippet)
+    ("i" ivy-yasnippet)
     ("m" yas-minor-mode)
     ("n" yas-new-snippet))
 #+END_SRC
@@ -2241,6 +2241,8 @@ and automatically expand it into function templates.
   (use-package yasnippet-snippets
     :after yasnippet
     :config (yasnippet-snippets-initialize))
+
+  (use-package ivy-yasnippet :after yasnippet)
 #+END_SRC
 
 * Org-Mode
