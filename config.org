@@ -2263,6 +2263,14 @@ authoring documents with a fast and effective plain-text system.
     :ensure org-plus-contrib
     :delight org-mode "Ø"
     :preface
+    (defun my/org-compare-times (clocked estimated)
+      "Gets the ratio between the timed time and the estimated time."
+      (if (and (> (length clocked) 0) estimated)
+          (format "%.2f"
+                  (/ (* 1.0 (org-hh:mm-string-to-minutes clocked))
+                     (org-hh:mm-string-to-minutes estimated)))
+        ""))
+
     (defun my/org-archive-done-tasks ()
       "Archives finished or cancelled tasks."
       (interactive)
