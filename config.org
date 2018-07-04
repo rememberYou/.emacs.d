@@ -358,7 +358,8 @@ builds an AST for things like syntax highlighting.
   (use-package js2-mode
     :defer 5
     :hook (js2-mode . js2-imenu-extras-mode)
-    :mode "\\.js\\'")
+    :mode "\\.js\\'"
+    :custom (js-indent-level 2))
 #+END_SRC
 
 *** =js2-refactor=
