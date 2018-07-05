@@ -39,6 +39,7 @@
   - [[#dashboard][Dashboard]]
   - [[#dired][Dired]]
   - [[#ending-up][Ending Up]]
+  - [[#epub][EPUB]]
   - [[#files-frequently-consulted][Files Frequently Consulted]]
   - [[#spelling][Spelling]]
   - [[#history][History]]
@@ -952,6 +953,15 @@ The code below, executes =org-babel-tangle= asynchronously when
                          (float-time (time-subtract (current-time)
                                                     ',init-tangle-start-time)))
               (message "ERROR: %s as tangle failed." ,org-file)))))))
+#+END_SRC
+
+** EPUB
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package nov
+    :defer 1
+    :mode ("\\.epub\\'" . nov-mode)
+    :custom (nov-text-width 75))
 #+END_SRC
 
 ** Files Frequently Consulted
