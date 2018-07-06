@@ -1217,6 +1217,31 @@ Group Flycheck commands.
     ("v" flycheck-verify-setup))
 #+END_SRC
 
+*** Hydra / Ledger
+
+Group Ledger commands.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defhydra hydra-ledger (:color blue)
+    "
+      ^
+      ^Ledger^             ^Do^
+      ^──────^─────────────^──^───────
+      _q_ quit             _a_ add
+      ^^                   _c_ clear
+      ^^                   _C_ copy
+      ^^                   _d_ delete
+      ^^                   _r_ report
+      ^^                   ^^
+      "
+    ("q" nil)
+    ("a" ledger-add-transaction)
+    ("c" ledger-mode-clean-buffer)
+    ("C" ledger-copy-transaction-at-point)
+    ("d" ledger-delete-current-transaction)
+    ("r" ledger-report))
+#+END_SRC
+
 *** Hydra / Magit
 
 Group Magit commands.
@@ -2480,6 +2505,18 @@ information.
        ("c" "Contact" entry (file+headline "~/.personal/agenda/contacts.org" "Friends"),
         my/org-contacts-template
         :empty-lines 1)
+
+       ("l" "Ledger")
+
+       ("lb" "Bank" plain (file ,(format "~/.personal/ledger/ledger-%s.dat" (format-time-string "%Y"))),
+        my/org-ledger-card-template
+        :empty-lines 1
+        :immediate-finish t)
+
+       ("lc" "Cash" plain (file ,(format "~/.personal/ledger/ledger-%s.dat" (format-time-string "%Y"))),
+        my/org-ledger-cash-template
+        :empty-lines 1
+        :immediate-finish t)
 
        ("p" "People" entry (file+headline "~/.personal/agenda/people.org" "Tasks"),
         my/org-basic-task-template
