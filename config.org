@@ -1098,7 +1098,8 @@ seamless, it's like a minor mode that disables itself auto-magically.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package hydra
     :defer 2
-    :bind (("C-c b" . hydra-buffer/body)
+    :bind (("C-c L" . hydra-ledger/body)
+           ("C-c b" . hydra-buffer/body)
            ("C-c c" . hydra-clock/body)
            ("C-c e" . hydra-erc/body)
            ("C-c f" . hydra-flycheck/body)
@@ -1769,7 +1770,16 @@ Now all we have to do is configure =ledger-mode=:
     :ensure-system-package (ledger . "trizen -S --noconfirm ledger")
     :mode ("\\.dat\\'"
            "\\.ledger\\'")
-    :custom (ledger-clear-whole-transactions 1))
+    :custom
+    (ledger-clear-whole-transactions t)
+    (ledger-reconcile-default-commodity "EUR")
+    (ledger-reports
+     '(("account statement" "%(binary) reg --real [[ledger-mode-flags]] -f %(ledger-file) ^%(account)")
+       ("balance sheet" "%(binary) --real [[ledger-mode-flags]] -f %(ledger-file) bal ^assets ^liabilities ^equity")
+       ("budget" "%(binary) --empty -S -T [[ledger-mode-flags]] -f %(ledger-file) bal ^assets:bank ^assets:receivables ^assets:cash ^assets:budget")
+       ("cleared" "%(binary) cleared [[ledger-mode-flags]] -f %(ledger-file)")
+       ("equity" "%(binary) --real [[ledger-mode-flags]] -f %(ledger-file) equity")
+       ("income statement" "%(binary) --invert --real -S -T [[ledger-mode-flags]] -f %(ledger-file) bal ^income ^expenses -p \"this month\""))))
 
   (use-package flycheck-ledger :after ledger-mode)
 #+END_SRC
@@ -2484,6 +2494,14 @@ information.
   :EMAIL: %(org-contacts-template-email)
   :NOTE: %^{NOTE}
   :END:" "Template for org-contacts.")
+
+    (defvar my/org-ledger-card-template "%(org-read-date) %^{Payee}
+    Expenses:%^{Account}  €%^{Amount}
+    Liabilities:CreditsCards:Belfius" "Template for credit card transaction with ledger.")
+
+    (defvar my/org-ledger-cash-template "%(org-read-date) * %^{Payee}
+    Expenses:%^{Account}  €%^{Amount}
+    Assets:Cash:Wallet" "Template for cash transaction with ledger.")
     :custom
     (org-capture-templates
      `(("B" "Book" checkitem (file+headline "~/.personal/other/books.org" "Books")
