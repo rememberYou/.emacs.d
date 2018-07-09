@@ -1801,13 +1801,13 @@ Flycheck lints warnings and errors directly within buffers.
     :hook ((css-mode . flycheck-mode)
            (emacs-lisp-mode . flycheck-mode)
            (js-mode . flycheck-mode)
+           (ledger-mode . flycheck-mode)
            (python-mode . flycheck-mode))
+    :custom
+    (flycheck-check-syntax-automatically '(save mode-enabled))
+    (flycheck-disabled-checkers '(emacs-lisp-checkdoc))
+    (flycheck-display-errors-delay .3)
     :config
-    (setq-default
-     flycheck-check-syntax-automatically '(save mode-enabled)
-     flycheck-disabled-checkers '(emacs-lisp-checkdoc)
-     flycheck-display-errors-delay .3)
-
     (flycheck-define-checker my-php
       "A PHP syntax checker using the PHP command line interpreter.
         See URL `http://php.net/manual/en/features.commandline.php'."
