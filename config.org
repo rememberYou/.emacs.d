@@ -1598,8 +1598,7 @@ I used =guide-key= in my past days, but =which-key= is a good replacement.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package which-key
     :diminish
-    :config
-    (which-key-mode))
+    :config (which-key-mode))
 #+END_SRC
 
 ** IRC
