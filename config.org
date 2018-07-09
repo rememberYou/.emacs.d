@@ -820,8 +820,7 @@ different in your country, therefore, adapt the configuration below accordingly.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package calendar
-    :custom
-    (calendar-mark-holidays-flag t))
+    :custom (calendar-mark-holidays-flag t))
 
   (use-package holidays
     :ensure nil
