@@ -1573,6 +1573,7 @@ An autonomous emacs major-mode for editing web templates.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package web-mode
     :defer 2
+    :delight web-mode "☸"
     :hook ((css-mode web-mode) . rainbow-mode)
     :config
     (add-to-list 'auto-mode-alist '("\\.blade\\.php\\'" . web-mode))
