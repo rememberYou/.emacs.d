@@ -732,7 +732,7 @@ I use it to do most of my web searches without leaving GNU Emacs.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package engine-mode
-    :defer 5
+    :defer 3
     :config
     (defengine amazon
       "http://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=%s"
@@ -759,17 +759,16 @@ I use it to do most of my web searches without leaving GNU Emacs.
       "https://stackoverflow.com/search?q=%s"
       :keybinding "s")
 
+    (defengine youtube
+      "http://www.youtube.com/results?aq=f&oq=&search_query=%s"
+      :keybinding "y")
+
     (defengine wikipedia
       "http://www.wikipedia.org/search-redirect.php?language=en&go=Go&search=%s"
       :keybinding "w"
       :docstring "Searchin' the wikis.")
-
-    (defengine youtube
-      "http://www.youtube.com/results?aq=f&oq=&search_query=%s"
-      :keybinding "y")
     (engine-mode t))
 #+END_SRC
-
 
 ** Buffers
 
