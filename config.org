@@ -1764,7 +1764,6 @@ Now all we have to do is configure =ledger-mode=:
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package ledger-mode
-    :defer 2
     :ensure-system-package (ledger . "trizen -S --noconfirm ledger")
     :mode ("\\.dat\\'"
            "\\.ledger\\'")
