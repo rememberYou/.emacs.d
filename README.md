@@ -46,6 +46,7 @@ that will be better managed by the package manager.
 You can see all the tips I wrote on Reddit sorted from the most recent to the
 oldest according to the following links:
 
+* [How to integrate company as completion framework](https://www.reddit.com/r/emacs/comments/8z4jcs/tip_how_to_integrate_company_as_completion/)
 * [How I use ledger to track my money](https://www.reddit.com/r/emacs/comments/8x4xtt/tip_how_i_use_ledger_to_track_my_money/)
 * [How to integrate your snippets with YASnippets](https://www.reddit.com/r/emacs/comments/8vdhb4/tip_how_to_integrate_snippets_with_yasnippets/)
 * [How to manage your contacts with org-contacts](https://www.reddit.com/r/emacs/comments/8toivy/tip_how_to_manage_your_contacts_with_orgcontacts/)
