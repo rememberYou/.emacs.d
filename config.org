@@ -206,6 +206,11 @@ I find invasive.
 
 ** CSS
 
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package css-mode
+    :custom (css-indent-offset 2))
+#+END_SRC
+
 *** =emmet-mode=
 
 Powerful minor mode to produce HTML from CSS-like selector.
