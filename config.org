@@ -226,6 +226,16 @@ Awesome package to programming in LESS.
     :interpreter ("less" . less-css-mode))
 #+END_SRC
 
+*** =sass-mode=
+
+Awesome package to programming in SASS.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package scss-mode
+    :delight scss-mode "S"
+    :mode "\\.scss\\'")
+#+END_SRC
+
 ** CSV
 
 #+BEGIN_SRC emacs-lisp :tangle yes
