@@ -1540,22 +1540,6 @@ Avoids call the function or reload Emacs.
     :config (global-auto-revert-mode 1))
 #+END_SRC
 
-*** =skewer-mode=
-
-Provides live interaction with JavaScript, CSS, and HTML in a web
-browser. Expressions are sent on-the-fly from an editing buffer to be evaluated
-in the browser, like GNU Emacs does with an inferior Lisp process in Lisp
-modes.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package skewer-mode
-    :defer 3
-    :hook ((js2-mode . skewer-mode)
-           (css-mode . skewer-css-mode)
-           (html-mode . skewer-html-mode)
-           (web-mode . skewer-html-mode)))
-#+END_SRC
-
 *** =try=
 
 Useful to temporary use a package.
