@@ -239,9 +239,7 @@ Awesome package to programming in LESS.
 Awesome package to programming in SASS.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package scss-mode
-    :delight scss-mode "S"
-    :mode "\\.scss\\'")
+  (use-package scss-mode :mode "\\.scss\\'")
 #+END_SRC
 
 ** CSV
