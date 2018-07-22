@@ -1185,6 +1185,7 @@ seamless, it's like a minor mode that disables itself auto-magically.
            ("C-c m" . hydra-magit/body)
            ("C-c o" . hydra-org/body)
            ("C-c s" . hydra-spelling/body)
+           ("C-c p t" . hydra-typescript/body)
            ("C-c y" . hydra-yasnippet/body)
            ("C-c w" . hydra-windows/body)))
 #+END_SRC
@@ -1455,6 +1456,31 @@ Group toggle commands.
     ("r" rainbow-delimiters-mode)
     ("s" smartparens-mode)
     ("w" winner-mode))
+#+END_SRC
+
+*** Hydra / TypeScript
+
+Group TypeScript commands.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defhydra hydra-typescript (:color blue)
+    "
+    ^
+    ^TypeScript^          ^Do^
+    ^──────────^──────────^──^────────
+    _q_ quit             _b_ back
+    ^^                   _e_ errors
+    ^^                   _j_ jump
+    ^^                   _r_ references
+    ^^                   _R_ restart
+    ^^                   ^^
+    "
+    ("q" nil)
+    ("b" tide-jump-back)
+    ("e" tide-project-errors)
+    ("j" tide-jump-to-definition)
+    ("r" tide-references)
+    ("R" tide-restart-server))
 #+END_SRC
 
 *** Hydra / YASnippet
