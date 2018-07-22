@@ -365,6 +365,18 @@ blog which I found very well explained.
 [[https://emacs.cafe/emacs/javascript/setup/2017/04/23/emacs-setup-javascript.html][Setting up Emacs for JavaScript (part #1)]]
 [[https://emacs.cafe/emacs/javascript/setup/2017/05/09/emacs-setup-javascript-2.html][Setting up Emacs for JavaScript (part #2)]]
 
+I like to use [[https://prettier.io/][prettier]] to get my TypeScript code clean. To use it,
+don't forget to install it with your package manager.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package prettier-js
+    :diminish
+    :custom
+    (prettier-js-args '("--trailing-comma" "es5"
+                        "--single-quote" "true"
+                        "--print-width" "100")))
+#+END_SRC
+
 *** =js2-mode2=
 
 By default, GNU Emacs uses =js-mode= as major mode for JavaScript buffers and I
