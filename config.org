@@ -28,6 +28,7 @@
   - [[#plantuml][PlantUML]]
   - [[#python][Python]]
   - [[#sql][SQL]]
+  - [[#typescript][TypeScript]]
   - [[#vuejs][Vue.js]]
   - [[#yaml][YAML]]
   - [[#yarn][Yarn]]
@@ -642,6 +643,23 @@ Anaconda backend for =company-mode=.
     :delight sql-mode "Σ"
     :mode "\\.sql\\'"
     :interpreter ("sql" . sql-mode))
+#+END_SRC
+
+** TypeScript
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package tide
+    :after (company flycheck)
+    :preface
+    (defun setup-tide-mode ()
+      (interactive)
+      (tide-setup)
+      (flycheck-mode +1)
+      (setq flycheck-check-syntax-automatically '(save mode-enabled))
+      (eldoc-mode +1)
+      (tide-hl-identifier-mode +1)
+      (company-mode +1))
+    :hook (before-save . tide-format-before-save))
 #+END_SRC
 
 ** Vue.js
