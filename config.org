@@ -28,6 +28,7 @@
   - [[#plantuml][PlantUML]]
   - [[#python][Python]]
   - [[#sql][SQL]]
+  - [[#vuejs][Vue.js]]
   - [[#yaml][YAML]]
   - [[#yarn][Yarn]]
 - [[#advanced-configuration][Advanced Configuration]]
@@ -631,6 +632,18 @@ Anaconda backend for =company-mode=.
     :delight sql-mode "Σ"
     :mode "\\.sql\\'"
     :interpreter ("sql" . sql-mode))
+#+END_SRC
+
+** Vue.js
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package vue-mode
+    :delight vue-mode "V"
+    :mode "\\.vue\\'"
+    :hook (vue-mode . prettier-js-mode)
+    :custom
+    (mmm-submode-decoration-level 0)
+    (vue-html-extra-indent 2))
 #+END_SRC
 
 ** YAML
