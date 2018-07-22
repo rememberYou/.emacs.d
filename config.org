@@ -20,6 +20,7 @@
   - [[#html][HTML]]
   - [[#java][Java]]
   - [[#javascript][JavaScript]]
+  - [[#json][JSON]]
   - [[#latex][LaTeX]]
   - [[#lua][Lua]]
   - [[#markdown][Markdown]]
@@ -453,6 +454,19 @@ of the =bower_components= directory:
   (use-package company-tern
     :after (company tern)
     :config (add-to-list 'company-backends 'company-tern))
+#+END_SRC
+
+** JSON
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package json-mode
+    :delight json-mode "J"
+    :mode "\\.json\\'"
+    :hook (before-save . my-json-mode-before-save-hook)
+    :preface
+    (defun my-json-mode-before-save-hook ()
+      (when (eq major-mode 'json-mode)
+        (json-pretty-print-buffer-ordered))))
 #+END_SRC
 
 ** LaTeX
