@@ -29,6 +29,7 @@
   - [[#python][Python]]
   - [[#sql][SQL]]
   - [[#yaml][YAML]]
+  - [[#yarn][Yarn]]
 - [[#advanced-configuration][Advanced Configuration]]
   - [[#alert][Alert]]
   - [[#auto-completion][Auto-Completion]]
@@ -641,6 +642,14 @@ Anaconda backend for =company-mode=.
     :delight yaml-mode "ψ"
     :mode "\\.yml\\'"
     :interpreter ("yml" . yml-mode))
+#+END_SRC
+
+** Yarn
+
+=yarn-mode= gives me the possibility to easily manage =.yarn-lock= files.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package yarn-mode :delight yarn-mode "Y")
 #+END_SRC
 
 * Advanced Configuration
