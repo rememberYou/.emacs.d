@@ -1692,6 +1692,17 @@ I used =guide-key= in my past days, but =which-key= is a good replacement.
     :config (which-key-mode))
 #+END_SRC
 
+*** =wiki-summary=
+
+It is impossible to know everything, which is why a quick description
+of a term, without breaking its workflow, is ideal.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package wiki-summary
+    :defer 1
+    :bind ("C-c W" . wiki-summary))
+#+END_SRC
+
 ** IRC
 
 IRC is the best way for me to get a quick answer to a simple question and to
