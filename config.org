@@ -2252,12 +2252,12 @@ Git clients exist, only Magit and Git itself deserve to be called porcelains.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package git-commit
     :after magit
+    :hook (git-commit-mode . my/git-commit-auto-fill-everywhere)
+    :custom (git-commit-summary-max-length 50)
     :preface
     (defun my/git-commit-auto-fill-everywhere ()
       (setq fill-column 72)
-      (setq-local comment-auto-fill-only-comments nil))
-    :hook (git-commit-mode . my/git-commit-auto-fill-everywhere)
-    :custom (git-commit-summary-max-length 50))
+      (setq-local comment-auto-fill-only-comments nil)))
 
   (use-package magit :defer 2)
 #+END_SRC
