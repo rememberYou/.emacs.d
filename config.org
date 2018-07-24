@@ -379,7 +379,6 @@ builds an AST for things like syntax highlighting.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package js2-mode
-    :defer 5
     :hook (js2-mode . js2-imenu-extras-mode)
     :mode "\\.js\\'"
     :custom (js-indent-level 2))
@@ -1025,7 +1024,6 @@ The code below, executes =org-babel-tangle= asynchronously when
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package nov
-    :defer 1
     :mode ("\\.epub\\'" . nov-mode)
     :custom (nov-text-width 75))
 #+END_SRC
@@ -1648,7 +1646,6 @@ An autonomous emacs major-mode for editing web templates.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package web-mode
-    :defer 2
     :delight web-mode "☸"
     :hook (((css-mode web-mode) . rainbow-mode)
            (web-mode . prettier-js-mode))
