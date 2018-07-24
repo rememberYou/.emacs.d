@@ -1817,9 +1817,7 @@ smaller, simpler, and smoother to use yet highly customizable.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package counsel
     :after ivy
-    :bind (("C-x C-f" . counsel-find-file)
-           ("M-x" . counsel-M-x)
-           ("M-y" . counsel-yank-pop)))
+    :config (counsel-mode))
 
   (use-package ivy
     :defer 0.1
