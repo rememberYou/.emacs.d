@@ -1982,6 +1982,7 @@ Now all that remains is to configure =mu4e=:
        ("/gmail/Sent Mail" . ?s)
        ("/gmail/Starred" . ?S)))
     (mu4e-html2text-command "iconv -c -t utf-8 | pandoc -f html -t plain")
+    (mu4e-org-contacts-file "~/.personal/agenda/contacts.org")
     (mu4e-refile-folder "/gmail/Archive")
     (mu4e-sent-folder "/gmail/Sent Mail")
     (mu4e-sent-messages-behavior 'delete)
@@ -1990,7 +1991,10 @@ Now all that remains is to configure =mu4e=:
     (mu4e-use-fancy-chars t)
     (mail-user-agent 'mu4e-user-agent)
     (mu4e-view-show-addresses t)
-    (mu4e-view-show-images t))
+    (mu4e-view-show-images t)
+    :config
+    (add-to-list 'mu4e-headers-actions '("org-contact-add" . mu4e-action-add-org-contact) t)
+    (add-to-list 'mu4e-view-actions '("org-contact-add" . mu4e-action-add-org-contact) t))
 
   (use-package org-mu4e
     :ensure nil
