@@ -281,25 +281,18 @@ Provides minibuffer hints when working with Emacs Lisp.
 
 ** HTML
 
-*** =impatient-mode=
-
-Useful to see the effect of HTML when you type it.
-
-To use =impatient mode=, you must enable the web server provided by
-=simple-httpd=. To do this, use =M-x httpd-start=, open your browser to
-=http://localhost:8080/imp/= and select your buffer to watch your changes appear
-as you type!
-
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package simple-httpd
-    :defer 4
-    :custom (httpd-root "/var/www/html"))
-
-  (use-package impatient-mode
-    :after simple-httpd
-    :hook ((web-mode . httpd-start)
-           (web-mode . impatient-mode)
-           (css-mode . httpd-start)))
+  (use-package sgml-mode
+    :delight html-mode "HTML"
+    :hook
+    ((html-mode . me/html-set-pretty-print-function)
+     (html-mode . sgml-electric-tag-pair-mode)
+     (html-mode . sgml-name-8bit-mode)
+     (html-mode . toggle-truncate-lines))
+    :custom (sgml-basic-offset 2)
+    :preface
+    (defun me/html-set-pretty-print-function ()
+      (setq me/pretty-print-function #'sgml-pretty-print)))
 #+END_SRC
 
 ** Java
