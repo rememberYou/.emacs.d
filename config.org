@@ -2395,6 +2395,7 @@ and automatically expand it into function templates.
     :config (yasnippet-snippets-initialize))
 
   (use-package ivy-yasnippet :after yasnippet)
+  (use-package react-snippets :after yasnippet)
 #+END_SRC
 
 * Org-Mode
