@@ -1807,6 +1807,7 @@ smaller, simpler, and smoother to use yet highly customizable.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package counsel
     :after ivy
+    :diminish
     :config (counsel-mode))
 
   (use-package ivy
