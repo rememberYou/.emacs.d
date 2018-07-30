@@ -24,7 +24,6 @@
   - [[#latex][LaTeX]]
   - [[#lua][Lua]]
   - [[#markdown][Markdown]]
-  - [[#php][PHP]]
   - [[#plantuml][PlantUML]]
   - [[#python][Python]]
   - [[#sql][SQL]]
@@ -543,45 +542,6 @@ operating system.
            "README\\'"
            "\\.markdown\\'"
            "\\.md\\'"))
-#+END_SRC
-
-** PHP
-
-For people who wonder, I don't use =php-mode= for its lack of indentation for
-PHP inside the HTML divs. Also, why use another package when =web-mode= already
-provides everything I need?
-
-The function below provides my own PHP configuration with =flycheck=.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (defun my/php-setup ()
-    (web-mode)
-
-    (make-local-variable 'web-mode-code-indent-offset)
-    (make-local-variable 'web-mode-markup-indent-offset)
-    (make-local-variable 'web-mode-css-indent-offset)
-
-    (flycheck-select-checker 'my-php)
-    (flycheck-mode t))
-#+END_SRC
-
-Don't forget to add the following line in the =web-mode= package configuration:
-
-#+BEGIN_EXAMPLE
-  (add-to-list 'auto-mode-alist '("\\.php$" . my/php-setup))
-#+END_EXAMPLE
-
-I like using =ac-php= to enable GNU Emacs auto-completion for PHP. Note that
-=ac-php= supports =company mode= and =auto-complete=.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package ac-php
-    :after (company php-mode)
-    :hook (php-mode . ac-php-mode)
-    :custom (ac-sources '(ac-source-php))
-    :config
-    (auto-complete-mode t)
-    (ac-php-core-eldoc-setup))
 #+END_SRC
 
 ** PlantUML
@@ -1908,15 +1868,6 @@ Flycheck lints warnings and errors directly within buffers.
     (flycheck-disabled-checkers '(emacs-lisp-checkdoc))
     (flycheck-display-errors-delay .3)
     :config
-    (flycheck-define-checker my-php
-      "A PHP syntax checker using the PHP command line interpreter.
-        See URL `http://php.net/manual/en/features.commandline.php'."
-      :command ("php" "-l" "-d" "error_reporting=E_ALL" "-d" "display_errors=1"
-                "-d" "log_errors=0" source)
-      :error-patterns
-      ((error line-start (or "Parse" "Fatal" "syntax") " error" (any ":" ",") " "
-              (message) " in " (file-name) " on line " line line-end))
-      :modes (php-mode php+-mode web-mode)))
 #+END_SRC
 
 ** Lorem Ipsum
