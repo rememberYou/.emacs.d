@@ -1858,16 +1858,16 @@ Flycheck lints warnings and errors directly within buffers.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package flycheck
     :defer 2
-    :hook ((css-mode . flycheck-mode)
-           (emacs-lisp-mode . flycheck-mode)
-           (js-mode . flycheck-mode)
-           (ledger-mode . flycheck-mode)
-           (python-mode . flycheck-mode))
+    :diminish
+    :init (global-flycheck-mode)
     :custom
-    (flycheck-check-syntax-automatically '(save mode-enabled))
-    (flycheck-disabled-checkers '(emacs-lisp-checkdoc))
     (flycheck-display-errors-delay .3)
+    (flycheck-python-pylint-executable "/usr/bin/pylint")
+    (flycheck-pylintrc "/home/someone/.pylintrc")
+    (flycheck-stylelintrc "~/.stylelintrc.json")
     :config
+    (flycheck-add-mode 'javascript-eslint 'web-mode)
+    (flycheck-add-mode 'typescript-tslint 'web-mode))
 #+END_SRC
 
 ** Lorem Ipsum
