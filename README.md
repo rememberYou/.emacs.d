@@ -46,6 +46,7 @@ that will be better managed by the package manager.
 You can see all the tips I wrote on Reddit sorted from the most recent to the
 oldest according to the following links:
 
+* [How to adopt flycheck as your new best friend](https://www.reddit.com/r/emacs/comments/931la6/tip_how_to_adopt_flycheck_as_your_new_best_friend/)
 * [How to use Ivy and its utilities in your workflow](https://www.reddit.com/r/emacs/comments/910pga/tip_how_to_use_ivy_and_its_utilities_in_your/)
 * [How to integrate company as completion framework](https://www.reddit.com/r/emacs/comments/8z4jcs/tip_how_to_integrate_company_as_completion/)
 * [How I use ledger to track my money](https://www.reddit.com/r/emacs/comments/8x4xtt/tip_how_i_use_ledger_to_track_my_money/)
