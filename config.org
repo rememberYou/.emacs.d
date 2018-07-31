@@ -1777,7 +1777,6 @@ smaller, simpler, and smoother to use yet highly customizable.
            ("C-x B" . ivy-switch-buffer-other-window))
     :custom
     (ivy-count-format "(%d/%d) ")
-    (ivy-display-style 'fancy)
     (ivy-use-virtual-buffers t)
     :config (ivy-mode))
 
