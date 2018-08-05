@@ -1543,7 +1543,7 @@ more.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package paradox
-    :defer 2
+    :defer 1
     :custom
     (paradox-column-width-package 27)
     (paradox-column-width-version 13)
