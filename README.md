@@ -46,6 +46,7 @@ that will be better managed by the package manager.
 You can see all the tips I wrote on Reddit sorted from the most recent to the
 oldest according to the following links:
 
+* [Packages to include in your workflow (Part I)](https://www.reddit.com/r/emacs/comments/94t6p6/tip_packages_to_include_in_your_workflow_part_i/)
 * [How to adopt flycheck as your new best friend](https://www.reddit.com/r/emacs/comments/931la6/tip_how_to_adopt_flycheck_as_your_new_best_friend/)
 * [How to use Ivy and its utilities in your workflow](https://www.reddit.com/r/emacs/comments/910pga/tip_how_to_use_ivy_and_its_utilities_in_your/)
 * [How to integrate company as completion framework](https://www.reddit.com/r/emacs/comments/8z4jcs/tip_how_to_integrate_company_as_completion/)
