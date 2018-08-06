@@ -1651,7 +1651,21 @@ of a term, without breaking its workflow, is ideal.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package wiki-summary
     :defer 1
-    :bind ("C-c W" . wiki-summary))
+    :bind (("C-c W" . wiki-summary)
+           ("C-c q" . quit-window))
+    :preface
+    (defun my/format-summary-in-buffer (summary)
+      "Given a summary, stick it in the *wiki-summary* buffer and display the buffer"
+      (let ((buf (generate-new-buffer "*wiki-summary*")))
+        (with-current-buffer buf
+          (princ summary buf)
+          (fill-paragraph)
+          (goto-char (point-min))
+          (text-mode)
+          (read-only-mode))
+        (pop-to-buffer buf))))
+
+  (advice-add 'wiki-summary/format-summary-in-buffer :override #'my/format-summary-in-buffer)
 #+END_SRC
 
 ** IRC
