@@ -2539,10 +2539,8 @@ information.
   :PROPERTIES:
   :Effort: %^{effort|1:00|0:05|0:15|0:30|2:00|4:00}
   :END:
-  Captured %<%Y-%m-%d %H:%M>
-  %?
+  Captured %<%Y-%m-%d %H:%M>" "Template for basic task.")
 
-  %i" "Template for basic task.")
     (defvar my/org-contacts-template "* %(org-contacts-template-name)
   :PROPERTIES:
   :ADDRESS: %^{289 Cleveland St. Brooklyn, 11206 NY, USA}
@@ -2601,8 +2599,7 @@ information.
         :empty-lines 1)
 
        ("t" "Task" entry (file+headline "~/.personal/agenda/organizer.org" "Tasks"),
-        my/org-basic-task-template
-        :empty-lines 1))))
+        my/org-basic-task-template))))
 #+END_SRC
 
 ** Clock
