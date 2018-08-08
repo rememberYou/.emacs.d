@@ -804,7 +804,7 @@ like being able to find my way easily.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package ibuffer
-    :defer 1
+    :defer 0.2
     :bind ("C-x C-b" . ibuffer))
 
   (use-package ibuffer-projectile
@@ -2271,7 +2271,7 @@ hiding its contents.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package switch-window
-    :defer 1
+    :defer 0.2
     :bind (("C-x o" . switch-window)
            ("C-x w" . switch-window-then-swap-buffer)))
 #+END_SRC
@@ -2283,7 +2283,7 @@ cycling through =C-x o= (=other-window=).
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package windmove
-    :defer 1
+    :defer 0.2
     :bind (("C-c h" . windmove-left)
            ("C-c j" . windmove-down)
            ("C-c k" . windmove-up)
