@@ -155,7 +155,7 @@ For a better user experience of GNU Emacs, here are the default values I use.
    user-full-name "Terencio Agozzino"               ; Set the full name of the current user
    user-mail-address "terencio.agozzino@gmail.com"  ; Set the email address of the current user
    vc-follow-symlinks t                             ; Always follow the symlinks
-   view-read-only t)                                ; Always open read-only buffers in view-mode 
+   view-read-only t)                                ; Always open read-only buffers in view-mode
   (cd "~/")                                         ; Move to the user directory
   (column-number-mode 1)                            ; Show the column number
   (display-time-mode 1)                             ; Enable time in the mode-line
