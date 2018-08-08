@@ -43,7 +43,6 @@
   - [[#dired][Dired]]
   - [[#ending-up][Ending Up]]
   - [[#epub][EPUB]]
-  - [[#files-frequently-consulted][Files Frequently Consulted]]
   - [[#spelling][Spelling]]
   - [[#history][History]]
   - [[#hydra][Hydra]]
@@ -989,40 +988,6 @@ The code below, executes =org-babel-tangle= asynchronously when
     :custom (nov-text-width 75))
 #+END_SRC
 
-** Files Frequently Consulted
-
-Registers allow you to jump quickly to a file or other location. To switch to a
-registry, use =C-x r j= followed by the registry letter. Using registers for all
-these file shortcuts is probably a bit unnecessary since I can easily define my
-own keymap, but anyway, I rarely go beyond the register.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (defvar my/refile-map (make-sparse-keymap))
-
-  (defmacro my/defshortcut (key file)
-    `(progn
-       (set-register ,key (cons 'file ,file))
-       (define-key my/refile-map
-         (char-to-string ,key)
-         (lambda (prefix)
-           (interactive "p")
-           (let ((org-refile-targets '(((,file) :maxlevel . 6)))
-                 (current-prefix-arg (or current-prefix-arg '(4))))
-             (call-interactively 'org-refile))))))
-
-  (my/defshortcut ?I "~/.config/i3/config")
-  (my/defshortcut ?S "~/.config/sway/config")
-  (my/defshortcut ?X "~/.Xresources")
-  (my/defshortcut ?b "~/.personal/other/purchases.org")
-  (my/defshortcut ?c "~/.emacs.d/config.org")
-  (my/defshortcut ?i "~/.emacs.d/init.el")
-  (my/defshortcut ?m "~/.personal/other/movies.org")
-  (my/defshortcut ?o "~/.personal/agenda/organizer.org")
-  (my/defshortcut ?p "~/.personal/agenda/people.org")
-  (my/defshortcut ?r "~/.personal/agenda/routine.org")
-  (my/defshortcut ?s "~/.personal/agenda/school.org")
-#+END_SRC
-
 ** Spelling
 
 *** Abbreviations
@@ -1129,7 +1094,7 @@ seamless, it's like a minor mode that disables itself auto-magically.
            ("C-c c" . hydra-clock/body)
            ("C-c e" . hydra-erc/body)
            ("C-c f" . hydra-flycheck/body)
-           ("C-c g" . hydra-toggle/body)
+           ("C-c g" . hydra-go-to-file/body)
            ("C-c m" . hydra-magit/body)
            ("C-c o" . hydra-org/body)
            ("C-c s" . hydra-spelling/body)
@@ -1242,6 +1207,47 @@ Group Flycheck commands.
     ("m" flycheck-mode)
     ("s" flycheck-select-checker)
     ("v" flycheck-verify-setup))
+#+END_SRC
+
+*** Hydra / Go To
+
+Group jump-to-files commands.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defhydra hydra-go-to-file (:color blue)
+    "
+      ^
+      ^Go To^           ^Config^            ^Agenda             ^Other^
+      ^─────^───────────^──────^────────────^──────^────────────^─────^────────
+      _q_ quit          _cd_ dunst          _ac_ contacts       _ob_ book
+      ^^                _ce_ emacs          _ao_ organizer      _ol_ learning
+      ^^                _ci_ i3             _ap_ people         _om_ movies
+      ^^                _cn_ neofetch       _ar_ routine        _op_ purchases
+      ^^                _cp_ polybar        _as_ school         _ou_ usb
+      ^^                _cr_ ranger         ^^
+      ^^                _cs_ sway           ^^
+      ^^                _ct_ termite        ^^
+      ^^                ^^                  ^^
+      "
+    ("q" nil)
+    ("ac" (find-file "~/.personal/agenda/contacts.org"))
+    ("ao" (find-file "~/.personal/agenda/organizer.org"))
+    ("ap" (find-file "~/.personal/agenda/people.org"))
+    ("ar" (find-file "~/.personal/agenda/routine.org"))
+    ("as" (find-file "~/.personal/agenda/school.org"))
+    ("cd" (find-file "~/.config/dunst/dunstrc"))
+    ("ce" (find-file "~/.emacs.d/config.org"))
+    ("ci" (find-file "~/.config/i3/config"))
+    ("cn" (find-file "~/.config/neofetch/config.conf"))
+    ("cp" (find-file "~/.config/polybar/config"))
+    ("cr" (find-file "~/.config/ranger/rc.conf"))
+    ("cs" (find-file "~/.config/sway/config"))
+    ("ct" (find-file "~/.config/termite/config"))
+    ("ob" (find-file "~/.personal/other/books.org"))
+    ("ol" (find-file "~/.personal/other/learning.org"))
+    ("om" (find-file "~/.personal/other/movies.org"))
+    ("op" (find-file "~/.personal/other/purchases.org"))
+    ("ou" (find-file "~/.personal/other/usb.org")))
 #+END_SRC
 
 *** Hydra / Ledger
@@ -1381,29 +1387,6 @@ Group spelling commands.
     ("d" ispell-change-dictionary)
     ("f" flyspell-buffer)
     ("m" flyspell-mode))
-#+END_SRC
-
-*** Hydra / Toggle
-
-Group toggle commands.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (defhydra hydra-toggle (:color blue)
-    "
-    ^
-    ^Toggle^             ^Do^
-    ^──────^─────────────^──^────────────────────
-    _q_ quit             _a_ abbrev
-    ^^                   _r_ rainbow-delimiters
-    ^^                   _s_ smartparens
-    ^^                   _w_ winner
-    ^^                   ^^
-    "
-    ("q" nil)
-    ("a" abbrev-mode)
-    ("r" rainbow-delimiters-mode)
-    ("s" smartparens-mode)
-    ("w" winner-mode))
 #+END_SRC
 
 *** Hydra / TypeScript
