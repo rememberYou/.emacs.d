@@ -1259,7 +1259,7 @@ Group Ledger commands.
     "
       ^
       ^Ledger^             ^Do^
-      ^──────^─────────────^──^───────
+      ^──────^─────────────^──^────────
       _q_ quit             _a_ add
       ^^                   _c_ clear
       ^^                   _C_ copy
