@@ -2205,6 +2205,7 @@ Git clients exist, only Magit and Git itself deserve to be called porcelains.
     :custom (git-commit-summary-max-length 50)
     :preface
     (defun my/git-commit-auto-fill-everywhere ()
+      "Ensures that the commit body does not exceed 72 characters."
       (setq fill-column 72)
       (setq-local comment-auto-fill-only-comments nil)))
 
@@ -2225,7 +2226,7 @@ Finally, one last package that I like to use with Git to easily see the changes
 made by previous commits.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-(use-package git-timemachine :defer 3 :diminish)
+  (use-package git-timemachine :defer 1 :diminish)
 #+END_SRC
 
 ** Whitespaces
