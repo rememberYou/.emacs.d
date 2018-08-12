@@ -2392,7 +2392,8 @@ authoring documents with a fast and effective plain-text system.
       "Activates speed commands on list items too."
       (or (and (looking-at org-outline-regexp) (looking-back "^\**"))
           (save-excursion (and (looking-at (org-item-re)) (looking-back "^[ \t]*")))))
-    :hook (after-save . my/config-tangle)
+    :hook ((after-save . my/config-tangle)
+           (org-mode . org-indent-mode))
     :custom
     (org-blank-before-new-entry nil)
     (org-cycle-include-plain-lists 'integrate)
@@ -2412,7 +2413,6 @@ authoring documents with a fast and effective plain-text system.
     (org-refile-use-outline-path nil)
     (org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
     (org-startup-folded nil)
-    (org-startup-indented t)
     (org-tag-alist '(("@coding" . ?c)
                      ("@computer" . ?l)
                      ("@errands" . ?e)
@@ -2624,6 +2624,10 @@ you can have a better estimate of the time that needs to be given to each task.
             (org-set-property "Effort" effort)))))
     :hook (org-clock-in-prepare-hook . my/org-mode-ask-effort)
     :custom
+    (org-clock-clocktable-default-properties
+     '(:block day :maxlevel 2 :scope agenda :link t :compact t :formula %
+              :step day :fileskip0 t :stepskip0 t :narrow 80
+              :properties ("Effort" "CLOCKSUM" "CLOCKSUM_T" "TODO")))
     (org-clock-continuously nil)
     (org-clock-in-switch-to-state "STARTED")
     (org-clock-out-remove-zero-time-clocks t)
