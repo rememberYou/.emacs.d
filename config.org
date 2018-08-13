@@ -370,7 +370,7 @@ don't forget to install it with your package manager.
                         "--print-width" "100")))
 #+END_SRC
 
-*** =js2-mode2=
+*** =js2-mode=
 
 By default, GNU Emacs uses =js-mode= as major mode for JavaScript buffers and I
 prefer use =js2-mode= instead because of his abilities to parses buffers and
