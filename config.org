@@ -378,7 +378,8 @@ builds an AST for things like syntax highlighting.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package js2-mode
-    :hook (js2-mode . js2-imenu-extras-mode)
+    :hook ((js2-mode . js2-imenu-extras-mode)
+           (js2-mode . prettier-js-mode))
     :mode "\\.js\\'"
     :custom (js-indent-level 2))
 #+END_SRC
