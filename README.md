@@ -46,6 +46,7 @@ that will be better managed by the package manager.
 You can see all the tips I wrote on Reddit sorted from the most recent to the
 oldest according to the following links:
 
+* [How do I synchronize my org files with my devices](https://www.reddit.com/r/emacs/comments/98nkt6/tip_how_do_i_synchronize_my_org_files_with_my/)
 * [How to get started with Git](https://www.reddit.com/r/emacs/comments/96r8us/tip_how_to_get_started_with_git/)
 * [Packages to include in your workflow (Part I)](https://www.reddit.com/r/emacs/comments/94t6p6/tip_packages_to_include_in_your_workflow_part_i/)
 * [How to adopt flycheck as your new best friend](https://www.reddit.com/r/emacs/comments/931la6/tip_how_to_adopt_flycheck_as_your_new_best_friend/)
