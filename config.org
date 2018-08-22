@@ -472,7 +472,7 @@ of the =bower_components= directory:
     :preface
     (defun my-json-mode-before-save-hook ()
       (when (eq major-mode 'json-mode)
-        (json-pretty-print-buffer-ordered))))
+        (json-pretty-print-buffer))))
 #+END_SRC
 
 ** LaTeX
