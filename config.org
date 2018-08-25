@@ -493,6 +493,14 @@ I use LaTeX for my reports, CVs, summaries, etc.
     (TeX-source-correlate-mode t)
     (TeX-view-program-selection '((output-pdf "Evince")
                                   (output-html "xdg-open"))))
+
+  (use-package bibtex
+    :after auctex
+    :hook (bibtex-mode . my/bibtex-fill-column)
+    :preface
+    (defun my/bibtex-fill-column ()
+      "Ensures that each entry does not exceed 120 characters."
+      (setq fill-column 120)))
 #+END_SRC
 
 I want a TeX engine that can deal with Unicode and use any font I like.
