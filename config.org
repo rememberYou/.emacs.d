@@ -2230,7 +2230,6 @@ I tend to use Beamer for scientific presentations, and Reveal.js for others.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package ox-reveal
-    :defer 3
     :after org
     :custom
     (org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
