@@ -2468,6 +2468,7 @@ authoring documents with a fast and effective plain-text system.
     (org-refile-use-outline-path nil)
     (org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
     (org-startup-folded nil)
+    (org-startup-with-inline-images t)
     (org-tag-alist '(("@coding" . ?c)
                      ("@computer" . ?l)
                      ("@errands" . ?e)
