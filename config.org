@@ -69,6 +69,7 @@
   - [[#yasnippet][YASnippet]]
 - [[#org-mode][Org-Mode]]
   - [[#agenda][Agenda]]
+  - [[#bullets][Bullets]]
   - [[#capture][Capture]]
   - [[#clock][Clock]]
   - [[#contacts][Contacts]]
@@ -2578,6 +2579,16 @@ update it from several computers and smartphones.
     (org-habit-graph-column 80)
     (org-habit-show-habits-only-for-today nil)
     (org-track-ordered-property-with-tag t))
+#+END_SRC
+
+** Bullets
+
+Prettier [[https://github.com/sabof/org-bullets][bullets]] in org-mode.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package org-bullets
+    :hook (org-mode . org-bullets-mode)
+    :custom (org-bullets-bullet-list '("●" "▲" "■" "✶" "◉" "○" "○")))
 #+END_SRC
 
 ** Capture
