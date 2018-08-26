@@ -2214,6 +2214,12 @@ Provides fast access to the recent files.
     :custom
     (recentf-max-menu-items 15)
     (recentf-max-saved-items 200)
+    (recentf-exclude (list "COMMIT_EDITMSG"
+                           "~$"
+                           "/scp:"
+                           "/ssh:"
+                           "/sudo:"
+                           "/tmp/"))
     :config (run-at-time nil (* 5 60) 'recentf-save-list))
 #+END_SRC
 
