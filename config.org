@@ -149,7 +149,9 @@ For a better user experience of GNU Emacs, here are the default values I use.
    help-window-select t                             ; Focus new help windows when opened
    inhibit-startup-screen t                         ; Disable start-up screen
    initial-scratch-message ""                       ; Empty the initial *scratch* buffer
+   kill-ring-max 128                                ; Maximum length of kill ring
    load-prefer-newer t                              ; Prefers the newest version of a file
+   mark-ring-max 128                                ; Maximum length of mark ring
    scroll-conservatively most-positive-fixnum       ; Always scroll by one line
    select-enable-clipboard t                        ; Merge system's and Emacs' clipboard
    tab-width 4                                      ; Set width for tabs
