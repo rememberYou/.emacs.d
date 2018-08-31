@@ -2668,7 +2668,8 @@ information.
         :empty-lines 1)
 
        ("t" "Task" entry (file+headline "~/.personal/agenda/organizer.org" "Tasks"),
-        my/org-basic-task-template))))
+        my/org-basic-task-template
+        :empty-lines 1))))
 #+END_SRC
 
 ** Clock
