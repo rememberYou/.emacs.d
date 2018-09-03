@@ -2201,8 +2201,7 @@ exists as well).
     (projectile-known-projects-file (expand-file-name
                                    ".projectile-bookmarks" user-emacs-directory))
     (projectile-mode-line '(:eval (projectile-project-name)))
-    :config
-    (projectile-global-mode))
+    :config (projectile-global-mode))
 #+END_SRC
 
 ** Recent Files
