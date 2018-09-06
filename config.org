@@ -1771,7 +1771,7 @@ Finally, specify to =erc= that you use a =.authinfo= file with:
     :custom
     (erc-autojoin-channels-alist '(("freenode.net" "#archlinux" "#bash" "#emacs"
                                     "#gentoo" "#i3" "#latex" "#lineageos"
-                                    "#org-mode" "#python" "#sway")))
+                                    "#org-mode" "#python" "#reactjs" "#sway")))
     (erc-autojoin-timing 'ident)
     (erc-fill-function 'erc-fill-static)
     (erc-fill-static-center 22)
