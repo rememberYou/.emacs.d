@@ -504,22 +504,18 @@ I use LaTeX for my reports, CVs, summaries, etc.
     (defun my/bibtex-fill-column ()
       "Ensures that each entry does not exceed 120 characters."
       (setq fill-column 120)))
+
+  (use-package company-auctex
+    :after (auctex company)
+    :config (company-auctex-init))
+
+  (use-package company-math :after (auctex company))
 #+END_SRC
 
 I want a TeX engine that can deal with Unicode and use any font I like.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (setq-default TeX-engine 'xetex)
-#+END_SRC
-
-*** =company-auctex=
-
-AUCTeX backend for company-mode.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package company-auctex
-    :after (auctex company)
-    :config (company-auctex-init))
 #+END_SRC
 
 *** =reftex=
