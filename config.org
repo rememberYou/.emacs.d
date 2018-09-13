@@ -2171,7 +2171,6 @@ in the file-system, but rather created on-demand and stored in memory.
     :bind (:map pdf-view-mode-map
           ("C-s" . isearch-forward))
     :custom (pdf-view-use-unicode-ligther nil))
-
 #+END_SRC
 
 ** Point and Region
