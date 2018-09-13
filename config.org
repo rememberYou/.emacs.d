@@ -1647,13 +1647,19 @@ An autonomous emacs major-mode for editing web templates.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package web-mode
     :delight web-mode "☸"
-    :hook (((css-mode web-mode) . rainbow-mode)
-           (web-mode . prettier-js-mode))
+    :hook ((css-mode web-mode) . rainbow-mode)
     :mode (("\\.blade\\.php\\'" . web-mode)
            ("\\.html?\\'" . web-mode)
            ("\\.jsx\\'" . web-mode)
            ("\\.php$" . my/php-setup)
            ("\\.tsx\\'" . web-mode))
+    :preface
+    (defun enable-minor-mode (my-pair)
+      "Enable minor mode if filename match the regexp."
+      (if (buffer-file-name)
+          (if (string-match (car my-pair) buffer-file-name)
+              (funcall (cdr my-pair)))))
+
     :init
     (add-hook 'web-mode-hook
               (lambda ()
@@ -1667,6 +1673,14 @@ An autonomous emacs major-mode for editing web templates.
     (web-mode-comment-style 2)
     (web-mode-enable-current-element-highlight t)
     (web-mode-markup-indent-offset 2))
+
+  (add-hook 'web-mode-hook #'(lambda ()
+                               (enable-minor-mode
+                                '("\\.jsx?\\'" . prettier-js-mode))))
+
+  (add-hook 'web-mode-hook #'(lambda ()
+                               (enable-minor-mode
+                                '("\\.tsx?\\'" . prettier-js-mode))))
 #+END_SRC
 
 *** =which-key=
