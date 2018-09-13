@@ -2321,7 +2321,7 @@ non-whitespace character.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package hungry-delete
-    :defer 2
+    :defer 0.7
     :diminish
     :config (global-hungry-delete-mode))
 #+END_SRC
