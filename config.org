@@ -368,10 +368,7 @@ don't forget to install it with your package manager.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package prettier-js
     :diminish
-    :custom
-    (prettier-js-args '("--trailing-comma" "es5"
-                        "--single-quote" "true"
-                        "--print-width" "100")))
+    :custom (prettier-js-args '("--print-width" "100")))
 #+END_SRC
 
 *** =js2-mode=
