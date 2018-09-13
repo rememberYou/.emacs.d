@@ -1545,6 +1545,18 @@ Allows to calculate the network ranges.
   (use-package ipcalc :defer 4)
 #+END_SRC
 
+*** =gnuplot=
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package gnuplot
+    :defer 2
+    :ensure-system-package gnuplot)
+
+  (use-package gnuplot-mode
+    :after gnuplot
+    :mode ("\\.gp\\'" . gnuplot-mode))
+#+END_SRC
+
 *** =move-text=
 
 Moves the current line (or if marked, the current region's, whole lines).
