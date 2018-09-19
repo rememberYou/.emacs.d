@@ -2334,6 +2334,28 @@ Don't ask before killing a buffer. I know what I'm doing.
   (global-set-key [remap kill-buffer] #'kill-this-buffer)
 #+END_SRC
 
+When splitting windows open the previous buffer in it.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package window
+    :ensure nil
+    :bind (("C-x 2" . my/vsplit-last-buffer)
+           ("C-x 3" . my/hsplit-last-buffer))
+    :preface
+    (defun my/vsplit-last-buffer ()
+      "Splits the window vertically and display the previous buffer."
+      (interactive)
+      (split-window-vertically)
+      (other-window 1 nil)
+      (switch-to-next-buffer))
+    (defun my/hsplit-last-buffer ()
+      "Splits the window horizontally and display the previous buffer."
+      (interactive)
+      (split-window-horizontally)
+      (other-window 1 nil)
+      (switch-to-next-buffer)))
+#+END_SRC
+
 *** =switch-window=
 
 Displays an overlay in each window showing a unique key, then asks the user
