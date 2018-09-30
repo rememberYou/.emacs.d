@@ -225,6 +225,7 @@ Powerful minor mode to produce HTML from CSS-like selector.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package emmet-mode
     :defer 6
+    :diminish
     :hook (sgml-mode css-mode web-mode))
 #+END_SRC
 
@@ -1059,6 +1060,7 @@ enables spell checking on-the-fly in GNU Emacs.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package flyspell
     :defer 1
+    :diminish
     :custom
     (flyspell-abbrev-p t)
     (flyspell-issue-message-flag nil)
@@ -1601,6 +1603,7 @@ Colorize colors as text with their value.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package rainbow-mode
     :defer 2
+    :diminish
     :hook (prog-mode))
 #+END_SRC
 
