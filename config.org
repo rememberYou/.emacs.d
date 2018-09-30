@@ -1979,11 +1979,14 @@ Now all that remains is to configure =mu4e=:
     :ensure-system-package mu
     :custom
     (mu4e-attachment-dir "~/Downloads")
+    (mu4e-change-filenames-when-moving t)
     (mu4e-confirm-quit nil)
-    (mu4e-compose-signature-auto-include nil)
     (mu4e-completing-read-function 'ivy-completing-read)
+    (mu4e-compose-dont-reply-to-self t)
+    (mu4e-compose-signature-auto-include nil)
     (mu4e-drafts-folder "/gmail/Drafts")
     (mu4e-get-mail-command "mbsync -a")
+    (mu4e-html2text-command "iconv -c -t utf-8 | pandoc -f html -t plain")
     (mu4e-maildir "~/Maildir")
     (mu4e-maildir-shortcuts
      '(("/gmail/INBOX" . ?i)
@@ -1993,7 +1996,6 @@ Now all that remains is to configure =mu4e=:
        ("/gmail/Important" . ?i)
        ("/gmail/Sent Mail" . ?s)
        ("/gmail/Starred" . ?S)))
-    (mu4e-html2text-command "iconv -c -t utf-8 | pandoc -f html -t plain")
     (mu4e-org-contacts-file "~/.personal/agenda/contacts.org")
     (mu4e-refile-folder "/gmail/Archive")
     (mu4e-sent-folder "/gmail/Sent Mail")
@@ -2001,7 +2003,6 @@ Now all that remains is to configure =mu4e=:
     (mu4e-trash-folder "/gmail/Trash")
     (mu4e-update-interval 60)
     (mu4e-use-fancy-chars t)
-    (mail-user-agent 'mu4e-user-agent)
     (mu4e-view-show-addresses t)
     (mu4e-view-show-images t)
     :config
