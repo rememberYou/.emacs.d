@@ -288,14 +288,14 @@ Provides minibuffer hints when working with Emacs Lisp.
   (use-package sgml-mode
     :delight html-mode "HTML"
     :hook
-    ((html-mode . me/html-set-pretty-print-function)
+    ((html-mode . my/html-set-pretty-print-function)
      (html-mode . sgml-electric-tag-pair-mode)
      (html-mode . sgml-name-8bit-mode)
      (html-mode . toggle-truncate-lines))
     :custom (sgml-basic-offset 2)
     :preface
-    (defun me/html-set-pretty-print-function ()
-      (setq me/pretty-print-function #'sgml-pretty-print)))
+    (defun my/html-set-pretty-print-function ()
+      (setq my/pretty-print-function #'sgml-pretty-print)))
 #+END_SRC
 
 ** Java
@@ -468,9 +468,9 @@ of the =bower_components= directory:
   (use-package json-mode
     :delight json-mode "J"
     :mode "\\.json\\'"
-    :hook (before-save . my-json-mode-before-save-hook)
+    :hook (before-save . my/json-mode-before-save-hook)
     :preface
-    (defun my-json-mode-before-save-hook ()
+    (defun my/json-mode-before-save-hook ()
       (when (eq major-mode 'json-mode)
         (json-pretty-print-buffer))))
 #+END_SRC
