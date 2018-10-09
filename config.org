@@ -12,6 +12,7 @@
   - [[#customization][Customization]]
   - [[#theme][Theme]]
   - [[#turn-off-mouse-interface][Turn off mouse interface]]
+  - [[#utf-8][UTF-8]]
 - [[#languages][Languages]]
   - [[#css][CSS]]
   - [[#csv][CSV]]
@@ -207,6 +208,14 @@ I find invasive.
     (scroll-bar-mode -1)                            ; Disable the scroll bar
     (tool-bar-mode -1)                              ; Disable the tool bar
     (tooltip-mode -1))                              ; Disable the tooltips
+#+END_SRC
+
+** UTF-8
+
+In order to avoid any problems with accents.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (prefer-coding-system 'utf-8)
 #+END_SRC
 
 * Languages
