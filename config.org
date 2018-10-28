@@ -2505,7 +2505,8 @@ authoring documents with a fast and effective plain-text system.
            (org-mode . org-indent-mode))
     :custom
     (org-archive-location "~/.personal/archives/%s::")
-    (org-blank-before-new-entry nil)
+    (org-blank-before-new-entry '((heading . t)
+                                  (plain-list-item . t)))
     (org-cycle-include-plain-lists 'integrate)
     (org-ditaa-jar-path "~/lib/ditaa0_9.jar")
     (org-expiry-inactive-timestamps t)
