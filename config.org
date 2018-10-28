@@ -2472,7 +2472,7 @@ authoring documents with a fast and effective plain-text system.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package org
     :ensure org-plus-contrib
-    :delight org-mode "Ø"
+    :delight org-mode "Θ"
     :preface
     (defun my/org-compare-times (clocked estimated)
       "Gets the ratio between the timed time and the estimated time."
