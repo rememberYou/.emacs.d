@@ -1098,8 +1098,8 @@ locally, download the desktop version and change the paths indicated below.
     :defer 2
     :diminish
     :custom
-    (langtool-language-tool-jar "~/lib/LangueageTool-4.2/languagetool-commandline.jar")
-    (langtool-language-tool-server-jar "~/lib/LanguageTool-4.2/languagetool-server.jar"))
+    (langtool-language-tool-jar "~/.local/lib/LangueageTool-4.2/languagetool-commandline.jar")
+    (langtool-language-tool-server-jar "~/.local/lib/LanguageTool-4.2/languagetool-server.jar"))
 #+END_SRC
 
 ** History
@@ -2508,7 +2508,7 @@ authoring documents with a fast and effective plain-text system.
     (org-blank-before-new-entry '((heading . t)
                                   (plain-list-item . t)))
     (org-cycle-include-plain-lists 'integrate)
-    (org-ditaa-jar-path "~/lib/ditaa0_9.jar")
+    (org-ditaa-jar-path "~/.local/lib/ditaa0_9.jar")
     (org-expiry-inactive-timestamps t)
     (org-export-backends '(ascii beamer html icalendar latex man md org texinfo))
     (org-log-done 'time)
@@ -2860,7 +2860,7 @@ With that, I can compile many languages with =org-mode=.
   (use-package ob-plantuml
     :ensure nil
     :after org
-    :custom (org-plantuml-jar-path (expand-file-name "~/lib/plantuml.jar")))
+    :custom (org-plantuml-jar-path (expand-file-name "~/.local/lib/plantuml.jar")))
 
   (use-package ob-python :ensure nil :after org)
   (use-package ob-ruby :ensure nil :after org)
