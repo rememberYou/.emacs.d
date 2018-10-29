@@ -131,7 +131,7 @@ I put my =.authinfo.gpg= file in [[https://github.com/syncthing/syncthing][Synct
 configuration on other devices.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (setq auth-sources '("~/.gnupg/shared/.authinfo.gpg"
+  (setq auth-sources '("~/.config/gnupg/shared/authinfo.gpg"
                        "~/.authinfo.gpg"
                        "~/.authinfo"
                        "~/.netrc"))
