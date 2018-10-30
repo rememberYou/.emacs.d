@@ -119,7 +119,6 @@ first install it, if you don't already.
     (package-install 'use-package))
 
   (use-package delight :ensure t)
-  (use-package diminish :ensure t)
   (use-package use-package-ensure-system-package :ensure t)
 #+END_SRC
 
@@ -234,7 +233,7 @@ Powerful minor mode to produce HTML from CSS-like selector.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package emmet-mode
     :defer 6
-    :diminish
+    :delight
     :hook (sgml-mode css-mode web-mode))
 #+END_SRC
 
@@ -270,16 +269,14 @@ system clean.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package dockerfile-mode
-    :delight dockerfile-mode "δ"
+    :delight "δ "
     :mode "Dockerfile\\'")
 #+END_SRC
 
 ** Emacs Lisp
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package elisp-mode
-    :ensure nil
-    :delight emacs-lisp-mode "ξ")
+  (use-package elisp-mode :ensure nil :delight "ξ ")
 #+END_SRC
 
 *** Eldoc
@@ -288,7 +285,7 @@ Provides minibuffer hints when working with Emacs Lisp.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package eldoc
-    :diminish
+    :delight
     :hook (emacs-lisp-mode . eldoc-mode))
 #+END_SRC
 
@@ -359,7 +356,7 @@ Most of my Java projects are made with =gradle=.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package gradle-mode
-    :delight gradle-mode "γ"
+    :delight "γ "
     :mode "\\.gradle\\'"
     :interpreter ("gradle" . gradle-mode))
 #+END_SRC
@@ -377,7 +374,7 @@ don't forget to install it with your package manager.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package prettier-js
-    :diminish
+    :delight
     :custom (prettier-js-args '("--print-width" "100")))
 #+END_SRC
 
@@ -476,7 +473,7 @@ of the =bower_components= directory:
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package json-mode
-    :delight json-mode "J"
+    :delight "J "
     :mode "\\.json\\'"
     :hook (before-save . my/json-mode-before-save-hook)
     :preface
@@ -539,7 +536,7 @@ I rarely program in Lua, but when I do, =lua-mode= satisfies me amply.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package lua-mode
-    :delight lua-mode "Λ"
+    :delight "Λ "
     :mode "\\.lua\\'"
     :interpreter ("lua" . lua-mode))
 #+END_SRC
@@ -551,7 +548,7 @@ operating system.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package markdown-mode
-    :delight markdown-mode "μ"
+    :delight "μ "
     :mode ("INSTALL\\'"
            "CONTRIBUTORS\\'"
            "LICENSE\\'"
@@ -613,7 +610,7 @@ supports =company-mode= better than =jedi= which is quite old.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package python
-    :delight python-mode "π"
+    :delight "π "
     :bind (("M-[" . python-nav-backward-block)
            ("M-]" . python-nav-forward-block)))
 #+END_SRC
@@ -642,7 +639,7 @@ Anaconda backend for =company-mode=.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package sql-indent
-    :delight sql-mode "Σ"
+    :delight sql-mode "Σ "
     :mode "\\.sql\\'"
     :interpreter ("sql" . sql-mode))
 #+END_SRC
@@ -668,7 +665,7 @@ Anaconda backend for =company-mode=.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package vue-mode
-    :delight vue-mode "V"
+    :delight "V "
     :mode "\\.vue\\'"
     :hook (vue-mode . prettier-js-mode)
     :custom
@@ -682,7 +679,7 @@ Anaconda backend for =company-mode=.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package yaml-mode
-    :delight yaml-mode "ψ"
+    :delight "ψ "
     :mode "\\.yml\\'"
     :interpreter ("yml" . yml-mode))
 #+END_SRC
@@ -692,7 +689,7 @@ Anaconda backend for =company-mode=.
 =yarn-mode= gives me the possibility to easily manage =.yarn-lock= files.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package yarn-mode :delight yarn-mode "Y")
+  (use-package yarn-mode :delight yarn-mode "Y ")
 #+END_SRC
 
 * Advanced Configuration
@@ -729,8 +726,8 @@ completion candidates.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package company
-    :defer 2
-    :diminish
+    :defer 0.5
+    :delight
     :custom
     (company-begin-commands '(self-insert-command))
     (company-idle-delay .1)
@@ -745,7 +742,7 @@ I use =company= with =company-box= that allows a company front-end with icons.
 #+BEGIN_SRC emacs-lisp :tangle yes
    (use-package company-box
      :after company
-     :diminish
+     :delight
      :hook (company-mode . company-box-mode))
 #+END_SRC
 
@@ -966,7 +963,7 @@ For those who didn't know, GNU Emacs is also a file explorer.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package dired
     :ensure nil
-    :delight dired-mode "Dired"
+    :delight "Dired "
     :custom
     (dired-auto-revert-buffer t)
     (dired-dwim-target t)
@@ -1053,7 +1050,7 @@ the fly.
   (use-package abbrev
     :defer 1
     :ensure nil
-    :diminish
+    :delight
     :hook (text-mode . abbrev-mode)
     :custom (abbrev-file-name (expand-file-name ".abbrev_defs" user-emacs-directory))
     :config
@@ -1069,7 +1066,7 @@ enables spell checking on-the-fly in GNU Emacs.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package flyspell
     :defer 1
-    :diminish
+    :delight
     :custom
     (flyspell-abbrev-p t)
     (flyspell-issue-message-flag nil)
@@ -1096,7 +1093,7 @@ locally, download the desktop version and change the paths indicated below.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package langtool
     :defer 2
-    :diminish
+    :delight
     :custom
     (langtool-language-tool-jar "~/.local/lib/LangueageTool-4.2/languagetool-commandline.jar")
     (langtool-language-tool-server-jar "~/.local/lib/LanguageTool-4.2/languagetool-server.jar"))
@@ -1612,7 +1609,7 @@ Colorize colors as text with their value.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package rainbow-mode
     :defer 2
-    :diminish
+    :delight
     :hook (prog-mode))
 #+END_SRC
 
@@ -1623,7 +1620,7 @@ Avoids call the function or reload Emacs.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package autorevert
     :ensure nil
-    :diminish auto-revert-mode
+    :delight auto-revert-mode
     :bind ("C-x R" . revert-buffer)
     :custom (auto-revert-verbose nil)
     :config (global-auto-revert-mode 1))
@@ -1644,7 +1641,7 @@ this, Emacs treats "undo itself as another editing that can be undone".
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package undo-tree
-    :diminish
+    :delight
     :bind ("C--" . undo-tree-redo)
     :init (global-undo-tree-mode)
     :custom
@@ -1658,7 +1655,7 @@ An autonomous emacs major-mode for editing web templates.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package web-mode
-    :delight web-mode "☸"
+    :delight "☸ "
     :hook ((css-mode web-mode) . rainbow-mode)
     :mode (("\\.blade\\.php\\'" . web-mode)
            ("\\.html?\\'" . web-mode)
@@ -1671,7 +1668,6 @@ An autonomous emacs major-mode for editing web templates.
       (if (buffer-file-name)
           (if (string-match (car my-pair) buffer-file-name)
               (funcall (cdr my-pair)))))
-
     :init
     (add-hook 'web-mode-hook
               (lambda ()
@@ -1705,7 +1701,7 @@ I used =guide-key= in my past days, but =which-key= is a good replacement.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package which-key
     :defer 0.2
-    :diminish
+    :delight
     :config (which-key-mode))
 #+END_SRC
 
@@ -1759,7 +1755,7 @@ Finally, specify to =erc= that you use a =.authinfo= file with:
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package erc
     :defer 3
-    :delight erc-mode "ε"
+    :delight "ε "
     :preface
     (defun my/erc-start-or-switch ()
       "Connects to ERC, or switch to last active buffer."
@@ -1847,12 +1843,12 @@ smaller, simpler, and smoother to use yet highly customizable.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package counsel
     :after ivy
-    :diminish
+    :delight
     :config (counsel-mode))
 
   (use-package ivy
     :defer 0.1
-    :diminish
+    :delight
     :bind (("C-c C-r" . ivy-resume)
            ("C-x B" . ivy-switch-buffer-other-window))
     :custom
@@ -1937,7 +1933,7 @@ Flycheck lints warnings and errors directly within buffers.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package flycheck
     :defer 2
-    :diminish
+    :delight
     :init (global-flycheck-mode)
     :custom
     (flycheck-display-errors-delay .3)
@@ -2134,7 +2130,7 @@ parenthesis. Anyway, if you don't like it, you can try taking a look at
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package smartparens
     :defer 1
-    :diminish
+    :delight
     :config (smartparens-global-mode 1))
 #+END_SRC
 
@@ -2304,7 +2300,7 @@ while it is being edited.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package git-gutter
     :defer 0.3
-    :diminish
+    :delight
     :init (global-git-gutter-mode +1))
 #+END_SRC
 
@@ -2312,7 +2308,7 @@ Finally, one last package that I like to use with Git to easily see the changes
 made by previous commits.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package git-timemachine :defer 1 :diminish)
+  (use-package git-timemachine :defer 1 :delight)
 #+END_SRC
 
 ** Whitespaces
@@ -2335,7 +2331,7 @@ non-whitespace character.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package hungry-delete
     :defer 0.7
-    :diminish
+    :delight
     :config (global-hungry-delete-mode))
 #+END_SRC
 
@@ -2426,7 +2422,7 @@ I like to have lines of the same length.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package simple
     :ensure nil
-    :diminish (auto-fill-function)
+    :delight (auto-fill-function)
     :bind ("C-x p" . pop-to-mark-command)
     :hook ((prog-mode . turn-on-auto-fill)
            (text-mode . turn-on-auto-fill))
@@ -2445,8 +2441,13 @@ and automatically expand it into function templates.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package yasnippet
     :defer 1
-    :diminish yas-minor-mode
-    :config (yas-global-mode))
+    :delight yas-minor-mode " υ"
+    :hook (yas-minor-mode . my/disable-yas-if-no-snippets)
+    :config (yas-global-mode)
+    :preface
+    (defun my/disable-yas-if-no-snippets ()
+      (when (and yas-minor-mode (null (yas--get-snippet-tables)))
+        (yas-minor-mode -1))))
 
   (use-package yasnippet-snippets
     :after yasnippet
@@ -2472,7 +2473,7 @@ authoring documents with a fast and effective plain-text system.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package org
     :ensure org-plus-contrib
-    :delight org-mode "Θ"
+    :delight "Θ "
     :preface
     (defun my/org-compare-times (clocked estimated)
       "Gets the ratio between the timed time and the estimated time."
@@ -2575,7 +2576,7 @@ will maintain a table of contents at the first heading that has a =:TOC:= tag.
 For a cleaner online mode.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package org-indent :after org :ensure nil :diminish)
+  (use-package org-indent :after org :ensure nil :delight)
 #+END_SRC
 
 ** Agenda
