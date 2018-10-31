@@ -2316,7 +2316,9 @@ made by previous commits.
 It is often annoying to see unnecessary blank spaces at the end of a line or file.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  (use-package whitespace
+    :defer 1
+    :hook (before-save . delete-trailing-whitespace))
 #+END_SRC
 
 *** =hungry-delete=
