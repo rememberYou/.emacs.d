@@ -127,7 +127,7 @@ first install it, if you don't already.
 
 ** Authentification
 
-I put my =.authinfo.gpg= file in [[https://github.com/syncthing/syncthing][Syncthing]] in order to be able to easily use my
+I put my =authinfo.gpg= file in [[https://github.com/syncthing/syncthing][Syncthing]] in order to be able to easily use my
 configuration on other devices.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
