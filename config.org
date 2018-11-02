@@ -1293,21 +1293,22 @@ Group jump-to-files commands.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (defhydra hydra-go-to-file (:color blue)
     "
-      ^
-      ^Go To^           ^Config^            ^Agenda             ^Other^
-      ^─────^───────────^──────^────────────^──────^────────────^─────^────────
-      _q_ quit          _cd_ dunst          _ac_ contacts       _ob_ book
-      ^^                _ce_ emacs          _ao_ organizer      _ol_ learning
-      ^^                _ci_ i3             _ap_ people         _om_ movies
-      ^^                _cn_ neofetch       _ar_ routine        _op_ purchases
-      ^^                _cp_ polybar        _as_ school         _ou_ usb
-      ^^                _cr_ ranger         ^^
-      ^^                _cs_ sway           ^^
-      ^^                _ct_ termite        ^^
-      ^^                ^^                  ^^
-      "
+    ^
+    ^Go To^           ^Config^            ^Agenda             ^Other^
+    ^─────^───────────^──────^────────────^──────^────────────^─────^────────
+    _q_ quit          _ca_ alacritty      _ac_ contacts       _ob_ book
+    ^^                _cd_ dunst          _af_ findmycat      _ol_ learning
+    ^^                _ce_ emacs          _ao_ organizer      _om_ movies
+    ^^                _ci_ i3             _ap_ people         _op_ purchases
+    ^^                _cn_ neofetch       _ar_ routine        _ou_ usb
+    ^^                _cp_ polybar        _as_ school         ^^
+    ^^                _cr_ ranger         ^^                  ^^
+    ^^                _cs_ sway           ^^                  ^^
+    ^^                ^^                  ^^                  ^^
+    "
     ("q" nil)
     ("ac" (find-file "~/.personal/agenda/contacts.org"))
+    ("af" (find-file "~/.personal/agenda/findmycat.org"))
     ("ao" (find-file "~/.personal/agenda/organizer.org"))
     ("ap" (find-file "~/.personal/agenda/people.org"))
     ("ar" (find-file "~/.personal/agenda/routine.org"))
@@ -2752,6 +2753,10 @@ information.
         my/org-ledger-cash-template
         :empty-lines 1
         :immediate-finish t)
+
+       ("f" "FindMyCat" entry (file+headline "~/.personal/agenda/findmycat.org" "Tasks"),
+        my/org-basic-task-template
+        :empty-lines 1)
 
        ("p" "People" entry (file+headline "~/.personal/agenda/people.org" "Tasks"),
         my/org-basic-task-template
