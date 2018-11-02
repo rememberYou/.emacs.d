@@ -1686,7 +1686,8 @@ An autonomous emacs major-mode for editing web templates.
            ("\\.html?\\'" . web-mode)
            ("\\.jsx\\'" . web-mode)
            ("\\.php$" . my/php-setup)
-           ("\\.tsx\\'" . web-mode))
+           ("\\.tsx\\'" . web-mode)
+           ("\\.ts\\'" . web-mode))
     :preface
     (defun enable-minor-mode (my-pair)
       "Enable minor mode if filename match the regexp."
@@ -1697,6 +1698,10 @@ An autonomous emacs major-mode for editing web templates.
     (add-hook 'web-mode-hook
               (lambda ()
                 (when (string-equal "tsx" (file-name-extension buffer-file-name))
+                  (setup-tide-mode))))
+    (add-hook 'web-mode-hook
+              (lambda ()
+                (when (string-equal "ts" (file-name-extension buffer-file-name))
                   (setup-tide-mode))))
     :custom
     (web-mode-attr-indent-offset 2)
@@ -1709,7 +1714,15 @@ An autonomous emacs major-mode for editing web templates.
 
   (add-hook 'web-mode-hook #'(lambda ()
                                (enable-minor-mode
+                                '("\\.js?\\'" . prettier-js-mode))))
+
+  (add-hook 'web-mode-hook #'(lambda ()
+                               (enable-minor-mode
                                 '("\\.jsx?\\'" . prettier-js-mode))))
+
+  (add-hook 'web-mode-hook #'(lambda ()
+                               (enable-minor-mode
+                                '("\\.ts?\\'" . prettier-js-mode))))
 
   (add-hook 'web-mode-hook #'(lambda ()
                                (enable-minor-mode
