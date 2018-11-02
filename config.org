@@ -1334,16 +1334,16 @@ Group Ledger commands.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (defhydra hydra-ledger (:color blue)
     "
-      ^
-      ^Ledger^             ^Do^
-      ^──────^─────────────^──^────────
-      _q_ quit             _a_ add
-      ^^                   _c_ clear
-      ^^                   _C_ copy
-      ^^                   _d_ delete
-      ^^                   _r_ report
-      ^^                   ^^
-      "
+    ^
+    ^Ledger^             ^Do^
+    ^──────^─────────────^──^────────
+    _q_ quit             _a_ add
+    ^^                   _c_ clear
+    ^^                   _C_ copy
+    ^^                   _d_ delete
+    ^^                   _r_ report
+    ^^                   ^^
+    "
     ("q" nil)
     ("a" ledger-add-transaction)
     ("c" ledger-mode-clean-buffer)
