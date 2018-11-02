@@ -223,7 +223,7 @@ In order to avoid any problems with accents.
 In order to have the user's home as clean as possible, I follow the
 [[https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html][XDG base directory specification]].
 
-*NOTE:* You can find out more by going to my [[https://github.com/rememberYou/dotfiles][dotfiles]].
+*NOTE:* you can find out more by going to my [[https://github.com/rememberYou/dotfiles][dotfiles]].
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (defvar xdg-bin (getenv "XDG_BIN_HOME")
