@@ -2029,7 +2029,7 @@ Now all that remains is to configure =mu4e=:
     (mu4e-compose-dont-reply-to-self t)
     (mu4e-compose-signature-auto-include nil)
     (mu4e-drafts-folder "/gmail/Drafts")
-    (mu4e-get-mail-command (format "mbsync -c '%s/isync/mbsyncrc -a" xdg-config))
+    (mu4e-get-mail-command (format "mbsync -c '%s/isync/mbsyncrc' -a" xdg-config))
     (mu4e-html2text-command "iconv -c -t utf-8 | pandoc -f html -t plain")
     (mu4e-maildir "~/Maildir")
     (mu4e-maildir-shortcuts
