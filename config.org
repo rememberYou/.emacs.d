@@ -1304,6 +1304,7 @@ Group jump-to-files commands.
     ^^                _cp_ polybar        _as_ school         ^^
     ^^                _cr_ ranger         ^^                  ^^
     ^^                _cs_ sway           ^^                  ^^
+    ^^                _ct_ tmux           ^^                  ^^
     ^^                ^^                  ^^                  ^^
     "
     ("q" nil)
@@ -1321,6 +1322,7 @@ Group jump-to-files commands.
     ("cp" (find-file (format "%s/polybar/config" xdg-config)))
     ("cr" (find-file (format "%s/ranger/rc.conf" xdg-config)))
     ("cs" (find-file (format "%s/sway/config" xdg-config)))
+    ("ct" (find-file (format "%s/tmux/tmux.conf" xdg-config)))
     ("ob" (find-file "~/.personal/other/books.org"))
     ("ol" (find-file "~/.personal/other/learning.org"))
     ("om" (find-file "~/.personal/other/movies.org"))
