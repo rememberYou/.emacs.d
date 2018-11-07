@@ -2217,8 +2217,14 @@ in the file-system, but rather created on-demand and stored in memory.
     :ensure nil
     :after pdf-tools
     :bind (:map pdf-view-mode-map
-          ("C-s" . isearch-forward))
-    :custom (pdf-view-use-unicode-ligther nil))
+                ("C-s" . isearch-forward)
+                ("d" . pdf-annot-delete)
+                ("h" . pdf-annot-add-highlight-markup-annotation)
+                ("t" . pdf-annot-add-text-annotation))
+    :custom
+    (pdf-view-display-size 'fit-page)
+    (pdf-view-resize-factor 1.1)
+    (pdf-view-use-unicode-ligther nil))
 #+END_SRC
 
 ** Point and Region
