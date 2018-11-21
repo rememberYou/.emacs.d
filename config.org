@@ -2529,6 +2529,7 @@ authoring documents with a fast and effective plain-text system.
       (or (and (looking-at org-outline-regexp) (looking-back "^\**"))
           (save-excursion (and (looking-at (org-item-re)) (looking-back "^[ \t]*")))))
     :hook ((after-save . my/config-tangle)
+           (auto-save . org-save-all-org-buffer)
            (org-mode . org-indent-mode))
     :custom
     (org-archive-location "~/.personal/archives/%s::")
