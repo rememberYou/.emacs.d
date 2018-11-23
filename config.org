@@ -12,7 +12,6 @@
   - [[#customization][Customization]]
   - [[#theme][Theme]]
   - [[#turn-off-mouse-interface][Turn off mouse interface]]
-  - [[#utf-8][UTF-8]]
   - [[#xdg][XDG]]
 - [[#languages][Languages]]
   - [[#css][CSS]]
@@ -166,6 +165,7 @@ For a better user experience of GNU Emacs, here are the default values I use.
   (display-time-mode 1)                             ; Enable time in the mode-line
   (fset 'yes-or-no-p 'y-or-n-p)                     ; Replace yes/no prompts with y/n
   (global-hl-line-mode)                             ; Hightlight current line
+  (set-default-coding-systems 'utf-8)               ; Default to utf-8 encoding
   (show-paren-mode 1)                               ; Show the parent
 #+END_SRC
 
@@ -208,14 +208,6 @@ I find invasive.
     (scroll-bar-mode -1)                            ; Disable the scroll bar
     (tool-bar-mode -1)                              ; Disable the tool bar
     (tooltip-mode -1))                              ; Disable the tooltips
-#+END_SRC
-
-** UTF-8
-
-In order to avoid any problems with accents.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (prefer-coding-system 'utf-8)
 #+END_SRC
 
 ** XDG
