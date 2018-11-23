@@ -1942,10 +1942,8 @@ Now all we have to do is configure =ledger-mode=:
     (defun my/ledger-save ()
       "Automatically clean the ledger buffer at each save."
       (interactive)
-      (save-excursion
-        (when (buffer-modified-p)
-          (with-demoted-errors (ledger-mode-clean-buffer))
-          (save-buffer))))
+      (ledger-mode-clean-buffer)
+      (save-buffer))
     :custom
     (ledger-clear-whole-transactions t)
     (ledger-reconcile-default-commodity "EUR")
