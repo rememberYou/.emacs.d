@@ -2277,14 +2277,14 @@ Provides fast access to the recent files.
     :bind ("C-c r" . recentf-open-files)
     :init (recentf-mode)
     :custom
-    (recentf-max-menu-items 15)
-    (recentf-max-saved-items 200)
     (recentf-exclude (list "COMMIT_EDITMSG"
                            "~$"
                            "/scp:"
                            "/ssh:"
                            "/sudo:"
                            "/tmp/"))
+    (recentf-max-menu-items 15)
+    (recentf-max-saved-items 200)
     :config (run-at-time nil (* 5 60) 'recentf-save-list))
 #+END_SRC
 
