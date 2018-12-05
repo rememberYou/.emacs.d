@@ -777,8 +777,8 @@ certain files with GNU Emacs.
     :ensure nil
     :preface
     (defvar *afilename-cmd*
-      '(("/home/someone/.Xresources" . "xrdb -merge ~/.Xresources")
-        ("/home/someone/.xbindkeysrc" . "xbindkeys -p"))
+      `((,(format "%s/X11/Xresources" xdg-config) . ,(format "xrdb -merge %s/X11/Xresources" xdg-config))
+        (,(format "%s/xbindkeysrc" (getenv "HOME")) . "xbindkeys -p"))
       "File association list with their respective command.")
 
     (defun my/cmd-after-saved-file ()
