@@ -392,7 +392,8 @@ don't forget to install it with your package manager.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package prettier-js
     :delight
-    :custom (prettier-js-args '("--print-width" "100")))
+    :custom (prettier-js-args '("--print-width" "100"
+                                "--trailing-comma" "all")))
 #+END_SRC
 
 *** =js2-mode=
