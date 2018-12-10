@@ -1296,6 +1296,7 @@ Group jump-to-files commands.
     ^^                _cn_ neofetch       _ar_ routine        _ou_ usb
     ^^                _cp_ polybar        _as_ school         ^^
     ^^                _cq_ qutebrowser    ^^                  ^^
+    ^^                _cR_ rofi           ^^                  ^^
     ^^                _cr_ ranger         ^^                  ^^
     ^^                _cs_ sway           ^^                  ^^
     ^^                _ct_ tmux           ^^                  ^^
@@ -1315,6 +1316,7 @@ Group jump-to-files commands.
     ("cn" (find-file (format "%s/neofetch/config.conf" xdg-config)))
     ("cp" (find-file (format "%s/polybar/config" xdg-config)))
     ("cq" (find-file (format "%s/qutebrowser/config.py" xdg-config)))
+    ("cR" (find-file (format "%s/rofi/config.rasi" xdg-config)))
     ("cr" (find-file (format "%s/ranger/rc.conf" xdg-config)))
     ("cs" (find-file (format "%s/sway/config" xdg-config)))
     ("ct" (find-file (format "%s/tmux/tmux.conf" xdg-config)))
