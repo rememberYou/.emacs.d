@@ -658,9 +658,8 @@ Anaconda backend for =company-mode=.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package sql-indent
-    :delight sql-mode "Σ "
-    :mode "\\.sql\\'"
-    :interpreter ("sql" . sql-mode))
+    :after (:any sql sql-interactive-mode)
+    :delight sql-mode "Σ ")
 #+END_SRC
 
 ** TypeScript
