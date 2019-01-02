@@ -1,11 +1,11 @@
 # GNU Emacs
-*~
 *.elc
+*~
+.abbrev_defs
 /anaconda-mode/
 /auto-save-list/
 /backups/
 /elpa/
-.abbrev_defs
 config.el
 custom.el
 history
@@ -15,11 +15,13 @@ plantuml.jar
 # Third-party packages
 .projectile-bookmarks
 .projectile-cache
-recentf
-smex-items
+/history
 /url/
 /var/
-/history
+ac-comphist.dat
 bookmarks
 nov-places
+recentf
+request
+smex-items
 tramp
