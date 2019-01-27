@@ -2166,6 +2166,7 @@ parenthesis. Anyway, if you don't like it, you can try taking a look at
   (use-package smartparens
     :defer 1
     :delight
+    :custom (sp-escape-quotes-after-insert nil)
     :config (smartparens-global-mode 1))
 #+END_SRC
 
