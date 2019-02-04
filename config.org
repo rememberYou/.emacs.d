@@ -485,7 +485,7 @@ of the =bower_components= directory:
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package company-tern
     :after (company tern)
-    :config (add-to-list 'company-backends 'company-tern))
+    :config (push 'company-tern company-backends))
 #+END_SRC
 
 ** JSON
@@ -649,7 +649,7 @@ Anaconda backend for =company-mode=.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package company-anaconda
     :after (anaconda-mode company)
-    :config (add-to-list 'company-backends 'company-anaconda))
+    :config (push 'company-anaconda company-backends))
 #+END_SRC
 
 ** SQL
