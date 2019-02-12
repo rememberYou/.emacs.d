@@ -1936,6 +1936,7 @@ Now all we have to do is configure =ledger-mode=:
            "\\.ledger\\'")
     :bind (:map ledger-mode-map
                 ("C-x C-s" . my/ledger-save))
+    :hook (ledger-mode . ledger-flymake-enable)
     :preface
     (defun my/ledger-save ()
       "Automatically clean the ledger buffer at each save."
