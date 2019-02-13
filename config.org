@@ -14,6 +14,7 @@
   - [[#turn-off-mouse-interface][Turn off mouse interface]]
   - [[#xdg][XDG]]
 - [[#languages][Languages]]
+  - [[#c][C++]]
   - [[#css][CSS]]
   - [[#csv][CSV]]
   - [[#docker][Docker]]
@@ -235,6 +236,27 @@ In order to have the user's home as clean as possible, I follow the
 #+END_SRC
 
 * Languages
+
+** C++
+
+There are several ways to configure GNU Emacs to take advantage of the major
+features of IDEs. In order to have a fast and stable environment, I recommend
+using =eglot= as a client for LSP servers and =ccls= as server.
+
+*NOTE:* some of you might choose [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] as LSP.
+
+For the completion, =eglot= defines =completion-at-point-functions=.  So, make
+sure that =company-capf= is loaded instead of =company-clang=, by placing it in
+the first positions in the =company-backends=.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package eglot
+    :hook (prog-mode . eglot-ensure)
+    :custom
+    (company-clang-modes nil)
+    (company-backends (cons 'company-capf
+                            (remove 'company-capf company-backends))))
+#+END_SRC
 
 ** CSS
 
