@@ -1451,16 +1451,16 @@ Group Projectile commands.
     ^^                  ^^                  ^^                  ^^
     "
     ("q" nil)
-    ("b" counsel-projectile-switch-to-buffer)
-    ("d" counsel-projectile-find-dir)
+    ("b" projectile-switch-to-buffer)
+    ("d" projectile-find-dir)
     ("D" projectile-dired)
-    ("f" counsel-projectile-find-file)
+    ("f" projectile-find-file)
     ("i" projectile-invalidate-cache :color red)
     ("K" projectile-kill-buffers)
-    ("p" counsel-projectile-switch-project)
+    ("p" projectile-switch-project)
     ("r" projectile-replace)
     ("R" projectile-replace-regexp)
-    ("s" counsel-projectile-ag)
+    ("s" projectile-ag)
     ("S" projectile-save-project-buffers))
 #+END_SRC
 
