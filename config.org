@@ -266,7 +266,7 @@ For this, nothing could be easier. If like me you use a =Makefile= for all your
 C++ projects, then you just need to install the =bear= package on your operating
 system.
 
-Finally, to generate the =compile.commands.json= file, you just have to do:
+Finally, to generate the =compile.commands.json= file, you have to do:
 
 #+BEGIN_SRC bash
   bear make
