@@ -245,7 +245,7 @@ using =eglot= as a client for LSP servers and =ccls= as server.
 
 *NOTE:* some of you might choose [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] as LSP.
 
-For the completion, =eglot= defines =completion-at-point-functions=.  So, make
+For the completion, =eglot= defines =completion-at-point-functions=. So, make
 sure that =company-capf= is loaded instead of =company-clang=, by placing it in
 the first positions in the =company-backends=.
 
