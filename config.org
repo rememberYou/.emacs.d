@@ -258,6 +258,20 @@ the first positions in the =company-backends=.
                             (remove 'company-capf company-backends))))
 #+END_SRC
 
+To allow =ccls= to know the dependencies of your =.cpp= files with your =.h=
+files, it is important to provide an =compile.commands.json= file (or a =.ccls=
+file) at the root of your project.
+
+For this, nothing could be easier. If like me you use a =Makefile= for all your
+C++ projects, then you just need to install the =bear= package on your operating
+system.
+
+Finally, to generate the =compile.commands.json= file, you just have to do:
+
+#+BEGIN_SRC bash
+  bear make
+#+END_SRC
+
 ** CSS
 
 #+BEGIN_SRC emacs-lisp :tangle yes
@@ -462,8 +476,8 @@ Makes it easy to jump to function references or definitions.
 Parses JavaScript files in a project and makes type inference to provide
 meaningful completion (with type clues) and cross-reference support.
 
-Unfortunately, =tern= has some problems with cross-references that explain why I am
-using =xref-js2= instead.
+Unfortunately, =tern= has some problems with cross-references that explain why I
+am using =xref-js2= instead.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package tern
@@ -478,8 +492,8 @@ using =xref-js2= instead.
 
 Then, add a =.tern-project= file to the root of your project.
 
-Here is an example configuration for a project that uses =requirejs= and =jQuery=, without taking into account
-of the =bower_components= directory:
+Here is an example configuration for a project that uses =requirejs= and
+=jQuery=, without taking into account of the =bower_components= directory:
 
 #+BEGIN_SRC json
   {
