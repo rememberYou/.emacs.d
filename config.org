@@ -2298,15 +2298,18 @@ exists as well).
 [[https://github.com/bbatsov/projectile][Bozhidar Batsov]]
 #+END_QUOTE
 
+In order to follow the [[https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html][XDG base directory specification]], I place the =cache= and
+the =bookmark= files to =/home/$USER/cache=. However, these files will only be
+created if the =projectile= folder is created in the =cache= folder.
+
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package projectile
     :defer 1
     :custom
-    (projectile-cache-file (expand-file-name ".projectile-cache" user-emacs-directory))
+    (projectile-cache-file (expand-file-name (format "%s/projectile/cache" xdg-cache)))
     (projectile-completion-system 'ivy)
     (projectile-enable-caching t)
-    (projectile-known-projects-file (expand-file-name
-                                   ".projectile-bookmarks" user-emacs-directory))
+    (projectile-known-projects-file (expand-file-name (format "%s/projectile/bookmarks" xdg-cache)))
     (projectile-mode-line '(:eval (projectile-project-name)))
     :config (projectile-global-mode))
 #+END_SRC

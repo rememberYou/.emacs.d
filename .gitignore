@@ -13,8 +13,6 @@ org-clock-save.el
 plantuml.jar
 
 # Third-party packages
-.projectile-bookmarks
-.projectile-cache
 /history
 /url/
 /var/
