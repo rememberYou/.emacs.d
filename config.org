@@ -2933,7 +2933,7 @@ With that, I can compile many languages with =org-mode=.
   (use-package ob-plantuml
     :ensure nil
     :after org
-    :custom (org-plantuml-jar-path (expand-file-name "~/.local/lib/plantuml.jar")))
+    :custom (org-plantuml-jar-path (expand-file-name (format "%s/plantuml.jar" xdg-lib))))
 
   (use-package ob-python :ensure nil :after org)
   (use-package ob-ruby :ensure nil :after org)
