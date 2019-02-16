@@ -65,13 +65,6 @@ oldest according to the following links:
 * [How to speed up your Emacs config by 0.3 seconds](https://www.reddit.com/r/emacs/comments/8gbopk/tip_how_to_speed_up_your_emacs_config_by_03/)
 * [How to execute a bash function when saving a specific file](https://www.reddit.com/r/emacs/comments/8hpyp5/tip_how_to_execute_a_bash_function_when_saving_a/)
 
-## TODO
-
-Here is a list of tasks I intend to do in my spare time to improve this configuration:
-
-*  Show images on `erc` in the center of the buffer with `magic-buffer`.
-*  Show images on `erc` only if they are not large with `imagemagick`.
-
 ## Contributions
 
 Various functions may be optimized or spelling errors may occur. If you want to
