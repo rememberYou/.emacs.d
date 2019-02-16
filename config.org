@@ -1460,21 +1460,21 @@ Group Projectile commands.
     ^──────────^────────^───────^───────────^────^──────────────^──────^────────────
     _q_ quit            _b_ list            _d_ directory       _r_ replace
     _i_ reset cache     _K_ kill all        _D_ root            _R_ regexp replace
-    ^^                  _S_ save all        _f_ file            _s_ ag
+    ^^                  _S_ save all        _f_ file            _s_ search
     ^^                  ^^                  _p_ project         ^^
     ^^                  ^^                  ^^                  ^^
     "
     ("q" nil)
-    ("b" projectile-switch-to-buffer)
-    ("d" projectile-find-dir)
+    ("b" counsel-projectile-switch-to-buffer)
+    ("d" counsel-projectile-find-dir)
     ("D" projectile-dired)
-    ("f" projectile-find-file)
+    ("f" counsel-projectile-find-file)
     ("i" projectile-invalidate-cache :color red)
     ("K" projectile-kill-buffers)
-    ("p" projectile-switch-project)
+    ("p" counsel-projectile-switch-project)
     ("r" projectile-replace)
     ("R" projectile-replace-regexp)
-    ("s" projectile-ag)
+    ("s" counsel-projectile-git-grep)
     ("S" projectile-save-project-buffers))
 #+END_SRC
 
@@ -2312,6 +2312,10 @@ created if the =projectile= folder is created in the =cache= folder.
     (projectile-known-projects-file (expand-file-name (format "%s/projectile/bookmarks" xdg-cache)))
     (projectile-mode-line '(:eval (projectile-project-name)))
     :config (projectile-global-mode))
+
+  (use-package counsel-projectile
+    :after (counsel projectile)
+    :config (counsel-projectile-mode 1))
 #+END_SRC
 
 ** Recent Files
