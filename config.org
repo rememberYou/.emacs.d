@@ -9,10 +9,10 @@
 - [[#start-up][Start Up]]
   - [[#authentification][Authentification]]
   - [[#better-defaults][Better defaults]]
+  - [[#xdg][XDG]]
   - [[#customization][Customization]]
   - [[#theme][Theme]]
   - [[#turn-off-mouse-interface][Turn off mouse interface]]
-  - [[#xdg][XDG]]
 - [[#languages][Languages]]
   - [[#c][C++]]
   - [[#css][CSS]]
@@ -47,7 +47,7 @@
   - [[#ending-up][Ending Up]]
   - [[#epub][EPUB]]
   - [[#spelling][Spelling]]
-  - [[#history][History]]
+  - [[#historyp][Historyp]]
   - [[#hydra][Hydra]]
   - [[#general][General]]
   - [[#irc][IRC]]
@@ -170,13 +170,44 @@ For a better user experience of GNU Emacs, here are the default values I use.
   (show-paren-mode 1)                               ; Show the parent
 #+END_SRC
 
+** XDG
+
+To keep the user's home and the =~/.emacs.d= folder as clean as possible,, I
+follow the [[https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html][XDG base directory specification]].
+
+Be careful that GNU Emacs will not create the appropriate folders if they do not
+exist. Therefore, it is necessary to create them yourself:
+
+#+BEGIN_SRC bash
+  mkdir ~/.cache/emacs ~/.local/share/emacs/
+#+END_SRC
+
+*NOTE:* you can find out more by going to my [[https://github.com/rememberYou/dotfiles][dotfiles]].
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defvar xdg-bin (getenv "XDG_BIN_HOME")
+    "The XDG bin base directory.")
+
+  (defvar xdg-cache (getenv "XDG_CACHE_HOME")
+    "The XDG cache base directory.")
+
+  (defvar xdg-config (getenv "XDG_CONFIG_HOME")
+    "The XDG config base directory.")
+
+  (defvar xdg-data (getenv "XDG_DATA_HOME")
+    "The XDG data base directory.")
+
+  (defvar xdg-lib (getenv "XDG_LIB_HOME")
+    "The XDG lib base directory.")
+#+END_SRC
+
 ** Customization
 
 To avoid overloading the GNU Emacs custormization =init.el= file made by the
 user with the UI, I add the generated code in a separate file.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (setq-default custom-file (expand-file-name "custom.el" user-emacs-directory))
+  (setq-default custom-file (expand-file-name (format "%s/emacs/custom.el" xdg-data)))
   (when (file-exists-p custom-file)
     (load custom-file t))
 #+END_SRC
@@ -209,30 +240,6 @@ I find invasive.
     (scroll-bar-mode -1)                            ; Disable the scroll bar
     (tool-bar-mode -1)                              ; Disable the tool bar
     (tooltip-mode -1))                              ; Disable the tooltips
-#+END_SRC
-
-** XDG
-
-In order to have the user's home as clean as possible, I follow the
-[[https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html][XDG base directory specification]].
-
-*NOTE:* you can find out more by going to my [[https://github.com/rememberYou/dotfiles][dotfiles]].
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (defvar xdg-bin (getenv "XDG_BIN_HOME")
-    "The XDG bin base directory.")
-
-  (defvar xdg-cache (getenv "XDG_CACHE_HOME")
-    "The XDG cache base directory.")
-
-  (defvar xdg-config (getenv "XDG_CONFIG_HOME")
-    "The XDG config base directory.")
-
-  (defvar xdg-data (getenv "XDG_DATA_HOME")
-    "The XDG data base directory.")
-
-  (defvar xdg-lib (getenv "XDG_LIB_HOME")
-    "The XDG lib base directory.")
 #+END_SRC
 
 * Languages
@@ -824,7 +831,7 @@ certain files with GNU Emacs.
           (shell-command (cdr match)))))
     :hook (after-save . my/cmd-after-saved-file)
     :custom
-    (backup-directory-alist `(("." . ,(expand-file-name "backups/" user-emacs-directory))))
+    (backup-directory-alist `(("." . ,(expand-file-name (format "%s/emacs/backups/" xdg-data)))))
     (delete-old-versions -1)
     (vc-make-backup-files t)
     (version-control t))
@@ -1106,7 +1113,7 @@ the fly.
     :ensure nil
     :delight
     :hook (text-mode . abbrev-mode)
-    :custom (abbrev-file-name (expand-file-name ".abbrev_defs" user-emacs-directory))
+    :custom (abbrev-file-name (expand-file-name (format "%s/emacs/abbrev_defs" xdg-data)))
     :config
     (if (file-exists-p abbrev-file-name)
         (quietly-read-abbrev-file)))
@@ -1153,7 +1160,7 @@ locally, download the desktop version and change the paths indicated below.
     (langtool-language-tool-server-jar "~/.local/lib/LanguageTool-4.2/languagetool-server.jar"))
 #+END_SRC
 
-** History
+** Historyp
 
 Provides the ability to have commands and their history saved so that whenever
 you return to work, you can re-run things as you need them. This is not a
@@ -1169,7 +1176,7 @@ radical function, it is part of a good user experience.
      '(kill-ring
        search-ring
        regexp-search-ring))
-    (savehist-file (expand-file-name "history" user-emacs-directory))
+    (savehist-file (expand-file-name (format "%s/emacs/history" xdg-cache)))
     (savehist-save-minibuffer-history 1)
     :config (savehist-mode 1))
 #+END_SRC
@@ -2298,18 +2305,14 @@ exists as well).
 [[https://github.com/bbatsov/projectile][Bozhidar Batsov]]
 #+END_QUOTE
 
-In order to follow the [[https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html][XDG base directory specification]], I place the =cache= and
-the =bookmark= files to =/home/$USER/cache=. However, these files will only be
-created if the =projectile= folder is created in the =cache= folder.
-
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package projectile
     :defer 1
     :custom
-    (projectile-cache-file (expand-file-name (format "%s/projectile/cache" xdg-cache)))
+    (projectile-cache-file (expand-file-name (format "%s/emacs/projectile.cache" xdg-cache)))
     (projectile-completion-system 'ivy)
     (projectile-enable-caching t)
-    (projectile-known-projects-file (expand-file-name (format "%s/projectile/bookmarks" xdg-cache)))
+    (projectile-known-projects-file (expand-file-name (format "%s/emacs/projectile-bookmarks.eld" xdg-cache)))
     (projectile-mode-line '(:eval (projectile-project-name)))
     :config (projectile-global-mode))
 
@@ -2336,6 +2339,7 @@ Provides fast access to the recent files.
                            "/tmp/"))
     (recentf-max-menu-items 15)
     (recentf-max-saved-items 200)
+    (recentf-save-file (expand-file-name (format "%s/emacs/recentf" xdg-cache)))
     :config (run-at-time nil (* 5 60) 'recentf-save-list))
 #+END_SRC
 
@@ -2828,6 +2832,7 @@ you can have a better estimate of the time that needs to be given to each task.
     (org-clock-in-switch-to-state "STARTED")
     (org-clock-out-remove-zero-time-clocks t)
     (org-clock-persist t)
+    (org-clock-persist-file (expand-file-name (format "%s/emacs/org-clock-save.el" xdg-cache)))
     (org-clock-persist-query-resume nil)
     (org-clock-report-include-clocking-task t)
     (org-show-notification-handler (lambda (msg) (alert msg))))
