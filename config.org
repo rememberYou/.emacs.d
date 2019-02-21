@@ -15,6 +15,7 @@
   - [[#turn-off-mouse-interface][Turn off mouse interface]]
 - [[#languages][Languages]]
   - [[#c][C++]]
+  - [[#cmake][CMake]]
   - [[#css][CSS]]
   - [[#csv][CSV]]
   - [[#docker][Docker]]
@@ -277,6 +278,17 @@ Finally, to generate the =compile.commands.json= file, you have to do:
 
 #+BEGIN_SRC bash
   bear make
+#+END_SRC
+
+** CMake
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package cmake-mode
+    :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'"))
+
+  (use-package cmake-font-lock
+    :after (cmake-mode)
+    :hook (cmake-mode . cmake-font-lock-activate))
 #+END_SRC
 
 ** CSS
