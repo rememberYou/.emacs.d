@@ -264,6 +264,10 @@ the first positions in the =company-backends=.
     (company-clang-modes nil)
     (company-backends (cons 'company-capf
                             (remove 'company-capf company-backends))))
+
+  (use-package google-c-style
+    :hook ((c-mode c++-mode) . google-set-c-style)
+    (c-mode-common . google-make-newline-indent))
 #+END_SRC
 
 To allow =ccls= to know the dependencies of your =.cpp= files with your =.h=
