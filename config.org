@@ -266,27 +266,13 @@ the first positions in the =company-backends=.
   (use-package eglot
     :hook (prog-mode . eglot-ensure)
     :custom
-    (company-clang-modes nil)
     (company-backends (cons 'company-capf
-                            (remove 'company-capf company-backends))))
+                            (remove 'company-capf company-backends)))
+    (company-clang-modes nil))
 
   (use-package google-c-style
     :hook ((c-mode c++-mode) . google-set-c-style)
            (c-mode-common . google-make-newline-indent))
-#+END_SRC
-
-To allow =ccls= to know the dependencies of your =.cpp= files with your =.h=
-files, it is important to provide an =compile.commands.json= file (or a =.ccls=
-file) at the root of your project.
-
-For this, nothing could be easier. If like me you use a =Makefile= for all your
-C++ projects, then you just need to install the =bear= package on your operating
-system.
-
-Finally, to generate the =compile.commands.json= file, you have to do:
-
-#+BEGIN_SRC bash
-  bear make
 #+END_SRC
 
 ** CMake
