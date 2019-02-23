@@ -254,25 +254,53 @@ I find invasive.
 
 There are several ways to configure GNU Emacs to take advantage of the major
 features of IDEs. In order to have a fast and stable environment, I recommend
-using =eglot= as a client for LSP servers and =ccls= as server.
+using =lsp-mode= as a client for LSP servers and =ccls= as server.
 
-*NOTE:* some of you might choose [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] as LSP.
+*NOTE:* some of you might choose [[https://github.com/joaotavora/eglot][eglot]] as LSP.
 
-For the completion, =eglot= defines =completion-at-point-functions=. So, make
-sure that =company-capf= is loaded instead of =company-clang=, by placing it in
-the first positions in the =company-backends=.
+Of course, to use =ccls= with GNU Emacs, you must first install it with the
+package manager of your operating system.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package eglot
-    :hook (prog-mode . eglot-ensure)
+  (use-package lsp-mode
+    :hook (prog-mode . lsp))
+
+  (use-package lsp-ui
+    :after lsp-mode
+    :hook (lsp-mode . lsp-ui-mode))
+
+  (use-package company-lsp
+    :after company lsp-mode
+    :config (push 'company-lsp company-backends))
+
+  (use-package ccls
+    :after projectile
+    :ensure-system-package ccls
     :custom
-    (company-backends (cons 'company-capf
-                            (remove 'company-capf company-backends)))
-    (company-clang-modes nil))
+    (ccls-args nil)
+    (ccls-executable (executable-find "ccls"))
+    (projectile-project-root-files-top-down-recurring
+     (append '("compile_commands.json" ".ccls")
+             projectile-project-root-files-top-down-recurring))
+    :config (push ".ccls-cache" projectile-globally-ignored-directories))
 
   (use-package google-c-style
     :hook ((c-mode c++-mode) . google-set-c-style)
            (c-mode-common . google-make-newline-indent))
+#+END_SRC
+
+To allow =ccls= to know the dependencies of your =.cpp= files with your =.h=
+files, it is important to provide an =compile.commands.json= file (or a =.ccls=
+file) at the root of your project.
+
+For this, nothing could be easier. If like me you use a =CMakeLists.txt= file
+for all your C++ projects, then you just need to install the =cmake= package on
+your operating system and to generate the =compile.commands.json= file, you have
+to do:
+
+#+BEGIN_SRC bash
+  cmake -H. -BDebug -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=YES
+  ln -s Debug/compile_commands.json
 #+END_SRC
 
 ** CMake
