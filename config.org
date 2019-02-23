@@ -1236,7 +1236,6 @@ seamless, it's like a minor mode that disables itself auto-magically.
   (use-package hydra
     :defer 0.5
     :bind (("C-c L" . hydra-ledger/body)
-           ("C-c P" . hydra-projectile/body)
            ("C-c b" . hydra-buffer/body)
            ("C-c c" . hydra-clock/body)
            ("C-c e" . hydra-erc/body)
@@ -1244,8 +1243,8 @@ seamless, it's like a minor mode that disables itself auto-magically.
            ("C-c g" . hydra-go-to-file/body)
            ("C-c m" . hydra-magit/body)
            ("C-c o" . hydra-org/body)
+           ("C-c p" . hydra-projectile/body)
            ("C-c s" . hydra-spelling/body)
-           ("C-c p t" . hydra-typescript/body)
            ("C-c y" . hydra-yasnippet/body)
            ("C-c w" . hydra-windows/body)))
 #+END_SRC
@@ -2346,6 +2345,7 @@ exists as well).
     (projectile-cache-file (expand-file-name (format "%s/emacs/projectile.cache" xdg-cache)))
     (projectile-completion-system 'ivy)
     (projectile-enable-caching t)
+    (projectile-keymap-prefix (kbd "C-c C-p"))
     (projectile-known-projects-file (expand-file-name (format "%s/emacs/projectile-bookmarks.eld" xdg-cache)))
     (projectile-mode-line '(:eval (projectile-project-name)))
     :config (projectile-global-mode))
