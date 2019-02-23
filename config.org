@@ -286,6 +286,8 @@ Finally, to generate the =compile.commands.json= file, you have to do:
 
 ** CMake
 
+CMake is a cross-platform build system generator.
+
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package cmake-mode
     :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'"))
