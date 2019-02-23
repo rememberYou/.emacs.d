@@ -2472,6 +2472,29 @@ Don't ask before killing a buffer. I know what I'm doing.
   (global-set-key [remap kill-buffer] #'kill-this-buffer)
 #+END_SRC
 
+Most of the time, when I open a new window with =C-x 2= or =C-x 3= it is to
+switch directly to it and perform an action. By default, GNU Emacs does not give
+focus to the new window created. I have no idea why this is not the default
+behavior. But let's refine these keys:
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package window
+    :ensure nil
+    :bind (("C-x 3" . hsplit-last-buffer)
+           ("C-x 2" . vsplit-last-buffer))
+    :preface
+    (defun hsplit-last-buffer ()
+      "Gives the focus to the last created horizontal window."
+      (interactive)
+      (split-window-horizontally)
+      (other-window 1))
+
+    (defun vsplit-last-buffer ()
+      "Gives the focus to the last created vertical window."
+      (interactive)
+      (split-window-vertically)
+      (other-window 1)))
+#+END_SRC
 *** =switch-window=
 
 Displays an overlay in each window showing a unique key, then asks the user
