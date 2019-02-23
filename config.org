@@ -389,11 +389,10 @@ Provides minibuffer hints when working with Emacs Lisp.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package sgml-mode
     :delight html-mode "HTML"
-    :hook
-    ((html-mode . my/html-set-pretty-print-function)
-     (html-mode . sgml-electric-tag-pair-mode)
-     (html-mode . sgml-name-8bit-mode)
-     (html-mode . toggle-truncate-lines))
+    :hook ((html-mode . my/html-set-pretty-print-function)
+           (html-mode . sgml-electric-tag-pair-mode)
+           (html-mode . sgml-name-8bit-mode)
+           (html-mode . toggle-truncate-lines))
     :custom (sgml-basic-offset 2)
     :preface
     (defun my/html-set-pretty-print-function ()
