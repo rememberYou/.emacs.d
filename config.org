@@ -1658,8 +1658,8 @@ Allows to calculate the network ranges.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package gnuplot
-    :defer 2
-    :ensure-system-package gnuplot)
+    :ensure-system-package gnuplot
+    :defer 2)
 
   (use-package gnuplot-mode
     :after gnuplot
