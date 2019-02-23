@@ -207,8 +207,13 @@ exist. Therefore, it is necessary to create them yourself:
 To avoid overloading the GNU Emacs custormization =init.el= file made by the
 user with the UI, I add the generated code in a separate file.
 
+I also made sure to follow the XDG base directory specification for the
+=auto-save-file= folder, in order to keep my =~/.emacs.d= folder clean.
+
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (setq-default custom-file (expand-file-name (format "%s/emacs/custom.el" xdg-data)))
+  (setq-default
+   auto-save-list-file-name (expand-file-name (format "%s/emacs/auto-save-list" xdg-data))
+   custom-file (expand-file-name (format "%s/emacs/custom.el" xdg-data)))
   (when (file-exists-p custom-file)
     (load custom-file t))
 #+END_SRC
