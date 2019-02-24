@@ -739,32 +739,15 @@ All my diagrams are made with PlantUML.
 
 ** Python
 
-I prefer to use =anaconda-mode= which I find easier to configure, because it
-supports =company-mode= better than =jedi= which is quite old.
+I recommend to use =lsp-mode= as a client for LSP servers and =pyls= as
+server. To use =pyls= with GNU Emacs, you must first install it with the package
+manager of your operating system.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package python
     :delight "π "
     :bind (("M-[" . python-nav-backward-block)
            ("M-]" . python-nav-forward-block)))
-#+END_SRC
-
-*** =anaconda-mode=
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package anaconda-mode
-    :after python
-    :hook ((anaconda-mode anaconda-eldoc-mode) . python-mode))
-#+END_SRC
-
-*** =company-anaconda=
-
-Anaconda backend for =company-mode=.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package company-anaconda
-    :after (anaconda-mode company)
-    :config (push 'company-anaconda company-backends))
 #+END_SRC
 
 ** SQL
