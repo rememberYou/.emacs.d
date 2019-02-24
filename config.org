@@ -639,6 +639,23 @@ I want a TeX engine that can deal with Unicode and use any font I like.
   (setq-default TeX-engine 'xetex)
 #+END_SRC
 
+I often use LaTeX in SRC blocs, that explain the configuration below:
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package ob-latex
+    :ensure nil
+    :custom
+    (org-latex-compiler "xelatex")
+    :config
+    (let ((dvipng (alist-get 'dvipng org-preview-latex-process-alist)))
+      (push (cons 'dvipng (plist-put dvipng
+                                     :latex-header "\\documentclass{article}
+                                                    \\usepackage{amsfonts}
+                                                    \\usepackage{amsmath}
+                                                    \\pagestyle{empty}"))
+            org-preview-latex-process-alist)))
+#+END_SRC
+
 *** =reftex=
 
 Minor mode with distinct support for \label, \ref and \cite in LaTeX.
