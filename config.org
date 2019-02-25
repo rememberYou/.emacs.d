@@ -17,7 +17,7 @@
 - [[#languages][Languages]]
   - [[#c][C++]]
   - [[#cmake][CMake]]
-  - [[#css][CSS]]
+  - [[#css--less--scss][CSS – LESS – SCSS]]
   - [[#csv][CSV]]
   - [[#docker][Docker]]
   - [[#emacs-lisp][Emacs Lisp]]
@@ -341,40 +341,20 @@ CMake is a cross-platform build system generator.
     :config (advice-add 'cmake-ide-compile :after #'my/switch-to-compilation-window))
 #+END_SRC
 
-** CSS
+** CSS – LESS – SCSS
+
+In order to have a fast and stable environment, I recommend using [[#lsp][LSP]] as a
+client for LSP servers and [[https://github.com/vscode-langservers/vscode-css-languageserver-bin][vscode-css-languageserver-bin]] as server.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package css-mode
     :custom (css-indent-offset 2))
-#+END_SRC
 
-*** =emmet-mode=
-
-Powerful minor mode to produce HTML from CSS-like selector.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package emmet-mode
-    :defer 6
-    :delight
-    :hook (sgml-mode css-mode web-mode))
-#+END_SRC
-
-*** =less-css-mode=
-
-Awesome package to programming in LESS.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
   (use-package less-css-mode
-    :mode "\\.less\\'"
-    :interpreter ("less" . less-css-mode))
-#+END_SRC
+    :mode "\\.less\\'")
 
-*** =sass-mode=
-
-Awesome package to programming in SASS.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package scss-mode :mode "\\.scss\\'")
+  (use-package scss-mode
+    :mode "\\.scss\\'")
 #+END_SRC
 
 ** CSV
