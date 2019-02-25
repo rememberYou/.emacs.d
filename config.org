@@ -685,8 +685,12 @@ All my diagrams are made with PlantUML.
 ** Python
 
 In order to have a fast and stable environment, I recommend using [[#lsp][LSP]] as a
-client for LSP servers and
-[[https://github.com/palantir/python-language-server][pyls]] as server.
+client for LSP servers and [[https://github.com/palantir/python-language-server][pyls]] as server.
+
+To use =python-language-server= GNU Emacs, you must first install it with the
+package manager of your operating system.
+
+However, let's define few bindings for =python=:
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package python
