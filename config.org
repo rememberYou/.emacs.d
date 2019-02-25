@@ -229,13 +229,8 @@ LSP. That's where [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] comes in!
   (use-package lsp-mode
     :hook (prog-mode . lsp))
 
-  (use-package lsp-ui
-    :after lsp-mode
-    :hook (lsp-mode . lsp-ui-mode))
-
-  (use-package company-lsp
-    :after company lsp-mode
-    :config (push 'company-lsp company-backends))
+  (use-package lsp-ui)
+  (use-package company-lsp)
 #+END_SRC
 
 Another benefit of using LSP to configure the management of your programming
