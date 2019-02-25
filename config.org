@@ -271,12 +271,11 @@ I find invasive.
 
 ** C++
 
-There are several ways to configure GNU Emacs to take advantage of the major
-features of IDEs. In order to have a fast and stable environment, I recommend
-using [[#lsp][LSP]] as a client for LSP servers [[https://github.com/MaskRay/ccls][ccls]] and as server.
+In order to have a fast and stable environment, I recommend using [[#lsp][LSP]] as a
+client for LSP servers [[https://github.com/MaskRay/ccls][ccls]] and as server.
 
-Of course, to use =ccls= with GNU Emacs, you must first install it with the
-package manager of your operating system.
+To use =ccls= with GNU Emacs, you must first install it with the package manager
+of your operating system.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package ccls
