@@ -9,7 +9,7 @@
 - [[#start-up][Start Up]]
   - [[#authentification][Authentification]]
   - [[#better-defaults][Better defaults]]
-  - [[#xdg][XDG]]
+  - [[#better-file-management-with-xdg][Better file management with XDG]]
   - [[#customization][Customization]]
   - [[#lsp][LSP]]
   - [[#theme][Theme]]
@@ -172,9 +172,9 @@ For a better user experience of GNU Emacs, here are the default values I use.
   (show-paren-mode 1)                               ; Show the parent
 #+END_SRC
 
-** XDG
+** Better file management with XDG
 
-To keep the user's home and the =~/.emacs.d= folder as clean as possible,, I
+To keep the user's home and the =~/.emacs.d= folder as clean as possible, I
 follow the [[https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html][XDG base directory specification]].
 
 Be careful that GNU Emacs will not create the appropriate folders if they do not
