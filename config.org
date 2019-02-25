@@ -733,9 +733,9 @@ All my diagrams are made with PlantUML.
 
 ** Python
 
-I recommend to use =lsp-mode= as a client for LSP servers and =pyls= as
-server. To use =pyls= with GNU Emacs, you must first install it with the package
-manager of your operating system.
+In order to have a fast and stable environment, I recommend using [[#lsp][LSP]] as a
+client for LSP servers and
+[[https://github.com/palantir/python-language-server][pyls]] as server.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package python
