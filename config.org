@@ -11,6 +11,7 @@
   - [[#better-defaults][Better defaults]]
   - [[#xdg][XDG]]
   - [[#customization][Customization]]
+  - [[#lsp][LSP]]
   - [[#theme][Theme]]
   - [[#turn-off-mouse-interface][Turn off mouse interface]]
 - [[#languages][Languages]]
@@ -218,6 +219,29 @@ I also made sure to follow the XDG base directory specification for the
     (load custom-file t))
 #+END_SRC
 
+** LSP
+
+In order to be able to use different /LSP/ (/Language Server Protocol/) server
+according to the programming language that we want to use, we need a client for
+LSP. That's where [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] comes in!
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package lsp-mode
+    :hook (prog-mode . lsp))
+
+  (use-package lsp-ui
+    :after lsp-mode
+    :hook (lsp-mode . lsp-ui-mode))
+
+  (use-package company-lsp
+    :after company lsp-mode
+    :config (push 'company-lsp company-backends))
+#+END_SRC
+
+Another benefit of using LSP to configure the management of your programming
+language is that LSP servers are also used by other text editors. This,
+increasing contributions to these packages.
+
 ** Theme
 
 I like the light on dark because I find it to be more restful.
@@ -254,25 +278,12 @@ I find invasive.
 
 There are several ways to configure GNU Emacs to take advantage of the major
 features of IDEs. In order to have a fast and stable environment, I recommend
-using =lsp-mode= as a client for LSP servers and =ccls= as server.
-
-*NOTE:* some of you might choose [[https://github.com/joaotavora/eglot][eglot]] as LSP.
+using [[#lsp][LSP]] as a client for LSP servers [[https://github.com/MaskRay/ccls][ccls]] and as server.
 
 Of course, to use =ccls= with GNU Emacs, you must first install it with the
 package manager of your operating system.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package lsp-mode
-    :hook (prog-mode . lsp))
-
-  (use-package lsp-ui
-    :after lsp-mode
-    :hook (lsp-mode . lsp-ui-mode))
-
-  (use-package company-lsp
-    :after company lsp-mode
-    :config (push 'company-lsp company-backends))
-
   (use-package ccls
     :after projectile
     :ensure-system-package ccls
