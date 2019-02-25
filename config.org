@@ -2366,8 +2366,8 @@ I tend to use Beamer for scientific presentations, and Reveal.js for others.
   (use-package ox-reveal
     :after org
     :custom
-    (org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
-    (org-reveal-mathjax t))
+    (org-reveal-mathjax t)
+    (org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/"))
 #+END_SRC
 
 ** Version Control
