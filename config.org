@@ -405,60 +405,39 @@ Provides minibuffer hints when working with Emacs Lisp.
       (setq my/pretty-print-function #'sgml-pretty-print)))
 #+END_SRC
 
-** Java
+In order to have a fast and stable environment, I recommend using [[#lsp][LSP]] as a
+client for LSP servers and [[https://github.com/vscode-langservers/vscode-html-languageserver][vscode-html-languageserver]] as server.
 
-Configuring Java for GNU Emacs is very simple with =eclim=. All you need to do is
-install =Eclipse= and =eclim=.
+To use =vscode-html-languageserver= with GNU Emacs, you must first install it
+with the package manager of your operating system.
 
-*** Eclim
-
-#+BEGIN_QUOTE
-Eclim is an Eclipse plugin which exposes Eclipse features through a server
-interface. When this server is started, the command line utility eclim can be
-used to issue requests to that server.
-
-[[https://github.com/senny/emacs-eclim][James Chochlinski]]
-#+END_QUOTE
-
-To use this plugin, you must download =eclim= with the Java Jar file as
-installer and put the executables =eclim= and =eclimd= in the same folder where
-you installed =Eclipse= (in my case, =/opt/eclipse=).
-
-Now all that remains is to configure =eclim=:
+Let's configure =emmet-mode=, to produce HTML from CSS-like selector:
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package eclim
-    :defer 3
-    :hook (java-mode . eclim-mode)
-    :custom
-    (eclimd-autostart t)
-    (eclimd-default-workspace '"~/Documents/Projects/Java/")
-    (eclim-eclipse-dirs '"/opt/eclipse")
-    (eclim-executable '"/opt/eclipse/eclim")
-    (help-at-pt-display-when-idle t)
-    (help-at-pt-timer-delay 0.1)
-    :config (help-at-pt-set-timer))
+  (use-package emmet-mode
+    :delight
+    :hook (sgml-mode css-mode web-mode))
 #+END_SRC
 
-*** =company-emacs-eclim=
+** Java
 
-=eclim= backend for =company-mode=.
+In order to have a fast and stable environment, I recommend using [[#lsp][LSP]] as a
+client for LSP servers and [[https://github.com/emacs-lsp/lsp-java][lsp-java]] as server.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package company-emacs-eclim
-    :after (company eclim)
-    :commands company-emacs-eclim-setup)
+  (use-package lsp-java
+    :after lsp
+    :hook (java-mode . lsp))
 #+END_SRC
 
 *** Gradle
 
-Most of my Java projects are made with =gradle=.
+Most of my Java projects are made with =gradle=. The configuration is easy
+enough:
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package gradle-mode
-    :delight "γ "
-    :mode "\\.gradle\\'"
-    :interpreter ("gradle" . gradle-mode))
+    :mode "\\.gradle\\'")
 #+END_SRC
 
 ** JavaScript
