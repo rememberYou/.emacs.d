@@ -2343,7 +2343,6 @@ Provides fast access to the recent files.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package recentf
-    :defer 2
     :bind ("C-c r" . recentf-open-files)
     :init (recentf-mode)
     :custom
