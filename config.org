@@ -261,10 +261,10 @@ I find invasive.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (when window-system
-    (menu-bar-mode -1)                              ; Disable the menu bar
-    (scroll-bar-mode -1)                            ; Disable the scroll bar
-    (tool-bar-mode -1)                              ; Disable the tool bar
-    (tooltip-mode -1))                              ; Disable the tooltips
+    (menu-bar-mode -1)              ; Disable the menu bar
+    (scroll-bar-mode -1)            ; Disable the scroll bar
+    (tool-bar-mode -1)              ; Disable the tool bar
+    (tooltip-mode -1))              ; Disable the tooltips
 #+END_SRC
 
 * Languages
