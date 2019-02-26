@@ -928,7 +928,6 @@ like being able to find my way easily.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package ibuffer
-    :defer 0.2
     :bind ("C-x C-b" . ibuffer))
 
   (use-package ibuffer-projectile
@@ -1211,7 +1210,6 @@ seamless, it's like a minor mode that disables itself auto-magically.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package hydra
-    :defer 0.5
     :bind (("C-c L" . hydra-ledger/body)
            ("C-c b" . hydra-buffer/body)
            ("C-c c" . hydra-clock/body)
@@ -1650,7 +1648,6 @@ Moves the current line (or if marked, the current region's, whole lines).
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package move-text
-    :defer 2
     :bind (("M-p" . move-text-up)
            ("M-n" . move-text-down))
     :config (move-text-default-bindings))
@@ -1803,7 +1800,6 @@ of a term, without breaking its workflow, is ideal.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package wiki-summary
-    :defer 1
     :bind ("C-c W" . wiki-summary)
     :preface
     (defun my/format-summary-in-buffer (summary)
@@ -2042,7 +2038,6 @@ packet load attribute has no impact on =emacs-init-time=.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package lorem-ipsum
-    :defer 5
     :bind (("C-c C-v l" . lorem-ipsum-insert-list)
            ("C-c C-v p" . lorem-ipsum-insert-paragraphs)
            ("C-c C-v s" . lorem-ipsum-insert-sentences)))
@@ -2235,7 +2230,6 @@ fails.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package webpaste
-    :defer 3
     :bind (("C-c C-p C-b" . webpaste-paste-buffer)
            ("C-c C-p C-r" . webpaste-paste-region)))
 #+END_SRC
@@ -2284,7 +2278,6 @@ the structure of the current major mode.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package expand-region
-    :defer 2
     :bind (("C-+" . er/contract-region)
            ("C-=" . er/expand-region)))
 #+END_SRC
@@ -2478,7 +2471,6 @@ hiding its contents.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package switch-window
-    :defer 0.2
     :bind (("C-x o" . switch-window)
            ("C-x w" . switch-window-then-swap-buffer)))
 #+END_SRC
@@ -2490,7 +2482,6 @@ cycling through =C-x o= (=other-window=).
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package windmove
-    :defer 0.2
     :bind (("C-c h" . windmove-left)
            ("C-c j" . windmove-down)
            ("C-c k" . windmove-up)
