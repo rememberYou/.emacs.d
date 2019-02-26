@@ -754,10 +754,15 @@ However, let's define few bindings for =python=:
 
 ** Yarn
 
-=yarn-mode= gives me the possibility to easily manage =.yarn-lock= files.
+Most of web project that you will do, will use =yarn= as dependency management.
+
+It may be useful to take a look at the generated =yarn.lock= file. However, be
+careful to not modify it. The =yarn-mode= is a small package that automatically
+places this buffer in read-only and activates the syntax color for these files.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package yarn-mode :delight yarn-mode "Y ")
+  (use-package yarn-mode
+    :mode "yarn\\.lock\\'")
 #+END_SRC
 
 * Advanced Configuration
