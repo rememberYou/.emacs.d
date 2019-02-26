@@ -851,11 +851,13 @@ certain files with GNU Emacs.
 
 ** Browser
 
-I prefer to use Chromium, the open-source version of Google Chrome that I find
-faster than Firefox. Maybe I should switch for qutebrowser.
+I try to avoid using the mouse as much as possible, even for
+navigation. Therefore, I use use [[https://github.com/qutebrowser/qutebrowser][qutebrowser]], a keyboard-focused browser with a
+minimal GUI.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (setq browse-url-browser-function 'browse-url-chromium)
+(setq browse-url-browser-function 'browse-url-generic)
+(setq browse-url-generic-program "qutebrowser")
 #+END_SRC
 
 *** =atomic chrome=
