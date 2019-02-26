@@ -676,10 +676,13 @@ PHP. Note that =ac-php= supports =company mode= and =auto-complete=.
 
 ** PlantUML
 
-All my diagrams are made with PlantUML.
+It is often useful to be able to make diagrams for various large projects. For
+the creation of these diagrams, [[http://plantuml.com/][PlantUML]] remains the best.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package plantuml-mode :defer 3)
+  (use-package plantuml-mode
+    :mode ("\\.plantuml\\'" "\\.puml\\'")
+    :custom (plantuml-jar-path (expand-file-name (format "%s/plantuml.jar" xdg-lib))))
 #+END_SRC
 
 ** Python
