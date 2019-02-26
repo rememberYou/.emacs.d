@@ -1632,6 +1632,8 @@ Allows to calculate the network ranges.
 
 *** =gnuplot=
 
+To generate a fast and quality graphic, =gnuplot= is perfect.
+
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package gnuplot
     :ensure-system-package gnuplot
@@ -1639,7 +1641,7 @@ Allows to calculate the network ranges.
 
   (use-package gnuplot-mode
     :after gnuplot
-    :mode ("\\.gp\\'" . gnuplot-mode))
+    :mode "\\.gp\\'")
 #+END_SRC
 
 *** =move-text=
