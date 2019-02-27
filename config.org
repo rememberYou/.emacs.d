@@ -1191,8 +1191,12 @@ locally, download the desktop version and change the paths indicated below.
     :defer 2
     :delight
     :custom
-    (langtool-language-tool-jar "~/.local/lib/LangueageTool-4.2/languagetool-commandline.jar")
-    (langtool-language-tool-server-jar "~/.local/lib/LanguageTool-4.2/languagetool-server.jar"))
+    (langtool-default-language "fr")
+    (langtool-mother-tongue "fr")
+    (langtool-language-tool-jar (expand-file-name
+                                 (format "%s/LangueageTool-4.2/languagetool-commandline.jar" xdg-lib)))
+    (langtool-language-tool-server-jar (expand-file-name
+                                        (format "%s/LanguageTool-4.2/languagetool-server.jar" xdg-lib))))
 #+END_SRC
 
 ** Historyp
