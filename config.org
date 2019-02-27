@@ -1140,11 +1140,12 @@ enables spell checking on-the-fly in GNU Emacs.
   (use-package flyspell
     :defer 1
     :delight
+    :hook (prog-mode . flyspell-prog-mode)
     :custom
     (flyspell-abbrev-p t)
+    (flyspell-default-dictionary "en_US")
     (flyspell-issue-message-flag nil)
-    (flyspell-issue-welcome-flag nil)
-    (flyspell-mode 1))
+    (flyspell-issue-welcome-flag nil))
 
   (use-package flyspell-correct-ivy
     :after flyspell
