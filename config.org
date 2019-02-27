@@ -1535,6 +1535,7 @@ Group spelling commands.
     _q_ quit            _<_ previous        _c_ correction
     ^^                  _>_ next            _d_ dictionary
     ^^                  _f_ check           _m_ mode
+    ^^                  ^^                  _s_ switch
     ^^                  ^^                  ^^
     "
     ("q" nil)
@@ -1543,7 +1544,8 @@ Group spelling commands.
     ("c" ispell)
     ("d" ispell-change-dictionary)
     ("f" flyspell-buffer)
-    ("m" flyspell-mode))
+    ("m" flyspell-mode)
+    ("s" my/switch-dictionary))
 #+END_SRC
 
 *** Hydra / TypeScript
