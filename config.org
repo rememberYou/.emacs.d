@@ -49,7 +49,7 @@
   - [[#ending-up][Ending Up]]
   - [[#epub][EPUB]]
   - [[#spelling][Spelling]]
-  - [[#historyp][Historyp]]
+  - [[#history][History]]
   - [[#hydra][Hydra]]
   - [[#general][General]]
   - [[#irc][IRC]]
