@@ -1213,7 +1213,7 @@ locally, download the desktop version and change the paths indicated below.
     (langtool-mother-tongue "fr"))
 #+END_SRC
 
-** Historyp
+** History
 
 Provides the ability to have commands and their history saved so that whenever
 you return to work, you can re-run things as you need them. This is not a
