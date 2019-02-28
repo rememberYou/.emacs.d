@@ -1200,12 +1200,22 @@ install them with the package manager of your operating system.
 and =flyspell=, you will have better documents. In order to be able to use it
 locally, download the desktop version and change the paths indicated below.
 
+*NOTE:* SEE the [[https://github.com/mhayashi1120/Emacs-langtool/pull/41][pull request]] that I did to fix the =langtool-disabled-rules=
+issue with the new LanguageTool API, until this pull request it's merged.
+
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package langtool
     :defer 2
     :delight
     :custom
     (langtool-default-language "en")
+    (langtool-disabled-rules '("COMMA_PARENTHESIS_WHITESPACE"
+                               "COPYRIGHT"
+                               "DASH_RULE"
+                               "EN_QUOTES"
+                               "EN_UNPAIRED_BRACKETS"
+                               "UPPERCASE_SENTENCE_START"
+                               "WHITESPACE_RULE"))
     (langtool-language-tool-jar (expand-file-name
                                  (format "%s/LangueageTool-4.2/languagetool-commandline.jar" xdg-lib)))
     (langtool-language-tool-server-jar (expand-file-name
