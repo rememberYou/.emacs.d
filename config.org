@@ -1140,9 +1140,9 @@ enables spell checking on-the-fly in GNU Emacs.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package flyspell
-    :defer 1
     :delight
-    :hook (prog-mode . flyspell-prog-mode)
+    :hook ((markdown-mode org-mode text-mode) . flyspell-mode)
+    (prog-mode . flyspell-prog-mode)
     :custom
     (flyspell-abbrev-p t)
     (flyspell-default-dictionary "en_US")
@@ -1150,10 +1150,8 @@ enables spell checking on-the-fly in GNU Emacs.
     (flyspell-issue-welcome-flag nil))
 
   (use-package flyspell-correct-ivy
-    :after flyspell
-    :bind (:map flyspell-mode-map
-                ("C-;" . flyspell-correct-word-generic))
-    :custom (flyspell-correct-interface 'flyspell-correct-ivy))
+    :after (flyspell ivy)
+    :init (setq flyspell-correct-interface #'flyspell-correct-ivy))
 #+END_SRC
 
 *** Spell Checker
