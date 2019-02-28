@@ -1547,18 +1547,20 @@ Group spelling commands.
     ^Spelling^          ^Errors^            ^Checker^
     ^────────^──────────^──────^────────────^───────^───────
     _q_ quit            _<_ previous        _c_ correction
-    ^^                  _>_ next            _d_ dictionary
-    ^^                  _f_ check           _m_ mode
+    ^^                  _>_ next            _C_ clear
+    ^^                  _f_ find            _d_ dictionary
+    ^^                  ^^                  _l_ language
     ^^                  ^^                  _s_ switch
     ^^                  ^^                  ^^
     "
     ("q" nil)
     ("<" flyspell-correct-previous :color pink)
     (">" flyspell-correct-next :color pink)
-    ("c" ispell)
+    ("c" langtool-correct-buffer)
+    ("C" langtool-check-done)
     ("d" ispell-change-dictionary)
-    ("f" flyspell-buffer)
-    ("m" flyspell-mode)
+    ("f" langtool-check)
+    ("l" (message "Current language: %s (%s)" langtool-default-language ispell-current-dictionary))
     ("s" my/switch-dictionary))
 #+END_SRC
 
