@@ -1154,7 +1154,25 @@ enables spell checking on-the-fly in GNU Emacs.
     :bind (:map flyspell-mode-map
                 ("C-;" . flyspell-correct-word-generic))
     :custom (flyspell-correct-interface 'flyspell-correct-ivy))
+#+END_SRC
 
+*** Spell Checker
+
+No one is immune to spelling mistakes. So I like to check the spelling of the
+document once it has been written. To do this, I use =hunspell=, the modern
+spell checker.
+
+*NOTE:* the reason I prefer =hunspell= to =aspell= is that according to the
+latest news, hunspell has made it possible to be more consistent on fly
+spells. However, most people still use =aspell= because it allows you to spot
+errors in camelCase, convenient for when you program. Personally, I just want to
+check the spelling in the comments and not in the whole document, so =hunspell= is
+perfect for me.
+
+To use =hunspell= and the desired dictionaries on GNU Emacs, you must first
+install them with the package manager of your operating system.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
   (use-package ispell
     :config
     (cond
