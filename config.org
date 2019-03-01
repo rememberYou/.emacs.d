@@ -1075,13 +1075,6 @@ For those who didn't know, GNU Emacs is also a file explorer.
     (dired-listing-switches "-alh")
     (dired-ls-F-marks-symlinks nil)
     (dired-recursive-copies 'always))
-
-  (use-package dired-x
-    :ensure nil
-    :preface
-    (defun my/dired-revert-after-cmd (command &optional output error)
-      (revert-buffer))
-    :config (advice-add 'dired-smart-shell-command :after #'my/dired-revert-after-cmd))
 #+END_SRC
 
 ** Ending Up
