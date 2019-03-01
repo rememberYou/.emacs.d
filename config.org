@@ -1857,13 +1857,13 @@ of a term, without breaking its workflow, is ideal.
     :bind ("C-c W" . wiki-summary)
     :preface
     (defun my/format-summary-in-buffer (summary)
-      "Given a summary, stick it in the *wiki-summary* buffer and display the buffer"
+      "Given a summary, sticks it in the *wiki-summary* buffer and displays
+       the buffer."
       (let ((buf (generate-new-buffer "*wiki-summary*")))
         (with-current-buffer buf
           (princ summary buf)
           (fill-paragraph)
           (goto-char (point-min))
-          (text-mode)
           (view-mode))
         (pop-to-buffer buf))))
 
