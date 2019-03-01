@@ -1200,9 +1200,6 @@ install them with the package manager of your operating system.
 and =flyspell=, you will have better documents. In order to be able to use it
 locally, download the desktop version and change the paths indicated below.
 
-*NOTE:* SEE the [[https://github.com/mhayashi1120/Emacs-langtool/pull/41][pull request]] that I did to fix the =langtool-disabled-rules=
-issue with the new LanguageTool API, until this pull request it's merged.
-
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package langtool
     :defer 2
