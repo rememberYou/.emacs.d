@@ -2045,7 +2045,9 @@ smaller, simpler, and smoother to use yet highly customizable.
   (use-package swiper
     :after ivy
     :bind (("C-s" . swiper)
-           ("C-r" . swiper)))
+           ("C-r" . swiper)
+           :map swiper-map
+                 ("M-%" . swiper-query-replace)))
 #+END_SRC
 
 ** Ledger
