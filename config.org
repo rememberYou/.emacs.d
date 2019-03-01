@@ -1182,8 +1182,8 @@ install them with the package manager of your operating system.
     (ispell-really-hunspell t)
     (ispell-silently-savep t)
     :preface
-    (defun my/switch-dictionary ()
-      "Switches between the English and French dictionary."
+    (defun my/switch-language ()
+      "Switches between the English and French language."
       (interactive)
       (let* ((current-dictionary ispell-current-dictionary)
              (new-dictionary (if (string= current-dictionary "fr_BE") "en_US" "fr_BE")))
