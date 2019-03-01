@@ -1558,7 +1558,7 @@ Group spelling commands.
     ^^                  _f_ find            _d_ dictionary
     ^^                  ^^                  _l_ language
     ^^                  ^^                  _s_ switch
-    ^^                  ^^                  ^^
+    ^^                  ^^                  _w_ wiki
     "
     ("q" nil)
     ("<" flyspell-correct-previous :color pink)
@@ -1568,7 +1568,8 @@ Group spelling commands.
     ("d" ispell-change-dictionary)
     ("f" langtool-check)
     ("l" (message "Current language: %s (%s)" langtool-default-language ispell-current-dictionary))
-    ("s" my/switch-dictionary))
+    ("s" my/switch-dictionary)
+    ("w" wiki-summary))
 #+END_SRC
 
 *** Hydra / TypeScript
@@ -1854,7 +1855,7 @@ of a term, without breaking its workflow, is ideal.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package wiki-summary
-    :bind ("C-c W" . wiki-summary)
+    :defer 1
     :preface
     (defun my/format-summary-in-buffer (summary)
       "Given a summary, sticks it in the *wiki-summary* buffer and displays
