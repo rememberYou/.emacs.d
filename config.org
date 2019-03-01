@@ -2017,8 +2017,14 @@ smaller, simpler, and smoother to use yet highly customizable.
   (use-package ivy
     :defer 0.1
     :delight
-    :bind (("C-c C-r" . ivy-resume)
-           ("C-x B" . ivy-switch-buffer-other-window))
+    :bind (("C-x b" . ivy-switch-buffer)
+           ("C-x B" . ivy-switch-buffer-other-window)
+           ("M-H"   . ivy-resume)
+           :map ivy-minibuffer-map
+                 ("<tab>" . ivy-alt-done)
+                 ("C-i" . ivy-partial-or-done)
+           :map ivy-switch-buffer-map
+                 ("C-k" . ivy-switch-buffer-kill))
     :custom
     (ivy-count-format "(%d/%d) ")
     (ivy-use-virtual-buffers t)
@@ -2034,9 +2040,7 @@ smaller, simpler, and smoother to use yet highly customizable.
     (ivy-virtual-abbreviate 'full
                             ivy-rich-switch-buffer-align-virtual-buffer t
                             ivy-rich-path-style 'abbrev)
-    :config
-    (ivy-set-display-transformer 'ivy-switch-buffer
-                                 'ivy-rich-switch-buffer-transformer))
+    :config (ivy-rich-mode 1))
 
   (use-package swiper
     :after ivy
