@@ -1596,7 +1596,7 @@ Group spelling commands.
     ("d" ispell-change-dictionary)
     ("f" langtool-check)
     ("l" (message "Current language: %s (%s)" langtool-default-language ispell-current-dictionary))
-    ("s" my/switch-dictionary)
+    ("s" my/switch-language)
     ("w" wiki-summary))
 #+END_SRC
 
