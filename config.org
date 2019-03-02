@@ -1253,10 +1253,7 @@ radical function, it is part of a good user experience.
     :custom
     (history-delete-duplicates t)
     (history-length t)
-    (savehist-additional-variables
-     '(kill-ring
-       search-ring
-       regexp-search-ring))
+    (savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
     (savehist-file (expand-file-name (format "%s/emacs/history" xdg-cache)))
     (savehist-save-minibuffer-history 1)
     :config (savehist-mode 1))
