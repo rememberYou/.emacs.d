@@ -1560,7 +1560,7 @@ Group Projectile commands.
     ("p" counsel-projectile-switch-project)
     ("r" projectile-replace)
     ("R" projectile-replace-regexp)
-    ("s" counsel-projectile-git-grep)
+    ("s" counsel-rg)
     ("S" projectile-save-project-buffers))
 #+END_SRC
 
@@ -2012,7 +2012,8 @@ smaller, simpler, and smoother to use yet highly customizable.
            ("C-x C-l" . counsel-find-library)
            ("C-x C-u" . counsel-unicode-char)
            ("C-x C-v" . counsel-set-variable))
-    :config (counsel-mode))
+    :config (counsel-mode)
+    :custom (counsel-rg-base-command "rg -S -M 150 --no-heading --line-number --color never %s"))
 
   (use-package ivy
     :defer 0.1
