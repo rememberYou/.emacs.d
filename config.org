@@ -843,10 +843,10 @@ completion candidates.
 I use =company= with =company-box= that allows a company front-end with icons.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-   (use-package company-box
-     :after company
-     :delight
-     :hook (company-mode . company-box-mode))
+  (use-package company-box
+    :after company
+    :delight
+    :hook (company-mode . company-box-mode))
 #+END_SRC
 
 ** Backups
