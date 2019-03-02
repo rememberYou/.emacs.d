@@ -418,7 +418,7 @@ Let's configure =emmet-mode=, to produce HTML from CSS-like selector:
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package emmet-mode
     :delight
-    :hook (sgml-mode css-mode web-mode))
+    :hook (css-mode sgml-mode web-mode))
 #+END_SRC
 
 ** Java
