@@ -811,6 +811,7 @@ and multiple, selectable "styles", whose use is fully customizable by the user.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package alert
+    :defer 1
     :custom (alert-default-style 'libnotify))
 #+END_SRC
 
