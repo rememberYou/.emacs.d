@@ -784,7 +784,7 @@ However, let's define few bindings for =python=:
 
 ** Yarn
 
-Most of web project that you will do, will use =yarn= as dependency management.
+Most of the web project that you will do, will use =yarn= as dependency management.
 
 It may be useful to take a look at the generated =yarn.lock= file. However, be
 careful to not modify it. The =yarn-mode= is a small package that automatically
@@ -882,7 +882,7 @@ certain files with GNU Emacs.
 ** Browser
 
 I try to avoid using the mouse as much as possible, even for
-navigation. Therefore, I use use [[https://github.com/qutebrowser/qutebrowser][qutebrowser]], a keyboard-focused browser with a
+navigation. Therefore, I use [[https://github.com/qutebrowser/qutebrowser][qutebrowser]], a keyboard-focused browser with a
 minimal GUI.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
@@ -1080,7 +1080,7 @@ For those who didn't know, GNU Emacs is also a file explorer.
 ** Ending Up
 
 I'm using an =.org= file to maintain my GNU Emacs configuration. However, at his
-launch, it will loads the =config.el= source file for a faster loading.
+launch, it will load the =config.el= source file for a faster loading.
 
 The code below, executes =org-babel-tangle= asynchronously when
 =config.org= is saved.
@@ -2583,7 +2583,7 @@ I often undo's and redo's with window configurations.
 #+BEGIN_QUOTE
 Winner mode is a global minor mode that records the changes in the window
 configuration (i.e. how the frames are partitioned into windows) so that the
-changes can be "undone" using the command =winner-undo=. By default this one is
+changes can be "undone" using the command =winner-undo=. By default, this one is
 bound to the key sequence ctrl-c left. If you change your mind (while undoing),
 you can press ctrl-c right (calling =winner-redo=).
 
@@ -2950,7 +2950,7 @@ you can have a better estimate of the time that needs to be given to each task.
 ** Contacts
 
 The best solution to maintain your contacts. I tend to use =org-contacts= to
-remember their birthdays so I can be the first to wish them that. Be careful
+remember their birthdays, so I can be the first to wish them that. Be careful
 that to install it, this one is available with =org-plus-contrib=.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
@@ -2962,7 +2962,7 @@ that to install it, this one is available with =org-plus-contrib=.
 
 ** Custormization
 
-Let's change the foreground and the weight of each keywords.
+Let's change the foreground and the weight of each keyword.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package org-faces
