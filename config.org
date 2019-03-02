@@ -2026,6 +2026,7 @@ smaller, simpler, and smoother to use yet highly customizable.
            :map ivy-switch-buffer-map
                  ("C-k" . ivy-switch-buffer-kill))
     :custom
+    (ivy-case-fold-search-default t)
     (ivy-count-format "(%d/%d) ")
     (ivy-use-virtual-buffers t)
     :config (ivy-mode))
