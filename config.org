@@ -2063,9 +2063,9 @@ smaller, simpler, and smoother to use yet highly customizable.
                                                counsel-find-file
                                                counsel-file-jump
                                                counsel-find-library
-                                               counsel-recentf
                                                counsel-projectile-find-dir
-                                               counsel-projectile-find-file))
+                                               counsel-projectile-find-file
+                                               counsel-recentf))
     :config (all-the-icons-ivy-setup))
 
   (use-package flx :defer 0.2)
