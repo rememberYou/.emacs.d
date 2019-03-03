@@ -2031,7 +2031,7 @@ smaller, simpler, and smoother to use yet highly customizable.
     :custom
     (ivy-case-fold-search-default t)
     (ivy-count-format "(%d/%d) ")
-    (ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
+    (ivy-re-builders-alist '((t . ivy--regex-plus)))
     (ivy-use-virtual-buffers t)
     :config (ivy-mode))
 
@@ -2065,8 +2065,6 @@ smaller, simpler, and smoother to use yet highly customizable.
                                                counsel-projectile-find-file
                                                counsel-recentf))
     :config (all-the-icons-ivy-setup))
-
-  (use-package flx :defer 0.2)
 
   (use-package swiper
     :after ivy
