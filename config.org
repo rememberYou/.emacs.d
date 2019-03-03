@@ -2032,6 +2032,7 @@ smaller, simpler, and smoother to use yet highly customizable.
     :custom
     (ivy-case-fold-search-default t)
     (ivy-count-format "(%d/%d) ")
+    (ivy-re-builders-alist '((t . ivy--regex-fuzzy)))
     (ivy-use-virtual-buffers t)
     :config (ivy-mode))
 
@@ -2047,6 +2048,7 @@ smaller, simpler, and smoother to use yet highly customizable.
                             ivy-rich-path-style 'abbrev)
     :config (ivy-rich-mode 1))
 
+  (use-package flx :defer 0.2)
   (use-package swiper
     :after ivy
     :bind (("C-s" . swiper)
