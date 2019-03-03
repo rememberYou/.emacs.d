@@ -244,18 +244,16 @@ increasing contributions to these packages.
 
 ** Theme
 
-I like the light on dark because I find it to be more restful.
+I'm a big fan of [[https://github.com/arcticicestudio/nord-emacs][nord-theme]] and combined with [[https://github.com/seagle0128/doom-modeline][doom-modeline]], it's just happiness.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package nord-theme
     :config
-    (add-to-list 'custom-theme-load-path (expand-file-name "~/.emacs.d/themes/"))
+    (push (expand-file-name "~/.emacs.d/themes/") custom-theme-load-path)
     (load-theme 'nord t))
 
-  (use-package smart-mode-line
-    :defer 0.1
-    :custom (sml/theme 'respectful)
-    :config (sml/setup))
+  (use-package doom-modeline
+    :hook (after-init . doom-modeline-mode))
 #+END_SRC
 
 ** Turn off mouse interface
