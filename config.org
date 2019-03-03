@@ -2520,10 +2520,12 @@ made by previous commits.
 
 ** Whitespaces
 
-It is often annoying to see unnecessary blank spaces at the end of a line or file.
+It is often annoying to see unnecessary blank spaces at the end of a line or
+file. Let's get ride of them:
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package whitespace
+  (use-package simple
+    :ensure nil
     :hook (before-save . delete-trailing-whitespace))
 #+END_SRC
 
