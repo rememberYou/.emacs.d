@@ -2049,7 +2049,27 @@ smaller, simpler, and smoother to use yet highly customizable.
                             ivy-rich-path-style 'abbrev)
     :config (ivy-rich-mode 1))
 
+  ;; NOTE: you must run `M-x all-the-icons-install-fonts` the first time.
+  (use-package all-the-icons
+    :defer 0.5
+    :config
+    (add-to-list 'all-the-icons-mode-icon-alist
+               '(erc-mode all-the-icons-faicon "commenting-o" :height 1.0 :v-adjust 0.0 :face all-the-icons-cyan)))
+
+  (use-package all-the-icons-ivy
+    :after (all-the-icons ivy)
+    :custom (all-the-icons-ivy-file-commands '(counsel-git
+                                               counsel-dired-jump
+                                               counsel-find-file
+                                               counsel-file-jump
+                                               counsel-find-library
+                                               counsel-recentf
+                                               counsel-projectile-find-dir
+                                               counsel-projectile-find-file))
+    :config (all-the-icons-ivy-setup))
+
   (use-package flx :defer 0.2)
+
   (use-package swiper
     :after ivy
     :bind (("C-s" . swiper)
