@@ -2012,6 +2012,7 @@ smaller, simpler, and smoother to use yet highly customizable.
     :bind (("C-x C-d" . counsel-dired-jump)
            ("C-x C-h" . counsel-minibuffer-history)
            ("C-x C-l" . counsel-find-library)
+           ("C-x C-r" . counsel-recentf)
            ("C-x C-u" . counsel-unicode-char)
            ("C-x C-v" . counsel-set-variable))
     :config (counsel-mode)
