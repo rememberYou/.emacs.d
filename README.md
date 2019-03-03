@@ -46,6 +46,7 @@ that will be better managed by the package manager.
 
 You can see all the tips I wrote on Reddit sorted from the most recent to the
 oldest according to the following links:
+* [Packages to include in your workflow (Part II)](https://www.reddit.com/r/emacs/comments/awyvpa/tip_packages_to_include_in_your_workflow_part_ii/)
 * [How to use a stable and fast environment to develop in C++](https://www.reddit.com/r/emacs/comments/audffp/tip_how_to_use_a_stable_and_fast_environment_to/)
 * [How I organize myself with org-mode](https://www.reddit.com/r/emacs/comments/9ajxqj/tip_how_i_organize_myself_with_orgmode/)
 * [How do I synchronize my org files with my devices](https://www.reddit.com/r/emacs/comments/98nkt6/tip_how_do_i_synchronize_my_org_files_with_my/)
