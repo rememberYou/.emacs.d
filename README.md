@@ -16,7 +16,8 @@ the most trivial keyboard possible.
 
 <blockquote>
 	Font: <a href="https://adobe-fonts.github.io/source-code-pro">Source Code Pro</a> 20px <br>
-    Theme: <a href="https://github.com/arcticicestudio/nord-emacs">Nord Emacs</a>
+    Mode Line: <a href="https://github.com/seagle0128/doom-modeline">DOOM Modeline</a> <br>
+	Theme: <a href="https://github.com/arcticicestudio/nord-emacs">Nord Emacs</a>
 </blockquote>
 
 List of files:
