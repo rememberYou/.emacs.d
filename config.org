@@ -249,7 +249,7 @@ I'm a big fan of [[https://github.com/arcticicestudio/nord-emacs][nord-theme]] a
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package nord-theme
     :config
-    (push (expand-file-name "~/.emacs.d/themes/") custom-theme-load-path)
+    (add-to-list 'custom-theme-load-path (expand-file-name "~/.emacs.d/themes/"))
     (load-theme 'nord t))
 
   (use-package doom-modeline
@@ -290,7 +290,7 @@ of your operating system.
     (projectile-project-root-files-top-down-recurring
      (append '("compile_commands.json" ".ccls")
              projectile-project-root-files-top-down-recurring))
-    :config (push ".ccls-cache" projectile-globally-ignored-directories))
+    :config (add-to-list 'projectile-globally-ignored-directories ".ccls-cache"))
 
   (use-package google-c-style
     :hook ((c-mode c++-mode) . google-set-c-style)
@@ -548,7 +548,7 @@ Here is an example configuration for a project that uses =requirejs= and
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package company-tern
     :after (company tern)
-    :config (push 'company-tern company-backends))
+    :config (add-to-list 'company-backends 'company-tern))
 #+END_SRC
 
 ** JSON
