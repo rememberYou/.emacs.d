@@ -2056,11 +2056,11 @@ smaller, simpler, and smoother to use yet highly customizable.
 
   (use-package all-the-icons-ivy
     :after (all-the-icons ivy)
-    :custom (all-the-icons-ivy-file-commands '(counsel-git
-                                               counsel-dired-jump
+    :custom (all-the-icons-ivy-file-commands '(counsel-dired-jump
                                                counsel-find-file
                                                counsel-file-jump
                                                counsel-find-library
+                                               counsel-git
                                                counsel-projectile-find-dir
                                                counsel-projectile-find-file
                                                counsel-recentf))
