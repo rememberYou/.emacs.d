@@ -1921,10 +1921,12 @@ of a term, without breaking its workflow, is ideal.
 
 ** Icons
 
-To integrate icons with =doom-modeline=, =switch-to-buffer=, =counsel-find-file= and many other functions;
-[[https://github.com/domtronn/all-the-icons.el/][all-the-icons]] is just the best package that you can find.
+To integrate icons with =doom-modeline=, =switch-to-buffer=, =counsel-find-file=
+and many other functions; [[https://github.com/domtronn/all-the-icons.el/][all-the-icons]] is just the best package that you can
+find.
 
-*NOTE:* if it's the first time that you install the package, you must run =M-x all-the-icons-install-fonts=.
+*NOTE:* if it's the first time that you install the package, you must run
+=M-x all-the-icons-install-fonts=.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package all-the-icons :defer 0.5)
@@ -2085,24 +2087,13 @@ smaller, simpler, and smoother to use yet highly customizable.
                             ivy-rich-path-style 'abbrev)
     :config (ivy-rich-mode 1))
 
-  ;; NOTE: you must run `M-x all-the-icons-install-fonts` the first time.
-  (use-package all-the-icons
-    :defer 0.5
-    :config
-    (add-to-list 'all-the-icons-mode-icon-alist
-               '(erc-mode all-the-icons-faicon "commenting-o" :height 1.0 :v-adjust 0.0 :face all-the-icons-cyan)))
-
   (use-package all-the-icons-ivy
     :after (all-the-icons ivy)
-    :custom (all-the-icons-ivy-file-commands '(counsel-dired-jump
-                                               counsel-find-file
-                                               counsel-file-jump
-                                               counsel-find-library
-                                               counsel-git
-                                               counsel-projectile-find-dir
-                                               counsel-projectile-find-file
-                                               counsel-recentf))
-    :config (all-the-icons-ivy-setup))
+    :custom (all-the-icons-ivy-buffer-commands '(ivy-switch-buffer-other-window))
+    :config
+    (add-to-list 'all-the-icons-ivy-file-commands 'counsel-dired-jump)
+    (add-to-list 'all-the-icons-ivy-file-commands 'counsel-find-library)
+    (all-the-icons-ivy-setup))
 
   (use-package swiper
     :after ivy
