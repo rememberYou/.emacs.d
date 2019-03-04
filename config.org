@@ -1296,6 +1296,7 @@ seamless, it's like a minor mode that disables itself auto-magically.
            ("C-c o" . hydra-org/body)
            ("C-c p" . hydra-projectile/body)
            ("C-c s" . hydra-spelling/body)
+           ("C-c u" . hydra-upload/body)
            ("C-c y" . hydra-yasnippet/body)
            ("C-c w" . hydra-windows/body)))
 #+END_SRC
@@ -1621,6 +1622,27 @@ Group TypeScript commands.
     ("j" tide-jump-to-definition)
     ("r" tide-references)
     ("R" tide-restart-server))
+#+END_SRC
+
+*** Hydra / Upload
+
+Group upload commands.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defhydra hydra-upload (:color blue)
+    "
+    ^
+    ^Upload^          ^Do^
+    ^──────^──────────^──^────────
+    _q_ quit          _b_ buffer
+    ^^                _i_ image
+    ^^                _r_ region
+    ^^                ^^
+    "
+    ("q" nil)
+    ("b" webpaste-paste-buffer)
+    ("i" imgbb-upload)
+    ("r" webpaste-paste-region))
 #+END_SRC
 
 *** Hydra / YASnippet
