@@ -750,19 +750,19 @@ However, let's define few bindings for =python=:
 
 ** TypeScript
 
+I recommend to use [[https://github.com/ananthakumaran/tide][tide]] as IDE for your TypeScript development. Indeed, the two
+LSP servers mentioned by [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] are not usable for stable development, due to
+the too repetitive freezes they cause.
+
 #+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package typescript-mode
+    :mode ("\\.ts\\'"))
+
   (use-package tide
     :after (company flycheck)
-    :preface
-    (defun setup-tide-mode ()
-      (interactive)
-      (tide-setup)
-      (flycheck-mode +1)
-      (setq flycheck-check-syntax-automatically '(save mode-enabled))
-      (eldoc-mode +1)
-      (tide-hl-identifier-mode +1)
-      (company-mode +1))
-    :hook (before-save . tide-format-before-save))
+    :hook ((typescript-mode . tide-setup)
+           (typescript-mode . tide-hl-identifier-mode)
+           (before-save . tide-format-before-save)))
 #+END_SRC
 
 ** Vue.js
@@ -1839,8 +1839,7 @@ An autonomous emacs major-mode for editing web templates.
            ("\\.html?\\'" . web-mode)
            ("\\.jsx\\'" . web-mode)
            ("\\.php$" . my/php-setup)
-           ("\\.tsx\\'" . web-mode)
-           ("\\.ts\\'" . web-mode))
+           ("\\.tsx\\'" . web-mode))
     :preface
     (defun enable-minor-mode (my-pair)
       "Enable minor mode if filename match the regexp."
@@ -1851,11 +1850,7 @@ An autonomous emacs major-mode for editing web templates.
     (add-hook 'web-mode-hook
               (lambda ()
                 (when (string-equal "tsx" (file-name-extension buffer-file-name))
-                  (setup-tide-mode))))
-    (add-hook 'web-mode-hook
-              (lambda ()
-                (when (string-equal "ts" (file-name-extension buffer-file-name))
-                  (setup-tide-mode))))
+                  (tide-setup))))
     :custom
     (web-mode-attr-indent-offset 2)
     (web-mode-block-padding 2)
