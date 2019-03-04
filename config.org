@@ -2274,7 +2274,7 @@ name) and /<password>/ by those that match your real information:
 
 #+BEGIN_EXAMPLE
   machine imap.gmail.com login terencio.agozzino password <password> port 993
-  machine smtp.gmail.com login terencio.agozzino password <password> port 465
+  machine smtp.gmail.com login terencio.agozzino password <password> port 587
 #+END_EXAMPLE
 
 Similar to IRC, if you want to store your password in a /GPG/ file, you just
@@ -2293,8 +2293,9 @@ Then encrypt that file with =gpg -c .authinfo= and don't forget to delete the
     :ensure nil
     :custom
     (smtpmail-smtp-server "smtp.gmail.com")
-    (smtpmail-smtp-service 465)
-    (smtpmail-stream-type 'ssl))
+    (smtpmail-smtp-service 587)
+    (smtpmail-smtp-user "terencio.agozzino")
+    (smtpmail-stream-type 'starttls))
 #+END_SRC
 
 All you need now is to test sending your mails with =C-x m= or directly from
