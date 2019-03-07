@@ -228,8 +228,9 @@ LSP. That's where [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] comes in!
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package lsp-mode
-    :hook (prog-mode . lsp)
+    :hook ((c-mode c++-mode python-mode) . lsp)
     :custom
+    (lsp-prefer-flymake nil)
     (lsp-session-file (expand-file-name (format "%s/emacs/lsp-session-v1" xdg-data))))
 
   (use-package lsp-ui)
