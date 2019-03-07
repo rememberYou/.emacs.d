@@ -255,7 +255,8 @@ happiness.
     (load-theme 'nord t))
 
   (use-package doom-modeline
-    :hook (after-init . doom-modeline-mode))
+    :defer 0.1
+    :config (doom-modeline-mode))
 #+END_SRC
 
 ** Turn off mouse interface
