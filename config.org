@@ -2388,6 +2388,7 @@ in the file-system, but rather created on-demand and stored in memory.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package pdf-tools
     :defer 1
+    :magic ("%PDF" . pdf-view-mode)
     :init (pdf-tools-install :no-query))
 
   (use-package pdf-view
