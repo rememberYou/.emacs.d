@@ -66,6 +66,7 @@
   - [[#point-and-region][Point and Region]]
   - [[#projectile][Projectile]]
   - [[#recent-files][Recent Files]]
+  - [[#requests][Requests]]
   - [[#revealjs][Reveal.js]]
   - [[#version-control][Version Control]]
   - [[#whitespaces][Whitespaces]]
@@ -2488,6 +2489,23 @@ Provides fast access to the recent files.
     (recentf-max-saved-items 200)
     (recentf-save-file (expand-file-name (format "%s/emacs/recentf" xdg-cache)))
     :config (run-at-time nil (* 5 60) 'recentf-save-list))
+#+END_SRC
+
+** Requests
+
+Let's follow the [[https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html][XDG base directory specification]] for the request and cookies
+files, in order to make =~/.emacs.d= a cleaner place.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package request
+    :ensure nil
+    :custom
+    (request-storage-directory (expand-file-name (format "%s/emacs/request/" xdg-data))))
+
+  (use-package url-cookie
+    :ensure nil
+    :custom
+    (url-cookie-file (expand-file-name (format "%s/emacs/url/cookies/" xdg-data))))
 #+END_SRC
 
 ** Reveal.js
