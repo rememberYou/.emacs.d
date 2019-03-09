@@ -2288,21 +2288,23 @@ All you need now is to test sending your mails with =C-x m= or directly from
 
 ** Navigation
 
-This function is a mix of =C-a= and =M-m=.
+Navigation is an important part of productivity. The next function is a more
+efficient way to go to the beginning of a line with =move-beginning-of-line=
+(=C-a=) and =back-to-indentation= (=M-m=).
 
-From: http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line/
+*FROM:* http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line/
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (defun my/smarter-move-beginning-of-line (arg)
     "Moves point back to indentation of beginning of line.
 
-  Move point to the first non-whitespace character on this line.
-  If point is already there, move to the beginning of the line.
-  Effectively toggle between the first non-whitespace character and
-  the beginning of the line.
+    Move point to the first non-whitespace character on this line.
+    If point is already there, move to the beginning of the line.
+    Effectively toggle between the first non-whitespace character and
+    the beginning of the line.
 
-  If ARG is not nil or 1, move forward ARG - 1 lines first.  If
-  point reaches the beginning or end of the buffer, stop there."
+    If ARG is not nil or 1, move forward ARG - 1 lines first. If
+    point reaches the beginning or end of the buffer, stop there."
     (interactive "^p")
     (setq arg (or arg 1))
 
@@ -2316,8 +2318,7 @@ From: http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-
       (when (= orig-point (point))
         (move-beginning-of-line 1))))
 
-(global-set-key [remap org-beginning-of-line] #'my/smarter-move-beginning-of-line)
-(global-set-key [remap move-beginning-of-line] #'my/smarter-move-beginning-of-line)
+  (global-set-key (kbd "C-a") 'my/smarter-move-beginning-of-line)
 #+END_SRC
 
 ** Parenthesis
