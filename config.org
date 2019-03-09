@@ -1170,7 +1170,7 @@ enables spell checking on-the-fly in GNU Emacs.
   (use-package flyspell
     :delight
     :hook ((markdown-mode org-mode text-mode) . flyspell-mode)
-    (prog-mode . flyspell-prog-mode)
+           (prog-mode . flyspell-prog-mode)
     :custom
     (flyspell-abbrev-p t)
     (flyspell-default-dictionary "en_US")
