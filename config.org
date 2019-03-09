@@ -60,7 +60,7 @@
   - [[#lorem-ipsum][Lorem Ipsum]]
   - [[#mail][Mail]]
   - [[#navigation][Navigation]]
-  - [[#parenthesis][Parenthesis]]
+  - [[#parentheses][Parentheses]]
   - [[#paste][Paste]]
   - [[#pdf][PDF]]
   - [[#point-and-region][Point and Region]]
@@ -2321,7 +2321,7 @@ efficient way to go to the beginning of a line with =move-beginning-of-line=
   (global-set-key (kbd "C-a") 'my/smarter-move-beginning-of-line)
 #+END_SRC
 
-** Parenthesis
+** Parentheses
 
 *** =rainbow-delimiters=
 
