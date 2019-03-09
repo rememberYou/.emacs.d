@@ -2323,6 +2323,19 @@ efficient way to go to the beginning of a line with =move-beginning-of-line=
 
 ** Parentheses
 
+Managing parentheses can be painful. One of the first things you want to do is
+to change the appearance of the highlight of the parentheses pairs.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package faces
+    :ensure nil
+    :custom (show-paren-delay 0)
+    :config
+    (set-face-background 'show-paren-match "#262b36")
+    (set-face-bold 'show-paren-match t)
+    (set-face-foreground 'show-paren-match "#ffffff"))
+#+END_SRC
+
 *** =rainbow-delimiters=
 
 #+BEGIN_QUOTE
