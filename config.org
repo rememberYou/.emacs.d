@@ -2819,7 +2819,7 @@ will maintain a table of contents at the first heading that has a =:TOC:= tag.
 For a cleaner online mode.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package org-indent :after org :ensure nil :delight)
+  (use-package org-indent :ensure nil :after org :delight)
 #+END_SRC
 
 ** Agenda
