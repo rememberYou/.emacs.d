@@ -2546,7 +2546,9 @@ Finally, one last package that I like to use with Git to easily see the changes
 made by previous commits.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package git-timemachine :defer 1 :delight)
+  (use-package git-timemachine
+    :defer 1
+    :delight)
 #+END_SRC
 
 ** Whitespaces
