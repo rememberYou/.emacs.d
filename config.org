@@ -2051,17 +2051,16 @@ smaller, simpler, and smoother to use yet highly customizable.
     :custom (counsel-rg-base-command "rg -S -M 150 --no-heading --line-number --color never %s"))
 
   (use-package ivy
-    :defer 0.1
     :delight
+    :defer 0.1
     :bind (("C-x b" . ivy-switch-buffer)
            ("C-x B" . ivy-switch-buffer-other-window)
            ("M-H"   . ivy-resume)
            :map ivy-minibuffer-map
-                ("<tab>" . ivy-alt-done)
-                ("C-i" . ivy-partial-or-done)
-
+           ("<tab>" . ivy-alt-done)
+           ("C-i" . ivy-partial-or-done)
            :map ivy-switch-buffer-map
-                ("C-k" . ivy-switch-buffer-kill))
+           ("C-k" . ivy-switch-buffer-kill))
     :custom
     (ivy-case-fold-search-default t)
     (ivy-count-format "(%d/%d) ")
@@ -2094,7 +2093,7 @@ smaller, simpler, and smoother to use yet highly customizable.
     :bind (("C-s" . swiper)
            ("C-r" . swiper)
            :map swiper-map
-                ("M-%" . swiper-query-replace)))
+           ("M-%" . swiper-query-replace)))
 #+END_SRC
 
 ** Ledger
@@ -2366,7 +2365,6 @@ parenthesis. Anyway, if you don't like it, you can try taking a look at
     :custom (sp-escape-quotes-after-insert nil)
     :config (smartparens-global-mode 1))
 #+END_SRC
-
 ** Paste
 
 #+BEGIN_QUOTE
