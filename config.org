@@ -229,13 +229,19 @@ LSP. That's where [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] comes in!
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package lsp-mode
-    :hook ((c-mode c++-mode python-mode) . lsp)
+    :hook ((c-mode c++-mode java-mode python-mode) . lsp)
     :custom
     (lsp-prefer-flymake nil)
     (lsp-session-file (expand-file-name (format "%s/emacs/lsp-session-v1" xdg-data))))
 
   (use-package lsp-ui)
   (use-package company-lsp)
+
+  (use-package dap-mode
+    :after lsp-mode
+    :config
+    (dap-mode t)
+    (dap-ui-mode t))
 #+END_SRC
 
 Another benefit of using LSP to configure the management of your programming
@@ -429,13 +435,19 @@ Let's configure =emmet-mode=, to produce HTML from CSS-like selector:
 
 ** Java
 
-In order to have a fast and stable environment, I recommend using [[#lsp][LSP]] as a
-client for LSP servers and [[https://github.com/emacs-lsp/lsp-java][lsp-java]] as server.
+In order to have a fast and stable environment, I recommend using [[https://github.com/emacs-lsp/lsp-java][lsp-java]] as
+LSP client and [[https://projects.eclipse.org/projects/eclipse.jdt.ls][Eclipse JDT Language Server]] as LSP server.
+
+*NOTE:* before configuring =lsp-java=, don't forget to configure [[#lsp][lsp-mode]].
+
+Let's define the LSP client to use the LSP server:
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package lsp-java
     :after lsp
-    :hook (java-mode . lsp))
+    :hook (java-mode . lsp)
+    :custom (lsp-java-server-install-dir
+             (expand-file-name (format "%s/eclipse.jdt.ls/server" xdg-lib))))
 #+END_SRC
 
 *** Gradle
@@ -445,7 +457,17 @@ enough:
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package gradle-mode
-    :mode "\\.gradle\\'")
+    :mode ("\\.java\\'" "\\.gradle\\'")
+    :bind (:map gradle-mode-map
+                ("C-c C-c" . gradle-build)
+                ("C-c C-t" . gradle-test))
+    :preface
+    (defun my/switch-to-compilation-window ()
+      "Switches to the *compilation* buffer after compilation."
+      (other-window 1))
+    :config
+    (advice-add 'gradle-build :after #'my/switch-to-compilation-window)
+    (advice-add 'gradle-test :after #'my/switch-to-compilation-window))
 #+END_SRC
 
 ** JavaScript
