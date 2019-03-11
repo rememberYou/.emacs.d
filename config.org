@@ -1223,6 +1223,7 @@ install them with the package manager of your operating system.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package ispell
+    :defer 2
     :ensure-system-package (hunspell . "trizen -S hunspell")
     :custom
     (ispell-dictionary "en_US")
