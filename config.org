@@ -343,7 +343,8 @@ CMake is a cross-platform build system generator.
       (with-eval-after-load 'projectile
         (setq cmake-ide-project-dir (projectile-project-root))
         (setq cmake-ide-build-dir (concat cmake-ide-project-dir "build")))
-      (setq cmake-ide-compile-command (concat "cd " cmake-ide-build-dir " && make"))
+      (setq cmake-ide-compile-command
+            (concat "cd " cmake-ide-build-dir " && cmake .. && make"))
       (cmake-ide-load-db))
 
     (defun my/switch-to-compilation-window ()
