@@ -2413,7 +2413,9 @@ fails.
 #+END_QUOTE
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package webpaste :defer 1)
+  (use-package webpaste
+    :defer 1
+    :custom (webpaste-provider-priority '("ix.io" "dpaste.com")))
 #+END_SRC
 
 Same principle for images with =imgbb=. This package selects an image
