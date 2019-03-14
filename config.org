@@ -599,7 +599,14 @@ I use LaTeX for my reports, CVs, summaries, etc.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package tex
     :ensure auctex
+    :bind (:map TeX-mode-map
+                ("C-c C-o" . TeX-recenter-output-buffer)
+                ("C-c C-l" . TeX-next-error))
     :hook (LaTeX-mode . reftex-mode)
+    :preface
+    (defun my/switch-to-help-window (&optional ARG REPARSE)
+      "Switches to the *TeX Help* buffer after compilation."
+      (other-window 1))
     :custom
     (TeX-PDF-mode t)
     (TeX-auto-save t)
@@ -609,7 +616,10 @@ I use LaTeX for my reports, CVs, summaries, etc.
     (TeX-parse-self t)
     (TeX-source-correlate-mode t)
     (TeX-view-program-selection '((output-pdf "Evince")
-                                  (output-html "xdg-open"))))
+                                  (output-html "xdg-open")))
+    :config
+    (advice-add 'TeX-next-error :after #'my/switch-to-help-window)
+    (advice-add 'TeX-recenter-output-buffer :after #'my/switch-to-help-window)))
 
   (use-package bibtex
     :after auctex
