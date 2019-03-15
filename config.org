@@ -1271,7 +1271,13 @@ install them with the package manager of your operating system.
         (if (string= new-dictionary "fr_BE")
             (langtool-switch-default-language "fr")
           (langtool-switch-default-language "en"))
-        (message "Dictionary switched from %s to %s" current-dictionary new-dictionary))))
+
+        ;;Clears all these old errors after switching to the new language
+        (if (and (boundp 'flyspell-mode) flyspell-mode)
+            (flyspell-mode 0)
+          (flyspell-mode 1))
+
+      (message "Dictionary switched from %s to %s" current-dictionary new-dictionary))))
 #+END_SRC
 
 *** Grammar Checker
