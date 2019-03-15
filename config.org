@@ -939,8 +939,11 @@ navigation. Therefore, I use [[https://github.com/qutebrowser/qutebrowser][quteb
 minimal GUI.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-(setq browse-url-browser-function 'browse-url-generic)
-(setq browse-url-generic-program "qutebrowser")
+  (use-package browse-url
+    :ensure nil
+    :custom
+    (browse-url-browser-function 'browse-url-generic)
+    (browse-url-generic-program "qutebrowser"))
 #+END_SRC
 
 *** =atomic chrome=
