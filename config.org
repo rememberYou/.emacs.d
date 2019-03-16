@@ -2149,7 +2149,6 @@ smaller, simpler, and smoother to use yet highly customizable.
   (use-package swiper
     :after ivy
     :bind (("C-s" . swiper)
-           ("C-r" . swiper)
            :map swiper-map
            ("M-%" . swiper-query-replace)))
 #+END_SRC
@@ -2376,6 +2375,10 @@ efficient way to go to the beginning of a line with =move-beginning-of-line=
         (move-beginning-of-line 1))))
 
   (global-set-key (kbd "C-a") 'my/smarter-move-beginning-of-line)
+
+  (use-package imenu
+    :ensure nil
+    :bind ("C-r" . imenu))
 #+END_SRC
 
 ** Parentheses
