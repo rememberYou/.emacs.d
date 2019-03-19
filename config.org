@@ -1482,17 +1482,19 @@ Group jump-to-files commands.
     ^Go To^           ^Config^            ^Agenda             ^Other^
     ^─────^───────────^──────^────────────^──────^────────────^─────^────────
     _q_ quit          _ca_ alacritty      _ac_ contacts       _ob_ book
-    ^^                _cd_ dunst          _af_ findmycat      _ol_ learning
-    ^^                _ce_ emacs          _ao_ organizer      _om_ movies
-    ^^                _ci_ i3             _ap_ people         _op_ purchases
-    ^^                _cn_ neofetch       _ar_ routine        _ou_ usb
-    ^^                _cp_ polybar        _as_ school         ^^
+    ^^                _cA_ aliases        _af_ findmycat      _ol_ learning
+    ^^                _cd_ dunst          _ao_ organizer      _om_ movies
+    ^^                _ce_ emacs          _ap_ people         _op_ purchases
+    ^^                _cE_ environ        _ar_ routine        _ou_ usb
+    ^^                _ci_ i3             _as_ school
+    ^^                _cn_ neofetch       ^^          ^^      ^^
+    ^^                _cp_ polybar        ^^                  ^^
     ^^                _cq_ qutebrowser    ^^                  ^^
     ^^                _cR_ rofi           ^^                  ^^
     ^^                _cr_ ranger         ^^                  ^^
     ^^                _cs_ sway           ^^                  ^^
     ^^                _ct_ tmux           ^^                  ^^
-    ^^                ^^                  ^^                  ^^
+    ^^                _cx_ xdg            ^^                  ^^
     "
     ("q" nil)
     ("ac" (find-file "~/.personal/agenda/contacts.org"))
@@ -1502,12 +1504,15 @@ Group jump-to-files commands.
     ("ar" (find-file "~/.personal/agenda/routine.org"))
     ("as" (find-file "~/.personal/agenda/school.org"))
     ("ca" (find-file (format "%s/alacritty/alacritty.yml" xdg-config)))
+    ("cA" (find-file (format "%s/sh/aliases" xdg-config)))
     ("cd" (find-file (format "%s/dunst/dunstrc" xdg-config)))
     ("ce" (find-file "~/.emacs.d/config.org"))
+    ("cE" (find-file (format "%s/sh/environ" xdg-config)))
     ("ci" (find-file (format "%s/i3/config" xdg-config)))
     ("cn" (find-file (format "%s/neofetch/config.conf" xdg-config)))
     ("cp" (find-file (format "%s/polybar/config" xdg-config)))
     ("cq" (find-file (format "%s/qutebrowser/config.py" xdg-config)))
+    ("cx" (find-file (format "%s/sh/xdg" xdg-config)))
     ("cR" (find-file (format "%s/rofi/config.rasi" xdg-config)))
     ("cr" (find-file (format "%s/ranger/rc.conf" xdg-config)))
     ("cs" (find-file (format "%s/sway/config" xdg-config)))
