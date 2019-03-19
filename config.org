@@ -1694,7 +1694,7 @@ Group TypeScript commands.
     "
     ^
     ^TypeScript^          ^Do^
-    ^──────────^──────────^──^────────
+    ^──────────^──────────^──^───────────
     _q_ quit             _b_ back
     ^^                   _e_ errors
     ^^                   _j_ jump
