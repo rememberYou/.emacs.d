@@ -1359,6 +1359,7 @@ seamless, it's like a minor mode that disables itself auto-magically.
            ("C-c o" . hydra-org/body)
            ("C-c p" . hydra-projectile/body)
            ("C-c s" . hydra-spelling/body)
+           ("C-c t" . hydra-tex/body)
            ("C-c u" . hydra-upload/body)
            ("C-c y" . hydra-yasnippet/body)
            ("C-c w" . hydra-windows/body)))
@@ -1660,6 +1661,28 @@ Group spelling commands.
     ("l" (message "Current language: %s (%s)" langtool-default-language ispell-current-dictionary))
     ("s" my/switch-language)
     ("w" wiki-summary))
+#+END_SRC
+
+*** Hydra / TeX
+
+Group TeX commands.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defhydra hydra-tex (:color blue)
+    "
+    ^
+    ^TeX^          ^Do^
+    ^───^──────────^──^──────────────────
+    _q_ quit       _g_ goto
+    ^^             _r_ replace
+    ^^             _s_ search
+    ^^             _t_ table of content
+    "
+    ("g" reftex-goto-label)
+    ("q" nil)
+    ("r" reftex-query-replace-document)
+    ("s" counsel-rg)
+    ("t" reftex-toc))
 #+END_SRC
 
 *** Hydra / TypeScript
@@ -3153,7 +3176,7 @@ growth.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package org-journal
     :after org
-    :bind (("C-c t" . org-journal-new-entry)
+    :bind (("C-c T" . org-journal-new-entry)
            ("C-c Y" . journal-file-yesterday))
     :preface
     (defun get-journal-file-yesterday ()
