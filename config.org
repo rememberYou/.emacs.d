@@ -650,7 +650,12 @@ I want a TeX engine that can deal with Unicode and use any font I like.
 Minor mode with distinct support for \label, \ref and \cite in LaTeX.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package reftex :after auctex)
+  (use-package reftex
+    :after auctex
+    :custom
+    (reftex-plug-into-AUCTeX t)
+    (reftex-save-parse-info t)
+    (reftex-use-multiple-selection-buffers t))
 #+END_SRC
 
 ** Lua
