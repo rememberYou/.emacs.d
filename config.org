@@ -1034,6 +1034,21 @@ like being able to find my way easily.
     :hook (ibuffer . my/ibuffer-projectile))
 #+END_SRC
 
+Some buffers should not be deleted by accident:
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (defvar *protected-buffers* '("*scratch*" "*Messages*")
+    "Buffers that cannot be killed.")
+
+  (defun my/protected-buffers ()
+    "Protects some buffers from being killed."
+    (dolist (buffer *protected-buffers*)
+      (with-current-buffer buffer
+        (emacs-lock-mode 'kill))))
+
+  (add-hook 'after-init-hook #'my/protected-buffers)
+#+END_SRC
+
 ** Calculator
 
 May be useful in a timely manner.
