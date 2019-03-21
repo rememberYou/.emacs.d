@@ -1124,6 +1124,7 @@ Always good to have a dashboard.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package dashboard
+    :if (< (length command-line-args) 2)
     :preface
     (defun my/dashboard-banner ()
       "Sets a dashboard banner including information on package initialization
