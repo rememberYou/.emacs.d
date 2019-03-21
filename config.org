@@ -2844,6 +2844,7 @@ authoring documents with a fast and effective plain-text system.
   (use-package org
     :ensure org-plus-contrib
     :delight "Θ "
+    :bind ("C-c i" . org-insert-structure-template)
     :preface
     (defun my/org-compare-times (clocked estimated)
       "Gets the ratio between the timed time and the estimated time."
