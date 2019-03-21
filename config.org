@@ -3015,7 +3015,8 @@ Prettier [[https://github.com/sabof/org-bullets][bullets]] in org-mode.
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package org-bullets
     :hook (org-mode . org-bullets-mode)
-    :custom (org-bullets-bullet-list '("●" "▲" "■" "✶" "◉" "○" "○")))
+    :custom
+    (org-bullets-bullet-list '("●" "►" "▸")))
 #+END_SRC
 
 ** Capture
