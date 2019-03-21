@@ -2623,7 +2623,7 @@ files, in order to make =~/.emacs.d= a cleaner place.
 I tend to use Beamer for scientific presentations, and Reveal.js for others.
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  (use-package ox-reveal
+  (use-package org-re-reveal
     :after org
     :custom
     (org-reveal-mathjax t)
