@@ -31,6 +31,7 @@
   - [[#php][PHP]]
   - [[#plantuml][PlantUML]]
   - [[#python][Python]]
+  - [[#shell-script][Shell-script]]
   - [[#sql][SQL]]
   - [[#typescript][TypeScript]]
   - [[#vuejs][Vue.js]]
@@ -776,6 +777,20 @@ However, let's define few bindings for =python=:
     :delight "π "
     :bind (("M-[" . python-nav-backward-block)
            ("M-]" . python-nav-forward-block)))
+#+end_src
+
+** Shell-script
+
+A recent thing when you create/edit a shell script file is to automatically
+grant it execution rights (with =chmod +x=).
+
+The snippet below ensures that the execution right is automatically granted to
+save a shell script file that begins with a =#!= shebang:
+
+#+begin_src emacs-lisp :tangle yes
+  (use-package sh-script
+    :ensure nil
+    :hook (after-save . executable-make-buffer-file-executable-if-script-p))
 #+end_src
 
 ** SQL
