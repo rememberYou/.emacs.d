@@ -2086,12 +2086,19 @@ Finally, specify to =erc= that you use a =.authinfo= file with:
   (use-package erc
     :delight "ε "
     :preface
-    (defun my/erc-start-or-switch ()
-      "Connects to ERC, or switch to last active buffer."
+    (defun my/erc-browse-last-url ()
+      "Searchs backwards through an ERC buffer, looking for a URL. When a URL is
+      found, it prompts you to open it."
       (interactive)
-      (if (get-buffer "irc.freenode.net:6667")
-          (erc-track-switch-buffer 1)
-        (erc :server "irc.freenode.net" :port 6667 :nick "rememberYou")))
+      (save-excursion
+        (let ((ffap-url-regexp
+               (concat
+                "\\("
+                "news\\(post\\)?:\\|mailto:\\|file:"
+                "\\|"
+                "\\(ftp\\|https?\\|telnet\\|gopher\\|www\\|wais\\)://"
+                "\\).")))
+          (ffap-next t t))))
 
     (defun my/erc-count-users ()
       "Displays the number of users connected on the current channel."
@@ -2117,9 +2124,14 @@ Finally, specify to =erc= that you use a =.authinfo= file with:
 
     (defun my/erc-preprocess (string)
       "Avoids channel flooding."
-      (setq str
-            (string-trim
-             (replace-regexp-in-string "\n+" " " str))))
+      (setq str (string-trim (replace-regexp-in-string "\n+" " " str))))
+
+    (defun my/erc-start-or-switch ()
+      "Connects to ERC, or switch to last active buffer."
+      (interactive)
+      (if (get-buffer "irc.freenode.net:6667")
+          (erc-track-switch-buffer 1)
+        (erc :server "irc.freenode.net" :port 6667 :nick "rememberYou")))
     :hook ((ercn-notify . my/erc-notify)
            (erc-send-pre . my/erc-preprocess))
     :custom-face
