@@ -1858,9 +1858,15 @@ electric-indent-mode.
     :custom (aggressive-indent-comments-too))
 #+end_src
 
+*** =electric-operator=
 
+=electric-operator= is an emacs minor-mode to automatically add spacing around
+operators.
 
 #+begin_src emacs-lisp :tangle yes
+  (use-package electric-operator
+    :delight
+    :hook (python-mode . electric-operator-mode))
 #+end_src
 
 *** =gnuplot=
