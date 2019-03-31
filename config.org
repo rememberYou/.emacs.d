@@ -1394,7 +1394,7 @@ seamless, it's like a minor mode that disables itself auto-magically.
 #+begin_src emacs-lisp :tangle yes
   (use-package hydra
     :bind (("C-c L" . hydra-ledger/body)
-           ("C-c b" . hydra-buffer/body)
+           ("C-c b" . hydra-btoggle/body)
            ("C-c c" . hydra-clock/body)
            ("C-c e" . hydra-erc/body)
            ("C-c f" . hydra-flycheck/body)
@@ -1402,34 +1402,49 @@ seamless, it's like a minor mode that disables itself auto-magically.
            ("C-c m" . hydra-magit/body)
            ("C-c o" . hydra-org/body)
            ("C-c p" . hydra-projectile/body)
+           ("C-c q" . hydra-query/body)
            ("C-c s" . hydra-spelling/body)
            ("C-c t" . hydra-tex/body)
+           ("C-c T" . hydra-tool/body)
            ("C-c u" . hydra-upload/body)
-           ("C-c y" . hydra-yasnippet/body)
            ("C-c w" . hydra-windows/body)))
+
+  (use-package major-mode-hydra
+    :after hydra
+    :preface
+    (defun with-alltheicon (icon str &optional height v-adjust)
+      "Displays an icon from all-the-icon."
+      (s-concat (all-the-icons-alltheicon icon :v-adjust (or v-adjust 0) :height (or height 1)) " " str))
+
+    (defun with-faicon (icon str &optional height v-adjust)
+      "Displays an icon from Font Awesome icon."
+      (s-concat (all-the-icons-faicon icon :v-adjust (or v-adjust 0) :height (or height 1)) " " str))
+
+    (defun with-fileicon (icon str &optional height v-adjust)
+      "Displays an icon from the Atom File Icons package."
+      (s-concat (all-the-icons-fileicon icon :v-adjust (or v-adjust 0) :height (or height 1)) " " str))
+
+    (defun with-octicon (icon str &optional height v-adjust)
+      "Displays an icon from the GitHub Octicons."
+      (s-concat (all-the-icons-octicon icon :v-adjust (or v-adjust 0) :height (or height 1)) " " str)))
 #+end_src
 
-*** Hydra / Buffer
+*** Hydra / BToggle
 
-Group Buffer commands.
+Group a lot of commands.
 
 #+begin_src emacs-lisp :tangle yes
-  (defhydra hydra-buffer (:color blue)
-    "
-    ^
-    ^Buffer^             ^Do^
-    ^──────^─────────────^──^──────────
-    _q_ quit             _k_ kill
-    ^^                   _l_ list
-    ^^                   _n_ next
-    ^^                   _p_ previous
-    ^^                   ^^
-    "
-    ("q" nil)
-    ("k" kill-buffer)
-    ("l" ibuffer)
-    ("n" next-buffer)
-    ("p" previous-buffer))
+  (pretty-hydra-define hydra-btoggle
+    (:hint nil :color amaranth :quit-key "q" :title (with-faicon "toggle-on" "Toggle" 1 -0.05))
+    ("Basic"
+     (("a" abbrev-mode "abbrev" :toggle t)
+      ("h" global-hungry-delete-mode "hungry delete" :toggle t))
+     "Coding"
+     (("e" electric-operator-mode "electric operator" :toggle t)
+      ("F" flyspell-mode "flyspell" :toggle t)
+      ("f" flycheck-mode "flycheck" :toggle t)
+      ("l" lsp-mode "lsp" :toggle t)
+      ("s" smartparens-mode "smartparens" :toggle t))))
 #+end_src
 
 *** Hydra / Clock
@@ -1437,28 +1452,16 @@ Group Buffer commands.
 Group clock commands.
 
 #+begin_src emacs-lisp :tangle yes
-  (defhydra hydra-clock (:color blue)
-    "
-    ^
-    ^Clock^             ^Do^
-    ^─────^─────────────^──^─────────
-    _q_ quit            _c_ cancel
-    ^^                  _d_ display
-    ^^                  _e_ effort
-    ^^                  _i_ in
-    ^^                  _j_ jump
-    ^^                  _o_ out
-    ^^                  _r_ report
-    ^^                  ^^
-    "
-    ("q" nil)
-    ("c" org-clock-cancel)
-    ("d" org-clock-display)
-    ("e" org-clock-modify-effort-estimate)
-    ("i" org-clock-in)
-    ("j" org-clock-goto)
-    ("o" org-clock-out)
-    ("r" org-clock-report))
+  (pretty-hydra-define hydra-clock
+    (:hint nil :color teal :quit-key "q" :title (with-faicon "clock-o" "Clock" 1 -0.05))
+    ("Action"
+     (("c" org-clock-cancel "cancel")
+      ("d" org-clock-display "display")
+      ("e" org-clock-modify-effort-estimate "effort")
+      ("i" org-clock-in "in")
+      ("j" org-clock-goto "jump")
+      ("o" org-clock-out "out")
+      ("r" org-clock-report "report"))))
 #+end_src
 
 *** Hydra / ERC
@@ -1466,53 +1469,37 @@ Group clock commands.
 Group ERC commands.
 
 #+begin_src emacs-lisp :tangle yes
-  (defhydra hydra-erc (:color blue)
-    "
-    ^
-    ^ERC^             ^Do^
-    ^───^─────────────^──^────────────
-    _q_ quit          _c_ connect
-    ^^                _d_ disconnect
-    ^^                _j_ join
-    ^^                _n_ names
-    ^^                _u_ users
-    ^^                ^^
-    "
-    ("q" nil)
-    ("c" my/erc-start-or-switch)
-    ("d" erc-quit-server)
-    ("j" erc-join-channel)
-    ("n" erc-channel-names)
-    ("u" my/erc-count-users))
-#+end_src
+  (pretty-hydra-define hydra-erc
+    (:hint nil :color teal :quit-key "q" :title (with-faicon "comments-o" "ERC" 1 -0.05))
+    ("Action"
+     (("b" my/erc-browse-last-url "browse last url")
+      ("c" my/erc-start-or-switch "connect")
+      ("d" erc-quit-server "disconnect")
+      ("j" erc-join-channel "join")
+      ("n" erc-channel-names "names")
+      ("u" my/erc-count-users "users"))))
+#+END_SRC
 
 *** Hydra / Flycheck
 
 Group Flycheck commands.
 
 #+begin_src emacs-lisp :tangle yes
-  (defhydra hydra-flycheck (:color blue)
-    "
-    ^
-    ^Flycheck^          ^Errors^            ^Checker^
-    ^────────^──────────^──────^────────────^───────^─────
-    _q_ quit            _<_ previous        _?_ describe
-    _M_ manual          _>_ next            _d_ disable
-    _v_ verify setup    _f_ check           _m_ mode
-    ^^                  _l_ list            _s_ select
-    ^^                  ^^                  ^^
-    "
-    ("q" nil)
-    ("<" flycheck-previous-error :color pink)
-    (">" flycheck-next-error :color pink)
-    ("?" flycheck-describe-checker)
-    ("M" flycheck-manual)
-    ("d" flycheck-disable-checker)
-    ("f" flycheck-buffer)
-    ("l" flycheck-list-errors)
-    ("m" flycheck-mode)
-    ("s" flycheck-select-checker)
-    ("v" flycheck-verify-setup))
+  (pretty-hydra-define hydra-flycheck
+    (:hint nil :color teal :quit-key "q" :title (with-faicon "plane" "Flycheck" 1 -0.05))
+    ("Checker"
+     (("?" flycheck-describe-checker "describe")
+      ("d" flycheck-disable-checker "disable")
+      ("m" flycheck-mode "mode")
+      ("s" flycheck-select-checker "select"))
+     "Errors"
+     (("<" flycheck-previous-error "previous" :color pink)
+      (">" flycheck-next-error "next" :color pink)
+      ("f" flycheck-buffer "check")
+      ("l" flycheck-list-errors "list"))
+     "Other"
+     (("M" flycheck-manual "manual")
+      ("v" flycheck-verify-setup "verify setup"))))
 #+end_src
 
 *** Hydra / Go To
@@ -1520,52 +1507,36 @@ Group Flycheck commands.
 Group jump-to-files commands.
 
 #+begin_src emacs-lisp :tangle yes
-  (defhydra hydra-go-to-file (:color blue)
-    "
-    ^
-    ^Go To^           ^Config^            ^Agenda             ^Other^
-    ^─────^───────────^──────^────────────^──────^────────────^─────^────────
-    _q_ quit          _ca_ alacritty      _ac_ contacts       _ob_ book
-    ^^                _cA_ aliases        _af_ findmycat      _ol_ learning
-    ^^                _cd_ dunst          _ao_ organizer      _om_ movies
-    ^^                _ce_ emacs          _ap_ people         _op_ purchases
-    ^^                _cE_ environ        _ar_ routine        _ou_ usb
-    ^^                _ci_ i3             _as_ school
-    ^^                _cn_ neofetch       ^^          ^^      ^^
-    ^^                _cp_ polybar        ^^                  ^^
-    ^^                _cq_ qutebrowser    ^^                  ^^
-    ^^                _cR_ rofi           ^^                  ^^
-    ^^                _cr_ ranger         ^^                  ^^
-    ^^                _cs_ sway           ^^                  ^^
-    ^^                _ct_ tmux           ^^                  ^^
-    ^^                _cx_ xdg            ^^                  ^^
-    "
-    ("q" nil)
-    ("ac" (find-file "~/.personal/agenda/contacts.org"))
-    ("af" (find-file "~/.personal/agenda/findmycat.org"))
-    ("ao" (find-file "~/.personal/agenda/organizer.org"))
-    ("ap" (find-file "~/.personal/agenda/people.org"))
-    ("ar" (find-file "~/.personal/agenda/routine.org"))
-    ("as" (find-file "~/.personal/agenda/school.org"))
-    ("ca" (find-file (format "%s/alacritty/alacritty.yml" xdg-config)))
-    ("cA" (find-file (format "%s/sh/aliases" xdg-config)))
-    ("cd" (find-file (format "%s/dunst/dunstrc" xdg-config)))
-    ("ce" (find-file "~/.emacs.d/config.org"))
-    ("cE" (find-file (format "%s/sh/environ" xdg-config)))
-    ("ci" (find-file (format "%s/i3/config" xdg-config)))
-    ("cn" (find-file (format "%s/neofetch/config.conf" xdg-config)))
-    ("cp" (find-file (format "%s/polybar/config" xdg-config)))
-    ("cq" (find-file (format "%s/qutebrowser/config.py" xdg-config)))
-    ("cx" (find-file (format "%s/sh/xdg" xdg-config)))
-    ("cR" (find-file (format "%s/rofi/config.rasi" xdg-config)))
-    ("cr" (find-file (format "%s/ranger/rc.conf" xdg-config)))
-    ("cs" (find-file (format "%s/sway/config" xdg-config)))
-    ("ct" (find-file (format "%s/tmux/tmux.conf" xdg-config)))
-    ("ob" (find-file "~/.personal/other/books.org"))
-    ("ol" (find-file "~/.personal/other/learning.org"))
-    ("om" (find-file "~/.personal/other/movies.org"))
-    ("op" (find-file "~/.personal/other/purchases.org"))
-    ("ou" (find-file "~/.personal/other/usb.org")))
+  (pretty-hydra-define hydra-go-to-file
+    (:hint nil :color teal :quit-key "q" :title (with-faicon "file-text-o" "Go To" 1 -0.05))
+    ("Agenda"
+     (("ac" (find-file "~/.personal/agenda/contacts.org") "contacts")
+      ("af" (find-file "~/.personal/agenda/findmycat.org") "findmycat")
+      ("ao" (find-file "~/.personal/agenda/organizer.org") "organizer")
+      ("ap" (find-file "~/.personal/agenda/people.org") "people")
+      ("ar" (find-file "~/.personal/agenda/routine.org") "routine")
+      ("as" (find-file "~/.personal/agenda/school.org") "school"))
+     "Config"
+     (("ca" (find-file (format "%s/alacritty/alacritty.yml" xdg-config)) "alacritty")
+      ("cA" (find-file (format "%s/sh/aliases" xdg-config)) "aliases")
+      ("cd" (find-file (format "%s/dunst/dunstrc" xdg-config)))
+      ("ce" (find-file "~/.emacs.d/config.org") "emacs")
+      ("cE" (find-file (format "%s/sh/environ" xdg-config)) "environ")
+      ("ci" (find-file (format "%s/i3/config" xdg-config))"i3")
+      ("cn" (find-file (format "%s/neofetch/config.conf" xdg-config)) "neofetch")
+      ("cp" (find-file (format "%s/polybar/config" xdg-config)) "polybar")
+      ("cq" (find-file (format "%s/qutebrowser/config.py" xdg-config)) "qutebrowser")
+      ("cR" (find-file (format "%s/rofi/config.rasi" xdg-config)) "rofi")
+      ("cr" (find-file (format "%s/ranger/rc.conf" xdg-config)) "ranger")
+      ("cs" (find-file (format "%s/sway/config" xdg-config)) "sway")
+      ("ct" (find-file (format "%s/tmux/tmux.conf" xdg-config)) "tmux")
+      ("cx" (find-file (format "%s/sh/xdg" xdg-config)) "xdg"))
+     "Other"
+     (("ob" (find-file "~/.personal/other/books.org") "book")
+      ("ol" (find-file "~/.personal/other/learning.org") "learning")
+      ("om" (find-file "~/.personal/other/movies.org"))
+      ("op" (find-file "~/.personal/other/purchases.org") "purchase")
+      ("ou" (find-file "~/.personal/other/usb.org") "usb"))))
 #+end_src
 
 *** Hydra / Ledger
@@ -1573,24 +1544,14 @@ Group jump-to-files commands.
 Group Ledger commands.
 
 #+begin_src emacs-lisp :tangle yes
-  (defhydra hydra-ledger (:color blue)
-    "
-    ^
-    ^Ledger^             ^Do^
-    ^──────^─────────────^──^────────
-    _q_ quit             _a_ add
-    ^^                   _c_ clear
-    ^^                   _C_ copy
-    ^^                   _d_ delete
-    ^^                   _r_ report
-    ^^                   ^^
-    "
-    ("q" nil)
-    ("a" ledger-add-transaction)
-    ("c" ledger-mode-clean-buffer)
-    ("C" ledger-copy-transaction-at-point)
-    ("d" ledger-delete-current-transaction)
-    ("r" ledger-report))
+  (pretty-hydra-define hydra-ledger
+    (:hint nil :color teal :quit-key "q" :title (with-faicon "usd" "Ledger" 1 -0.05))
+    ("Action"
+     (("b" leadger-add-transaction "add")
+      ("c" ledger-mode-clean-buffer "clear")
+      ("i" ledger-copy-transaction-at-point "copy")
+      ("s" ledger-delete-current-transaction "delete")
+      ("r" ledger-report "report"))))
 #+end_src
 
 *** Hydra / Magit
@@ -1598,22 +1559,15 @@ Group Ledger commands.
 Group Magit commands.
 
 #+begin_src emacs-lisp :tangle yes
-  (defhydra hydra-magit (:color blue)
-    "
-    ^
-    ^Magit^             ^Do^
-    ^─────^─────────────^──^────────
-    _q_ quit            _b_ blame
-    ^^                  _c_ clone
-    ^^                  _i_ init
-    ^^                  _s_ status
-    ^^                  ^^
-    "
-    ("q" nil)
-    ("b" magit-blame)
-    ("c" magit-clone)
-    ("i" magit-init)
-    ("s" magit-status))
+  (pretty-hydra-define hydra-magit
+    (:hint nil :color teal :quit-key "q" :title (with-alltheicon "git" "Magit" 1 -0.05))
+    ("Action"
+     (("b" magit-blame "blame")
+      ("c" magit-clone "clone")
+      ("i" magit-init "init")
+      ("l" magit-log-buffer-file "commit log (current file)")
+      ("L" magit-log-current "commit log (project)")
+      ("s" magit-status "status"))))
 #+end_src
 
 *** Hydra / Org
@@ -1621,36 +1575,20 @@ Group Magit commands.
 Group Org commands.
 
 #+begin_src emacs-lisp :tangle yes
-  (defhydra hydra-org (:color blue)
-    "
-    ^
-    ^Org^             ^Do^
-    ^───^─────────────^──^─────────────
-    _q_ quit          _A_ archive
-    ^^                _a_ agenda
-    ^^                _c_ capture
-    ^^                _d_ decrypt
-    ^^                _i_ insert-link
-    ^^                _j_ jump-task
-    ^^                _k_ cut-subtree
-    ^^                _o_ open-link
-    ^^                _r_ refile
-    ^^                _s_ store-link
-    ^^                _t_ todo-tree
-    ^^                ^^
-    "
-    ("q" nil)
-    ("A" my/org-archive-done-tasks)
-    ("a" org-agenda)
-    ("c" org-capture)
-    ("d" org-decrypt-entry)
-    ("k" org-cut-subtree)
-    ("i" org-insert-link-global)
-    ("j" my/org-jump)
-    ("o" org-open-at-point-global)
-    ("r" org-refile)
-    ("s" org-store-link)
-    ("t" org-show-todo-tree))
+  (pretty-hydra-define hydra-org
+    (:hint nil :color teal :quit-key "q" :title (with-fileicon "org" "Org" 1 -0.05))
+    ("Action"
+     (("A" my/org-archive-done-tasks "archive")
+      ("a" org-agenda "agenda")
+      ("c" org-capture "capture")
+      ("d" org-decrypt-entry "decrypt")
+      ("i" org-insert-link-global "insert-link")
+      ("j" my/org-jump "jump-task")
+      ("k" org-cut-subtree "cut-subtree")
+      ("o" org-open-at-point-global "open-link")
+      ("r" org-refile "refile")
+      ("s" org-store-link "store-link")
+      ("t" org-show-todo-tree "todo-tree"))))
 #+end_src
 
 *** Hydra / Projectile
@@ -1658,29 +1596,41 @@ Group Org commands.
 Group Projectile commands.
 
 #+begin_src emacs-lisp :tangle yes
-  (defhydra hydra-projectile (:color blue)
-    "
-    ^
-    ^Projectile^        ^Buffers^           ^Find^              ^Search^
-    ^──────────^────────^───────^───────────^────^──────────────^──────^────────────
-    _q_ quit            _b_ list            _d_ directory       _r_ replace
-    _i_ reset cache     _k_ kill all        _D_ root            _R_ regexp replace
-    ^^                  _S_ save all        _f_ file            _s_ search
-    ^^                  ^^                  _p_ project         ^^
-    ^^                  ^^                  ^^                  ^^
-    "
-    ("q" nil)
-    ("b" counsel-projectile-switch-to-buffer)
-    ("d" counsel-projectile-find-dir)
-    ("D" projectile-dired)
-    ("f" counsel-projectile-find-file)
-    ("i" projectile-invalidate-cache :color red)
-    ("k" projectile-kill-buffers)
-    ("p" counsel-projectile-switch-project)
-    ("r" projectile-replace)
-    ("R" projectile-replace-regexp)
-    ("s" counsel-rg)
-    ("S" projectile-save-project-buffers))
+  (pretty-hydra-define hydra-projectile
+    (:hint nil :color teal :quit-key "q" :title (with-faicon "rocket" "Projectile" 1 -0.05))
+    ("Buffers"
+     (("b" counsel-projectile-switch-to-buffer "list")
+      ("k" projectile-kill-buffers "kill all")
+      ("S" projectile-save-project-buffers "save all"))
+     "Find"
+     (("d" counsel-projectile-find-dir "directory")
+      ("D" projectile-dired "root")
+      ("f" counsel-projectile-find-file "file")
+      ("p" counsel-projectile-switch-project "project"))
+     "Other"
+     (("i" projectile-invalidate-cache "reset cache"))
+     "Search"
+     (("r" projectile-replace "replace")
+      ("R" projectile-replace-regexp "regexp replace")
+      ("s" counsel-rg "search"))))
+#+end_src
+
+*** Hydra / Query
+
+Group Query commands.
+
+#+begin_src emacs-lisp :tangle yes
+  (pretty-hydra-define hydra-query
+    (:hint nil :color teal :quit-key "q" :title (with-faicon "search" "Engine-Mode" 1 -0.05))
+    ("Query"
+     (("a" engine/search-amazon "amazon")
+      ("d" engine/search-duckduckgo "duckduckgo")
+      ("g" engine/search-github "github")
+      ("i" engine/search-google-images "google images")
+      ("m" engine/search-google-maps "google maps")
+      ("s" engine/search-stack-overflow "stack overflow")
+      ("w" engine/search-wikipedia "wikipedia")
+      ("y" engine/search-youtube "youtube"))))
 #+end_src
 
 *** Hydra / Spelling
@@ -1688,28 +1638,19 @@ Group Projectile commands.
 Group spelling commands.
 
 #+begin_src emacs-lisp :tangle yes
-  (defhydra hydra-spelling (:color blue)
-    "
-    ^
-    ^Spelling^          ^Errors^            ^Checker^
-    ^────────^──────────^──────^────────────^───────^───────
-    _q_ quit            _<_ previous        _c_ correction
-    ^^                  _>_ next            _C_ clear
-    ^^                  _f_ find            _d_ dictionary
-    ^^                  ^^                  _l_ language
-    ^^                  ^^                  _s_ switch
-    ^^                  ^^                  _w_ wiki
-    "
-    ("q" nil)
-    ("<" flyspell-correct-previous :color pink)
-    (">" flyspell-correct-next :color pink)
-    ("c" langtool-correct-buffer)
-    ("C" langtool-check-done)
-    ("d" ispell-change-dictionary)
-    ("f" langtool-check)
-    ("l" (message "Current language: %s (%s)" langtool-default-language ispell-current-dictionary))
-    ("s" my/switch-language)
-    ("w" wiki-summary))
+  (pretty-hydra-define hydra-spelling
+    (:hint nil :color teal :quit-key "q" :title (with-faicon "magic" "Spelling" 1 -0.05))
+    ("Checker"
+     (("c" langtool-correct-buffer "correction")
+      ("C" langtool-check-done "clear")
+      ("d" ispell-change-dictionary "dictionary")
+      ("l" (message "Current language: %s (%s)" langtool-default-language ispell-current-dictionary) "language")
+      ("s" my/switch-language "switch")
+      ("w" wiki-summary "wiki"))
+     "Errors"
+     (("<" flyspell-correct-previous "previous" :color pink)
+      (">" flyspell-correct-next "next" :color pink)
+      ("f" langtool-check "find"))))
 #+end_src
 
 *** Hydra / TeX
@@ -1717,21 +1658,25 @@ Group spelling commands.
 Group TeX commands.
 
 #+begin_src emacs-lisp :tangle yes
-  (defhydra hydra-tex (:color blue)
-    "
-    ^
-    ^TeX^          ^Do^
-    ^───^──────────^──^──────────────────
-    _q_ quit       _g_ goto
-    ^^             _r_ replace
-    ^^             _s_ search
-    ^^             _t_ table of content
-    "
-    ("g" reftex-goto-label)
-    ("q" nil)
-    ("r" reftex-query-replace-document)
-    ("s" counsel-rg)
-    ("t" reftex-toc))
+  (pretty-hydra-define hydra-tex
+    (:hint nil :color teal :quit-key "q" :title (with-fileicon "tex" "LaTeX" 1 -0.05))
+    ("Action"
+     (("g" reftex-goto-label "goto")
+      ("r" reftex-query-replace-document "replace")
+      ("s" counsel-rg "search")
+      ("t" reftex-toc "table of content"))))
+#+end_src
+
+*** Hydra / Tool
+
+Group Tool commands.
+
+#+begin_src emacs-lisp :tangle yes
+  (pretty-hydra-define hydra-tool
+    (:hint nil :color teal :quit-key "q" :title (with-faicon "briefcase" "Tool" 1 -0.05))
+    ("Network"
+     (("c" ipcalc "subnet calculator")
+      ("i" ipinfo "ip info"))))
 #+end_src
 
 *** Hydra / TypeScript
@@ -1764,41 +1709,12 @@ Group TypeScript commands.
 Group upload commands.
 
 #+begin_src emacs-lisp :tangle yes
-  (defhydra hydra-upload (:color blue)
-    "
-    ^
-    ^Upload^          ^Do^
-    ^──────^──────────^──^────────
-    _q_ quit          _b_ buffer
-    ^^                _i_ image
-    ^^                _r_ region
-    ^^                ^^
-    "
-    ("q" nil)
-    ("b" webpaste-paste-buffer)
-    ("i" imgbb-upload)
-    ("r" webpaste-paste-region))
-#+end_src
-
-*** Hydra / YASnippet
-
-Group YASnippet commands.
-
-#+begin_src emacs-lisp :tangle yes
-  (defhydra hydra-yasnippet (:color blue)
-    "
-    ^
-    ^YASnippet^          ^Do^
-    ^─────────^──────────^──^────────
-    _q_ quit             _i_ insert
-    ^^                   _m_ mode
-    ^^                   _n_ new
-    ^^                   ^^
-    "
-    ("q" nil)
-    ("i" ivy-yasnippet)
-    ("m" yas-minor-mode)
-    ("n" yas-new-snippet))
+  (pretty-hydra-define hydra-upload
+    (:hint nil :color teal :quit-key "q" :title (with-faicon "cloud-upload" "Upload" 1 -0.05))
+    ("Action"
+     (("b" webpaste-paste-buffe "buffer")
+      ("i" imgbb-upload "image")
+      ("r" webpaste-paste-region "region"))))
 #+end_src
 
 *** Hydra / Windows
@@ -1806,29 +1722,19 @@ Group YASnippet commands.
 Group window-related commands.
 
 #+begin_src emacs-lisp :tangle yes
-  (defhydra hydra-windows (:color pink)
-    "
-    ^
-    ^Windows^           ^Window^            ^Zoom^
-    ^───────^───────────^──────^────────────^────^──────
-    _q_ quit            _b_ balance         _-_ out
-    ^^                  _i_ heighten        _+_ in
-    ^^                  _j_ narrow          _=_ reset
-    ^^                  _k_ lower           ^^
-    ^^                  _l_ widen           ^^
-    ^^                  _s_ swap            ^^
-    ^^                  ^^                  ^^
-    "
-    ("q" nil)
-    ("b" balance-windows)
-    ("i" enlarge-window)
-    ("j" shrink-window-horizontally)
-    ("k" shrink-window)
-    ("l" enlarge-window-horizontally)
-    ("s" switch-window-then-swap-buffer :color blue)
-    ("-" text-scale-decrease)
-    ("+" text-scale-increase)
-    ("=" (text-scale-increase 0)))
+  (pretty-hydra-define hydra-windows
+    (:hint nil :forein-keys warn :quit-key "q" :title (with-faicon "windows" "Windows" 1 -0.05))
+    ("Window"
+     (("b" balance-windows "balance")
+      ("i" enlarge-window "heighten")
+      ("j" shrink-window-horizontally "narrow")
+      ("k" shrink-window "lower")
+      ("l" enlarge-window-horizontally "widen")
+      ("s" switch-window-then-swap-buffer "swap" :color teal))
+     "Zoom"
+     (("-" text-scale-decrease "out")
+      ("+" text-scale-increase "in")
+      ("=" (text-scale-increase 0) "reset"))))
 #+end_src
 
 ** General
