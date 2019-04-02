@@ -1477,6 +1477,7 @@ Group ERC commands.
       ("d" erc-quit-server "disconnect")
       ("j" erc-join-channel "join")
       ("n" erc-channel-names "names")
+      ("o" my/erc-get-ops "ops")
       ("u" my/erc-count-users "users"))))
 #+END_SRC
 
@@ -2033,62 +2034,80 @@ Finally, specify to =erc= that you use a =.authinfo= file with:
               (user-error "The current buffer is not a channel")))
         (user-error "You must first be connected on IRC")))
 
-    (defun my/erc-notify (nickname message)
-      "Displays a notification message for ERC."
-      (let* ((channel (buffer-name))
-             (nick (erc-hl-nicks-trim-irc-nick nickname))
-             (title (if (string-match-p (concat "^" nickname) channel)
-                        nick
-                      (concat nick " (" channel ")")))
-             (msg (s-trim (s-collapse-whitespace message))))
-        (alert (concat nick ": " msg) :title title)))
-
-    (defun my/erc-preprocess (string)
-      "Avoids channel flooding."
-      (setq str (string-trim (replace-regexp-in-string "\n+" " " str))))
-
-    (defun my/erc-start-or-switch ()
-      "Connects to ERC, or switch to last active buffer."
+    (defun my/erc-get-ops ()
+      "Displays the names of ops users on the current channel."
       (interactive)
       (if (get-buffer "irc.freenode.net:6667")
-          (erc-track-switch-buffer 1)
-        (erc :server "irc.freenode.net" :port 6667 :nick "rememberYou")))
-    :hook ((ercn-notify . my/erc-notify)
-           (erc-send-pre . my/erc-preprocess))
-    :custom-face
-    (erc-action-face ((t (:foreground "#8fbcbb"))))
-    (erc-error-face ((t (:foreground "#bf616a"))))
-    (erc-input-face ((t (:foreground "#ebcb8b"))))
-    (erc-notice-face ((t (:foreground "#ebcb8b"))))
-    (erc-timestamp-face ((t (:foreground "#a3be8c"))))
-    :custom
-    (erc-autojoin-channels-alist '(("freenode.net" "#archlinux" "#bash" "##c++"
-                                    "#emacs""#i3" "#latex" "#org-mode" "#python"
-                                    "#qutebrowser" "#reactjs" "#sway")))
-    (erc-autojoin-timing 'ident)
-    (erc-fill-function 'erc-fill-static)
-    (erc-fill-static-center 22)
-    (erc-header-line-format "%n on %t (%m)")
-    (erc-hide-list '("JOIN" "PART" "QUIT"))
-    (erc-join-buffer 'bury)
-    (erc-kill-buffer-on-part t)
-    (erc-kill-queries-on-quit t)
-    (erc-kill-server-buffer-on-quit t)
-    (erc-lurker-hide-list '("JOIN" "PART" "QUIT"))
-    (erc-lurker-threshold-time 43200)
-    (erc-prompt-for-nickserv-password nil)
-    (erc-server-reconnect-attempts 5)
-    (erc-server-reconnect-timeout 3)
-    (erc-track-exclude-types '("JOIN" "MODE" "NICK" "PART" "QUIT"
-                               "324" "329" "332" "333" "353" "477"))
-    :config
-    (add-to-list 'erc-modules 'notifications)
-    (add-to-list 'erc-modules 'spelling)
-    (erc-services-mode 1)
-    (erc-update-modules))
+          (let ((channel (erc-default-target)))
+            (if (and channel (erc-channel-p channel))
+                (let (ops)
+                  (maphash (lambda (nick cdata)
+                             (if (and (cdr cdata)
+                                      (erc-channel-user-op (cdr cdata)))
+                                 (setq ops (cons nick ops))))
+                           erc-channel-users)
 
-  (use-package erc-hl-nicks :after erc)
-  (use-package erc-image :after erc)
+                  (message "The online ops users are: %s"  (mapconcat 'identity ops " ")))
+
+            (user-error "The current buffer is not a channel")))
+      (user-error "You must first be connected on IRC")))
+
+  (defun my/erc-notify (nickname message)
+    "Displays a notification message for ERC."
+    (let* ((channel (buffer-name))
+           (nick (erc-hl-nicks-trim-irc-nick nickname))
+           (title (if (string-match-p (concat "^" nickname) channel)
+                      nick
+                    (concat nick " (" channel ")")))
+           (msg (s-trim (s-collapse-whitespace message))))
+      (alert (concat nick ": " msg) :title title)))
+
+  (defun my/erc-preprocess (string)
+    "Avoids channel flooding."
+    (setq str (string-trim (replace-regexp-in-string "\n+" " " str))))
+
+  (defun my/erc-start-or-switch ()
+    "Connects to ERC, or switch to last active buffer."
+    (interactive)
+    (if (get-buffer "irc.freenode.net:6667")
+        (erc-track-switch-buffer 1)
+      (erc :server "irc.freenode.net" :port 6667 :nick "rememberYou")))
+  :hook ((ercn-notify . my/erc-notify)
+         (erc-send-pre . my/erc-preprocess))
+  :custom-face
+  (erc-action-face ((t (:foreground "#8fbcbb"))))
+  (erc-error-face ((t (:foreground "#bf616a"))))
+  (erc-input-face ((t (:foreground "#ebcb8b"))))
+  (erc-notice-face ((t (:foreground "#ebcb8b"))))
+  (erc-timestamp-face ((t (:foreground "#a3be8c"))))
+  :custom
+  (erc-autojoin-channels-alist '(("freenode.net" "#archlinux" "#bash" "##c++"
+                                  "#emacs""#i3" "#latex" "#org-mode" "#python"
+                                  "#qutebrowser" "#reactjs" "#sway")))
+  (erc-autojoin-timing 'ident)
+  (erc-fill-function 'erc-fill-static)
+  (erc-fill-static-center 22)
+  (erc-header-line-format "%n on %t (%m)")
+  (erc-hide-list '("JOIN" "PART" "QUIT"))
+  (erc-join-buffer 'bury)
+  (erc-kill-buffer-on-part t)
+  (erc-kill-queries-on-quit t)
+  (erc-kill-server-buffer-on-quit t)
+  (erc-lurker-hide-list '("JOIN" "PART" "QUIT"))
+  (erc-lurker-threshold-time 43200)
+  (erc-prompt-for-nickserv-password nil)
+  (erc-server-reconnect-attempts 5)
+  (erc-server-reconnect-timeout 3)
+  (erc-track-exclude-types '("JOIN" "MODE" "NICK" "PART" "QUIT"
+                             "324" "329" "332" "333" "353" "477"))
+  :config
+  (add-to-list 'erc-modules 'notifications)
+  (add-to-list 'erc-modules 'spelling)
+  (erc-services-mode 1)
+  (erc-update-modules))
+
+    (use-package erc-hl-nicks :after erc)
+    (use-package erc-image :after erc)
 #+end_src
 
 ** Ivy
