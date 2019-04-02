@@ -2001,7 +2001,7 @@ Finally, specify to =erc= that you use a =.authinfo= file with:
     :preface
     (defun my/erc-browse-last-url ()
       "Searchs backwards through an ERC buffer, looking for a URL. When a URL is
-      found, it prompts you to open it."
+       found, it prompts you to open it."
       (interactive)
       (save-excursion
         (let ((ffap-url-regexp
