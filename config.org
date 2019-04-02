@@ -2013,16 +2013,25 @@ Finally, specify to =erc= that you use a =.authinfo= file with:
           (ffap-next t t))))
 
     (defun my/erc-count-users ()
-      "Displays the number of users connected on the current channel."
+      "Displays the number of users and ops connected on the current channel."
       (interactive)
       (if (get-buffer "irc.freenode.net:6667")
           (let ((channel (erc-default-target)))
             (if (and channel (erc-channel-p channel))
-                (message "%d users are online on %s"
-                         (hash-table-count erc-channel-users)
-                         channel)
+                (let ((hash-table (with-current-buffer (erc-server-buffer)
+                                    erc-server-users))
+                      (users 0)
+                      (ops 0))
+                  (maphash (lambda (k v)
+                             (when (member (current-buffer)
+                                           (erc-server-user-buffers v))
+                               (incf users))
+                             (when (erc-channel-user-op-p k)
+                               (incf ops)))
+                           hash-table)
+                  (message "%d users (%s ops) are online on %s" users ops channel))
               (user-error "The current buffer is not a channel")))
-        (user-error "You must first start ERC")))
+        (user-error "You must first be connected on IRC")))
 
     (defun my/erc-notify (nickname message)
       "Displays a notification message for ERC."
