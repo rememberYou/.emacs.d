@@ -1478,7 +1478,8 @@ Group ERC commands.
       ("j" erc-join-channel "join")
       ("n" erc-channel-names "names")
       ("o" my/erc-get-ops "ops")
-      ("u" my/erc-count-users "users"))))
+      ("u" my/erc-count-users "users")
+      ("r" my/erc-reset-track-mode "reset track mode"))))
 #+END_SRC
 
 *** Hydra / Flycheck
@@ -2059,6 +2060,14 @@ Finally, specify to =erc= that you use a =.authinfo= file with:
     (defun my/erc-preprocess (string)
       "Avoids channel flooding."
       (setq str (string-trim (replace-regexp-in-string "\n+" " " str))))
+
+    (defun my/erc-reset-track-mode ()
+      "Resets ERC track mode."
+      (interactive)
+      (setq erc-modified-channels-alist nil)
+      (erc-modified-channels-update)
+      (erc-modified-channels-display)
+      (force-mode-line-update))
 
     (defun my/erc-start-or-switch ()
       "Connects to ERC, or switch to last active buffer."
