@@ -1183,6 +1183,16 @@ For those who didn't know, GNU Emacs is also a file explorer.
     (dired-listing-switches "-alh")
     (dired-ls-F-marks-symlinks nil)
     (dired-recursive-copies 'always))
+
+  (use-package dired-narrow
+    :bind (("C-c C-n" . dired-narrow)
+           ("C-c C-f" . dired-narrow-fuzzy)
+           ("C-c C-r" . dired-narrow-regexp)))
+
+  (use-package dired-subtree
+    :bind (:map dired-mode-map
+                ("<backtab>" . dired-subtree-cycle)
+                ("<tab>" . dired-subtree-toggle)))
 #+end_src
 
 ** Ending Up
