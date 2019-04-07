@@ -2142,7 +2142,7 @@ smaller, simpler, and smoother to use yet highly customizable.
 
   (use-package ivy
     :delight
-    :defer 0.1
+    :after ivy-rich
     :bind (("C-x b" . ivy-switch-buffer)
            ("C-x B" . ivy-switch-buffer-other-window)
            ("M-H"   . ivy-resume)
@@ -2163,7 +2163,7 @@ smaller, simpler, and smoother to use yet highly customizable.
     :commands ivy-pass)
 
   (use-package ivy-rich
-    :after ivy
+    :defer 0.1
     :preface
     (defun ivy-rich-branch-candidate (candidate)
       "Displays the branch candidate of the candidate for ivy-rich."
@@ -2227,6 +2227,15 @@ smaller, simpler, and smoother to use yet highly customizable.
           (let* ((user-id (file-attribute-user-id (file-attributes candidate)))
                  (user-name (user-login-name user-id)))
             (format "%s" user-name)))))
+
+    (defun ivy-rich-switch-buffer-icon (candidate)
+      "Returns an icon for the candidate out of `all-the-icons'."
+      (with-current-buffer
+          (get-buffer candidate)
+        (let ((icon (all-the-icons-icon-for-mode major-mode :height 0.9)))
+          (if (symbolp icon)
+              (all-the-icons-icon-for-mode 'fundamental-mode :height 0.9)
+            icon))))
     :config
     (plist-put ivy-rich-display-transformers-list
                'counsel-find-file
@@ -2240,8 +2249,17 @@ smaller, simpler, and smoother to use yet highly customizable.
     (plist-put ivy-rich-display-transformers-list
                'counsel-projectile-switch-project
                '(:columns
-                 ((ivy-rich-branch-candidate (:width 80))
+                 ((ivy-rich-branch-candidate        (:width 80))
                   (ivy-rich-compiling))))
+    (plist-put ivy-rich-display-transformers-list
+               'ivy-switch-buffer
+               '(:columns
+                 ((ivy-rich-switch-buffer-icon       (:width 2))
+                  (ivy-rich-candidate                (:width 40))
+                  (ivy-rich-switch-buffer-size       (:width 7))
+                  (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
+                  (ivy-rich-switch-buffer-major-mode (:width 20 :face warning)))
+                 :predicate (lambda (cand) (get-buffer cand))))
     (ivy-rich-mode 1))
 
   (use-package all-the-icons-ivy
