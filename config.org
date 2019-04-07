@@ -2162,11 +2162,85 @@ smaller, simpler, and smoother to use yet highly customizable.
 
   (use-package ivy-rich
     :after ivy
-    :custom
-    (ivy-virtual-abbreviate 'full
-                            ivy-rich-switch-buffer-align-virtual-buffer t
-                            ivy-rich-path-style 'abbrev)
-    :config (ivy-rich-mode 1))
+    :preface
+    (defun ivy-rich-branch-candidate (candidate)
+      "Displays the branch candidate of the candidate for ivy-rich."
+      (let ((candidate (expand-file-name candidate ivy--directory)))
+        (if (or (not (file-exists-p candidate)) (file-remote-p candidate))
+            ""
+          (format "%s%s"
+                  (propertize
+                   (replace-regexp-in-string abbreviated-home-dir "~/"
+                                             (file-name-directory
+                                              (directory-file-name candidate)))
+                   'face 'font-lock-doc-face)
+                  (propertize
+                   (file-name-nondirectory
+                    (directory-file-name candidate))
+                   'face 'success)))))
+
+    (defun ivy-rich-compiling (candidate)
+      "Displays compiling buffers of the candidate for ivy-rich."
+      (let* ((candidate (expand-file-name candidate ivy--directory)))
+        (if (or (not (file-exists-p candidate)) (file-remote-p candidate)
+                (not (magit-git-repo-p candidate)))
+            ""
+          (if (my/projectile-compilation-buffers candidate)
+              "compiling"
+            ""))))
+
+    (defun ivy-rich-file-group (candidate)
+      "Displays the file group of the candidate for ivy-rich"
+      (let ((candidate (expand-file-name candidate ivy--directory)))
+        (if (or (not (file-exists-p candidate)) (file-remote-p candidate))
+            ""
+          (let* ((group-id (file-attribute-group-id (file-attributes candidate)))
+                 (group-function (if (fboundp #'group-name) #'group-name #'identity))
+                 (group-name (funcall group-function group-id)))
+            (format "%s" group-name)))))
+
+    (defun ivy-rich-file-modes (candidate)
+      "Displays the file mode of the candidate for ivy-rich."
+      (let ((candidate (expand-file-name candidate ivy--directory)))
+        (if (or (not (file-exists-p candidate)) (file-remote-p candidate))
+            ""
+          (format "%s" (file-attribute-modes (file-attributes candidate))))))
+
+    (defun ivy-rich-file-size (candidate)
+      "Displays the file size of the candidate for ivy-rich."
+      (let ((candidate (expand-file-name candidate ivy--directory)))
+        (if (or (not (file-exists-p candidate)) (file-remote-p candidate))
+            ""
+          (let ((size (file-attribute-size (file-attributes candidate))))
+            (cond
+             ((> size 1000000) (format "%.1fM " (/ size 1000000.0)))
+             ((> size 1000) (format "%.1fk " (/ size 1000.0)))
+             (t (format "%d " size)))))))
+
+    (defun ivy-rich-file-user (candidate)
+      "Displays the file user of the candidate for ivy-rich."
+      (let ((candidate (expand-file-name candidate ivy--directory)))
+        (if (or (not (file-exists-p candidate)) (file-remote-p candidate))
+            ""
+          (let* ((user-id (file-attribute-user-id (file-attributes candidate)))
+                 (user-name (user-login-name user-id)))
+            (format "%s" user-name)))))
+    :config
+    (plist-put ivy-rich-display-transformers-list
+               'counsel-find-file
+               '(:columns
+                 ((ivy-rich-candidate               (:width 73))
+                  (ivy-rich-file-user               (:width 8 :face font-lock-doc-face))
+                  (ivy-rich-file-group              (:width 4 :face font-lock-doc-face))
+                  (ivy-rich-file-modes              (:width 11 :face font-lock-doc-face))
+                  (ivy-rich-file-size               (:width 7 :face font-lock-doc-face))
+                  (ivy-rich-file-last-modified-time (:width 30 :face font-lock-doc-face)))))
+    (plist-put ivy-rich-display-transformers-list
+               'counsel-projectile-switch-project
+               '(:columns
+                 ((ivy-rich-branch-candidate (:width 80))
+                  (ivy-rich-compiling))))
+    (ivy-rich-mode 1))
 
   (use-package all-the-icons-ivy
     :after (all-the-icons ivy)
@@ -2574,6 +2648,19 @@ exists as well).
 #+begin_src emacs-lisp :tangle yes
   (use-package projectile
     :defer 1
+    :preface
+    (defun my/projectile-compilation-buffers (&optional project)
+      "Get a list of a project's compilation buffers.
+    If PROJECT is not specified the command acts on the current project."
+      (let* ((project-root (or project (projectile-project-root)))
+             (buffer-list (mapcar #'process-buffer compilation-in-progress))
+             (all-buffers (cl-remove-if-not
+                           (lambda (buffer)
+                             (projectile-project-buffer-p buffer project-root))
+                           buffer-list)))
+        (if projectile-buffers-filter-function
+            (funcall projectile-buffers-filter-function all-buffers)
+          all-buffers)))
     :custom
     (projectile-cache-file (expand-file-name (format "%s/emacs/projectile.cache" xdg-cache)))
     (projectile-completion-system 'ivy)
