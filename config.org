@@ -1444,7 +1444,9 @@ Group a lot of commands.
       ("F" flyspell-mode "flyspell" :toggle t)
       ("f" flycheck-mode "flycheck" :toggle t)
       ("l" lsp-mode "lsp" :toggle t)
-      ("s" smartparens-mode "smartparens" :toggle t))))
+      ("s" smartparens-mode "smartparens" :toggle t))
+     "UI"
+     (("i" ivy-rich-mode "ivy-rich" :toggle t))))
 #+end_src
 
 *** Hydra / Clock
