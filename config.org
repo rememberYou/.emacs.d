@@ -488,7 +488,6 @@ don't forget to install it with your package manager.
   (use-package prettier-js
     :delight
     :custom (prettier-js-args '("--print-width" "100"
-                                "--single-quote" "true"
                                 "--trailing-comma" "all")))
 #+end_src
 
