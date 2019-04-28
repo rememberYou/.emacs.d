@@ -779,13 +779,18 @@ the creation of these diagrams, [[http://plantuml.com/][PlantUML]] remains the b
 
 ** Python
 
-In order to have a fast and stable environment, I recommend using [[#lsp][LSP]] as a
-client for LSP servers and [[https://github.com/palantir/python-language-server][pyls]] as server.
+In order to have a fast and stable environment, I recommend using [[https://github.com/andrew-christianson/lsp-python-ms][lsp-python-ms]]
+as LSP client and [[https://github.com/Microsoft/python-language-server][mspyls]] as LSP server.
 
-To use =python-language-server= on GNU Emacs, you must first install it with the
-package manager of your operating system.
+*NOTE:* before configuring =lsp-python-ms=, don't forget to configure [[#lsp][lsp-mode]].
 
-However, let's define few bindings for =python=:
+Let's define the LSP client to use the LSP server:
+
+#+begin_src emacs-lisp :tangle yes
+  (use-package lsp-python-ms
+    :custom
+    (lsp-python-ms-dir (expand-file-name "~/.emacs.d/elisp/python-language-server/output/bin/Release/"))
+    (lsp-python-ms-executable "~/.emacs.d/elisp/python-language-server/output/bin/Release/linux-x64/publish/Microsoft.Python.LanguageServer"))
 
   (use-package python
     :delight "π "
