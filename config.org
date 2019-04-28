@@ -3343,7 +3343,7 @@ growth.
       (find-file (get-journal-file-yesterday)))
     :custom
     (org-journal-date-format "%e %b %Y (%A)")
-    (org-journal-dir "~/.personal/journal/2018/")
+    (org-journal-dir "~/.personal/journal/2019/")
     (org-journal-enable-encryption t)
     (org-journal-file-format "%Y%m%d")
     (org-journal-time-format ""))
