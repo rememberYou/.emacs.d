@@ -11,6 +11,7 @@
   - [[#better-defaults][Better defaults]]
   - [[#better-file-management-with-xdg][Better file management with XDG]]
   - [[#customization][Customization]]
+  - [[#fonts][Fonts]]
   - [[#lsp][LSP]]
   - [[#theme][Theme]]
   - [[#turn-off-mouse-interface][Turn off mouse interface]]
@@ -222,6 +223,19 @@ I also made sure to follow the XDG base directory specification for the
    custom-file (expand-file-name (format "%s/emacs/custom.el" xdg-data)))
   (when (file-exists-p custom-file)
     (load custom-file t))
+#+end_src
+
+** Fonts
+
+Spending most of our time on GNU Emacs, it is important to use a font that will
+make our reading easier.
+
+Source Code Pro is one of the best monospaced font. Installed it with your
+system manager.
+
+#+begin_src emacs-lisp :tangle yes
+  (set-face-attribute 'default nil :font "Source Code Pro")
+  (set-fontset-font t 'latin "Noto Sans")
 #+end_src
 
 ** LSP
