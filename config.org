@@ -1215,6 +1215,17 @@ For those who didn't know, GNU Emacs is also a file explorer.
                 ("<tab>" . dired-subtree-toggle)))
 #+end_src
 
+** EditorConfig
+
+[[https://editorconfig.org/][EditorConfig]] helps maintain consistent coding styles for multiple developers
+working on the same project across various editors and IDEs.
+
+#+begin_src emacs-lisp :tangle yes
+(use-package editorconfig
+  :defer 0.3
+  :config (editorconfig-mode 1))
+#+end_src
+
 ** Ending Up
 
 I'm using an =.org= file to maintain my GNU Emacs configuration. However, at his
