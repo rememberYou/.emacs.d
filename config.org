@@ -48,6 +48,7 @@
   - [[#calendar][Calendar]]
   - [[#dashboard][Dashboard]]
   - [[#dired][Dired]]
+  - [[#editorconfig][EditorConfig]]
   - [[#ending-up][Ending Up]]
   - [[#epub][EPUB]]
   - [[#spelling][Spelling]]
