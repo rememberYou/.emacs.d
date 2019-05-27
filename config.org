@@ -283,6 +283,10 @@ happiness.
   (use-package doom-modeline
     :defer 0.1
     :config (doom-modeline-mode))
+
+  (use-package fancy-battery
+    :after doom-modeline
+    :hook (after-init . fancy-battery-mode))
 #+end_src
 
 ** Turn off mouse interface
