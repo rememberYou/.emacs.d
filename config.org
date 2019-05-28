@@ -2624,6 +2624,7 @@ parenthesis. Anyway, if you don't like it, you can try taking a look at
     :custom (sp-escape-quotes-after-insert nil)
     :config (smartparens-global-mode 1))
 #+end_src
+
 ** Paste
 
 #+BEGIN_QUOTE
