@@ -2032,7 +2032,7 @@ you just need to specify a file priority list with =auth-sources=, to tell =erc=
 where to start looking for your password first.
 
 Of course, don't forget to add this line in your =.authinfo.gpg= file, where
-/<nickname>/ and /<password>/ match your real information:
+/<nickname>/ and /<password>/ match your login details.
 
 #+BEGIN_EXAMPLE
   machine irc.freenode.net login <nickname> password <password>
