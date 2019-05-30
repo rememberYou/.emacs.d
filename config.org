@@ -7,7 +7,7 @@
   - [[#packages-sources][Packages Sources]]
   - [[#use-package][use-package]]
 - [[#start-up][Start Up]]
-  - [[#authentification][Authentification]]
+  - [[#authentication][Authentication]]
   - [[#better-defaults][Better defaults]]
   - [[#better-file-management-with-xdg][Better file management with XDG]]
   - [[#customization][Customization]]
@@ -133,7 +133,7 @@ first install it, if you don't already.
 
 * Start Up
 
-** Authentification
+** Authentication
 
 I put my =authinfo.gpg= file in [[https://github.com/syncthing/syncthing][Syncthing]] in order to be able to easily use my
 configuration on other devices.
