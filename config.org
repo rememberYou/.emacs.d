@@ -773,16 +773,18 @@ The function below provides my own PHP configuration with =flycheck=.
 #+END_EXAMPLE
 
 I like to use =ac-php= to enable GNU Emacs auto-completion for
-PHP. Note that =ac-php= supports =company mode= and =auto-complete=.
+PHP.
+
+**NOTE:** =ac-php= supports =company mode= and =auto-complete=.
 
  #+begin_src emacs-lisp :tangle yes
-  (use-package ac-php
-    :after (company php-mode)
-    :hook (php-mode . ac-php-mode)
-    :custom (ac-sources '(ac-source-php))
-    :config
-    (auto-complete-mode t)
-    (ac-php-core-eldoc-setup))
+   (use-package ac-php
+     :after (company php-mode)
+     :hook (php-mode . ac-php-mode)
+     :custom (ac-sources '(ac-source-php))
+     :config
+     (ac-php-core-eldoc-setup)
+     (auto-complete-mode t))
 #+end_src
 
 ** PlantUML
