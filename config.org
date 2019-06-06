@@ -1181,20 +1181,35 @@ Always good to have a dashboard.
   (use-package dashboard
     :if (< (length command-line-args) 2)
     :preface
-    (defun my/dashboard-banner ()
-      "Sets a dashboard banner including information on package initialization
-       time and garbage collections."
-      (setq dashboard-banner-logo-title
-            (format "Emacs ready in %.2f seconds with %d garbage collections."
-                    (float-time
-                     (time-subtract after-init-time before-init-time)) gcs-done)))
-    :init
-    (add-hook 'after-init-hook 'dashboard-refresh-buffer)
-    (add-hook 'dashboard-mode-hook 'my/dashboard-banner)
+    (defun dashboard-load-packages (list-size)
+      (insert (make-string (ceiling (max 0 (- dashboard-banner-length 38)) 5) ? )
+              (format "%d packages loaded in %s" (length package-activated-list) (emacs-init-time))))
     :custom
+    (dashboard-banner-logo-title "The One True Editor, Emacs")
     (dashboard-center-content t)
+    (dashboard-items '((packages)
+                       (agenda)
+                       (projects . 5)))
+    (dashboard-navigator-buttons
+     `(
+       (,(and (display-graphic-p)
+              (all-the-icons-faicon "gitlab" :height 1.2 :v-adjust -0.1))
+        "Homepage"
+        "Browse Homepage"
+        (lambda (&rest _) (browse-url homepage)))
+       (,(and (display-graphic-p)
+              (all-the-icons-material "update" :height 1.2 :v-adjust -0.24))
+        "Update"
+        "Update emacs"
+        (lambda (&rest _) (auto-package-update-now)))))
+    (dashboard-set-file-icons t)
+    (dashboard-set-heading-icons t)
+    (dashboard-set-init-info nil)
+    (dashboard-set-navigator t)
     (dashboard-startup-banner 'logo)
-    :config (dashboard-setup-startup-hook))
+    :config
+    (add-to-list 'dashboard-item-generators '(packages . dashboard-load-packages))
+    (dashboard-setup-startup-hook))
 #+end_src
 
 ** Dired
