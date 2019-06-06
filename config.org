@@ -1185,7 +1185,7 @@ Always good to have a dashboard.
       (insert (make-string (ceiling (max 0 (- dashboard-banner-length 38)) 5) ? )
               (format "%d packages loaded in %s" (length package-activated-list) (emacs-init-time))))
     :custom
-    (dashboard-banner-logo-title "The One True Editor, Emacs")
+    (dashboard-banner-logo-title "With Great Power Comes Great Responsibility")
     (dashboard-center-content t)
     (dashboard-items '((packages)
                        (agenda)
