@@ -1191,7 +1191,9 @@ Always good to have a dashboard.
     :init
     (add-hook 'after-init-hook 'dashboard-refresh-buffer)
     (add-hook 'dashboard-mode-hook 'my/dashboard-banner)
-    :custom (dashboard-startup-banner 'logo)
+    :custom
+    (dashboard-center-content t)
+    (dashboard-startup-banner 'logo)
     :config (dashboard-setup-startup-hook))
 #+end_src
 
