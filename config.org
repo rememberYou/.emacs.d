@@ -3055,6 +3055,10 @@ authoring documents with a fast and effective plain-text system.
       "Activates speed commands on list items too."
       (or (and (looking-at org-outline-regexp) (looking-back "^\**"))
           (save-excursion (and (looking-at (org-item-re)) (looking-back "^[ \t]*")))))
+    (defmacro ignore-args (fnc)
+      "Returns function that ignores its arguments and invokes FNC."
+      `(lambda (&rest _rest)
+         (funcall ,fnc)))
     :hook ((after-save . my/config-tangle)
            (auto-save . org-save-all-org-buffers)
            (org-mode . org-indent-mode))
@@ -3115,6 +3119,10 @@ authoring documents with a fast and effective plain-text system.
     (add-to-list 'org-speed-commands-user '("s" call-interactively 'org-schedule))
     (add-to-list 'org-speed-commands-user '("x" org-todo "DONE"))
     (add-to-list 'org-speed-commands-user '("y" org-todo-yesterday "DONE"))
+    (advice-add 'org-deadline :after (ignore-args #'org-save-all-org-buffers))
+    (advice-add 'org-schedule :after (ignore-args #'org-save-all-org-buffers))
+    (advice-add 'org-store-log-note :after (ignore-args #'org-save-all-org-buffers))
+    (advice-add 'org-todo :after (ignore-args #'org-save-all-org-buffers))
     (org-clock-persistence-insinuate)
     (org-load-modules-maybe t))
 #+end_src
