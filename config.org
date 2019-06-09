@@ -1458,7 +1458,9 @@ seamless, it's like a minor mode that disables itself auto-magically.
 
 #+begin_src emacs-lisp :tangle yes
   (use-package hydra
-    :bind (("C-c L" . hydra-ledger/body)
+    :bind (("C-c I" . hydra-image/body)
+           ("C-c L" . hydra-ledger/body)
+           ("C-c T" . hydra-tool/body)
            ("C-c b" . hydra-btoggle/body)
            ("C-c c" . hydra-clock/body)
            ("C-c e" . hydra-erc/body)
@@ -1470,7 +1472,6 @@ seamless, it's like a minor mode that disables itself auto-magically.
            ("C-c q" . hydra-query/body)
            ("C-c s" . hydra-spelling/body)
            ("C-c t" . hydra-tex/body)
-           ("C-c T" . hydra-tool/body)
            ("C-c u" . hydra-upload/body)
            ("C-c w" . hydra-windows/body)))
 
@@ -1606,6 +1607,22 @@ Group jump-to-files commands.
       ("om" (find-file "~/.personal/other/movies.org"))
       ("op" (find-file "~/.personal/other/purchases.org") "purchase")
       ("ou" (find-file "~/.personal/other/usb.org") "usb"))))
+#+end_src
+
+*** Hydra / Image
+
+Group images commands.
+
+#+begin_src emacs-lisp :tangle yes
+  (pretty-hydra-define hydra-image
+    (:hint nil :color pink :quit-key "q" :title (with-faicon "file-image-o" "Images" 1 -0.05))
+    ("Action"
+     (("r" image-rotate "rotate")
+      ("s" image-save "save" :color teal))
+      "Zoom"
+      (("-" image-decrease-size "out")
+       ("+" image-increase-size "in")
+       ("=" image-transform-reset "reset"))))
 #+end_src
 
 *** Hydra / Ledger
