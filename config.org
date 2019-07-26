@@ -275,10 +275,8 @@ happiness.
 [[#Icons][all-the-icons]].
 
 #+begin_src emacs-lisp :tangle yes
-  (use-package nord-theme
-    :config
-    (add-to-list 'custom-theme-load-path (expand-file-name "~/.emacs.d/themes/"))
-    (load-theme 'nord t))
+  (use-package doom-themes
+    :config (load-theme 'doom-nord t))
 
   (use-package doom-modeline
     :defer 0.1
