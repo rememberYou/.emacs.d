@@ -285,6 +285,12 @@ happiness.
   (use-package fancy-battery
     :after doom-modeline
     :hook (after-init . fancy-battery-mode))
+
+  (use-package solaire-mode
+    :custom (solaire-mode-remap-fringe t)
+    :config
+    (solaire-mode-swap-bg)
+    (solaire-global-mode +1))
 #+end_src
 
 ** Turn off mouse interface
