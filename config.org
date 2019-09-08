@@ -741,6 +741,8 @@ operating system.
 
 ** PHP
 
+https://github.com/felixfbecker/php-language-server
+
 For people who wonder, I don't use =php-mode= because it can't handle
 files that contain PHP and HTML. Also, why use another package when
 =web-mode= already provides everything I need?
@@ -752,9 +754,7 @@ The function below provides my own PHP configuration with =flycheck=.
      (web-mode)
      (make-local-variable 'web-mode-code-indent-offset)
      (make-local-variable 'web-mode-markup-indent-offset)
-     (make-local-variable 'web-mode-css-indent-offset)
-     (flycheck-select-checker 'my-php)
-     (flycheck-mode t))
+     (make-local-variable 'web-mode-css-indent-offset))
 #+end_src
 
  Don't forget to add the following line in the =web-mode= package
@@ -3239,8 +3239,10 @@ update it from several computers and smartphones.
     (org-default-notes-file "~/.personal/agenda/organizer.org")
     (org-directory "~/.personal")
     (org-enforce-todo-dependencies t)
+    (org-habit-completed-glyph ?✓)
     (org-habit-graph-column 80)
     (org-habit-show-habits-only-for-today nil)
+    (org-habit-today-glyph ?‖)
     (org-track-ordered-property-with-tag t))
 #+end_src
 
