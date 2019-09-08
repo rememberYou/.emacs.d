@@ -235,7 +235,7 @@ Source Code Pro is one of the best monospaced font. Installed it with your
 system manager.
 
 #+begin_src emacs-lisp :tangle yes
-  (set-face-attribute 'default nil :font "Source Code Pro")
+  (set-face-attribute 'default nil :font "Source Code Pro Medium")
   (set-fontset-font t 'latin "Noto Sans")
 #+end_src
 
