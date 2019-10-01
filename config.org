@@ -614,8 +614,7 @@ decent configuration to feel comfortable when handling such files.
                    (not (loop for x across array always (numberp x)))))
              (json-encoding-separator (if json-encoding-pretty-print "," ", ")))
         (funcall encode array)))
-    :config
-    (advice-add 'json-encode-array :around #'my/json-array-of-numbers-on-one-line))
+    :config (advice-add 'json-encode-array :around #'my/json-array-of-numbers-on-one-line))
 #+end_src
 
 ** LaTeX
