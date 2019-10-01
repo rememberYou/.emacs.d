@@ -20,6 +20,7 @@
   - [[#cmake][CMake]]
   - [[#css--less--scss][CSS – LESS – SCSS]]
   - [[#csv][CSV]]
+  - [[#dart][Dart]]
   - [[#docker][Docker]]
   - [[#emacs-lisp][Emacs Lisp]]
   - [[#html][HTML]]
@@ -247,7 +248,7 @@ LSP. That's where [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] comes in!
 
 #+begin_src emacs-lisp :tangle yes
   (use-package lsp-mode
-    :hook ((c-mode c++-mode java-mode python-mode) . lsp)
+    :hook ((c-mode c++-mode dart-mode java-mode python-mode) . lsp)
     :custom
     (lsp-prefer-flymake nil)
     (lsp-session-file (expand-file-name (format "%s/emacs/lsp-session-v1" xdg-data))))
@@ -401,6 +402,35 @@ client for LSP servers and [[https://github.com/vscode-langservers/vscode-css-la
 
 #+begin_src emacs-lisp :tangle yes
   (use-package csv-mode)
+#+end_src
+
+** Dart
+
+In order to have a fast and stable environment, I recommend using [[#lsp][LSP]] as a
+client for LSP servers and [[https://github.com/natebosch/dart_language_server][dart_language_server]] as server.
+
+To use =dart_language_server= with GNU Emacs, you must first install it
+with the package manager of your operating system.
+
+#+begin_src emacs-lisp :tangle yes
+  (use-package dart-mode
+    :defer 0.72
+    :custom
+    (dart-format-on-save t)
+    (dart-sdk-path "/opt/dart-sdk/bin/")
+    :config
+    (add-to-list 'projectile-project-root-files-bottom-up "pubspec.yaml")
+    (add-to-list 'projectile-project-root-files-bottom-up "BUILD"))
+
+  (use-package flutter
+    :after dart-mode
+    :bind (:map dart-mode-map
+                ("C-c C-c" . flutter-run-or-hot-reload))
+    :custom (flutter-sdk-path "/opt/flutter/bin/"))
+
+  (use-package flutter-l10n-flycheck
+    :after flutter
+    :config (flutter-l10n-flycheck-setup))
 #+end_src
 
 ** Docker
