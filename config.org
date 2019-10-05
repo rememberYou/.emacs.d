@@ -37,6 +37,7 @@
   - [[#sql][SQL]]
   - [[#typescript][TypeScript]]
   - [[#vuejs][Vue.js]]
+  - [[#xml][XML]]
   - [[#yaml][YAML]]
   - [[#yarn][Yarn]]
 - [[#advanced-configuration][Advanced Configuration]]
