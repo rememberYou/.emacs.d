@@ -249,7 +249,7 @@ LSP. That's where [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] comes in!
 
 #+begin_src emacs-lisp :tangle yes
   (use-package lsp-mode
-    :hook ((c-mode c++-mode dart-mode java-mode python-mode) . lsp)
+    :hook ((c-mode c++-mode dart-mode java-mode python-mode xml-mode) . lsp)
     :custom
     (lsp-prefer-flymake nil)
     (lsp-session-file (expand-file-name (format "%s/emacs/lsp-session-v1" xdg-data))))
@@ -906,6 +906,16 @@ Let's define [[https://github.com/AdamNiederer/vue-mode][vue-mode]] as major mod
     (vue-html-extra-indent 2))
 #+end_src
 
+** XML
+
+Unfortunately, XML is still used, especially for creating web services in SOAP.
+However, =xml-mode= exists to help us:
+
+#+begin_src emacs-lisp :tangle yes
+  (use-package xml-mode
+    :ensure nil
+    :mode ("\\.wsdl\\'" "\\.xsd\\'"))
+#+end_src
 ** YAML
 
 =yaml-mode= gives me the possibility to easily manage =.yml= files.
