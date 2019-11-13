@@ -916,6 +916,7 @@ However, =xml-mode= exists to help us:
     :ensure nil
     :mode ("\\.wsdl\\'" "\\.xsd\\'"))
 #+end_src
+
 ** YAML
 
 =yaml-mode= gives me the possibility to easily manage =.yml= files.
