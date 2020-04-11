@@ -3417,6 +3417,34 @@ you can have a better estimate of the time that needs to be given to each task.
     (org-show-notification-handler (lambda (msg) (alert msg))))
 #+end_src
 
+
+Being a person with a very low ability to concentrate, I use the =pomodoro=
+method to be able to concentrate throughout the day and have deep focus sessions
+almost all the time.
+
+Personally, I do sessions of:
+- *25 minutes of concentrated work*;
+- *5 minutes break*.
+
+Finally, I *take a 30-minute break every two hours*.
+
+To allow this, I use =org-pomodoro= making sure I get the in my status bar:
+#+begin_src emacs-lisp :tangle yes
+  (use-package org-pomodoro
+    :defer 0.5
+    :custom
+    (alert-user-configuration (quote ((((:category . "org-pomodoro")) libnotify nil))))
+    (org-pomodoro-audio-player "/usr/bin/mpv")
+    (org-pomodoro-finished-sound "~/Audio/pomodoro_finished.mp3")
+    (org-pomodoro-format "Pomodoro: %s")
+    (org-pomodoro-killed-sound "~/Audio/pomodoro_killed.mp3")
+    (org-pomodoro-long-break-sound "~/Audio/pomodoro_long.mp3")
+    (org-pomodoro-overtime-sound "~/Audio/pomodoro_overtime.mp3")
+    (org-pomodoro-short-break-sound "~/Audio/pomodoro_short.mp3")
+    (org-pomodoro-start-sound "~/Audio/pomodoro_start.mp3")
+    (org-pomodoro-start-sound-p t))
+#+end_src
+
 ** Contacts
 
 The best solution to maintain your contacts. I tend to use =org-contacts= to
