@@ -3436,7 +3436,7 @@ To allow this, I use =org-pomodoro= making sure I get the in my status bar:
     (alert-user-configuration (quote ((((:category . "org-pomodoro")) libnotify nil))))
     (org-pomodoro-audio-player "/usr/bin/mpv")
     (org-pomodoro-finished-sound "~/Audio/pomodoro_finished.mp3")
-    (org-pomodoro-format "Pomodoro: %s")
+    (org-pomodoro-format " %s")
     (org-pomodoro-killed-sound "~/Audio/pomodoro_killed.mp3")
     (org-pomodoro-long-break-sound "~/Audio/pomodoro_long.mp3")
     (org-pomodoro-overtime-sound "~/Audio/pomodoro_overtime.mp3")
