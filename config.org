@@ -1040,25 +1040,6 @@ minimal GUI.
     (browse-url-generic-program "qutebrowser"))
 #+end_src
 
-*** =atomic chrome=
-
-Helpful when I need to edit text areas of the browser in GNU Emacs.
-
-#+begin_src emacs-lisp :tangle yes
-  (use-package atomic-chrome
-    :defer 2
-    :preface
-    (defun atomic-chrome-server-running-p ()
-      (cond ((executable-find "lsof")
-             (zerop (call-process "lsof" nil nil nil "-i" ":64292")))
-            ((executable-find "netstat")
-             (zerop (call-process-shell-command "netstat -aon | grep 64292")))))
-    :init
-    (if (atomic-chrome-server-running-p)
-        (message "Can't start atomic-chrome server, because port 64292 is already used")
-      (atomic-chrome-start-server)))
-#+end_src
-
 *** =engine-mode=
 
 I use it to do most of my web searches without leaving GNU Emacs.
