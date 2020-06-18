@@ -1596,7 +1596,6 @@ Group jump-to-files commands.
     (:hint nil :color teal :quit-key "q" :title (with-faicon "file-text-o" "Go To" 1 -0.05))
     ("Agenda"
      (("ac" (find-file "~/.personal/agenda/contacts.org") "contacts")
-      ("af" (find-file "~/.personal/agenda/findmycat.org") "findmycat")
       ("ao" (find-file "~/.personal/agenda/organizer.org") "organizer")
       ("ap" (find-file "~/.personal/agenda/people.org") "people")
       ("ar" (find-file "~/.personal/agenda/routine.org") "routine")
@@ -3344,10 +3343,6 @@ information.
         my/org-ledger-cash-template
         :empty-lines 1
         :immediate-finish t)
-
-       ("f" "FindMyCat" entry (file+headline "~/.personal/agenda/findmycat.org" "Tasks"),
-        my/org-basic-task-template
-        :empty-lines 1)
 
        ("p" "People" entry (file+headline "~/.personal/agenda/people.org" "Tasks"),
         my/org-basic-task-template
