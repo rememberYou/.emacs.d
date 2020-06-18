@@ -1544,6 +1544,7 @@ Group clock commands.
       ("i" org-clock-in "in")
       ("j" org-clock-goto "jump")
       ("o" org-clock-out "out")
+      ("p" org-pomodoro "pomodoro")
       ("r" org-clock-report "report"))))
 #+end_src
 
