@@ -732,7 +732,7 @@ operating system.
 
 #+begin_src emacs-lisp :tangle yes
   (use-package markdown-mode
-    :ensure-system-package (pandoc . "trizen -S pandoc")
+    :ensure-system-package (pandoc . "yay -S pandoc")
     :delight "μ "
     :mode ("\\.markdown\\'" "\\.md\\'")
     :custom (markdown-command "/usr/bin/pandoc"))
@@ -1381,7 +1381,7 @@ install them with the package manager of your operating system.
 #+begin_src emacs-lisp :tangle yes
   (use-package ispell
     :defer 2
-    :ensure-system-package (hunspell . "trizen -S hunspell")
+    :ensure-system-package (hunspell . "yay -S hunspell")
     :custom
     (ispell-dictionary "en_US")
     (ispell-dictionary-alist
@@ -2419,7 +2419,7 @@ Now all we have to do is configure =ledger-mode=:
 
 #+begin_src emacs-lisp :tangle yes
   (use-package ledger-mode
-    :ensure-system-package (ledger . "trizen -S --noconfirm ledger")
+    :ensure-system-package (ledger . "yay -S --noconfirm ledger")
     :mode ("\\.dat\\'"
            "\\.ledger\\'")
     :bind (:map ledger-mode-map
