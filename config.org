@@ -613,16 +613,6 @@ Here is an example configuration for a project that uses =requirejs= and
   }
 #+end_src
 
-*** =company-tern=
-
-=tern= backend for =company-mode=.
-
-#+begin_src emacs-lisp :tangle yes
-  (use-package company-tern
-    :after (company tern)
-    :config (add-to-list 'company-backends 'company-tern))
-#+end_src
-
 ** JSON
 
 JSON is used a lot, especially in the web. Therefore, it is important to have a
