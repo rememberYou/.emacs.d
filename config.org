@@ -164,6 +164,7 @@ For a better user experience of GNU Emacs, here are the default values I use.
    kill-ring-max 128                                ; Maximum length of kill ring
    load-prefer-newer t                              ; Prefers the newest version of a file
    mark-ring-max 128                                ; Maximum length of mark ring
+   read-process-output-max (* 1024 1024)            ; Increase the amount of data reads from the process
    scroll-conservatively most-positive-fixnum       ; Always scroll by one line
    select-enable-clipboard t                        ; Merge system's and Emacs' clipboard
    tab-width 4                                      ; Set width for tabs
