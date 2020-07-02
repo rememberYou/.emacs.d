@@ -255,7 +255,6 @@ LSP. That's where [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] comes in!
     (lsp-session-file (expand-file-name (format "%s/emacs/lsp-session-v1" xdg-data))))
 
   (use-package lsp-ui)
-  (use-package company-lsp)
 
   (use-package dap-mode
     :after lsp-mode
