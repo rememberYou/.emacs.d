@@ -36,6 +36,6 @@
   (org-babel-load-file (expand-file-name "config.org" user-emacs-directory)))
 
 ;; Make gc pauses faster by decreasing the threshold.
-(setq gc-cons-threshold (* 2 1000 1000))
+(setq gc-cons-threshold (* 10 1000 1000))
 
 ;;; init.el ends here
