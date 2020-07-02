@@ -251,6 +251,7 @@ LSP. That's where [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] comes in!
   (use-package lsp-mode
     :hook ((c-mode c++-mode dart-mode java-mode python-mode xml-mode) . lsp)
     :custom
+    (lsp-prefer-capf t)
     (lsp-prefer-flymake nil)
     (lsp-session-file (expand-file-name (format "%s/emacs/lsp-session-v1" xdg-data))))
 
