@@ -827,7 +827,17 @@ Let's define the LSP client to use the LSP server:
   (use-package python
     :delight "π "
     :bind (("M-[" . python-nav-backward-block)
-           ("M-]" . python-nav-forward-block)))
+           ("M-]" . python-nav-forward-block))
+    :preface
+    (defun python-remove-unused-imports()
+      "Removes unused imports and unused variables with autoflake."
+      (interactive)
+      (if (executable-find "autoflake")
+          (progn
+            (shell-command (format "autoflake --remove-all-unused-imports -i %s"
+                                   (shell-quote-argument (buffer-file-name))))
+            (revert-buffer t t t))
+        (warn "python-mode: Cannot find autoflake executable."))))
 #+end_src
 
 ** Shell-script
