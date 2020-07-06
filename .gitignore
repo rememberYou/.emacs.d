@@ -1,6 +1,7 @@
 # GNU Emacs
 *.elc
 *~
+.cache
 /elpa/
 config.el
 custom.el
@@ -15,6 +16,7 @@ tutorial
 /backups/
 /transient/
 .abbrev_defs
+.dap-breakpoints
 ac-comphist.dat
 bookmarks
 nov-places
