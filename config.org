@@ -1210,18 +1210,6 @@ Always good to have a dashboard.
     (dashboard-items '((packages)
                        (agenda)
                        (projects . 5)))
-    (dashboard-navigator-buttons
-     `(
-       (,(and (display-graphic-p)
-              (all-the-icons-faicon "gitlab" :height 1.2 :v-adjust -0.1))
-        "Homepage"
-        "Browse Homepage"
-        (lambda (&rest _) (browse-url homepage)))
-       (,(and (display-graphic-p)
-              (all-the-icons-material "update" :height 1.2 :v-adjust -0.24))
-        "Update"
-        "Update emacs"
-        (lambda (&rest _) (auto-package-update-now)))))
     (dashboard-set-file-icons t)
     (dashboard-set-heading-icons t)
     (dashboard-set-init-info nil)
