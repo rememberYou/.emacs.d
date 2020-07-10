@@ -55,6 +55,7 @@
   - [[#epub][EPUB]]
   - [[#spelling][Spelling]]
   - [[#history][History]]
+  - [[#highlight-indentation][Highlight indentation]]
   - [[#hydra][Hydra]]
   - [[#general][General]]
   - [[#icons][Icons]]
@@ -1445,6 +1446,18 @@ radical function, it is part of a good user experience.
     (savehist-file (expand-file-name (format "%s/emacs/history" xdg-cache)))
     (savehist-save-minibuffer-history 1)
     :config (savehist-mode 1))
+#+end_src
+
+** Highlight indentation
+
+Highlight the indentation is a feature that visually pleases me. Indeed, without
+having to count the spaces, I can see that the code is well indented.
+
+#+begin_src emacs-lisp :tangle yes
+  (use-package highlight-indent-guides
+    :defer 0.3
+    :hook (prog-mode . highlight-indent-guides-mode)
+    :custom (highlight-indent-guides-method 'column))
 #+end_src
 
 ** Hydra
