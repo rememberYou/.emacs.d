@@ -846,6 +846,13 @@ Let's take a look to my Python configuration:
                                    (shell-quote-argument (buffer-file-name))))
             (revert-buffer t t t))
         (warn "python-mode: Cannot find autoflake executable."))))
+
+  (use-package pyvenv
+    :after python
+    :hook (python-mode . pyvenv-mode)
+    :custom
+    (pyvenv-default-virtual-env-name "env")
+    (pyvenv-mode-line-indicator '(pyvenv-virtual-env-name ("[venv:" pyvenv-virtual-env-name "] "))))
 #+end_src
 
 ** Shell-script
