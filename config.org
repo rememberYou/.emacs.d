@@ -815,7 +815,7 @@ the creation of these diagrams, [[http://plantuml.com/][PlantUML]] remains the b
 ** Python
 
 In order to have a fast and stable environment, I recommend to use [[https://github.com/andrew-christianson/lsp-python-ms][lsp-python-ms]]
-as LSP client and [[https://github.com/Microsoft/python-language-server][mspyls]] as LSP server.
+as LSP client and [[https://github.com/Microsoft/python-language-server][mspyls]] as LSP server as =mspyls= is faster than =pyls=.
 
 I use [[https://github.com/psf/black][black]] to reformat my Python buffer. Before use it, don't forget to
 install =python-black= in your system.
