@@ -1458,7 +1458,7 @@ having to count the spaces, I can see that the code is well indented.
   (use-package highlight-indent-guides
     :defer 0.3
     :hook (prog-mode . highlight-indent-guides-mode)
-    :custom (highlight-indent-guides-method 'column))
+    :custom (highlight-indent-guides-method 'character))
 #+end_src
 
 ** Hydra
