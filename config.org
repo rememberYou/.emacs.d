@@ -2522,6 +2522,7 @@ Now all that remains is to configure =mu4e=:
 
 #+begin_src emacs-lisp :tangle yes
   (use-package mu4e
+    :disabled
     :ensure nil
     :ensure-system-package mu
     :custom
@@ -2556,6 +2557,7 @@ Now all that remains is to configure =mu4e=:
     (add-to-list 'mu4e-view-actions '("org-contact-add" . mu4e-action-add-org-contact) t))
 
   (use-package org-mu4e
+    :disabled
     :ensure nil
     :custom
     (org-mu4e-convert-to-html t))
