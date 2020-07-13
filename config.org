@@ -1621,7 +1621,6 @@ Group jump-to-files commands.
       ("cd" (find-file (format "%s/dunst/dunstrc" xdg-config)))
       ("ce" (find-file "~/.emacs.d/config.org") "emacs")
       ("cE" (find-file (format "%s/sh/environ" xdg-config)) "environ")
-      ("ci" (find-file (format "%s/i3/config" xdg-config))"i3")
       ("cn" (find-file (format "%s/neofetch/config.conf" xdg-config)) "neofetch")
       ("cp" (find-file (format "%s/polybar/config" xdg-config)) "polybar")
       ("cq" (find-file (format "%s/qutebrowser/config.py" xdg-config)) "qutebrowser")
