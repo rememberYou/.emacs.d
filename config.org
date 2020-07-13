@@ -1623,10 +1623,10 @@ Group jump-to-files commands.
       ("cE" (find-file (format "%s/sh/environ" xdg-config)) "environ")
       ("cn" (find-file (format "%s/neofetch/config.conf" xdg-config)) "neofetch")
       ("cq" (find-file (format "%s/qutebrowser/config.py" xdg-config)) "qutebrowser")
-      ("cR" (find-file (format "%s/rofi/config.rasi" xdg-config)) "rofi")
       ("cr" (find-file (format "%s/ranger/rc.conf" xdg-config)) "ranger")
       ("cs" (find-file (format "%s/sway/config" xdg-config)) "sway")
       ("ct" (find-file (format "%s/tmux/tmux.conf" xdg-config)) "tmux")
+      ("cW" (find-file (format "%s/wofi/config" xdg-config)) "wofi")
       ("cx" (find-file (format "%s/sh/xdg" xdg-config)) "xdg"))
      "Other"
      (("ob" (find-file "~/.personal/other/books.org") "book")
