@@ -1626,6 +1626,7 @@ Group jump-to-files commands.
       ("cr" (find-file (format "%s/ranger/rc.conf" xdg-config)) "ranger")
       ("cs" (find-file (format "%s/sway/config" xdg-config)) "sway")
       ("ct" (find-file (format "%s/tmux/tmux.conf" xdg-config)) "tmux")
+      ("cw" (find-file (format "%s/waybar/config" xdg-config)) "waybar")
       ("cW" (find-file (format "%s/wofi/config" xdg-config)) "wofi")
       ("cx" (find-file (format "%s/sh/xdg" xdg-config)) "xdg"))
      "Other"
