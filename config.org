@@ -885,19 +885,18 @@ save a shell script file that begins with a =#!= shebang:
 
 ** TypeScript
 
-I recommend to use [[https://github.com/ananthakumaran/tide][tide]] as IDE for your TypeScript development. Indeed, the two
-LSP servers mentioned by [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] are not usable for stable development, due to
-the too repetitive freezes they cause.
+If you use GNU Emacs 27+, I recommend to use [[https://github.com/ananthakumaran/tide][typescript-language-server]] as LSP
+server. After installed it with your package manager, you need to use
+=typescript-mode= to get the syntax color:
 
 #+begin_src emacs-lisp :tangle yes
   (use-package typescript-mode
-    :mode ("\\.ts\\'"))
-
-  (use-package tide
-    :after (company flycheck)
-    :hook ((typescript-mode . tide-setup)
-           (typescript-mode . tide-hl-identifier-mode)
-           (before-save . tide-format-before-save)))
+    :mode ("\\.ts\\'" "\\.tsx\\'")
+    :hook (typescript-mode . prettier-js-mode)
+    :custom
+    (add-hook 'typescript-mode-hook #'(lambda ()
+                                 (enable-minor-mode
+                                  '("\\.tsx?\\'" . prettier-js-mode)))))
 #+end_src
 
 ** Vue.js
@@ -2028,19 +2027,13 @@ An autonomous emacs major-mode for editing web templates.
     :mode (("\\.blade\\.php\\'" . web-mode)
            ("\\.html?\\'" . web-mode)
            ("\\.jsx\\'" . web-mode)
-           ("\\.php$" . my/php-setup)
-           ("\\.tsx\\'" . web-mode))
+           ("\\.php$" . my/php-setup))
     :preface
     (defun enable-minor-mode (my-pair)
       "Enable minor mode if filename match the regexp."
       (if (buffer-file-name)
           (if (string-match (car my-pair) buffer-file-name)
               (funcall (cdr my-pair)))))
-    :init
-    (add-hook 'web-mode-hook
-              (lambda ()
-                (when (string-equal "tsx" (file-name-extension buffer-file-name))
-                  (tide-setup))))
     :custom
     (web-mode-attr-indent-offset 2)
     (web-mode-block-padding 2)
@@ -2062,9 +2055,33 @@ An autonomous emacs major-mode for editing web templates.
                                (enable-minor-mode
                                 '("\\.ts?\\'" . prettier-js-mode))))
 
-  (add-hook 'web-mode-hook #'(lambda ()
-                               (enable-minor-mode
-                                '("\\.tsx?\\'" . prettier-js-mode))))
+
+  (setq web-mode-code-indent-offset                   2
+        web-mode-markup-indent-offset                 2
+        web-mode-css-indent-offset                    2
+        web-mode-enable-html-entities-fontification   nil
+        web-mode-enable-block-face                    nil
+        web-mode-enable-comment-annotation            nil
+        web-mode-enable-comment-interpolation         nil
+        web-mode-enable-control-block-indentation     nil
+        web-mode-enable-css-colorization              nil
+        web-mode-enable-current-column-highlight      nil
+        web-mode-enable-current-element-highlight     nil
+        web-mode-enable-element-content-fontification nil
+        web-mode-enable-heredoc-fontification         nil
+        web-mode-enable-inlays                        nil
+        web-mode-enable-optional-tags                 nil
+        web-mode-enable-part-face                     nil
+        web-mode-enable-sexp-functions                nil
+        web-mode-enable-sql-detection                 nil
+        web-mode-enable-string-interpolation          nil
+        web-mode-enable-whitespace-fontification      nil
+        web-mode-enable-auto-expanding                nil
+        web-mode-enable-auto-indentation              nil
+        web-mode-enable-auto-closing                  nil
+        web-mode-enable-auto-opening                  nil
+        web-mode-enable-auto-pairing                  nil
+        web-mode-enable-auto-quoting                  nil)
 #+end_src
 
 *** =which-key=
