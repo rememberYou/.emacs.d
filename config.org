@@ -2541,46 +2541,58 @@ operating system and create directories corresponding to those in your mailbox.
 Now all that remains is to configure =mu4e=:
 
 #+begin_src emacs-lisp :tangle yes
-  (use-package mu4e
-    :disabled
-    :ensure nil
-    :ensure-system-package mu
-    :custom
-    (mu4e-attachment-dir "~/Downloads")
-    (mu4e-change-filenames-when-moving t)
-    (mu4e-confirm-quit nil)
-    (mu4e-completing-read-function 'ivy-completing-read)
-    (mu4e-compose-dont-reply-to-self t)
-    (mu4e-compose-signature-auto-include nil)
-    (mu4e-drafts-folder "/Drafts")
-    (mu4e-get-mail-command (format "mbsync -c '%s/isync/mbsyncrc' -a" xdg-config))
-    (mu4e-html2text-command "iconv -c -t utf-8 | pandoc -f html -t plain")
-    (mu4e-maildir "~/Maildir/gmail")
-    (mu4e-maildir-shortcuts
-     '(("/INBOX" . ?i)
-       ("/All Mail" . ?a)
-       ("/Drafts" . ?D)
-       ("/Sent" . ?s)
-       ("/Starred" . ?S)
-       ("/Trash" . ?T)))
-    (mu4e-org-contacts-file "~/.personal/agenda/contacts.org")
-    (mu4e-refile-folder "/Archive")
-    (mu4e-sent-folder "/Sent")
-    (mu4e-sent-messages-behavior 'delete)
-    (mu4e-trash-folder "/Trash")
-    (mu4e-update-interval 60)
-    (mu4e-use-fancy-chars t)
-    (mu4e-view-show-addresses t)
-    (mu4e-view-show-images t)
-    :config
-    (add-to-list 'mu4e-headers-actions '("org-contact-add" . mu4e-action-add-org-contact) t)
-    (add-to-list 'mu4e-view-actions '("org-contact-add" . mu4e-action-add-org-contact) t))
+    (use-package mu4e
+      :disabled
+      :ensure nil
+      :ensure-system-package mu
+      :custom
+      (mu4e-attachment-dir "~/Downloads")
+      (mu4e-change-filenames-when-moving t)
+      (mu4e-confirm-quit nil)
+      (mu4e-completing-read-function 'ivy-completing-read)
+      (mu4e-compose-dont-reply-to-self t)
+      (mu4e-compose-signature-auto-include nil)
+      (mu4e-drafts-folder "/Drafts")
+      (mu4e-get-mail-command (format "mbsync -c '%s/isync/mbsyncrc' -a" xdg-config))
+      (mu4e-html2text-command "iconv -c -t utf-8 | pandoc -f html -t plain")
+      (mu4e-maildir "~/Maildir/gmail")
+      (mu4e-maildir-shortcuts
+       '(("/INBOX" . ?i)
+         ("/All Mail" . ?a)
+         ("/Drafts" . ?D)
+         ("/Sent" . ?s)
+         ("/Starred" . ?S)
+         ("/Trash" . ?T)))
+      (mu4e-org-contacts-file "~/.personal/agenda/contacts.org")
+      (mu4e-refile-folder "/Archive")
+      (mu4e-sent-folder "/Sent")
+      (mu4e-sent-messages-behavior 'delete)
+      (mu4e-trash-folder "/Trash")
+      (mu4e-update-interval 60)
+      (mu4e-use-fancy-chars t)
+      (mu4e-view-show-addresses t)
+      (mu4e-view-show-images t)
+      :config
+      (add-to-list 'mu4e-headers-actions '("org-contact-add" . mu4e-action-add-org-contact) t)
+      (add-to-list 'mu4e-view-actions '("org-contact-add" . mu4e-action-add-org-contact) t))
 
-  (use-package org-mu4e
-    :disabled
-    :ensure nil
-    :custom
-    (org-mu4e-convert-to-html t))
+    (use-package org-mu4e
+      :disabled
+      :ensure nil
+      :custom
+      (org-mu4e-convert-to-html t))
+
+  ;; (defun add-lisp-subdirectory-paths (repo-dir)
+  ;;   (when (file-directory-p repo-dir)
+  ;;     (map-files (lambda (path dir file)
+  ;;                  (when (and
+  ;;                         (not (string-match "^\\." file))
+  ;;                         (file-directory-p path))
+  ;;                    (pushnew path load-path :test 'equal)))
+  ;;                repo-dir)))
+
+  ;; (add-lisp-subdirectory-paths "~/.emacs.d/lisp")
+  ;; (add-lisp-subdirectory-paths "~/.emacs.d/lisp-repo")
 #+end_src
 
 Being able to read mails is a good thing, but being notified when we receive
