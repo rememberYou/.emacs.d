@@ -3274,7 +3274,6 @@ update it from several computers and smartphones.
 #+begin_src emacs-lisp :tangle yes
   (use-package org-agenda
     :ensure nil
-    :after org
     :bind (:map org-agenda-mode-map
                 ("X" . my/org-agenda-mark-done-and-add-followup)
                 ("x" . my/org-agenda-done))
