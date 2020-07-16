@@ -250,20 +250,24 @@ according to the programming language that we want to use, we need a client for
 LSP. That's where [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] comes in!
 
 #+begin_src emacs-lisp :tangle yes
-  (use-package lsp-mode
-    :hook ((c-mode c++-mode dart-mode java-mode python-mode xml-mode) . lsp)
-    :custom
-    (lsp-prefer-capf t)
-    (lsp-prefer-flymake nil)
-    (lsp-session-file (expand-file-name (format "%s/emacs/lsp-session-v1" xdg-data))))
+   (use-package lsp-mode
+     :hook ((c-mode c++-mode dart-mode java-mode python-mode typescript-mode xml-mode) . lsp)
+     :custom
+     (lsp-prefer-capf t)
+     (lsp-prefer-flymake nil)
+     (lsp-enable-folding nil)
+     (lsp-enable-links nil)
+     (lsp-enable-snippet nil)
+     (lsp-session-file (expand-file-name (format "%s/emacs/lsp-session-v1" xdg-data)))
+     (lsp-restart 'auto-restart))
 
-  (use-package lsp-ui)
+   (use-package lsp-ui)
 
-  (use-package dap-mode
-    :after lsp-mode
-    :config
-    (dap-mode t)
-    (dap-ui-mode t))
+   (use-package dap-mode
+     :after lsp-mode
+     :config
+     (dap-mode t)
+     (dap-ui-mode t))
 #+end_src
 
 Another benefit of using LSP to configure the management of your programming
