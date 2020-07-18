@@ -2539,6 +2539,13 @@ for less secure apps in your Google account.
 Before you can use this configuration, make sure you install =mu= on your
 operating system and create directories corresponding to those in your mailbox.
 
+Then, initialize the =mu= database, by replacing values of =--maildir= and
+=--my-address= with yours:
+
+#+begin_src bash
+  mu init --maildir ~/Maildir --my-address=${EMAIL}
+#+end_src
+
 Now all that remains is to configure =mu4e=:
 
 #+begin_src emacs-lisp :tangle yes
