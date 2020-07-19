@@ -2575,7 +2575,6 @@ Now all that remains is to configure =mu4e=:
     (mu4e-org-contacts-file "~/.personal/agenda/contacts.org")
     (mu4e-refile-folder "/gmail/Archive")
     (mu4e-sent-folder "/gmail/Sent")
-    (mu4e-sent-messages-behavior 'delete)
     (mu4e-trash-folder "/gmail/Trash")
     (mu4e-update-interval 60)
     (mu4e-use-fancy-chars t)
