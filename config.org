@@ -2558,7 +2558,6 @@ Now all that remains is to configure =mu4e=:
     (mu4e-attachment-dir "~/Downloads")
     (mu4e-change-filenames-when-moving t)
     (mu4e-confirm-quit nil)
-    (mu4e-completing-read-function 'ivy-completing-read)
     (mu4e-compose-dont-reply-to-self t)
     (mu4e-compose-signature-auto-include nil)
     (mu4e-drafts-folder "/gmail/Drafts")
