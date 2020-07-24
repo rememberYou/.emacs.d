@@ -251,7 +251,7 @@ LSP. That's where [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] comes in!
 
 #+begin_src emacs-lisp :tangle yes
   (use-package lsp-mode
-    :hook ((c-mode c++-mode dart-mode java-mode python-mode typescript-mode xml-mode) . lsp)
+    :hook ((c-mode c++-mode dart-mode java-mode json-mode python-mode typescript-mode xml-mode) . lsp)
     :custom
     (lsp-clients-typescript-server-args '("--stdio" "--tsserver-log-file" "/dev/stderr"))
     (lsp-enable-folding nil)
@@ -1389,6 +1389,12 @@ your operating system.
     :defer 2
     :ensure-system-package (hunspell . "yay -S hunspell")
     :custom
+    ;; to remove
+    (ispell-local-dictionary "en_US")
+    (ispell-local-dictionary-alist
+     '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8)
+       ("fr_BE" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "fr_BE") nil utf-8)))
+
     (ispell-dictionary "en_US")
     (ispell-dictionary-alist
      '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8)
