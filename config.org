@@ -24,6 +24,7 @@
   - [[#docker][Docker]]
   - [[#emacs-lisp][Emacs Lisp]]
   - [[#html][HTML]]
+  - [[#ini][INI]]
   - [[#java][Java]]
   - [[#javascript][JavaScript]]
   - [[#json][JSON]]
