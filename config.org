@@ -485,6 +485,16 @@ Let's configure =emmet-mode=, to produce HTML from CSS-like selector:
     :hook (css-mode sgml-mode web-mode))
 #+end_src
 
+** INI
+
+=ini-mode= does a good job of handling =.ini= files.
+
+#+begin_src emacs-lisp :tangle yes
+  (use-package ini-mode
+    :defer 0.4
+    :mode ("\\.ini\\'"))
+#+end_src
+
 ** Java
 
 In order to have a fast and stable environment, I recommend using [[https://github.com/emacs-lsp/lsp-java][lsp-java]] as
