@@ -258,7 +258,6 @@ LSP. That's where [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] comes in!
     (lsp-enable-folding nil)
     (lsp-enable-links nil)
     (lsp-enable-snippet nil)
-    (lsp-prefer-capf t)
     (lsp-prefer-flymake nil)
     (lsp-session-file (expand-file-name (format "%s/emacs/lsp-session-v1" xdg-data)))
     (lsp-restart 'auto-restart))
