@@ -835,6 +835,9 @@ as LSP client and [[https://github.com/Microsoft/python-language-server][mspyls]
 I use [[https://github.com/psf/black][black]] to reformat my Python buffer. Before use it, don't forget to
 install =python-black= in your system.
 
+To sort my Python imports, [[https://github.com/paetzke/py-isort.el][py-isort]] does a good job. Also, don't forget to
+install =python-isort= in your system.
+
 Let's take a look to my Python configuration:
 
 #+begin_src emacs-lisp :tangle yes
@@ -861,6 +864,12 @@ Let's take a look to my Python configuration:
                                    (shell-quote-argument (buffer-file-name))))
             (revert-buffer t t t))
         (warn "python-mode: Cannot find autoflake executable."))))
+
+  (use-package py-isort
+    :after python
+    :hook ((python-mode . pyvenv-mode)
+           (before-save . py-isort-before-save))
+    :custom (py-isort-options '("--lines=100" "-m=3" "-tc" "-fgw=0" "-ca")))
 
   (use-package pyvenv
     :after python
