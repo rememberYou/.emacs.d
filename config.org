@@ -876,7 +876,8 @@ Let's take a look to my Python configuration:
     :hook (python-mode . pyvenv-mode)
     :custom
     (pyvenv-default-virtual-env-name "env")
-    (pyvenv-mode-line-indicator '(pyvenv-virtual-env-name ("[venv:" pyvenv-virtual-env-name "] "))))
+    (pyvenv-mode-line-indicator '(pyvenv-virtual-env-name ("[venv:" pyvenv-virtual-env-name "]"))))
+#+end_src
 #+end_src
 
 ** Shell-script
