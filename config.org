@@ -871,13 +871,25 @@ Let's take a look to my Python configuration:
            (before-save . py-isort-before-save))
     :custom (py-isort-options '("--lines=100" "-m=3" "-tc" "-fgw=0" "-ca")))
 
+  (use-package pyenv-mode
+    :after python
+    :hook ((python-mode . pyvenv-mode)
+           (projectile-switch-project . projectile-pyenv-mode-set))
+    :custom (pyenv-mode-set "3.8.5")
+    :preface
+    (defun projectile-pyenv-mode-set ()
+      "Set pyenv version matching project name."
+      (let ((project (projectile-project-name)))
+        (if (member project (pyenv-mode-versions))
+            (pyenv-mode-set project)
+          (pyenv-mode-unset)))))
+
   (use-package pyvenv
     :after python
     :hook (python-mode . pyvenv-mode)
     :custom
     (pyvenv-default-virtual-env-name "env")
     (pyvenv-mode-line-indicator '(pyvenv-virtual-env-name ("[venv:" pyvenv-virtual-env-name "]"))))
-#+end_src
 #+end_src
 
 ** Shell-script
