@@ -873,8 +873,7 @@ Let's take a look to my Python configuration:
   (use-package py-isort
     :after python
     :hook ((python-mode . pyvenv-mode)
-           (before-save . py-isort-before-save))
-    :custom (py-isort-options '("--lines=100" "-m=3" "-tc" "-fgw=0" "-ca")))
+           (before-save . py-isort-before-save)))
 
   (use-package pyenv-mode
     :after python
