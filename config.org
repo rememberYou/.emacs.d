@@ -877,7 +877,7 @@ Let's take a look to my Python configuration:
 
   (use-package pyenv-mode
     :after python
-    :hook ((python-mode . pyvenv-mode)
+    :hook ((python-mode . pyenv-mode)
            (projectile-switch-project . projectile-pyenv-mode-set))
     :custom (pyenv-mode-set "3.8.5")
     :preface
