@@ -890,10 +890,28 @@ Let's take a look to my Python configuration:
 
   (use-package pyvenv
     :after python
-    :hook (python-mode . pyvenv-mode)
+    :hook ((python-mode . pyvenv-mode)
+           (python-mode . (lambda ()
+                            (if-let ((pyvenv-directory (find-pyvenv-directory (buffer-file-name))))
+                                (pyvenv-activate pyvenv-directory))
+                            (lsp))))
     :custom
     (pyvenv-default-virtual-env-name "env")
-    (pyvenv-mode-line-indicator '(pyvenv-virtual-env-name ("[venv:" pyvenv-virtual-env-name "]"))))
+    (pyvenv-mode-line-indicator '(pyvenv-virtual-env-name ("[venv:"
+                                                           pyvenv-virtual-env-name "]")))
+    :preface
+    (defun find-pyvenv-directory (path)
+      "Checks if a pyvenv directory exists."
+      (cond
+       ((not path) nil)
+       ((file-regular-p path) (find-pyvenv-directory (file-name-directory path)))
+       ((file-directory-p path)
+        (or
+         (seq-find
+          (lambda (path) (file-regular-p (expand-file-name "pyvenv.cfg" path)))
+          (directory-files path t))
+         (let ((parent (file-name-directory (directory-file-name path))))
+           (unless (equal parent path) (find-pyvenv-directory parent))))))))
 #+end_src
 
 ** Shell-script
