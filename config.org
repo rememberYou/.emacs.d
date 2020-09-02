@@ -843,7 +843,7 @@ Let's take a look to my Python configuration:
   (use-package blacken
     :delight
     :hook (python-mode . blacken-mode)
-    :custom (blacken-line-length 80))
+    :custom (blacken-line-length 79))
 
   (use-package lsp-pyright
     :if (executable-find "pyright")
