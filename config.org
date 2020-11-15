@@ -1034,7 +1034,7 @@ and multiple, selectable "styles", whose use is fully customizable by the user.
 
 ** Auto-Completion
 
-=company= provides auto-completion at point and to Displays a small pop-in
+=company= provides auto-completion at point and displays a small pop-in
 containing the candidates.
 
 #+BEGIN_QUOTE
@@ -1325,7 +1325,7 @@ working on the same project across various editors and IDEs.
 
 ** Ending Up
 
-I'm using an =.org= file to maintain my GNU Emacs configuration. However, at his
+I'm using an =.org= file to maintain my GNU Emacs configuration. However, at its
 launch, it will load the =config.el= source file for a faster loading.
 
 The code below, executes =org-babel-tangle= asynchronously when
@@ -2188,7 +2188,7 @@ To integrate icons with =doom-modeline=, =switch-to-buffer=, =counsel-find-file=
 and many other functions; [[https://github.com/domtronn/all-the-icons.el/][all-the-icons]] is just the best package that you can
 find.
 
-*NOTE:* if it's the first time that you install the package, you must run
+*NOTE:* If it's the first time that you install the package, you must run
 =M-x all-the-icons-install-fonts=.
 
 #+begin_src emacs-lisp :tangle yes
@@ -2658,7 +2658,7 @@ notifications and modeline display for =mu4e=:
 
 *** Sending Mail
 
-For you can send mails, create the =.authinfo= file if it is not already
+Before you can send mails, create the =.authinfo= file if it is not already
 done. Then add the following two lines replacing /terencio.agozzino/ (which
 corresponds to my gmail address terencio.agozzino@gmail.com without the domain
 name) and /<password>/ by those that match your real information:
@@ -2868,7 +2868,7 @@ the structure of the current major mode.
            ("C-=" . er/expand-region)))
 #+end_src
 
-I find useful to delete a line and a region with only =C-w=.
+I find it useful to delete a line and a region with only =C-w=.
 
 #+begin_src emacs-lisp :tangle yes
   (defadvice kill-region (before slick-cut activate compile)
@@ -3504,7 +3504,7 @@ Personally, I do sessions of:
 
 Finally, I *take a 30-minute break every two hours*.
 
-To allow this, I use =org-pomodoro= making sure I get the in my status bar:
+To allow this, I use =org-pomodoro= making sure I get that in my status bar:
 #+begin_src emacs-lisp :tangle yes
   (use-package org-pomodoro
     :defer 0.5
@@ -3572,7 +3572,7 @@ identifier, by yours (or =nil= to allow symmetric encryption).
 ** Journal
 
 Recently, I started writing a journal about my daily life as I read that
-journals improve mental claritym, help solve problems, improve overall focus,
+journals improve mental clarity, help solve problems, improve overall focus,
 insight and understanding, track the overall development and facilitate personal
 growth.
 
