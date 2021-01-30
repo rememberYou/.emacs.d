@@ -1675,7 +1675,8 @@ Group jump-to-files commands.
      (("ac" (find-file "~/.personal/agenda/contacts.org") "contacts")
       ("ao" (find-file "~/.personal/agenda/organizer.org") "organizer")
       ("ap" (find-file "~/.personal/agenda/people.org") "people")
-      ("ar" (find-file "~/.personal/agenda/routine.org") "routine"))
+      ("ar" (find-file "~/.personal/agenda/routine.org") "routine")
+      ("aP" (find-file "~/.personal/agenda/pyrdf2vec.org") "pyRDF2Vec"))
      "Config"
      (("ca" (find-file (format "%s/alacritty/alacritty.yml" xdg-config)) "alacritty")
       ("cA" (find-file (format "%s/sh/aliases" xdg-config)) "aliases")
@@ -1689,12 +1690,16 @@ Group jump-to-files commands.
       ("cw" (find-file (format "%s/waybar/config" xdg-config)) "waybar")
       ("cW" (find-file (format "%s/wofi/config" xdg-config)) "wofi")
       ("cx" (find-file (format "%s/sh/xdg" xdg-config)) "xdg"))
+     "Notes"
+     (("na" (find-file (format "~/.personal/notes/affirmations.pdf" xdg-config)) "Affirmations"))
      "Other"
      (("ob" (find-file "~/.personal/other/books.org") "book")
-      ("ol" (find-file "~/.personal/other/learning.org") "learning")
+      ("ol" (find-file "~/.personal/other/long-goals.org") "long-terms goals")
       ("om" (find-file "~/.personal/other/movies.org"))
       ("op" (find-file "~/.personal/other/purchases.org") "purchase")
-      ("ou" (find-file "~/.personal/other/usb.org") "usb"))))
+      ("os" (find-file "~/.personal/other/short-goals.org") "short-terms goals")
+      ("ou" (find-file "~/.personal/other/usb.org") "usb")
+      ("oL" (find-file "~/.personal/other/learning.org") "learning"))))
 #+end_src
 
 *** Hydra / Image
