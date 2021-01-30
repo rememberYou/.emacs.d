@@ -1681,7 +1681,6 @@ Group jump-to-files commands.
      "Config"
      (("ca" (find-file (format "%s/alacritty/alacritty.yml" xdg-config)) "alacritty")
       ("cA" (find-file (format "%s/sh/aliases" xdg-config)) "aliases")
-      ("cd" (find-file (format "%s/dunst/dunstrc" xdg-config)))
       ("ce" (find-file "~/.emacs.d/config.org") "emacs")
       ("cE" (find-file (format "%s/sh/environ" xdg-config)) "environ")
       ("cn" (find-file (format "%s/neofetch/config.conf" xdg-config)) "neofetch")
