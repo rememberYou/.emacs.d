@@ -1677,8 +1677,7 @@ Group jump-to-files commands.
      (("ac" (find-file "~/.personal/agenda/contacts.org") "contacts")
       ("ao" (find-file "~/.personal/agenda/organizer.org") "organizer")
       ("ap" (find-file "~/.personal/agenda/people.org") "people")
-      ("ar" (find-file "~/.personal/agenda/routine.org") "routine")
-      ("as" (find-file "~/.personal/agenda/school.org") "school"))
+      ("ar" (find-file "~/.personal/agenda/routine.org") "routine"))
      "Config"
      (("ca" (find-file (format "%s/alacritty/alacritty.yml" xdg-config)) "alacritty")
       ("cA" (find-file (format "%s/sh/aliases" xdg-config)) "aliases")
@@ -3445,10 +3444,6 @@ information.
         :immediate-finish t)
 
        ("p" "People" entry (file+headline "~/.personal/agenda/people.org" "Tasks"),
-        my/org-basic-task-template
-        :empty-lines 1)
-
-       ("s" "School" entry (file+headline "~/.personal/agenda/school.org" "Tasks"),
         my/org-basic-task-template
         :empty-lines 1)
 
