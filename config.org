@@ -1443,36 +1443,34 @@ your operating system.
     :defer 2
     :ensure-system-package (hunspell . "yay -S hunspell")
     :custom
-    ;; to remove
     (ispell-local-dictionary "en_US")
     (ispell-local-dictionary-alist
      '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8)
-       ("fr_BE" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "fr_BE") nil utf-8)))
-
+       ("fr_FR" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "fr_FR") nil utf-8)))
     (ispell-dictionary "en_US")
     (ispell-dictionary-alist
      '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8)
-       ("fr_BE" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "fr_BE") nil utf-8)))
-    (ispell-program-name (executable-find "hunspell"))
+       ("fr_FR" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "fr_FR") nil utf-8)))
+    ;; (ispell-program-name (executable-find "hunspell"))
     (ispell-really-hunspell t)
     (ispell-silently-savep t)
+    (ispell-extra-args '("--sug-mode=ultra"))
     :preface
     (defun my/switch-language ()
       "Switches between the English and French language."
       (interactive)
       (let* ((current-dictionary ispell-current-dictionary)
-             (new-dictionary (if (string= current-dictionary "fr_BE") "en_US" "fr_BE")))
+             (new-dictionary (if (string= current-dictionary "fr_FR") "en_US" "fr_FR")))
         (ispell-change-dictionary new-dictionary)
-        (if (string= new-dictionary "fr_BE")
+        (if (string= new-dictionary "fr_FR")
             (langtool-switch-default-language "fr")
           (langtool-switch-default-language "en"))
 
-        ;;Clears all these old errors after switching to the new language
+        ;; Clears all these old errors after switching to the new language
         (if (and (boundp 'flyspell-mode) flyspell-mode)
             (flyspell-mode 0)
           (flyspell-mode 1))
-
-      (message "Dictionary switched from %s to %s" current-dictionary new-dictionary))))
+        (message "Dictionary switched from %s to %s" current-dictionary new-dictionary))))
 #+end_src
 
 *** Grammar Checker
