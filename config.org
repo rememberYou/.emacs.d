@@ -339,8 +339,8 @@ of your operating system.
     :config (add-to-list 'projectile-globally-ignored-directories ".ccls-cache"))
 
   (use-package google-c-style
-    :hook ((c-mode c++-mode) . google-set-c-style)
-           (c-mode-common . google-make-newline-indent))
+    :hook (((c-mode c++-mode) . google-set-c-style)
+           (c-mode-common . google-make-newline-indent)))
 #+end_src
 
 To allow =ccls= to know the dependencies of your =.cpp= files with your =.h=
