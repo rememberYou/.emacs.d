@@ -192,7 +192,7 @@ follow the [[https://specifications.freedesktop.org/basedir-spec/basedir-spec-la
 Be careful that GNU Emacs will not create the appropriate folders if they do not
 exist. Therefore, it is necessary to create them yourself:
 
-#+begin_src bash
+#+begin_src shell
   mkdir ~/.cache/emacs ~/.local/share/emacs/
 #+end_src
 
@@ -352,7 +352,7 @@ for all your C++ projects, then you just need to install the =cmake= package on
 your operating system and to generate the =compile.commands.json= file, you have
 to do:
 
-#+begin_src bash
+#+begin_src shell
   cmake -H. -BDebug -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=YES
   ln -s Debug/compile_commands.json
 #+end_src
@@ -2603,7 +2603,7 @@ operating system and create directories corresponding to those in your mailbox.
 Then, initialize the =mu= database, by replacing values of =--maildir= and
 =--my-address= with yours:
 
-#+begin_src bash
+#+begin_src shell
   mu init --maildir ~/Maildir --my-address=${EMAIL}
 #+end_src
 
