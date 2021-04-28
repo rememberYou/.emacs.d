@@ -252,7 +252,7 @@ LSP. That's where [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] comes in!
 
 #+begin_src emacs-lisp :tangle yes
   (use-package lsp-mode
-    :hook (((c-mode c++-mode dart-mode java-mode json-mode python-mode typescript-mode xml-mode) . lsp)
+    :hook (((c-mode c++-mode dart-mode java-mode json-mode python-mode tex-mode typescript-mode xml-mode) . lsp)
            (lsp-mode . lsp-enable-which-key-integration))
     :custom
     (lsp-clients-typescript-server-args '("--stdio" "--tsserver-log-file" "/dev/stderr"))
@@ -687,6 +687,14 @@ I use LaTeX for my reports, CVs, summaries, etc.
     (advice-add 'TeX-recenter-output-buffer :after #'my/switch-to-help-window)
     ;; the ":hook" doesn't work for this one... don't ask me why.
     (add-hook 'TeX-after-compilation-finished-functions 'TeX-revert-document-buffer))
+
+  (use-package lsp-latex
+    :if (executable-find "texlab")
+    :hook (LaTeX-mode . (lambda ()
+                           (require 'lsp-latex)
+                           (lsp)))
+    :custom
+    (lsp-latex-build-on-save t))
 
   (use-package bibtex
     :after auctex
