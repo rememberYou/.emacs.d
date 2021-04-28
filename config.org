@@ -2744,7 +2744,7 @@ efficient way to go to the beginning of a line with =move-beginning-of-line=
 It is sometimes useful to have information about an IP address and to calculate
 an IP address range.
 
-#+begin_src emacs-lisp :tangle
+#+begin_src emacs-lisp :tangle yes
   (use-package ipcalc :defer 4)
 
   (defun ipinfo (ip)
