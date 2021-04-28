@@ -1442,7 +1442,7 @@ check the spelling in the comments and not in the whole document, so =hunspell= 
 perfect for me.
 
 To use =hunspell= and the desired dictionaries on GNU Emacs, you must first
-install them (e.g. =hunspell-en_US=, =hunspell-fr=) with the package manager of
+install them (e.g., =hunspell-en_US=, =hunspell-fr=) with the package manager of
 your operating system.
 
 #+begin_src emacs-lisp :tangle yes
