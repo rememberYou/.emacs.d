@@ -1449,6 +1449,8 @@ your operating system.
   (use-package ispell
     :defer 2
     :ensure-system-package (hunspell . "yay -S hunspell")
+    :init
+    (setenv "LANG" "en_US")
     :custom
     (ispell-local-dictionary "en_US")
     (ispell-local-dictionary-alist
@@ -1458,7 +1460,7 @@ your operating system.
     (ispell-dictionary-alist
      '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8)
        ("fr_FR" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "fr_FR") nil utf-8)))
-    ;; (ispell-program-name (executable-find "hunspell"))
+    (ispell-program-name (executable-find "hunspell"))
     (ispell-really-hunspell t)
     (ispell-silently-savep t)
     (ispell-extra-args '("--sug-mode=ultra"))
