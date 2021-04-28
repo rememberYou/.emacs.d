@@ -858,7 +858,9 @@ Let's take a look to my Python configuration:
     :if (executable-find "pyright")
     :hook (python-mode . (lambda ()
                            (require 'lsp-pyright)
-                           (lsp))))
+                           (lsp)))
+    :custom
+    (lsp-pyright-venv-path "~/.cache/pypoetry/virtualenvs/"))
 
   (use-package python
     :delight "π "
