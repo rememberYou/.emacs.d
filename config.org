@@ -691,10 +691,9 @@ I use LaTeX for my reports, CVs, summaries, etc.
   (use-package lsp-latex
     :if (executable-find "texlab")
     :hook (LaTeX-mode . (lambda ()
-                           (require 'lsp-latex)
-                           (lsp)))
-    :custom
-    (lsp-latex-build-on-save t))
+                          (require 'lsp-latex)
+                          (lsp)))
+    :custom (lsp-latex-build-on-save t))
 
   (use-package bibtex
     :after auctex
@@ -719,7 +718,7 @@ I want a TeX engine that can deal with Unicode and use any font I like.
 
 *** =reftex=
 
-Minor mode with distinct support for \label, \ref and \cite in LaTeX.
+Minor mode with distinct support for =\label=, =\ref= and =\cite= in LaTeX.
 
 #+begin_src emacs-lisp :tangle yes
   (use-package reftex
