@@ -1271,25 +1271,18 @@ Always good to have a dashboard.
 
 #+begin_src emacs-lisp :tangle yes
   (use-package dashboard
-    :if (< (length command-line-args) 2)
-    :preface
-    (defun dashboard-load-packages (list-size)
-      (insert (make-string (ceiling (max 0 (- dashboard-banner-length 38)) 5) ? )
-              (format "%d packages loaded in %s" (length package-activated-list) (emacs-init-time))))
     :custom
-    (dashboard-banner-logo-title "With Great Power Comes Great Responsibility")
+    (dashboard-banner-logo-title "With Great Power Comes Great Responsibility!")
     (dashboard-center-content t)
-    (dashboard-items '((packages)
-                       (agenda)
+    (dashboard-items '((agenda)
                        (projects . 5)))
+    (dashboard-projects-switch-function 'counsel-projectile-switch-project-by-name)
     (dashboard-set-file-icons t)
+    (dashboard-set-footer nil)
     (dashboard-set-heading-icons t)
-    (dashboard-set-init-info nil)
     (dashboard-set-navigator t)
     (dashboard-startup-banner 'logo)
-    :config
-    (add-to-list 'dashboard-item-generators '(packages . dashboard-load-packages))
-    (dashboard-setup-startup-hook))
+    :config (dashboard-setup-startup-hook))
 #+end_src
 
 ** Dired
