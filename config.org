@@ -3250,8 +3250,6 @@ authoring documents with a fast and effective plain-text system.
     (org-log-into-drawer "LOGBOOK")
     (org-modules '(org-crypt
                    org-habit
-                   org-info
-                   org-irc
                    org-mouse
                    org-protocol
                    org-tempo))
