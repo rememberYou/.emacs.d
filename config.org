@@ -61,6 +61,7 @@
   - [[#general][General]]
   - [[#icons][Icons]]
   - [[#irc][IRC]]
+  - [[#circe][Circe]]
   - [[#ivy][Ivy]]
   - [[#ledger][Ledger]]
   - [[#linters][Linters]]
@@ -118,6 +119,7 @@ In order to install packages, it is useful to configure the package sources.
 #+begin_src emacs-lisp :tangle yes
   (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
                            ("melpa" . "https://melpa.org/packages/")
+                           ("melpa-stable" . "http://stable.melpa.org/packages/")
                            ("org" . "http://orgmode.org/elpa/")))
 #+end_src
 
@@ -1554,7 +1556,6 @@ seamless, it's like a minor mode that disables itself auto-magically.
            ("C-c T" . hydra-tool/body)
            ("C-c b" . hydra-btoggle/body)
            ("C-c c" . hydra-clock/body)
-           ("C-c e" . hydra-erc/body)
            ("C-c f" . hydra-flycheck/body)
            ("C-c g" . hydra-go-to-file/body)
            ("C-c m" . hydra-magit/body)
@@ -1623,24 +1624,6 @@ Group clock commands.
       ("p" org-pomodoro "pomodoro")
       ("r" org-clock-report "report"))))
 #+end_src
-
-*** Hydra / ERC
-
-Group ERC commands.
-
-#+begin_src emacs-lisp :tangle yes
-  (pretty-hydra-define hydra-erc
-    (:hint nil :color teal :quit-key "q" :title (with-faicon "comments-o" "ERC" 1 -0.05))
-    ("Action"
-     (("b" my/erc-browse-last-url "browse last url")
-      ("c" my/erc-start-or-switch "connect")
-      ("d" erc-quit-server "disconnect")
-      ("j" erc-join-channel "join")
-      ("n" erc-channel-names "names")
-      ("o" my/erc-get-ops "ops")
-      ("u" my/erc-count-users "users")
-      ("r" my/erc-reset-track-mode "reset track mode"))))
-#+END_SRC
 
 *** Hydra / Flycheck
 
@@ -2202,141 +2185,55 @@ find.
 ** IRC
 
 IRC is the best way for me to get a quick answer to a simple question and to
-learn from more competent people than me on a subject. I'd rather use =erc= than
-=rcirc= because I find =rcirc= very minimal.
+learn from more competent people than me on a subject.
 
 Besides, for people like me, who want to store your password in a /GPG/ file,
-you just need to specify a file priority list with =auth-sources=, to tell =erc=
-where to start looking for your password first.
-
-Of course, don't forget to add this line in your =.authinfo.gpg= file, where
-/<nickname>/ and /<password>/ match your login details.
+you just need to specify a file priority list with =auth-sources=. Of course,
+don't forget to add this line in your =.authinfo.gpg= file and if possible in
+the first line, where /<nickname>/ and /<password>/ match your login details.
 
 #+BEGIN_EXAMPLE
-  machine irc.freenode.net login <nickname> password <password>
+  machine irc.libera.chat login <nickname> password <password> port 6697
 #+END_EXAMPLE
 
 Then encrypt that file with =gpg -c .authinfo= and don't forget to delete the
 =.authinfo= file.
 
-Finally, specify to =erc= that you use a =.authinfo= file with:
-=(setq erc-prompt-for-nickserv-password nil)=.
+** Circe
+
+After spending many years on erc, I decided to move to =circe= which I find more
+user friendly.
 
 #+begin_src emacs-lisp :tangle yes
-  (use-package erc
-    :delight "ε "
+  (use-package circe
+    :defer 0.5
     :preface
-    (defun my/erc-browse-last-url ()
-      "Searchs backwards through an ERC buffer, looking for a URL. When a URL is
-       found, it prompts you to open it."
-      (interactive)
-      (save-excursion
-        (let ((ffap-url-regexp "\\(https?://\\)."))
-          (ffap-next-url t t))))
+    (defun my-fetch-password (&rest params)
+      (require 'auth-source)
+      (let ((match (car (apply 'auth-source-search params))))
+        (if match
+            (let ((secret (plist-get match :secret)))
+              (if (functionp secret)
+                  (funcall secret)
+                secret))
+          (error "Password not found for %S" params))))
 
-    (defun my/erc-count-users ()
-      "Displays the number of users and ops connected on the current channel."
-      (interactive)
-      (if (get-buffer "irc.freenode.net:6667")
-          (let ((channel (erc-default-target)))
-            (if (and channel (erc-channel-p channel))
-                (let ((hash-table (with-current-buffer (erc-server-buffer)
-                                    erc-server-users))
-                      (users 0)
-                      (ops 0))
-                  (maphash (lambda (k v)
-                             (when (member (current-buffer)
-                                           (erc-server-user-buffers v))
-                               (cl-incf users))
-                             (when (erc-channel-user-op-p k)
-                               (cl-incf ops)))
-                           hash-table)
-                  (message "%d users (%s ops) are online on %s" users ops channel))
-              (user-error "The current buffer is not a channel")))
-        (user-error "You must first be connected on IRC")))
-
-    (defun my/erc-get-ops ()
-      "Displays the names of ops users on the current channel."
-      (interactive)
-      (if (get-buffer "irc.freenode.net:6667")
-          (let ((channel (erc-default-target)))
-            (if (and channel (erc-channel-p channel))
-                (let (ops)
-                  (maphash (lambda (nick cdata)
-                             (if (and (cdr cdata)
-                                      (erc-channel-user-op (cdr cdata)))
-                                 (setq ops (cons nick ops))))
-                           erc-channel-users)
-                  (if ops
-                      (message "The online ops users are: %s"  (mapconcat 'identity ops " "))
-                    (message "There are no ops users online on %s" channel)))
-              (user-error "The current buffer is not a channel")))
-        (user-error "You must first be connected on IRC")))
-
-    (defun my/erc-notify (nickname message)
-      "Displays a notification message for ERC."
-      (let* ((channel (buffer-name))
-             (nick (erc-hl-nicks-trim-irc-nick nickname))
-             (title (if (string-match-p (concat "^" nickname) channel)
-                        nick
-                      (concat nick " (" channel ")")))
-             (msg (s-trim (s-collapse-whitespace message))))
-        (alert (concat nick ": " msg) :title title)))
-
-    (defun my/erc-preprocess (string)
-      "Avoids channel flooding."
-      (setq str (string-trim (replace-regexp-in-string "\n+" " " str))))
-
-    (defun my/erc-reset-track-mode ()
-      "Resets ERC track mode."
-      (interactive)
-      (setq erc-modified-channels-alist nil)
-      (erc-modified-channels-update)
-      (erc-modified-channels-display)
-      (force-mode-line-update))
-
-    (defun my/erc-start-or-switch ()
-      "Connects to ERC, or switch to last active buffer."
-      (interactive)
-      (if (get-buffer "irc.freenode.net:6667")
-          (erc-track-switch-buffer 1)
-        (erc :server "irc.freenode.net" :port 6667 :nick "rememberYou")))
-    :hook ((ercn-notify . my/erc-notify)
-           (erc-send-pre . my/erc-preprocess))
-    :custom-face
-    (erc-action-face ((t (:foreground "#8fbcbb"))))
-    (erc-error-face ((t (:foreground "#bf616a"))))
-    (erc-input-face ((t (:foreground "#ebcb8b"))))
-    (erc-notice-face ((t (:foreground "#ebcb8b"))))
-    (erc-timestamp-face ((t (:foreground "#a3be8c"))))
+    (defun my-nickserv-password (server)
+      (my-fetch-password :login "rememberYou" :machine "irc.libera.chat"))
     :custom
-    (erc-autojoin-channels-alist '(("freenode.net" "#archlinux" "#bash" "##c++"
-                                    "#emacs""#i3" "#latex" "#linux" "#python"
-                                    "#qutebrowser" "#reactjs" "#sway")))
-    (erc-autojoin-timing 'ident)
-    (erc-fill-function 'erc-fill-static)
-    (erc-fill-static-center 22)
-    (erc-header-line-format "%n on %t (%m)")
-    (erc-hide-list '("JOIN" "PART" "QUIT"))
-    (erc-join-buffer 'bury)
-    (erc-kill-buffer-on-part t)
-    (erc-kill-queries-on-quit t)
-    (erc-kill-server-buffer-on-quit t)
-    (erc-lurker-hide-list '("JOIN" "PART" "QUIT"))
-    (erc-lurker-threshold-time 43200)
-    (erc-prompt-for-nickserv-password nil)
-    (erc-server-reconnect-attempts 5)
-    (erc-server-reconnect-timeout 3)
-    (erc-track-exclude-types '("JOIN" "MODE" "NICK" "PART" "QUIT"
-                               "324" "329" "332" "333" "353" "477"))
+    (circe-network-options
+     '(("Libera Chat"
+        :nick "rememberYou"
+        :tls t
+        :port 6697
+        :server-buffer-name "⇄ Libera Chat"
+        :channels (:after-auth "#archlinux" "#bash" "#emacs" "#linux" "#python" "#qutebrowser" "#sway")
+        :nickserv-password my-nickserv-password)))
+    (circe-reduce-lurker-spam t)
+    (circe-use-cycle-completion t)
     :config
-    (add-to-list 'erc-modules 'notifications)
-    (add-to-list 'erc-modules 'spelling)
-    (erc-services-mode 1)
-    (erc-update-modules))
-
-  (use-package erc-hl-nicks :after erc)
-  (use-package erc-image :after erc)
+    (enable-circe-color-nicks)
+    (enable-circe-display-images))
 #+end_src
 
 ** Ivy
