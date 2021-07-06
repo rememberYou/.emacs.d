@@ -2529,7 +2529,7 @@ Now all that remains is to configure =mu4e=:
     :ensure nil
     :ensure-system-package mu
     :custom
-    (mu4e-attachment-dir "~/Downloads")
+    (mu4e-attachment-dir "~/downloads")
     (mu4e-change-filenames-when-moving t)
     (mu4e-confirm-quit nil)
     (mu4e-compose-dont-reply-to-self t)
