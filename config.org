@@ -3000,6 +3000,21 @@ behavior. But let's refine these keys:
       (other-window 1)))
 #+end_src
 
+Centers each window alone, but not multiple windows in a buffer.
+
+#+begin_src emacs-lisp :tangle yes
+  (use-package centered-window
+    :defer 0.8
+    :custom
+    (cwm-centered-window-width 130)
+    (cwm-incremental-padding t)
+    (cwm-incremental-padding-% 2)
+    (cwm-left-fringe-ratio 0)
+    (cwm-frame-internal-border 0)
+    (cwm-use-vertical-padding t)
+    :config (centered-window-mode t))
+#+end_src
+
 *** =switch-window=
 
 Displays an overlay in each window showing a unique key, then asks the user
