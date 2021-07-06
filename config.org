@@ -2245,6 +2245,7 @@ user friendly.
         :nickserv-password my-nickserv-password)))
     (circe-reduce-lurker-spam t)
     (circe-use-cycle-completion t)
+    (lui-flyspell-p t)
     :config
     (enable-circe-color-nicks)
     (enable-circe-display-images))
