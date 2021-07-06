@@ -1556,6 +1556,7 @@ seamless, it's like a minor mode that disables itself auto-magically.
            ("C-c T" . hydra-tool/body)
            ("C-c b" . hydra-btoggle/body)
            ("C-c c" . hydra-clock/body)
+           ("C-c e" . hydra-circe/body)
            ("C-c f" . hydra-flycheck/body)
            ("C-c g" . hydra-go-to-file/body)
            ("C-c m" . hydra-magit/body)
@@ -1605,6 +1606,19 @@ Group a lot of commands.
       ("s" smartparens-mode "smartparens" :toggle t))
      "UI"
      (("i" ivy-rich-mode "ivy-rich" :toggle t))))
+#+end_src
+
+*** Hydra / Circe
+
+Group circe commands.
+
+#+begin_src emacs-lisp :tangle yes
+  (pretty-hydra-define hydra-circe
+    (:hint nil :color teal :quit-key "q" :title (with-faicon "comments-o" "Circe" 1 -0.05))
+    ("Action"
+     (
+      ("c" circe "connect")
+      ("r" circe-reconnect "reconnect"))))
 #+end_src
 
 *** Hydra / Clock
