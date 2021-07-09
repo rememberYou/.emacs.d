@@ -689,12 +689,12 @@ I use LaTeX for my reports, CVs, summaries, etc.
     ;; the ":hook" doesn't work for this one... don't ask me why.
     (add-hook 'TeX-after-compilation-finished-functions 'TeX-revert-document-buffer))
 
-  (use-package lsp-latex
-    :if (executable-find "texlab")
-    :hook (LaTeX-mode . (lambda ()
-                          (require 'lsp-latex)
-                          (lsp)))
-    :custom (lsp-latex-build-on-save t))
+  ;; (use-package lsp-latex
+  ;;   :if (executable-find "texlab")
+  ;;   :hook (LaTeX-mode . (lambda ()
+  ;;                         (require 'lsp-latex)
+  ;;                         (lsp)))
+  ;;   :custom (lsp-latex-build-on-save t))
 
   (use-package bibtex
     :after auctex
