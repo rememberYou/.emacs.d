@@ -2517,7 +2517,7 @@ Then, initialize the =mu= database, by replacing values of =--maildir= and
 =--my-address= with yours:
 
 #+begin_src shell
-  mu init --maildir ~/Maildir --my-address=${EMAIL}
+  mu init --maildir ~/mails --my-address=${EMAIL}
 #+end_src
 
 Now all that remains is to configure =mu4e=:
@@ -2530,26 +2530,26 @@ Now all that remains is to configure =mu4e=:
     :ensure-system-package mu
     :custom
     (mu4e-attachment-dir "~/downloads")
+    ;; To void synchronization issues/ with mbsync
     (mu4e-change-filenames-when-moving t)
     (mu4e-confirm-quit nil)
     (mu4e-compose-dont-reply-to-self t)
     (mu4e-compose-signature-auto-include nil)
-    (mu4e-drafts-folder "/gmail/Drafts")
+    (mu4e-drafts-folder "/drafts")
     (mu4e-get-mail-command (format "mbsync -c '%s/isync/mbsyncrc' -a" xdg-config))
     (mu4e-html2text-command "iconv -c -t utf-8 | pandoc -f html -t plain")
-    (mu4e-maildir "~/Maildir/gmail")
+    (mu4e-maildir "~/mails")
     (mu4e-maildir-shortcuts
-     '(("/gmail/All Mail" . ?a)
-       ("/gmail/Inbox" . ?i)
-       ("/gmail/Drafts" . ?D)
-       ("/gmail/Sent" . ?s)
-       ("/gmail/Starred" . ?S)
-       ("/gmail/Trash" . ?T)))
+     '(("/all"     . ?a)
+       ("/inbox"   . ?i)
+       ("/drafts"  . ?d)
+       ("/sent"    . ?s)
+       ("/trash"   . ?t)))
     (mu4e-org-contacts-file "~/.personal/agenda/contacts.org")
-    (mu4e-refile-folder "/gmail/Archive")
-    (mu4e-sent-folder "/gmail/Sent")
-    (mu4e-trash-folder "/gmail/Trash")
-    (mu4e-update-interval 60)
+    (mu4e-refile-folder "/all")
+    (mu4e-sent-folder "/sent")
+    (mu4e-trash-folder "/trash")
+    (mu4e-update-interval (* 5 60))
     (mu4e-use-fancy-chars t)
     (mu4e-view-show-addresses t)
     (mu4e-view-show-images t)
