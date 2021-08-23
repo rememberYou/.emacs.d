@@ -2547,7 +2547,7 @@ Now all that remains is to configure =mu4e=:
         context))
     :custom
     (mu4e-attachment-dir "~/downloads")
-    ;; To void synchronization issues/ with mbsync
+    ;; To avoid synchronization issues with mbsync
     (mu4e-change-filenames-when-moving t)
     (mu4e-confirm-quit nil)
     (mu4e-compose-dont-reply-to-self t)
