@@ -2580,7 +2580,7 @@ Now all that remains is to configure =mu4e=:
                             (smtpmail-smtp-user   . "erroriamnotfound@gmail.com")
                             (smtpmail-smtp-server . "smtp.gmail.com")
                             (user-mail-address    . "erroriamnotfound@gmail.com")
-                            (user-full-name       . "")))
+                            (user-full-name       . "Who Cares")))
     (my/set-email-account "terencio.agozzino"
                           '(
                             (mu4e-drafts-folder . "/personal/terencio-agozzino/drafts")
