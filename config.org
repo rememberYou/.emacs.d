@@ -2547,7 +2547,7 @@ Now all that remains is to configure =mu4e=:
         context))
     :custom
     (mu4e-attachment-dir "~/downloads")
-    ;; To avoid synchronization issues with mbsync
+    ;; To avoid synchronization issues/ with mbsync
     (mu4e-change-filenames-when-moving t)
     (mu4e-confirm-quit nil)
     (mu4e-compose-dont-reply-to-self t)
@@ -2629,8 +2629,8 @@ corresponds to my gmail address terencio.agozzino@gmail.com without the domain
 name) and /<password>/ by those that match your real information:
 
 #+BEGIN_EXAMPLE
-  machine imap.gmail.com login terencio.agozzino password <password> port 993
-  machine smtp.gmail.com login terencio.agozzino password <password> port 587
+  machine imap.gmail.com login terencio.agozzino@gmail.com password <password> port 993
+  machine smtp.gmail.com login terencio.agozzino@gmail.com password <password> port 587
 #+END_EXAMPLE
 
 Similar to IRC, if you want to store your password in a /GPG/ file, you just
