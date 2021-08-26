@@ -1555,21 +1555,21 @@ seamless, it's like a minor mode that disables itself auto-magically.
   (use-package major-mode-hydra
     :after hydra
     :preface
-    (defun with-alltheicon (icon str &optional height v-adjust)
+    (defun with-alltheicon (icon str &optional height v-adjust face)
       "Displays an icon from all-the-icon."
-      (s-concat (all-the-icons-alltheicon icon :v-adjust (or v-adjust 0) :height (or height 1)) " " str))
+      (s-concat (all-the-icons-alltheicon icon :v-adjust (or v-adjust 0) :height (or height 1) :face face) " " str))
 
-    (defun with-faicon (icon str &optional height v-adjust)
+    (defun with-faicon (icon str &optional height v-adjust face)
       "Displays an icon from Font Awesome icon."
-      (s-concat (all-the-icons-faicon icon :v-adjust (or v-adjust 0) :height (or height 1)) " " str))
+      (s-concat (all-the-icons-faicon icon ':v-adjust (or v-adjust 0) :height (or height 1) :face face) " " str))
 
-    (defun with-fileicon (icon str &optional height v-adjust)
+    (defun with-fileicon (icon str &optional height v-adjust face)
       "Displays an icon from the Atom File Icons package."
-      (s-concat (all-the-icons-fileicon icon :v-adjust (or v-adjust 0) :height (or height 1)) " " str))
+      (s-concat (all-the-icons-fileicon icon :v-adjust (or v-adjust 0) :height (or height 1) :face face) " " str))
 
-    (defun with-octicon (icon str &optional height v-adjust)
+    (defun with-octicon (icon str &optional height v-adjust face)
       "Displays an icon from the GitHub Octicons."
-      (s-concat (all-the-icons-octicon icon :v-adjust (or v-adjust 0) :height (or height 1)) " " str)))
+      (s-concat (all-the-icons-octicon icon :v-adjust (or v-adjust 0) :height (or height 1) :face face) " " str)))
 #+end_src
 
 *** Hydra / BToggle
@@ -2534,20 +2534,28 @@ Now all that remains is to configure =mu4e=:
     ;; To avoid synchronization issues/ with mbsync
     (mu4e-change-filenames-when-moving t)
     (mu4e-confirm-quit nil)
+    (mu4e-completing-read-function 'ivy-read)
+    (mu4e-compose-complete-only-after (format-time-string
+                                       "%Y-%m-%d"
+                                       (time-subtract (current-time) (days-to-time 150))))
+    (mu4e-compose-context-policy 'ask-if-none)
     (mu4e-compose-dont-reply-to-self t)
-    (mu4e-compose-signature-auto-include nil)
+    (mu4e-compose-format-flowed t)
     (mu4e-get-mail-command (format "mbsync -c '%s/isync/mbsyncrc' -a" xdg-config))
+    (mu4e-headers-date-format "%F")
     (mu4e-headers-fields
      '((:account    . 10)
        (:human-date . 12)
        (:flags      . 6)
        (:from       . 22)
        (:subject    . nil)))
+    (mu4e-headers-time-format "%R")
     (mu4e-html2text-command "iconv -c -t utf-8 | pandoc -f html -t plain")
     (mu4e-maildir "~/mails")
     (mu4e-org-contacts-file "~/.personal/agenda/contacts.org")
     (mu4e-update-interval (* 5 60))
     (mu4e-use-fancy-chars t)
+    (mu4e-view-prefer-html t)
     (mu4e-view-show-addresses t)
     (mu4e-view-show-images t)
     :config
@@ -2561,10 +2569,12 @@ Now all that remains is to configure =mu4e=:
                                                        (:maildir "/personal/erroriamnotfound/drafts" :key ?d)
                                                        (:maildir "/personal/erroriamnotfound/sent"   :key ?s)
                                                        (:maildir "/personal/erroriamnotfound/trash"  :key ?t)))
-                            (smtpmail-smtp-user   . "erroriamnotfound@gmail.com")
+                            (smtpmail-smtp-user . "erroriamnotfound@gmail.com")
                             (smtpmail-smtp-server . "smtp.gmail.com")
-                            (user-mail-address    . "erroriamnotfound@gmail.com")
-                            (user-full-name       . "Who Cares")))
+                            (smtpmail-smtp-service . 465)
+                            (smtpmail-stream-type . ssl)
+                            (user-mail-address . "erroriamnotfound@gmail.com")
+                            (user-full-name . "Who Cares")))
     (my/set-email-account "terencio.agozzino"
                           '(
                             (mu4e-drafts-folder . "/personal/terencio-agozzino/drafts")
@@ -2576,10 +2586,23 @@ Now all that remains is to configure =mu4e=:
                                                        (:maildir "/personal/terencio-agozzino/drafts" :key ?d)
                                                        (:maildir "/personal/terencio-agozzino/sent"   :key ?s)
                                                        (:maildir "/personal/terencio-agozzino/trash"  :key ?t)))
-                            (smtpmail-smtp-user   . "terencio.agozzino@gmail.com")
+                            (smtpmail-smtp-user . "terencio.agozzino@gmail.com")
                             (smtpmail-smtp-server . "smtp.gmail.com")
-                            (user-mail-address    . "terencio.agozzino@gmail.com")
-                            (user-full-name       . "Terencio Agozzino")))
+                            (smtpmail-smtp-service . 465)
+                            (smtpmail-stream-type . ssl)
+                            (user-mail-address . "terencio.agozzino@gmail.com")
+                            (user-full-name . "Terencio Agozzino")))
+    (setq mu4e-headers-attach-mark    `("a" . ,(with-faicon "paperclip" "" 0.75 -0.05 "all-the-icons-lyellow"))
+          mu4e-headers-draft-mark     `("D" . ,(with-octicon "pencil" "" 0.75 -0.05 "all-the-icons-lsilver"))
+          mu4e-headers-encrypted-mark `("x" . ,(with-faicon "lock" "" 0.75 -0.05 "all-the-icons-lred"))
+          mu4e-headers-flagged-mark   `("F" . ,(with-faicon "flag" "" 0.75 -0.05 "all-the-icons-maroon"))
+          mu4e-headers-new-mark       `("N" . ,(with-faicon "check-circle" "" 0.75 -0.05 "all-the-icons-silver"))
+          mu4e-headers-passed-mark    `("P" . ,(with-faicon "share" "" 0.75 -0.05 "all-the-icons-purple "))
+          mu4e-headers-replied-mark   `("R" . ,(with-faicon "reply" "" 0.75 -0.05 "all-the-icons-lgreen"))
+          mu4e-headers-seen-mark      `("S" . ,(with-octicon "check" "" 1 -0.05 "all-the-icons-lgreen"))
+          mu4e-headers-signed-mark    `("s" . ,(with-faicon "key" "" 0.75 -0.05 "all-the-icons-cyan"))
+          mu4e-headers-trashed-mark   `("T" . ,(with-faicon "trash" "" 0.75 -0.05 "all-the-icons-lred"))
+          mu4e-headers-unread-mark    `("u" . ,(with-faicon "envelope" "" 0.75 -0.05 "all-the-icons-silver")))
     (add-to-list 'mu4e-header-info-custom
                  '(:account
                    :name "Account"
@@ -2593,6 +2616,46 @@ Now all that remains is to configure =mu4e=:
     (add-to-list 'mu4e-view-actions '("org-contact-add" . mu4e-action-add-org-contact) t))
 #+end_src
 
+To edit my emails in =org-mode=, I use =org-mime=. It also to add a signature,
+automatically convert Org in HTML, and custom some HTML elements.
+
+#+begin_src emacs-lisp :tangle yes
+  (use-package org-mime
+    :after mu4e
+    :hook (message-send . org-mime-htmlize)
+    :bind (:map mu4e-compose-mode-map
+                ("C-c '" . org-mime-edit-mail-in-org-mode))
+    :config
+    (add-hook 'org-mime-html-hook (lambda ()
+                                    (goto-char (point-max))
+                                    (insert "--<br>
+                   <strong>Terencio Agozzino</strong><br>
+                   Machine Learning Engineer
+                   <br>
+                   <span style='text-decoration:none; color:#000;'>(+32) 495 45 29 07</span>")))
+    (add-hook 'org-mime-html-hook (lambda ()
+                                    (org-mime-change-element-style "p" (format "color: %s" "#1a1a1a"))))
+
+    (add-hook 'org-mime-html-hook (lambda ()
+                                    (org-mime-change-element-style "strong" (format "color: %s" "#000"))))
+
+    (add-hook 'org-mime-html-hook (lambda ()
+                                    (org-mime-change-element-style
+                                     "pre" "background: none repeat scroll 0% 0% rgb(61, 61, 61);
+                                                   border-radius: 15px;
+                                                   color: #eceff4;
+                                                   font-family: Courier, 'Courier New', monospace;
+                                                   font-size: small;
+                                                   font-weight: 400;
+                                                   line-height: 1.3em;
+                                                   padding: 20px;
+                                                   quotes: '«' '»';
+                                                   width: 41%;")))
+    (setq org-mime-export-options '(:preserve-breaks t
+                                                     :section-numbers nil
+                                                     :with-author nil
+                                                     :with-toc nil)))
+#+end_src
 Being able to read mails is a good thing, but being notified when we receive
 mails is better! The following few lines allow you to receive desktop
 notifications and modeline display for =mu4e=:
@@ -2628,16 +2691,11 @@ Then encrypt that file with =gpg -c .authinfo= and don't forget to delete the
   (use-package message
     :ensure nil
     :custom
+    (message-citation-line-format "On %B %e, %Y at %l:%M %p, %f (%n) wrote:\n")
+    (message-citation-line-function 'message-insert-formatted-citation-line)
     (message-kill-buffer-on-exit t)
-    (send-mail-function 'smtpmail-send-it))
-
-  (use-package smtpmail
-    :ensure nil
-    :custom
-    (smtpmail-smtp-server "smtp.gmail.com")
-    (smtpmail-smtp-service 587)
-    (smtpmail-smtp-user "terencio.agozzino")
-    (smtpmail-stream-type 'starttls))
+    (message-send-mail-function 'smtpmail-send-it)
+    (mml-secure-openpgp-signers '("208FCDBB98190562")))
 #+end_src
 
 All you need now is to test sending your mails with =C-x m= or directly from
