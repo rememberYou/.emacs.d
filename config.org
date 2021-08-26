@@ -864,8 +864,9 @@ Let's take a look to my Python configuration:
 
   (use-package python
     :delight "π "
-    :bind (("M-[" . python-nav-backward-block)
-           ("M-]" . python-nav-forward-block))
+    :bind (:map python-mode-map
+                ("M-[" . python-nav-backward-block)
+                ("M-]" . python-nav-forward-block))
     :preface
     (defun python-remove-unused-imports()
       "Removes unused imports and unused variables with autoflake."
