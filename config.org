@@ -279,19 +279,19 @@ increasing contributions to these packages.
 
 ** Theme
 
-I'm a big fan of [[https://github.com/arcticicestudio/nord-emacs][nord-theme]] and combined with [[https://github.com/seagle0128/doom-modeline][doom-modeline]], it's just
-happiness.
+I'm a fan of [[https://github.com/ChrisKempson/Tomorrow-Theme][tomorrow-night]] and combined with [[https://github.com/seagle0128/doom-modeline][doom-modeline]], it's happiness.
 
 *NOTE:* to be able to see icons in the =doom-modeline=, you will need to install
 [[#Icons][all-the-icons]].
 
 #+begin_src emacs-lisp :tangle yes
   (use-package doom-themes
-    :config (load-theme 'doom-nord t))
+    :config
+    (load-theme 'doom-tomorrow-night t)
+    (doom-themes-org-config))
 
   (use-package doom-modeline
-    :defer 0.1
-    :config (doom-modeline-mode))
+    :hook (after-init . doom-modeline-init))
 
   (use-package fancy-battery
     :after doom-modeline
