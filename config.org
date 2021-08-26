@@ -2950,7 +2950,9 @@ Git clients exist, only Magit and Git itself deserve to be called porcelains.
       (setq fill-column 72)
       (setq-local comment-auto-fill-only-comments nil)))
 
-  (use-package magit :defer 0.3)
+  (use-package magit :defer 0.3
+    :custom
+    (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
   (use-package smerge-mode
     :after hydra
