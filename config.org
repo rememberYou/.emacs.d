@@ -2176,6 +2176,7 @@ find.
 #+begin_src emacs-lisp :tangle yes
   (use-package all-the-icons
     :if (display-graphic-p)
+    :commands all-the-icons-install-fonts
     :config (unless (find-font (font-spec :name "all-the-icons"))
               (all-the-icons-install-fonts t)))
 #+end_src
