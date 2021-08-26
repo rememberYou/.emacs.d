@@ -2533,7 +2533,7 @@ Now all that remains is to configure =mu4e=:
                       :match-func
                       (lambda (msg)
                         (when msg
-                          (string-prefix-p (format "/%s" label)
+                          (string-prefix-p (format "/%s" msg)
                                            (mu4e-message-field msg :maildir))))
                       :vars letvars)))
         (push context mu4e-contexts)
