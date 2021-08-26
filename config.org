@@ -2935,6 +2935,7 @@ exists as well).
       (projectile-project-search-path '("~/.local/share/git")))
     (projectile-known-projects-file (expand-file-name (format "%s/emacs/projectile-bookmarks.eld" xdg-cache)))
     (projectile-mode-line '(:eval (projectile-project-name)))
+    (projectile-switch-project-action #'projectile-dired)
     :config (projectile-global-mode))
 
   (use-package counsel-projectile
