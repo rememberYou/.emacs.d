@@ -2931,6 +2931,8 @@ exists as well).
     (projectile-completion-system 'ivy)
     (projectile-enable-caching t)
     (projectile-keymap-prefix (kbd "C-c C-p"))
+    (when (file-directory-p "~/.local/share/git")
+      (projectile-project-search-path '("~/.local/share/git")))
     (projectile-known-projects-file (expand-file-name (format "%s/emacs/projectile-bookmarks.eld" xdg-cache)))
     (projectile-mode-line '(:eval (projectile-project-name)))
     :config (projectile-global-mode))
