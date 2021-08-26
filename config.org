@@ -1651,7 +1651,7 @@ Group jump-to-files commands.
 
 #+begin_src emacs-lisp :tangle yes
   (pretty-hydra-define hydra-go-to-file
-    (:hint nil :color teal :quit-key "q" :title (with-faicon "file-text-o" "Go To" 1 -0.05))
+    (:hint nil :color teal :quit-key "q" :title (with-octicon "file-symlink-file" "Go To" 1 -0.05))
     ("Agenda"
      (("ac" (find-file "~/.personal/agenda/contacts.org") "contacts")
       ("ao" (find-file "~/.personal/agenda/organizer.org") "organizer")
@@ -1720,7 +1720,7 @@ Group Magit commands.
 
 #+begin_src emacs-lisp :tangle yes
   (pretty-hydra-define hydra-magit
-    (:hint nil :color teal :quit-key "q" :title (with-alltheicon "git" "Magit" 1 -0.05))
+    (:hint nil :color teal :quit-key "q" :title (with-octicon "mark-github" "Magit" 1 -0.05))
     ("Action"
      (("b" magit-blame "blame")
       ("c" magit-clone "clone")
@@ -1736,7 +1736,7 @@ Group Merge commands.
 
 #+begin_src emacs-lisp :tangle yes
   (pretty-hydra-define hydra-merge
-    (:hint nil :color pink :quit-key "q" :title (with-alltheicon "git" "Merge" 1 -0.05))
+    (:hint nil :color pink :quit-key "q" :title (with-octicon "mark-github" "Magit" 1 -0.05))
     ("Move"
      (("n" smerge-next "next")
       ("p" smerge-prev "previous"))
