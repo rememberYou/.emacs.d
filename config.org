@@ -941,8 +941,8 @@ server. After installed it with your package manager, you need to use
     :hook (typescript-mode . prettier-js-mode)
     :custom
     (add-hook 'typescript-mode-hook #'(lambda ()
-                                 (enable-minor-mode
-                                  '("\\.tsx?\\'" . prettier-js-mode)))))
+                                        (enable-minor-mode
+                                         '("\\.tsx?\\'" . prettier-js-mode)))))
 #+end_src
 
 ** Vue.js
