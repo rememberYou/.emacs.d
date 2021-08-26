@@ -3524,7 +3524,7 @@ identifier, by yours (or =nil= to allow symmetric encryption).
 #+begin_src emacs-lisp :tangle yes
   (use-package org-crypt
     :ensure nil
-	:after org
+    :after org
     :init (org-crypt-use-before-save-magic)
     :custom (org-crypt-key "E9AADC36E94A672D1A07D49B208FCDBB98190562"))
 #+end_src
