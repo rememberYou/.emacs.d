@@ -2137,6 +2137,7 @@ I used =guide-key= in my past days, but =which-key= is a good replacement.
   (use-package which-key
     :defer 0.2
     :delight
+    :custom which-key-idle-delay 0.5
     :config (which-key-mode))
 #+end_src
 
