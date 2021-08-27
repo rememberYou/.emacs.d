@@ -54,6 +54,7 @@
   - [[#editorconfig][EditorConfig]]
   - [[#ending-up][Ending Up]]
   - [[#epub][EPUB]]
+  - [[#helpful][Helpful]]
   - [[#spelling][Spelling]]
   - [[#history][History]]
   - [[#highlight-indentation][Highlight indentation]]
@@ -1378,6 +1379,23 @@ The code below, executes =org-babel-tangle= asynchronously when
   (use-package nov
     :mode ("\\.epub\\'" . nov-mode)
     :custom (nov-text-width 75))
+#+end_src
+
+** Helpful
+
+[[https://github.com/Wilfred/helpful][Helpful]] gives more user-friendly documentation with =C-h f=.
+
+#+begin_src emacs-lisp :tangle yes
+  (use-package helpful
+    :custom
+    (counsel-describe-function-function #'helpful-callable)
+    (counsel-describe-variable-function #'helpful-variable)
+    :bind
+    ([remap describe-function] . helpful-function)
+    ([remap describe-symbol] . helpful-symbol)
+    ([remap describe-variable] . helpful-variable)
+    ([remap describe-command] . helpful-command)
+    ([remap describe-key] . helpful-key))
 #+end_src
 
 ** Spelling
