@@ -914,8 +914,8 @@ Let's take a look to my Python configuration:
   (use-package pyvenv
     :after python
     :custom
-    (pyvenv-default-virtual-env-name "~/.local/share/myenv/")
-    (pyvenv-workon "~/.local/share/myenv/")
+    (pyvenv-default-virtual-env-name (expand-file-name (format "%s/myenv/" xdg-data)))
+    (pyvenv-workon (expand-file-name (format "%s/myenv/" xdg-data)))
     :config
     (pyvenv-tracking-mode 1))
 #+end_src
@@ -2962,8 +2962,8 @@ exists as well).
     (projectile-completion-system 'ivy)
     (projectile-enable-caching t)
     (projectile-keymap-prefix (kbd "C-c C-p"))
-    (when (file-directory-p "~/.local/share/git")
-      (projectile-project-search-path '("~/.local/share/git")))
+    (when (file-directory-p (expand-file-name (format "%s/git" xdg-data)))
+      (projectile-project-search-path '(expand-file-name (format "%s/git" xdg-data))))
     (projectile-known-projects-file (expand-file-name (format "%s/emacs/projectile-bookmarks.eld" xdg-cache)))
     (projectile-mode-line '(:eval (projectile-project-name)))
     (projectile-switch-project-action #'projectile-dired)
