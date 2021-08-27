@@ -313,11 +313,10 @@ the latter a slightly different -- often darker -- background.
 [[https://github.com/hlissner/emacs-solaire-mode][Henrik Lissner]]
 #+end_quote
 
+#+begin_src emacs-lisp :tangle yes
   (use-package solaire-mode
     :custom (solaire-mode-remap-fringe t)
-    :config
-    (solaire-mode-swap-bg)
-    (solaire-global-mode +1))
+    :config (solaire-global-mode +1))
 #+end_src
 
 ** Remove Mouse Interface
