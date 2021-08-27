@@ -8,13 +8,13 @@
   - [[#use-package][use-package]]
 - [[#start-up][Start Up]]
   - [[#authentication][Authentication]]
-  - [[#better-defaults][Better defaults]]
-  - [[#better-file-management-with-xdg][Better file management with XDG]]
+  - [[#defaults][Defaults]]
+  - [[#file-management-with-xdg][File Management with XDG]]
   - [[#customization][Customization]]
   - [[#fonts][Fonts]]
   - [[#lsp][LSP]]
   - [[#theme][Theme]]
-  - [[#turn-off-mouse-interface][Turn off mouse interface]]
+  - [[#remove-mouse-interface][Remove Mouse Interface]]
 - [[#languages][Languages]]
   - [[#c][C++]]
   - [[#cmake][CMake]]
@@ -96,21 +96,24 @@
 * About
 
 After using GNU Emacs for a while, I decided to create my own config to simplify
-my daily life by adding scripts, useful functions, etc.
-
-For more informations about myself, you can visit my [[http://terencio-agozzino.com/][website]].
+my daily life by adding scripts, and useful functions. For more informations
+about myself, you can visit my [[https://rememberyou.github.io/][website]].
 
 To manage package configurations, I use the [[https://github.com/jwiegley/use-package/][use-package]] package from John
 Wiegley, that I recommend.
 
 This configuration is mainly based on the following user configurations:
+- [[https://github.com/daviwil/dotfiles/blob/master/Emacs.org][David Wilson]] (=daviwil=);
 - [[https://github.com/jwiegley/dot-emacs/][John Wiegley]] (=jwiegley=);
-- [[https://github.com/sachac][Sacha Chua]] (=sachac=);
 - [[https://github.com/angrybacon/dotemacs][Mathieu Marques]] (=angrybacon=).
+- [[https://github.com/sachac][Sacha Chua]] (=sachac=);
 
 Thanks to them for their incredible work!
 
 * Emacs Initialization
+
+This section contains the basic commands you need to know to properly initialize
+your GNU Emacs.
 
 ** Packages Sources
 
@@ -119,14 +122,13 @@ In order to install packages, it is useful to configure the package sources.
 #+begin_src emacs-lisp :tangle yes
   (setq package-archives '(("elpa" . "https://elpa.gnu.org/packages/")
                            ("melpa" . "https://melpa.org/packages/")
-                           ("melpa-stable" . "http://stable.melpa.org/packages/")
                            ("org" . "http://orgmode.org/elpa/")))
 #+end_src
 
 ** use-package
 
-To be able to manage its configuration with =use-package= it is necessary to
-first install it, if you don't already.
+To be able to manage its configuration with =use-package=, you must first
+install it, if it is not already done.
 
 #+begin_src emacs-lisp :tangle yes
   (unless (package-installed-p 'use-package)
@@ -139,10 +141,14 @@ first install it, if you don't already.
 
 * Start Up
 
+This section contains some more advanced commands to customize your GNU Emacs.
+
 ** Authentication
 
-I put my =authinfo.gpg= file in [[https://github.com/syncthing/syncthing][Syncthing]] in order to be able to easily use my
-configuration on other devices.
+I mainly use [[https://www.passwordstore.org/][pass]] under GNU Linux as password manager. However, I prefer to
+store IRC and email passwords directly in an =authinfo.gpg= file for
+simplicity. Afterward, this encrypted file is placed in [[https://github.com/syncthing/syncthing][Syncthing]] to be able to
+easily use my configuration on other devices.
 
 #+begin_src emacs-lisp :tangle yes
   (setq auth-sources '("~/.config/gnupg/shared/authinfo.gpg"
@@ -151,7 +157,7 @@ configuration on other devices.
                        "~/.netrc"))
 #+end_src
 
-** Better defaults
+** Defaults
 
 For a better user experience of GNU Emacs, here are the default values I use.
 
@@ -162,11 +168,11 @@ For a better user experience of GNU Emacs, here are the default values I use.
    display-time-default-load-average nil            ; Don't display load average
    fill-column 80                                   ; Set width for automatic line breaks
    help-window-select t                             ; Focus new help windows when opened
-   indent-tabs-mode nil                             ; Prefers spaces over tabs
+   indent-tabs-mode nil                             ; Prefer spaces over tabs
    inhibit-startup-screen t                         ; Disable start-up screen
    initial-scratch-message ""                       ; Empty the initial *scratch* buffer
    kill-ring-max 128                                ; Maximum length of kill ring
-   load-prefer-newer t                              ; Prefers the newest version of a file
+   load-prefer-newer t                              ; Prefer the newest version of a file
    mark-ring-max 128                                ; Maximum length of mark ring
    read-process-output-max (* 1024 1024)            ; Increase the amount of data reads from the process
    scroll-conservatively most-positive-fixnum       ; Always scroll by one line
@@ -185,13 +191,12 @@ For a better user experience of GNU Emacs, here are the default values I use.
   (show-paren-mode 1)                               ; Show the parent
 #+end_src
 
-** Better file management with XDG
+** File Management with XDG
 
 To keep the user's home and the =~/.emacs.d= folder as clean as possible, I
-follow the [[https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html][XDG base directory specification]].
-
-Be careful that GNU Emacs will not create the appropriate folders if they do not
-exist. Therefore, it is necessary to create them yourself:
+follow the [[https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html][XDG base directory specification]]. Be careful that GNU Emacs will not
+create the appropriate folders if they do not exist. Therefore, it is necessary
+to create them yourself.
 
 #+begin_src shell
   mkdir ~/.cache/emacs ~/.local/share/emacs/
@@ -218,11 +223,11 @@ exist. Therefore, it is necessary to create them yourself:
 
 ** Customization
 
-To avoid overloading the GNU Emacs custormization =init.el= file made by the
+To avoid overloading the GNU Emacs customization =init.el= file made by the
 user with the UI, I add the generated code in a separate file.
 
 I also made sure to follow the XDG base directory specification for the
-=auto-save-file= folder, in order to keep my =~/.emacs.d= folder clean.
+=auto-save-file= folder to keep my =~/.emacs.d= folder clean.
 
 #+begin_src emacs-lisp :tangle yes
   (setq-default
@@ -235,24 +240,29 @@ I also made sure to follow the XDG base directory specification for the
 ** Fonts
 
 Spending most of our time on GNU Emacs, it is important to use a font that will
-make our reading easier.
-
-Source Code Pro is one of the best monospaced font. Installed it with your
-system manager.
+make our reading easier. [[https://github.com/adobe-fonts/source-code-pro][Source Code Pro]] is one of the best monospaced font.
 
 #+begin_src emacs-lisp :tangle yes
   (set-face-attribute 'default nil :font "Source Code Pro Medium")
   (set-fontset-font t 'latin "Noto Sans")
 #+end_src
 
+Don't forget to install this font with your system manager and to check the font
+installation.
+
+#+begin_src shell
+  fc-list | grep "Source Code Pro Medium"
+#+end_src
+
 ** LSP
 
-In order to be able to use different /LSP/ (/Language Server Protocol/) server
-according to the programming language that we want to use, we need a client for
+To be able to use different /LSP/ (/Language Server Protocol/) servers according
+to the programming languages that we would like to use, we need a client for
 LSP. That's where [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] comes in!
 
 #+begin_src emacs-lisp :tangle yes
   (use-package lsp-mode
+    :commands lsp
     :hook (((c-mode c++-mode dart-mode java-mode json-mode python-mode tex-mode typescript-mode xml-mode) . lsp)
            (lsp-mode . lsp-enable-which-key-integration))
     :custom
@@ -262,8 +272,7 @@ LSP. That's where [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] comes in!
     (lsp-enable-snippet nil)
     (lsp-prefer-flymake nil)
     (lsp-session-file (expand-file-name (format "%s/emacs/lsp-session-v1" xdg-data)))
-    (lsp-restart 'auto-restart)
-    :commands lsp)
+    (lsp-restart 'auto-restart))
   (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
   (use-package lsp-ui :commands lsp-ui-mode)
   (use-package dap-mode
@@ -274,15 +283,14 @@ LSP. That's where [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] comes in!
 #+end_src
 
 Another benefit of using LSP to configure the management of your programming
-language is that LSP servers are also used by other text editors. This,
+languages is that LSP servers are also used by other text editors. This,
 increasing contributions to these packages.
 
 ** Theme
 
-I'm a fan of [[https://github.com/ChrisKempson/Tomorrow-Theme][tomorrow-night]] and combined with [[https://github.com/seagle0128/doom-modeline][doom-modeline]], it's happiness.
-
-*NOTE:* to be able to see icons in the =doom-modeline=, you will need to install
-[[#Icons][all-the-icons]].
+I'm a fan of [[https://github.com/ChrisKempson/Tomorrow-Theme][tomorrow-night]] and combined with [[https://github.com/seagle0128/doom-modeline][doom-modeline]], it's happiness! To
+be able to get icons in the =doom-modeline=, you will need to install the icons
+with [[#Icons][all-the-icons]].
 
 #+begin_src emacs-lisp :tangle yes
   (use-package doom-themes
@@ -290,12 +298,19 @@ I'm a fan of [[https://github.com/ChrisKempson/Tomorrow-Theme][tomorrow-night]] 
     (load-theme 'doom-tomorrow-night t)
     (doom-themes-org-config))
 
-  (use-package doom-modeline
-    :hook (after-init . doom-modeline-init))
+  (use-package doom-modeline :hook (after-init . doom-modeline-init))
+#+end_src
 
-  (use-package fancy-battery
-    :after doom-modeline
-    :hook (after-init . fancy-battery-mode))
+I also like to visually distinguish a real buffer from a popup.
+
+#+begin_quote
+=solaire-mode= is an aesthetic plugin designed to visually distinguish "real"
+buffers (i.e. file-visiting code buffers where you do most of your work) from
+"unreal" buffers (like popups, sidebars, log buffers, terminals, etc) by giving
+the latter a slightly different -- often darker -- background.
+
+[[https://github.com/hlissner/emacs-solaire-mode][Henrik Lissner]]
+#+end_quote
 
   (use-package solaire-mode
     :custom (solaire-mode-remap-fringe t)
@@ -304,25 +319,28 @@ I'm a fan of [[https://github.com/ChrisKempson/Tomorrow-Theme][tomorrow-night]] 
     (solaire-global-mode +1))
 #+end_src
 
-** Turn off mouse interface
+** Remove Mouse Interface
 
 Since I never use the mouse with GNU Emacs, I prefer not to use certain
-graphical elements as seen as the menu bar, toolbar, scrollbar and tooltip that
+graphical elements as seen as the menu bar, toolbar, scrollbar, and tooltip that
 I find invasive.
 
 #+begin_src emacs-lisp :tangle yes
   (when window-system
-    (menu-bar-mode -1)              ; Disable the menu bar
-    (scroll-bar-mode -1)            ; Disable the scroll bar
-    (tool-bar-mode -1)              ; Disable the tool bar
-    (tooltip-mode -1))              ; Disable the tooltips
+    (menu-bar-mode -1)
+    (scroll-bar-mode -1)
+    (tool-bar-mode -1)
+    (tooltip-mode -1))
 #+end_src
 
 * Languages
 
+Section dedicated to the definition and customization of different programming
+languages and their tools.
+
 ** C++
 
-In order to have a fast and stable environment, I recommend using [[#lsp][LSP]] as a
+To have a fast and stable environment, I recommend using [[#lsp][LSP]] as a
 client for LSP servers [[https://github.com/MaskRay/ccls][ccls]] and as server.
 
 To use =ccls= with GNU Emacs, you must first install it with the package manager
@@ -394,17 +412,16 @@ CMake is a cross-platform build system generator.
 
 ** CSS – LESS – SCSS
 
-In order to have a fast and stable environment, I recommend using [[#lsp][LSP]] as a
+To have a fast and stable environment, I recommend using [[#lsp][LSP]] as a
 client for LSP servers and [[https://github.com/vscode-langservers/vscode-css-languageserver-bin][vscode-css-languageserver-bin]] as server.
 
 #+begin_src emacs-lisp :tangle yes
   (use-package css-mode
+    :ensure nil
     :custom (css-indent-offset 2))
-
-  (use-package less-css-mode
-    :mode "\\.less\\'")
-
+  (use-package less-css-mode :mode "\\.less\\'")
   (use-package scss-mode
+    :ensure nil
     :mode "\\.scss\\'")
 #+end_src
 
@@ -416,7 +433,7 @@ client for LSP servers and [[https://github.com/vscode-langservers/vscode-css-la
 
 ** Dart
 
-In order to have a fast and stable environment, I recommend using [[#lsp][LSP]] as a
+To have a fast and stable environment, I recommend using [[#lsp][LSP]] as a
 client for LSP servers and [[https://github.com/natebosch/dart_language_server][dart_language_server]] as server.
 
 To use =dart_language_server= with GNU Emacs, you must first install it
@@ -424,7 +441,7 @@ with the package manager of your operating system.
 
 #+begin_src emacs-lisp :tangle yes
   (use-package dart-mode
-    :defer 0.72
+    :defer 2
     :custom
     (dart-format-on-save t)
     (dart-sdk-path "/opt/dart-sdk/bin/")
@@ -446,7 +463,7 @@ with the package manager of your operating system.
 ** Docker
 
 I like to use Docker when I need to install various databases or other services
-that only work on a particular operating system while keeping my operating
+that only work on a particular operating system. Docker ensures me to keep my operating
 system clean.
 
 #+begin_src emacs-lisp :tangle yes
@@ -461,8 +478,6 @@ system clean.
   (use-package elisp-mode :ensure nil :delight "ξ ")
 #+end_src
 
-*** Eldoc
-
 Provides minibuffer hints when working with Emacs Lisp.
 
 #+begin_src emacs-lisp :tangle yes
@@ -473,7 +488,7 @@ Provides minibuffer hints when working with Emacs Lisp.
 
 ** HTML
 
-In order to have a fast and stable environment, I recommend using [[#lsp][LSP]] as a
+To have a fast and stable environment, I recommend using [[#lsp][LSP]] as a
 client for LSP servers and [[https://github.com/vscode-langservers/vscode-html-languageserver][vscode-html-languageserver]] as server.
 
 To use =vscode-html-languageserver= with GNU Emacs, you must first install it
@@ -499,7 +514,7 @@ Let's configure =emmet-mode=, to produce HTML from CSS-like selector:
 
 ** Java
 
-In order to have a fast and stable environment, I recommend using [[https://github.com/emacs-lsp/lsp-java][lsp-java]] as
+To have a fast and stable environment, I recommend using [[https://github.com/emacs-lsp/lsp-java][lsp-java]] as
 LSP client and [[https://projects.eclipse.org/projects/eclipse.jdt.ls][Eclipse JDT Language Server]] as LSP server.
 
 *NOTE:* before configuring =lsp-java=, don't forget to configure [[#lsp][lsp-mode]].
@@ -615,20 +630,20 @@ Here is an example configuration for a project that uses =requirejs= and
 
 #+begin_src json
   {
-      "libs": [
-          "jquery"
-      ],
-      "loadEagerly": [
-          "./**/*.js"
-      ],
-      "dontLoad": [
-          "./bower_components/"
-      ],
-      "plugins": {
-          "requirejs": {
-              "baseURL": "./"
-          }
+    "libs": [
+      "jquery"
+    ],
+    "loadEagerly": [
+      "./**/*.js"
+    ],
+    "dontLoad": [
+      "./bower_components/"
+    ],
+    "plugins": {
+      "requirejs": {
+        "baseURL": "./"
       }
+    }
   }
 #+end_src
 
@@ -838,7 +853,7 @@ the creation of these diagrams, [[http://plantuml.com/][PlantUML]] remains the b
 
 ** Python
 
-In order to have a fast and stable environment, I recommend to use [[https://github.com/andrew-christianson/lsp-python-ms][lsp-python-ms]]
+To have a fast and stable environment, I recommend to use [[https://github.com/andrew-christianson/lsp-python-ms][lsp-python-ms]]
 as LSP client and [[https://github.com/Microsoft/python-language-server][mspyls]] as LSP server as =mspyls= is faster than =pyls=.
 I use [[https://github.com/psf/black][black]] to reformat my Python buffer. Before use it, don't forget to
 install =python-black= in your system.
@@ -999,8 +1014,7 @@ careful to not modify it. The =yarn-mode= is a small package that automatically
 places this buffer in read-only and activates the syntax color for these files.
 
 #+begin_src emacs-lisp :tangle yes
-  (use-package yarn-mode
-    :mode "yarn\\.lock\\'")
+  (use-package yarn-mode :mode "yarn\\.lock\\'")
 #+end_src
 
 * Advanced Configuration
@@ -1010,12 +1024,12 @@ places this buffer in read-only and activates the syntax color for these files.
 Most packages use =alerts= to make notifications with =libnotify=. Don't forget
 to first install a notification daemon, like =dunst=.
 
-#+BEGIN_QUOTE
+#+begin_quote
 Alert is a Growl-workalike for Emacs which uses a common notification interface
 and multiple, selectable "styles", whose use is fully customizable by the user.
 
 [[https://github.com/jwiegley/alert][John Wiegley]]
-#+END_QUOTE
+#+end_quote
 
 #+begin_src emacs-lisp :tangle yes
   (use-package alert
@@ -1028,13 +1042,13 @@ and multiple, selectable "styles", whose use is fully customizable by the user.
 =company= provides auto-completion at point and displays a small pop-in
 containing the candidates.
 
-#+BEGIN_QUOTE
+#+begin_quote
 Company is a text completion framework for Emacs. The name stands for "complete
 anything". It uses pluggable back-ends and front-ends to retrieve and display
 completion candidates.
 
 [[http://company-mode.github.io/][Dmitry Gutov]]
-#+END_QUOTE
+#+end_quote
 
 #+begin_src emacs-lisp :tangle yes
   (use-package company
@@ -1203,7 +1217,7 @@ May be useful in a timely manner.
 ** Calendar
 
 Remembering all the dates is not obvious, especially since some varies every
-year. In order to remember each important date, I recorded the list of important
+year. To remember each important date, I recorded the list of important
 dates according to my country, Belgium. It is very likely that some dates are
 different in your country, therefore, adapt the configuration below accordingly.
 
@@ -1462,7 +1476,7 @@ your operating system.
 *** Grammar Checker
 
 [[https://languagetool.org/][LanguageTool]] is great for correcting your grammar. Combined with =abbrev-mode=
-and =flyspell=, you will have better documents. In order to be able to use it
+and =flyspell=, you will have better documents. To be able to use it
 locally, download the desktop version and change the paths indicated below.
 
 #+begin_src emacs-lisp :tangle yes
@@ -1520,7 +1534,7 @@ having to count the spaces, I can see that the code is well indented.
 Hydra allows me to display a list of all the commands implemented in the echo
 area and easily interact with them.
 
-#+BEGIN_QUOTE
+#+begin_quote
 Once you summon the Hydra through the prefixed binding (the body + any one
 head), all heads can be called in succession with only a short extension.
 
@@ -1530,7 +1544,7 @@ original purpose, calling his proper command. This makes the Hydra very
 seamless, it's like a minor mode that disables itself auto-magically.
 
 [[https://github.com/abo-abo/hydra][Oleh Krehel]]
-#+END_QUOTE
+#+end_quote
 
 #+begin_src emacs-lisp :tangle yes
   (use-package hydra
@@ -1930,7 +1944,7 @@ Group window-related commands.
 
 Auto-indent code as you write.
 
-#+BEGIN_QUOTE
+#+begin_quote
 =electric-indent-mode= is enough to keep your code nicely aligned when all you
 do is type. However, once you start shifting blocks around, transposing lines,
 or slurping and barfing sexps, indentation is bound to go wrong.
@@ -1940,7 +1954,7 @@ It reindents after every change, making it more reliable than
 electric-indent-mode.
 
 [[https://github.com/Malabarba/aggressive-indent-mode][Artur Malabarba]]
-#+END_QUOTE
+#+end_quote
 
 #+begin_src emacs-lisp :tangle yes
   (use-package aggressive-indent
@@ -1991,13 +2005,13 @@ Moves the current line (or if marked, the current region's, whole lines).
 
 Improved GNU Emacs standard package menu.
 
-#+BEGIN_QUOTE
+#+begin_quote
 Project for modernizing Emacs' Package Menu. With improved appearance, mode-line
 information. Github integration, customizability, asynchronous upgrading, and
 more.
 
 [[https://github.com/Malabarba/paradox][Artur Malabarba]]
-#+END_QUOTE
+#+end_quote
 
 #+begin_src emacs-lisp :tangle yes
   (use-package paradox
@@ -2245,13 +2259,13 @@ user friendly.
 
 I used =helm= before, but I find =ivy= faster and lighter.
 
-#+BEGIN_QUOTE
+#+begin_quote
 Ivy is a generic completion mechanism for Emacs. While it operates similarly to
 other completion schemes such as icomplete-mode, Ivy aims to be more efficient,
 smaller, simpler, and smoother to use yet highly customizable.
 
 [[https://github.com/abo-abo/ivy][Oleh Krehel]]
-#+END_QUOTE
+#+end_quote
 
 #+begin_src emacs-lisp :tangle yes
   (use-package counsel
@@ -2406,12 +2420,12 @@ smaller, simpler, and smoother to use yet highly customizable.
 
 ** Ledger
 
-#+BEGIN_QUOTE
+#+begin_quote
 Ledger is a powerful, double-entry accounting system that is accessed from the
 UNIX command-line.
 
 [[https://github.com/ledger/ledger][John Wiegley]]
-#+END_QUOTE
+#+end_quote
 
 Before you can use this configuration, make sure you install =ledger= on your
 operating system.
@@ -2794,7 +2808,7 @@ to change the appearance of the highlight of the parentheses pairs.
 
 *** =rainbow-delimiters=
 
-#+BEGIN_QUOTE
+#+begin_quote
 rainbow-delimiters is a "rainbow parentheses"-like mode which highlights
 delimiters such as parentheses, brackets or braces according to their
 depth. Each successive level is highlighted in a different color. This makes it
@@ -2802,7 +2816,7 @@ easy to spot matching delimiters, orient yourself in the code, and tell which
 statements are at a given depth.
 
 [[https://github.com/Fanael/rainbow-delimiters][Fanael Linithien]]
-#+END_QUOTE
+#+end_quote
 
 #+begin_src emacs-lisp :tangle yes
   (use-package rainbow-delimiters
@@ -2825,13 +2839,13 @@ parenthesis. Anyway, if you don't like it, you can try taking a look at
 
 ** Paste
 
-#+BEGIN_QUOTE
+#+begin_quote
 This mode allows to paste whole buffers or parts of buffers to pastebin-like
 services. It supports more than one service and will failover if one service
 fails.
 
 [[https://github.com/etu/webpaste.el][Elis Hirwing]]
-#+END_QUOTE
+#+end_quote
 
 #+begin_src emacs-lisp :tangle yes
   (use-package webpaste :defer 1)
@@ -2847,13 +2861,13 @@ the minibuffer and place it in the kill ring.
 
 ** PDF
 
-#+BEGIN_QUOTE
+#+begin_quote
 PDF Tools is, among other things, a replacement of DocView for PDF files. The
 key difference is that pages are not pre-rendered by e.g. ghostscript and stored
 in the file-system, but rather created on-demand and stored in memory.
 
 [[https://github.com/politza/pdf-tools][Andras Politz]]
-#+END_QUOTE
+#+end_quote
 
 #+begin_src emacs-lisp :tangle yes
   (use-package pdf-tools
@@ -2899,7 +2913,7 @@ I find it useful to delete a line and a region with only =C-w=.
 
 ** Projectile
 
-#+BEGIN_QUOTE
+#+begin_quote
 Projectile is a project interaction library for Emacs. Its goal is to provide a
 nice set of features operating on a project level without introducing external
 dependencies (when feasible). For instance - finding project files has a
@@ -2908,7 +2922,7 @@ portable implementation written in pure Emacs Lisp without the use of GNU find
 exists as well).
 
 [[https://github.com/bbatsov/projectile][Bozhidar Batsov]]
-#+END_QUOTE
+#+end_quote
 
 #+begin_src emacs-lisp :tangle yes
   (use-package projectile
@@ -2998,7 +3012,7 @@ I tend to use Beamer for scientific presentations, and Reveal.js for others.
 It is quite common to work on Git repositories, so it is important to have a
 configuration that we like.
 
-#+BEGIN_QUOTE
+#+begin_quote
 [[https://github.com/magit/magit][Magit]] is an interface to the version control system Git, implemented as an Emacs
 package. Magit aspires to be a complete Git porcelain. While we cannot (yet)
 claim that Magit wraps and improves upon each and every Git command, it is
@@ -3007,7 +3021,7 @@ their daily version control tasks directly from within Emacs. While many fine
 Git clients exist, only Magit and Git itself deserve to be called porcelains.
 
 [[https://github.com/tarsius][Jonas Bernoulli]]
-#+END_QUOTE
+#+end_quote
 
 #+begin_src emacs-lisp :tangle yes
   (use-package git-commit
@@ -3063,12 +3077,12 @@ file. Let's get ride of them:
 
 *** =hungry-delete=
 
-#+BEGIN_QUOTE
+#+begin_quote
 Deleting a whitespace character will delete all whitespace until the next
 non-whitespace character.
 
 [[https://github.com/nflath/hungry-delete][Nathaniel Flath]]
-#+END_QUOTE
+#+end_quote
 
 #+begin_src emacs-lisp :tangle yes
   (use-package hungry-delete
@@ -3156,7 +3170,7 @@ cycling through =C-x o= (=other-window=).
 
 I often undo's and redo's with window configurations.
 
-#+BEGIN_QUOTE
+#+begin_quote
 Winner mode is a global minor mode that records the changes in the window
 configuration (i.e. how the frames are partitioned into windows) so that the
 changes can be "undone" using the command =winner-undo=. By default, this one is
@@ -3164,7 +3178,7 @@ bound to the key sequence ctrl-c left. If you change your mind (while undoing),
 you can press ctrl-c right (calling =winner-redo=).
 
 [[https://github.com/emacs-mirror/emacs/blob/master/lisp/winner.el][Ivar Rummelhoff]]
-#+END_QUOTE
+#+end_quote
 
 #+begin_src emacs-lisp :tangle yes
   (use-package winner
@@ -3188,12 +3202,12 @@ I like to have lines of the same length.
 
 ** YASnippet
 
-#+BEGIN_QUOTE
+#+begin_quote
 YASnippet is a template system for Emacs. It allows you to type an abbreviation
 and automatically expand it into function templates.
 
 [[https://github.com/joaotavora/yasnippet][João Távora]]
-#+END_QUOTE
+#+end_quote
 
 #+begin_src emacs-lisp :tangle yes
   (use-package yasnippet-snippets
@@ -3219,12 +3233,12 @@ One of my favorite modes in GNU Emacs. I mainly use it to organize my life, take
 notes and make my presentations, but you can do lots of things with
 it. =org-mode= it's like the sky, without limits.
 
-#+BEGIN_QUOTE
+#+begin_quote
 Org mode is for keeping notes, maintaining TODO lists, planning projects, and
 authoring documents with a fast and effective plain-text system.
 
 [[http://orgmode.org/][Carsten Dominik]]
-#+END_QUOTE
+#+end_quote
 
 #+begin_src emacs-lisp :tangle yes
   (use-package org
