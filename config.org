@@ -117,7 +117,7 @@ Thanks to them for their incredible work!
 In order to install packages, it is useful to configure the package sources.
 
 #+begin_src emacs-lisp :tangle yes
-  (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+  (setq package-archives '(("elpa" . "https://elpa.gnu.org/packages/")
                            ("melpa" . "https://melpa.org/packages/")
                            ("melpa-stable" . "http://stable.melpa.org/packages/")
                            ("org" . "http://orgmode.org/elpa/")))
