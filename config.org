@@ -1,5 +1,6 @@
 #+AUTHOR: Terencio Agozzino
 #+TITLE: GNU Emacs Configuration
+#+PROPERTY: header-args:emacs-lisp :tangle ./config.el :mkdirp yes
 
 * Table of Content                                                    :TOC:
 - [[#about][About]]
@@ -120,7 +121,7 @@ your GNU Emacs.
 
 In order to install packages, it is useful to configure the package sources.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (setq package-archives '(("elpa" . "https://elpa.gnu.org/packages/")
                            ("melpa" . "https://melpa.org/packages/")
                            ("org" . "http://orgmode.org/elpa/")))
@@ -131,7 +132,7 @@ In order to install packages, it is useful to configure the package sources.
 To be able to manage its configuration with =use-package=, you must first
 install it, if it is not already done.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (unless (package-installed-p 'use-package)
     (package-refresh-contents)
     (package-install 'use-package))
@@ -151,7 +152,7 @@ store IRC and email passwords directly in an =authinfo.gpg= file for
 simplicity. Afterward, this encrypted file is placed in [[https://github.com/syncthing/syncthing][Syncthing]] to be able to
 easily use my configuration on other devices.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (setq auth-sources '("~/.config/gnupg/shared/authinfo.gpg"
                        "~/.authinfo.gpg"
                        "~/.authinfo"
@@ -162,7 +163,7 @@ easily use my configuration on other devices.
 
 For a better user experience of GNU Emacs, here are the default values I use.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (setq-default
    ad-redefinition-action 'accept                   ; Silence warnings for redefinition
    cursor-in-non-selected-windows t                 ; Hide the cursor in inactive windows
@@ -205,7 +206,7 @@ to create them yourself.
 
 *NOTE:* you can find out more by going to my [[https://github.com/rememberYou/dotfiles][dotfiles]].
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (defvar xdg-bin (getenv "XDG_BIN_HOME")
     "The XDG bin base directory.")
 
@@ -230,7 +231,7 @@ user with the UI, I add the generated code in a separate file.
 I also made sure to follow the XDG base directory specification for the
 =auto-save-file= folder to keep my =~/.emacs.d= folder clean.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (setq-default
    auto-save-list-file-name (expand-file-name (format "%s/emacs/auto-save-list" xdg-data))
    custom-file (expand-file-name (format "%s/emacs/custom.el" xdg-data)))
@@ -243,7 +244,7 @@ I also made sure to follow the XDG base directory specification for the
 Spending most of our time on GNU Emacs, it is important to use a font that will
 make our reading easier. [[https://github.com/adobe-fonts/source-code-pro][Source Code Pro]] is one of the best monospaced font.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (set-face-attribute 'default nil :font "Source Code Pro Medium")
   (set-fontset-font t 'latin "Noto Sans")
 #+end_src
@@ -261,7 +262,7 @@ To be able to use different /LSP/ (/Language Server Protocol/) servers according
 to the programming languages that we would like to use, we need a client for
 LSP. That's where [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] comes in!
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package lsp-mode
     :commands lsp
     :hook (((c-mode c++-mode dart-mode java-mode json-mode python-mode tex-mode typescript-mode xml-mode) . lsp)
@@ -293,7 +294,7 @@ I'm a fan of [[https://github.com/ChrisKempson/Tomorrow-Theme][tomorrow-night]] 
 be able to get icons in the =doom-modeline=, you will need to install the icons
 with [[#Icons][all-the-icons]].
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package doom-themes
     :config
     (load-theme 'doom-tomorrow-night t)
@@ -313,7 +314,7 @@ the latter a slightly different -- often darker -- background.
 [[https://github.com/hlissner/emacs-solaire-mode][Henrik Lissner]]
 #+end_quote
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package solaire-mode
     :custom (solaire-mode-remap-fringe t)
     :config (solaire-global-mode +1))
@@ -325,7 +326,7 @@ Since I never use the mouse with GNU Emacs, I prefer not to use certain
 graphical elements as seen as the menu bar, toolbar, scrollbar, and tooltip that
 I find invasive.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (when window-system
     (menu-bar-mode -1)
     (scroll-bar-mode -1)
@@ -346,7 +347,7 @@ client for LSP servers [[https://github.com/MaskRay/ccls][ccls]] and as server.
 To use =ccls= with GNU Emacs, you must first install it with the package manager
 of your operating system.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package ccls
     :after projectile
     :ensure-system-package ccls
@@ -381,7 +382,7 @@ to do:
 
 CMake is a cross-platform build system generator.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package cmake-mode
     :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'"))
 
@@ -415,7 +416,7 @@ CMake is a cross-platform build system generator.
 To have a fast and stable environment, I recommend using [[#lsp][LSP]] as a
 client for LSP servers and [[https://github.com/vscode-langservers/vscode-css-languageserver-bin][vscode-css-languageserver-bin]] as server.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package css-mode
     :ensure nil
     :custom (css-indent-offset 2))
@@ -427,7 +428,7 @@ client for LSP servers and [[https://github.com/vscode-langservers/vscode-css-la
 
 ** CSV
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package csv-mode)
 #+end_src
 
@@ -439,7 +440,7 @@ client for LSP servers and [[https://github.com/natebosch/dart_language_server][
 To use =dart_language_server= with GNU Emacs, you must first install it
 with the package manager of your operating system.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package dart-mode
     :defer 2
     :custom
@@ -466,7 +467,7 @@ I like to use Docker when I need to install various databases or other services
 that only work on a particular operating system. Docker ensures me to keep my operating
 system clean.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package dockerfile-mode
     :delight "δ "
     :mode "Dockerfile\\'")
@@ -474,13 +475,13 @@ system clean.
 
 ** Emacs Lisp
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package elisp-mode :ensure nil :delight "ξ ")
 #+end_src
 
 Provides minibuffer hints when working with Emacs Lisp.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package eldoc
     :delight
     :hook (emacs-lisp-mode . eldoc-mode))
@@ -496,7 +497,7 @@ with the package manager of your operating system.
 
 Let's configure =emmet-mode=, to produce HTML from CSS-like selector:
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package emmet-mode
     :delight
     :hook (css-mode sgml-mode web-mode))
@@ -506,7 +507,7 @@ Let's configure =emmet-mode=, to produce HTML from CSS-like selector:
 
 =ini-mode= does a good job of handling =.ini= files.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package ini-mode
     :defer 0.4
     :mode ("\\.ini\\'"))
@@ -521,7 +522,7 @@ LSP client and [[https://projects.eclipse.org/projects/eclipse.jdt.ls][Eclipse J
 
 Let's define the LSP client to use the LSP server:
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package lsp-java
     :after lsp
     :hook (java-mode . lsp)
@@ -534,7 +535,7 @@ Let's define the LSP client to use the LSP server:
 Most of my Java projects are made with =gradle=. The configuration is easy
 enough:
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package gradle-mode
     :mode ("\\.java\\'" "\\.gradle\\'")
     :bind (:map gradle-mode-map
@@ -560,7 +561,7 @@ blog which I found very well explained.
 I like to use [[https://prettier.io/][prettier]] to get my TypeScript code clean. To use it,
 don't forget to install it with your package manager.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package prettier-js
     :delight
     :custom (prettier-js-args '("--print-width" "100"
@@ -574,7 +575,7 @@ By default, GNU Emacs uses =js-mode= as major mode for JavaScript buffers and I
 prefer use =js2-mode= instead because of his abilities to parses buffers and
 builds an AST for things like syntax highlighting.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package js2-mode
     :hook ((js2-mode . js2-imenu-extras-mode)
            (js2-mode . prettier-js-mode))
@@ -586,7 +587,7 @@ builds an AST for things like syntax highlighting.
 
 Provides powerful refactoring based on the AST generated by =js2-mode=.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package js2-refactor
     :bind (:map js2-mode-map
                 ("C-k" . js2r-kill)
@@ -601,7 +602,7 @@ Provides powerful refactoring based on the AST generated by =js2-mode=.
 
 Makes it easy to jump to function references or definitions.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package xref-js2 :defer 5)
 #+end_src
 
@@ -613,7 +614,7 @@ meaningful completion (with type clues) and cross-reference support.
 Unfortunately, =tern= has some problems with cross-references that explain why I
 am using =xref-js2= instead.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package tern
     :ensure-system-package (tern . "npm install -g tern")
     :bind (("C-c C-c" . compile)
@@ -652,7 +653,7 @@ Here is an example configuration for a project that uses =requirejs= and
 JSON is used a lot, especially in the web. Therefore, it is important to have a
 decent configuration to feel comfortable when handling such files.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package json-mode
     :delight "J "
     :mode "\\.json\\'"
@@ -676,7 +677,7 @@ decent configuration to feel comfortable when handling such files.
 
 I use LaTeX for my reports, CVs, summaries, etc.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package tex
     :ensure auctex
     :bind (:map TeX-mode-map
@@ -728,7 +729,7 @@ I use LaTeX for my reports, CVs, summaries, etc.
 
 I want a TeX engine that can deal with Unicode and use any font I like.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (setq-default TeX-engine 'xetex)
 #+end_src
 
@@ -736,7 +737,7 @@ I want a TeX engine that can deal with Unicode and use any font I like.
 
 Minor mode with distinct support for =\label=, =\ref= and =\cite= in LaTeX.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package reftex
     :after auctex
     :custom
@@ -749,7 +750,7 @@ Minor mode with distinct support for =\label=, =\ref= and =\cite= in LaTeX.
 
 I rarely program in Lua, but when I do, =lua-mode= satisfies me amply.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package lua-mode
     :delight "Λ "
     :mode "\\.lua\\'"
@@ -761,7 +762,7 @@ I rarely program in Lua, but when I do, =lua-mode= satisfies me amply.
 Before you can use this package, make sure you install =pandoc= on your
 operating system.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package markdown-mode
     :ensure-system-package (pandoc . "yay -S pandoc")
     :delight "μ "
@@ -810,7 +811,7 @@ files that contain PHP and HTML. Also, why use another package when
 
 The function below provides my own PHP configuration with =flycheck=.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (defun my/php-setup ()
     (web-mode)
     (make-local-variable 'web-mode-code-indent-offset)
@@ -830,7 +831,7 @@ PHP.
 
 **NOTE:** =ac-php= supports =company mode= and =auto-complete=.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package ac-php
     :after (company php-mode)
     :hook (php-mode . ac-php-mode)
@@ -845,7 +846,7 @@ PHP.
 It is often useful to be able to make diagrams for various large projects. For
 the creation of these diagrams, [[http://plantuml.com/][PlantUML]] remains the best.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package plantuml-mode
     :mode ("\\.plantuml\\'" "\\.puml\\'")
     :custom (plantuml-jar-path (expand-file-name (format "%s/plantuml.jar" xdg-lib))))
@@ -863,7 +864,7 @@ install =python-isort= in your system.
 
 Let's take a look to my Python configuration:
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package blacken
     :delight
     :hook (python-mode . blacken-mode)
@@ -928,7 +929,7 @@ grant it execution rights (with =chmod +x=).
 The snippet below ensures that the execution right is automatically granted to
 save a shell script file that begins with a =#!= shebang:
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package sh-script
     :ensure nil
     :hook (after-save . executable-make-buffer-file-executable-if-script-p))
@@ -938,7 +939,7 @@ save a shell script file that begins with a =#!= shebang:
 
 =sql-indent= gives me the possibility to easily manage =.sql= files.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package sql-indent
     :after (:any sql sql-interactive-mode)
     :delight sql-mode "Σ ")
@@ -950,7 +951,7 @@ If you use GNU Emacs 27+, I recommend to use [[https://github.com/ananthakumaran
 server. After installed it with your package manager, you need to use
 =typescript-mode= to get the syntax color:
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package typescript-mode
     :mode ("\\.ts\\'" "\\.tsx\\'")
     :hook (typescript-mode . prettier-js-mode)
@@ -974,7 +975,7 @@ configure [[#lsp][lsp-mode]].
 
 Let's define [[https://github.com/AdamNiederer/vue-mode][vue-mode]] as major mode of our =.vue= files:
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package vue-mode
     :delight "V "
     :mode "\\.vue\\'"
@@ -988,7 +989,7 @@ Let's define [[https://github.com/AdamNiederer/vue-mode][vue-mode]] as major mod
 Unfortunately, XML is still used, especially for creating web services in SOAP.
 However, =xml-mode= exists to help us:
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package xml-mode
     :ensure nil
     :mode ("\\.wsdl\\'" "\\.xsd\\'"))
@@ -998,7 +999,7 @@ However, =xml-mode= exists to help us:
 
 =yaml-mode= gives me the possibility to easily manage =.yml= files.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package yaml-mode
     :delight "ψ "
     :mode "\\.yml\\'"
@@ -1013,7 +1014,7 @@ It may be useful to take a look at the generated =yarn.lock= file. However, be
 careful to not modify it. The =yarn-mode= is a small package that automatically
 places this buffer in read-only and activates the syntax color for these files.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package yarn-mode :mode "yarn\\.lock\\'")
 #+end_src
 
@@ -1031,10 +1032,10 @@ and multiple, selectable "styles", whose use is fully customizable by the user.
 [[https://github.com/jwiegley/alert][John Wiegley]]
 #+end_quote
 
-#+begin_src emacs-lisp :tangle yes
   (use-package alert
     :defer 1
     :custom (alert-default-style 'libnotify))
+#+begin_src emacs-lisp
 #+end_src
 
 ** Auto-Completion
@@ -1050,7 +1051,7 @@ completion candidates.
 [[http://company-mode.github.io/][Dmitry Gutov]]
 #+end_quote
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package company
     :defer 0.5
     :delight
@@ -1065,7 +1066,7 @@ completion candidates.
 
 I use =company= with =company-box= that allows a company front-end with icons.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package company-box
     :after company
     :delight
@@ -1080,7 +1081,7 @@ lot.
 *NOTE:* the functions defined below avoid running a bash command when saving
 certain files with GNU Emacs.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package files
     :ensure nil
     :preface
@@ -1108,7 +1109,7 @@ I try to avoid using the mouse as much as possible, even for
 navigation. Therefore, I use [[https://github.com/qutebrowser/qutebrowser][qutebrowser]], a keyboard-focused browser with a
 minimal GUI.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package browse-url
     :ensure nil
     :custom
@@ -1120,7 +1121,7 @@ minimal GUI.
 
 I use it to do most of my web searches without leaving GNU Emacs.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package engine-mode
     :defer 3
     :config
@@ -1165,7 +1166,7 @@ I use it to do most of my web searches without leaving GNU Emacs.
 Buffers can quickly become a mess. For some people, it's not a problem, but I
 like being able to find my way easily.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package ibuffer
     :bind ("C-x C-b" . ibuffer))
 
@@ -1181,7 +1182,7 @@ like being able to find my way easily.
 
 Some buffers should not be deleted by accident:
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (defvar *protected-buffers* '("*scratch*" "*Messages*")
     "Buffers that cannot be killed.")
 
@@ -1198,7 +1199,7 @@ Some buffers should not be deleted by accident:
 
 May be useful in a timely manner.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package calc
     :defer t
     :custom
@@ -1221,7 +1222,7 @@ year. To remember each important date, I recorded the list of important
 dates according to my country, Belgium. It is very likely that some dates are
 different in your country, therefore, adapt the configuration below accordingly.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package calendar
     :ensure nil
     :custom (calendar-mark-holidays-flag t))
@@ -1267,7 +1268,7 @@ different in your country, therefore, adapt the configuration below accordingly.
 
 Always good to have a dashboard.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package dashboard
     :custom
     (dashboard-banner-logo-title "With Great Power Comes Great Responsibility!")
@@ -1286,8 +1287,8 @@ Always good to have a dashboard.
 ** Dired
 
 For those who didn't know, GNU Emacs is also a file explorer.
+#+begin_src emacs-lisp
 
-#+begin_src emacs-lisp :tangle yes
   (use-package dired
     :ensure nil
     :delight "Dired "
@@ -1315,7 +1316,7 @@ For those who didn't know, GNU Emacs is also a file explorer.
 [[https://editorconfig.org/][EditorConfig]] helps maintain consistent coding styles for multiple developers
 working on the same project across various editors and IDEs.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (use-package editorconfig
   :defer 0.3
   :config (editorconfig-mode 1))
@@ -1329,7 +1330,7 @@ launch, it will load the =config.el= source file for a faster loading.
 The code below, executes =org-babel-tangle= asynchronously when
 =config.org= is saved.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package async)
 
   (defvar *config-file* (expand-file-name "config.org" user-emacs-directory)
@@ -1374,7 +1375,7 @@ The code below, executes =org-babel-tangle= asynchronously when
 
 ** EPUB
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package nov
     :mode ("\\.epub\\'" . nov-mode)
     :custom (nov-text-width 75))
@@ -1384,7 +1385,7 @@ The code below, executes =org-babel-tangle= asynchronously when
 
 [[https://github.com/Wilfred/helpful][Helpful]] gives more user-friendly documentation with =C-h f=.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package helpful
     :custom
     (counsel-describe-function-function #'helpful-callable)
@@ -1404,7 +1405,7 @@ The code below, executes =org-babel-tangle= asynchronously when
 According to a list of misspelled words, =abbrev= auto-correct these words on
 the fly.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package abbrev
     :ensure nil
     :delight
@@ -1420,7 +1421,7 @@ the fly.
 For the other words that would not be in my list of abbreviations, =flyspell=
 enables spell checking on-the-fly in GNU Emacs.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package flyspell
     :delight
     :hook ((markdown-mode org-mode text-mode) . flyspell-mode)
@@ -1453,7 +1454,7 @@ To use =hunspell= and the desired dictionaries on GNU Emacs, you must first
 install them (e.g., =hunspell-en_US=, =hunspell-fr=) with the package manager of
 your operating system.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package ispell
     :defer 2
     :ensure-system-package (hunspell . "yay -S hunspell")
@@ -1496,7 +1497,7 @@ your operating system.
 and =flyspell=, you will have better documents. To be able to use it
 locally, download the desktop version and change the paths indicated below.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package langtool
     :defer 2
     :delight
@@ -1522,7 +1523,7 @@ Provides the ability to have commands and their history saved so that whenever
 you return to work, you can re-run things as you need them. This is not a
 radical function, it is part of a good user experience.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package savehist
     :ensure nil
     :custom
@@ -1539,7 +1540,7 @@ radical function, it is part of a good user experience.
 Highlight the indentation is a feature that visually pleases me. Indeed, without
 having to count the spaces, I can see that the code is well indented.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package highlight-indent-guides
     :defer 0.3
     :hook (prog-mode . highlight-indent-guides-mode)
@@ -1563,7 +1564,7 @@ seamless, it's like a minor mode that disables itself auto-magically.
 [[https://github.com/abo-abo/hydra][Oleh Krehel]]
 #+end_quote
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package hydra
     :bind (("C-c I" . hydra-image/body)
            ("C-c L" . hydra-ledger/body)
@@ -1607,7 +1608,7 @@ seamless, it's like a minor mode that disables itself auto-magically.
 
 Group a lot of commands.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (pretty-hydra-define hydra-btoggle
     (:hint nil :color amaranth :quit-key "q" :title (with-faicon "toggle-on" "Toggle" 1 -0.05))
     ("Basic"
@@ -1627,7 +1628,7 @@ Group a lot of commands.
 
 Group circe commands.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (pretty-hydra-define hydra-circe
     (:hint nil :color teal :quit-key "q" :title (with-faicon "comments-o" "Circe" 1 -0.05))
     ("Action"
@@ -1640,7 +1641,7 @@ Group circe commands.
 
 Group clock commands.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (pretty-hydra-define hydra-clock
     (:hint nil :color teal :quit-key "q" :title (with-faicon "clock-o" "Clock" 1 -0.05))
     ("Action"
@@ -1658,7 +1659,7 @@ Group clock commands.
 
 Group Flycheck commands.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (pretty-hydra-define hydra-flycheck
     (:hint nil :color teal :quit-key "q" :title (with-faicon "plane" "Flycheck" 1 -0.05))
     ("Checker"
@@ -1680,7 +1681,7 @@ Group Flycheck commands.
 
 Group jump-to-files commands.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (pretty-hydra-define hydra-go-to-file
     (:hint nil :color teal :quit-key "q" :title (with-octicon "file-symlink-file" "Go To" 1 -0.05))
     ("Agenda"
@@ -1717,7 +1718,7 @@ Group jump-to-files commands.
 
 Group images commands.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (pretty-hydra-define hydra-image
     (:hint nil :color pink :quit-key "q" :title (with-faicon "file-image-o" "Images" 1 -0.05))
     ("Action"
@@ -1733,7 +1734,7 @@ Group images commands.
 
 Group Ledger commands.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (pretty-hydra-define hydra-ledger
     (:hint nil :color teal :quit-key "q" :title (with-faicon "usd" "Ledger" 1 -0.05))
     ("Action"
@@ -1748,7 +1749,7 @@ Group Ledger commands.
 
 Group Magit commands.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (pretty-hydra-define hydra-magit
     (:hint nil :color teal :quit-key "q" :title (with-octicon "mark-github" "Magit" 1 -0.05))
     ("Action"
@@ -1764,7 +1765,7 @@ Group Magit commands.
 
 Group Merge commands.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (pretty-hydra-define hydra-merge
     (:hint nil :color pink :quit-key "q" :title (with-octicon "mark-github" "Magit" 1 -0.05))
     ("Move"
@@ -1792,7 +1793,7 @@ Group Merge commands.
 
 Group Org commands.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (pretty-hydra-define hydra-org
     (:hint nil :color teal :quit-key "q" :title (with-fileicon "org" "Org" 1 -0.05))
     ("Action"
@@ -1813,7 +1814,7 @@ Group Org commands.
 
 Group Projectile commands.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (pretty-hydra-define hydra-projectile
     (:hint nil :color teal :quit-key "q" :title (with-faicon "rocket" "Projectile" 1 -0.05))
     ("Buffers"
@@ -1837,7 +1838,7 @@ Group Projectile commands.
 
 Group Query commands.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (pretty-hydra-define hydra-query
     (:hint nil :color teal :quit-key "q" :title (with-faicon "search" "Engine-Mode" 1 -0.05))
     ("Query"
@@ -1855,7 +1856,7 @@ Group Query commands.
 
 Group spelling commands.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (pretty-hydra-define hydra-spelling
     (:hint nil :color teal :quit-key "q" :title (with-faicon "magic" "Spelling" 1 -0.05))
     ("Checker"
@@ -1875,7 +1876,7 @@ Group spelling commands.
 
 Group TeX commands.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (pretty-hydra-define hydra-tex
     (:hint nil :color teal :quit-key "q" :title (with-fileicon "tex" "LaTeX" 1 -0.05))
     ("Action"
@@ -1889,7 +1890,7 @@ Group TeX commands.
 
 Group Tool commands.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (pretty-hydra-define hydra-tool
     (:hint nil :color teal :quit-key "q" :title (with-faicon "briefcase" "Tool" 1 -0.05))
     ("Network"
@@ -1901,7 +1902,7 @@ Group Tool commands.
 
 Group TypeScript commands.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (defhydra hydra-typescript (:color blue)
     "
     ^
@@ -1926,7 +1927,7 @@ Group TypeScript commands.
 
 Group upload commands.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (pretty-hydra-define hydra-upload
     (:hint nil :color teal :quit-key "q" :title (with-faicon "cloud-upload" "Upload" 1 -0.05))
     ("Action"
@@ -1939,7 +1940,7 @@ Group upload commands.
 
 Group window-related commands.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (pretty-hydra-define hydra-windows
     (:hint nil :forein-keys warn :quit-key "q" :title (with-faicon "windows" "Windows" 1 -0.05))
     ("Window"
@@ -1973,7 +1974,7 @@ electric-indent-mode.
 [[https://github.com/Malabarba/aggressive-indent-mode][Artur Malabarba]]
 #+end_quote
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package aggressive-indent
     :hook ((css-mode . aggressive-indent-mode)
            (emacs-lisp-mode . aggressive-indent-mode)
@@ -1987,7 +1988,7 @@ electric-indent-mode.
 =electric-operator= is an emacs minor-mode to automatically add spacing around
 operators.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package electric-operator
     :delight
     :hook (python-mode . electric-operator-mode))
@@ -1997,7 +1998,7 @@ operators.
 
 To generate a fast and quality graphic, =gnuplot= is perfect.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package gnuplot
     :ensure-system-package gnuplot
     :defer 2)
@@ -2011,7 +2012,7 @@ To generate a fast and quality graphic, =gnuplot= is perfect.
 
 Moves the current line (or if marked, the current region's, whole lines).
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package move-text
     :bind (("M-p" . move-text-up)
            ("M-n" . move-text-down))
@@ -2030,7 +2031,7 @@ more.
 [[https://github.com/Malabarba/paradox][Artur Malabarba]]
 #+end_quote
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package paradox
     :defer 1
     :custom
@@ -2047,7 +2048,7 @@ more.
 
 Colorize colors as text with their value.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package rainbow-mode
     :delight
     :hook (prog-mode))
@@ -2057,7 +2058,7 @@ Colorize colors as text with their value.
 
 Avoids call the function or reload Emacs.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package autorevert
     :ensure nil
     :delight auto-revert-mode
@@ -2070,7 +2071,7 @@ Avoids call the function or reload Emacs.
 
 Useful to temporary use a package.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package try :defer 5)
 #+end_src
 
@@ -2079,7 +2080,7 @@ Useful to temporary use a package.
 GNU Emacs's undo system allows you to recover any past state of a buffer. To do
 this, Emacs treats "undo itself as another editing that can be undone".
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package undo-tree
     :delight
     :bind ("C--" . undo-tree-redo)
@@ -2093,7 +2094,7 @@ this, Emacs treats "undo itself as another editing that can be undone".
 
 An autonomous emacs major-mode for editing web templates.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package web-mode
     :delight "☸ "
     :hook ((css-mode web-mode) . rainbow-mode)
@@ -2164,7 +2165,7 @@ helps to solve this.
 
 I used =guide-key= in my past days, but =which-key= is a good replacement.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package which-key
     :defer 0.2
     :delight
@@ -2177,7 +2178,7 @@ I used =guide-key= in my past days, but =which-key= is a good replacement.
 It is impossible to know everything, which is why a quick description
 of a term, without breaking its workflow, is ideal.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package wiki-summary
     :defer 1
     :preface
@@ -2204,7 +2205,7 @@ find.
 *NOTE:* if it's the first time that you install the package, you must run
 =M-x all-the-icons-install-fonts=.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package all-the-icons
     :if (display-graphic-p)
     :commands all-the-icons-install-fonts
@@ -2238,7 +2239,7 @@ Then encrypt that file with =gpg -c .authinfo= and don't forget to delete the
 After spending many years on erc, I decided to move to =circe= which I find more
 user friendly.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package circe
     :defer 0.5
     :preface
@@ -2284,7 +2285,7 @@ smaller, simpler, and smoother to use yet highly customizable.
 [[https://github.com/abo-abo/ivy][Oleh Krehel]]
 #+end_quote
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package counsel
     :after ivy
     :delight
@@ -2449,7 +2450,7 @@ operating system.
 
 Now all we have to do is configure =ledger-mode=:
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package ledger-mode
     :ensure-system-package (ledger . "yay -S --noconfirm ledger")
     :mode ("\\.dat\\'"
@@ -2488,7 +2489,7 @@ format.
 
 Flycheck lints warnings and errors directly within buffers.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package flycheck
     :defer 2
     :delight
@@ -2508,7 +2509,7 @@ Flycheck lints warnings and errors directly within buffers.
 I could use =try= when I need to use =lipsum=, but since I use =defer=, the
 packet load attribute has no impact on =emacs-init-time=.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package lorem-ipsum
     :bind (("C-c C-v l" . lorem-ipsum-insert-list)
            ("C-c C-v p" . lorem-ipsum-insert-paragraphs)
@@ -2542,7 +2543,7 @@ Then, initialize the =mu= database, by replacing values of =--maildir= and
 
 Now all that remains is to configure =mu4e=:
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package mu4e
     :ensure nil
     :ensure-system-package mu
@@ -2659,7 +2660,7 @@ Now all that remains is to configure =mu4e=:
 To edit my emails in =org-mode=, I use =org-mime=. It also to add a signature,
 automatically convert Org in HTML, and custom some HTML elements.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package org-mime
     :after mu4e
     :hook (message-send . org-mime-htmlize)
@@ -2700,7 +2701,7 @@ Being able to read mails is a good thing, but being notified when we receive
 mails is better! The following few lines allow you to receive desktop
 notifications and modeline display for =mu4e=:
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package mu4e-alert
     :after mu4e
     :hook ((after-init . mu4e-alert-enable-mode-line-display)
@@ -2727,7 +2728,7 @@ where to start looking for your password first.
 Then encrypt that file with =gpg -c .authinfo= and don't forget to delete the
 =.authinfo= file.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package message
     :ensure nil
     :custom
@@ -2749,7 +2750,7 @@ efficient way to go to the beginning of a line with =move-beginning-of-line=
 
 *FROM:* http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line/
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (defun my/smarter-move-beginning-of-line (arg)
     "Moves point back to indentation of beginning of line.
 
@@ -2785,7 +2786,7 @@ efficient way to go to the beginning of a line with =move-beginning-of-line=
 It is sometimes useful to have information about an IP address and to calculate
 an IP address range.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package ipcalc :defer 4)
 
   (defun ipinfo (ip)
@@ -2813,7 +2814,7 @@ an IP address range.
 Managing parentheses can be painful. One of the first things you want to do is
 to change the appearance of the highlight of the parentheses pairs.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package faces
     :ensure nil
     :custom (show-paren-delay 0)
@@ -2835,7 +2836,7 @@ statements are at a given depth.
 [[https://github.com/Fanael/rainbow-delimiters][Fanael Linithien]]
 #+end_quote
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package rainbow-delimiters
     :hook (prog-mode . rainbow-delimiters-mode))
 #+end_src
@@ -2846,7 +2847,7 @@ In my opinion, it is the most powerful package to deal with the
 parenthesis. Anyway, if you don't like it, you can try taking a look at
 =paredit= or =autopair=.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package smartparens
     :defer 1
     :delight
@@ -2864,7 +2865,7 @@ fails.
 [[https://github.com/etu/webpaste.el][Elis Hirwing]]
 #+end_quote
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package webpaste :defer 1)
 #+end_src
 
@@ -2872,7 +2873,7 @@ Same principle for images with =imgbb=. This package selects an image
 and upload it to [[https://imgbb.com/][imgbb]], making sure to display the URL of the image in
 the minibuffer and place it in the kill ring.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package imgbb :defer 2)
 #+end_src
 
@@ -2886,7 +2887,7 @@ in the file-system, but rather created on-demand and stored in memory.
 [[https://github.com/politza/pdf-tools][Andras Politz]]
 #+end_quote
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package pdf-tools
     :defer 1
     :magic ("%PDF" . pdf-view-mode)
@@ -2911,7 +2912,7 @@ in the file-system, but rather created on-demand and stored in memory.
 Increase region by semantic units. It tries to be smart about it and adapt to
 the structure of the current major mode.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package expand-region
     :bind (("C-+" . er/contract-region)
            ("C-=" . er/expand-region)))
@@ -2919,7 +2920,7 @@ the structure of the current major mode.
 
 I find it useful to delete a line and a region with only =C-w=.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (defadvice kill-region (before slick-cut activate compile)
     "When called interactively with no active region, kill a single line instead."
     (interactive
@@ -2941,7 +2942,7 @@ exists as well).
 [[https://github.com/bbatsov/projectile][Bozhidar Batsov]]
 #+end_quote
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package projectile
     :defer 1
     :preface
@@ -2978,7 +2979,7 @@ exists as well).
 
 Provides fast access to the recent files.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package recentf
     :bind ("C-c r" . recentf-open-files)
     :init (recentf-mode)
@@ -3000,7 +3001,7 @@ Provides fast access to the recent files.
 Let's follow the [[https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html][XDG base directory specification]] for the request and cookies
 files, in order to make =~/.emacs.d= a cleaner place.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package request
     :ensure nil
     :custom
@@ -3016,7 +3017,7 @@ files, in order to make =~/.emacs.d= a cleaner place.
 
 I tend to use Beamer for scientific presentations, and Reveal.js for others.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package org-re-reveal
     :after org
     :custom
@@ -3040,7 +3041,6 @@ Git clients exist, only Magit and Git itself deserve to be called porcelains.
 [[https://github.com/tarsius][Jonas Bernoulli]]
 #+end_quote
 
-#+begin_src emacs-lisp :tangle yes
   (use-package git-commit
     :after magit
     :hook (git-commit-mode . my/git-commit-auto-fill-everywhere)
@@ -3050,6 +3050,7 @@ Git clients exist, only Magit and Git itself deserve to be called porcelains.
       "Ensures that the commit body does not exceed 72 characters."
       (setq fill-column 72)
       (setq-local comment-auto-fill-only-comments nil)))
+#+begin_src emacs-lisp
 
   (use-package magit :defer 0.3
     :custom
@@ -3065,7 +3066,7 @@ Git clients exist, only Magit and Git itself deserve to be called porcelains.
 In addition to that, I like to see the lines that are being modified in the file
 while it is being edited.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package git-gutter
     :defer 0.3
     :delight
@@ -3075,7 +3076,7 @@ while it is being edited.
 Finally, one last package that I like to use with Git to easily see the changes
 made by previous commits.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package git-timemachine
     :defer 1
     :delight)
@@ -3086,7 +3087,7 @@ made by previous commits.
 It is often annoying to see unnecessary blank spaces at the end of a line or
 file. Let's get ride of them:
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package simple
     :ensure nil
     :hook (before-save . delete-trailing-whitespace))
@@ -3101,7 +3102,7 @@ non-whitespace character.
 [[https://github.com/nflath/hungry-delete][Nathaniel Flath]]
 #+end_quote
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package hungry-delete
     :defer 0.7
     :delight
@@ -3112,7 +3113,7 @@ non-whitespace character.
 
 Don't ask before killing a buffer. I know what I'm doing.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (global-set-key [remap kill-buffer] #'kill-this-buffer)
 #+end_src
 
@@ -3121,7 +3122,7 @@ switch directly to it and perform an action. By default, GNU Emacs does not give
 focus to the new window created. I have no idea why this is not the default
 behavior. But let's refine these keys:
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package window
     :ensure nil
     :bind (("C-x 3" . hsplit-last-buffer)
@@ -3142,7 +3143,7 @@ behavior. But let's refine these keys:
 
 Centers each window alone, but not multiple windows in a buffer.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package centered-window
     :defer 0.8
     :custom
@@ -3164,7 +3165,7 @@ Most people use =ace-window=, but I prefer =switch-window= because I find this
 package more ergonomic by using the fact of displaying the buffer number by
 hiding its contents.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package switch-window
     :bind (("C-x o" . switch-window)
            ("C-x w" . switch-window-then-swap-buffer)))
@@ -3175,7 +3176,7 @@ hiding its contents.
 Allows you to move from one window to another with something more natural than
 cycling through =C-x o= (=other-window=).
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package windmove
     :bind (("C-c h" . windmove-left)
            ("C-c j" . windmove-down)
@@ -3197,7 +3198,7 @@ you can press ctrl-c right (calling =winner-redo=).
 [[https://github.com/emacs-mirror/emacs/blob/master/lisp/winner.el][Ivar Rummelhoff]]
 #+end_quote
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package winner
     :defer 2
     :config (winner-mode 1))
@@ -3207,7 +3208,7 @@ you can press ctrl-c right (calling =winner-redo=).
 
 I like to have lines of the same length.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package simple
     :ensure nil
     :delight (auto-fill-function)
@@ -3226,7 +3227,7 @@ and automatically expand it into function templates.
 [[https://github.com/joaotavora/yasnippet][João Távora]]
 #+end_quote
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package yasnippet-snippets
     :after yasnippet
     :config (yasnippet-snippets-initialize))
@@ -3257,7 +3258,7 @@ authoring documents with a fast and effective plain-text system.
 [[http://orgmode.org/][Carsten Dominik]]
 #+end_quote
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package org
     :ensure org-plus-contrib
     :delight "Θ "
@@ -3363,7 +3364,7 @@ authoring documents with a fast and effective plain-text system.
 If like me, you're tired of manually updating your tables of contents, =toc-org=
 will maintain a table of contents at the first heading that has a =:TOC:= tag.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package toc-org
     :after org
     :hook (org-mode . toc-org-enable))
@@ -3371,7 +3372,7 @@ will maintain a table of contents at the first heading that has a =:TOC:= tag.
 
 For a cleaner online mode.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package org-indent :ensure nil :after org :delight)
 #+end_src
 
@@ -3387,7 +3388,6 @@ my time to the fullest.
 I put my =org= files in [[https://github.com/syncthing/syncthing][Syncthing]] in order to be able to check my agenda and
 update it from several computers and smartphones.
 
-#+begin_src emacs-lisp :tangle yes
   (use-package org-agenda
     :ensure nil
     :bind (:map org-agenda-mode-map
@@ -3432,13 +3432,14 @@ update it from several computers and smartphones.
     (org-habit-show-habits-only-for-today nil)
     (org-habit-today-glyph ?‖)
     (org-track-ordered-property-with-tag t))
+#+begin_src emacs-lisp
 #+end_src
 
 ** Bullets
 
 Prettier [[https://github.com/sabof/org-bullets][bullets]] in org-mode.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package org-bullets
     :hook (org-mode . org-bullets-mode)
     :custom
@@ -3451,7 +3452,7 @@ Prettier [[https://github.com/sabof/org-bullets][bullets]] in org-mode.
 it to quickly record tasks, ledger entries, notes and other semi-structured
 information.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package org-capture
     :ensure nil
     :after org
@@ -3526,7 +3527,7 @@ Being organized is one thing, but being optimal is another. =org-clock= allows
 you to estimate your tasks and time them. This is useful, since with experience,
 you can have a better estimate of the time that needs to be given to each task.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package org-clock
     :ensure nil
     :after org
@@ -3568,7 +3569,7 @@ Personally, I do sessions of:
 Finally, I *take a 30-minute break every two hours*.
 
 To allow this, I use =org-pomodoro= making sure I get that in my status bar:
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package org-pomodoro
     :defer 0.5
     :custom
@@ -3590,7 +3591,7 @@ The best solution to maintain your contacts. I tend to use =org-contacts= to
 remember their birthdays, so I can be the first to wish them that. Be careful
 that to install it, this one is available with =org-plus-contrib=.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package org-contacts
     :ensure nil
     :after org
@@ -3601,7 +3602,7 @@ that to install it, this one is available with =org-plus-contrib=.
 
 Let's change the foreground and the weight of each keyword.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package org-faces
     :ensure nil
     :after org
@@ -3624,7 +3625,7 @@ identifier to allow asymmetric encryption.
 *NOTE:* you need to modify the =org-crypt-key= variable to replace my key
 identifier, by yours (or =nil= to allow symmetric encryption).
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package org-crypt
     :ensure nil
     :after org
@@ -3639,7 +3640,7 @@ journals improve mental clarity, help solve problems, improve overall focus,
 insight and understanding, track the overall development and facilitate personal
 growth.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package org-journal
     :after org
     :bind (("C-c T" . org-journal-new-entry)
@@ -3667,7 +3668,7 @@ growth.
 
 With that, I can compile many languages with =org-mode=.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
   (use-package ob-C :ensure nil :after org)
   (use-package ob-css :ensure nil :after org)
   (use-package ob-ditaa :ensure nil :after org)
