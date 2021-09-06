@@ -312,7 +312,9 @@ with [[#Icons][all-the-icons]].
     (load-theme 'doom-tomorrow-night t)
     (doom-themes-org-config))
 
-  (use-package doom-modeline :hook (after-init . doom-modeline-init))
+  (use-package doom-modeline
+    :hook (after-init . doom-modeline-init)
+    :custom (doom-modeline-icon (display-graphic-p)))
 #+end_src
 
 I also like to visually distinguish a real buffer from a popup.
