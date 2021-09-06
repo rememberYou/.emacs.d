@@ -3101,24 +3101,20 @@ non-whitespace character.
     :config (global-hungry-delete-mode))
 #+end_src
 
-** Windows
+** Window Management
 
-Don't ask before killing a buffer. I know what I'm doing.
-
-#+begin_src emacs-lisp
-  (global-set-key [remap kill-buffer] #'kill-this-buffer)
-#+end_src
-
-Most of the time, when I open a new window with =C-x 2= or =C-x 3= it is to
-switch directly to it and perform an action. By default, GNU Emacs does not give
-focus to the new window created. I have no idea why this is not the default
-behavior. But let's refine these keys:
+Most of the time, I want to split a window and put the focus on it to perform an
+action. By default GNU Emacs does not give the focus to this new window. I have
+no idea why this is not the default behavior, but we can easily set this
+behavior.
 
 #+begin_src emacs-lisp
   (use-package window
     :ensure nil
-    :bind (("C-x 3" . hsplit-last-buffer)
-           ("C-x 2" . vsplit-last-buffer))
+    :bind (("C-x 2" . vsplit-last-buffer)
+           ("C-x 3" . hsplit-last-buffer)
+           ;; Don't ask before killing a buffer.
+           ([remap kill-buffer] . kill-this-buffer))
     :preface
     (defun hsplit-last-buffer ()
       "Gives the focus to the last created horizontal window."
@@ -3133,29 +3129,26 @@ behavior. But let's refine these keys:
       (other-window 1)))
 #+end_src
 
-Centers each window alone, but not multiple windows in a buffer.
+To maximize concentration, I prefer to only center individual windows and keep a
+default behavior when multiple windows are present.
 
 #+begin_src emacs-lisp
   (use-package centered-window
-    :defer 0.8
+    :hook (after-init . centered-window-mode)
     :custom
     (cwm-centered-window-width 130)
+    (cwm-frame-internal-border 0)
     (cwm-incremental-padding t)
     (cwm-incremental-padding-% 2)
     (cwm-left-fringe-ratio 0)
-    (cwm-frame-internal-border 0)
-    (cwm-use-vertical-padding t)
-    :config (centered-window-mode t))
+    (cwm-use-vertical-padding t))
 #+end_src
 
-*** =switch-window=
-
-Displays an overlay in each window showing a unique key, then asks the user
-where to move in the window.
-
-Most people use =ace-window=, but I prefer =switch-window= because I find this
-package more ergonomic by using the fact of displaying the buffer number by
-hiding its contents.
+The way I move between several windows in GNU Emacs is by indicating the number
+of the window I want to move to. Most people use =ace-window=, but I prefer
+=switch-window= which displays the window number while hiding its content. I find
+this behavior more convenient than moving from window to window to get to the
+one we are looking for.
 
 #+begin_src emacs-lisp
   (use-package switch-window
@@ -3163,25 +3156,13 @@ hiding its contents.
            ("C-x w" . switch-window-then-swap-buffer)))
 #+end_src
 
-
-*** =winner=
-
-I often undo's and redo's with window configurations.
-
-#+begin_quote
-Winner mode is a global minor mode that records the changes in the window
-configuration (i.e. how the frames are partitioned into windows) so that the
-changes can be "undone" using the command =winner-undo=. By default, this one is
-bound to the key sequence ctrl-c left. If you change your mind (while undoing),
-you can press ctrl-c right (calling =winner-redo=).
-
-[[https://github.com/emacs-mirror/emacs/blob/master/lisp/winner.el][Ivar Rummelhoff]]
-#+end_quote
+There are times when I would like to bring back a windows layout with their
+content. With =winner-undo= and =winner-redo= I can easily do that.
 
 #+begin_src emacs-lisp
   (use-package winner
-    :defer 2
-    :config (winner-mode 1))
+    :ensure nil
+    :hook (after-init . winner-mode))
 #+end_src
 
 ** Word Wrap
