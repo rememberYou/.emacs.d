@@ -2446,10 +2446,6 @@ find.
     :commands all-the-icons-install-fonts
     :config (unless (find-font (font-spec :name "all-the-icons"))
               (all-the-icons-install-fonts t)))
-
-  (use-package all-the-icons-dired
-    :if (display-graphic-p)
-    :hook (dired-mode . all-the-icons-dired-mode))
 #+end_src
 
 ** IRC
