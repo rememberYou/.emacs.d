@@ -333,13 +333,13 @@ I find invasive.
     (tooltip-mode -1))
 #+end_src
 
-* System Completion
+* Minibuffer Completion
 
-Having a good completion system is very important on GNU Emacs since it is one
-of the elements we will frequently interact with. In the beginning I used =helm=,
-but I found it to be memory intensive for the few features I was using. From
-this observation I switched to =ivy= for many years, which is a faster and a
-lighter framework than =helm=. However, =ivy= is still a framework.
+Having a good minibuffer completion is important on GNU Emacs since it is one of
+the elements we will frequently interact with. In the beginning I used =helm=, but
+I found it to be memory intensive for the few features I was using. From this
+observation I switched to =ivy= for many years, which is a faster and a lighter
+framework than =helm=. However, =ivy= is still a framework.
 
 Since then, newer completion systems have emerged (e.g., =vertico=, =selectrum=, and
 =icomplete-vertical=), designed to be optimized for a single task and nested with
@@ -368,6 +368,14 @@ for minibuffer completions, =marginalia= is awesome.
     (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil)))
 #+end_src
 
+If like me you like to have icons associated with candidates, you can use
+=all-the-icons-completion=.
+
+#+begin_src emacs-lisp
+  (use-package all-the-icons-completion
+    :after (marginalia all-the-icons)
+    :hook (marginalia-mode . all-the-icons-completion-marginalia-setup))
+#+end_src
 By default, =vertico= sorts the candidates according to their history position,
 then by length and finally by alphabetical. To improves searching across
 completion (e.g., by filter expressions separated by spaces), you should
