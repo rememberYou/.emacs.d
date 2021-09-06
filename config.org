@@ -1027,7 +1027,7 @@ the creation of these diagrams, [[http://plantuml.com/][PlantUML]] remains the b
 
 #+begin_src emacs-lisp
   (use-package plantuml-mode
-    :mode ("\\.plantuml\\'" "\\.puml\\'")
+    :mode ("\\.\\(plantuml\\|puml\\)\\'")
     :custom (plantuml-jar-path (expand-file-name (format "%s/plantuml.jar" xdg-lib))))
 #+end_src
 
