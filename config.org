@@ -607,7 +607,7 @@ sure you install it with your package manager and configure the LSP package.
 #+begin_src emacs-lisp
   (use-package ccls
     :after projectile
-    :ensure-system-package ccls
+    :ensure-system-package (ccls . "yay -S ccls")
     :hook ((c-mode c++-mode objc-mode cuda-mode) . (lambda ()
                                                     (require 'ccls)
                                                     (lsp-deferred)))
@@ -646,18 +646,31 @@ as much as possible.
 
 ** CMake
 
-CMake is a cross-platform build system generator.
+CMake is a cross-platform build system generator. For its support with GNU
+Emacs, the [[https://github.com/Kitware/CMake/blob/master/Auxiliary/cmake-mode.el][cmake-mode]] package with the installation of the [[https://github.com/regen100/cmake-language-server][cmake-language-server]]
+LSP server is sufficient.
 
 #+begin_src emacs-lisp
   (use-package cmake-mode
+    :ensure-system-package (cmake-language-server . "yay -S cmake-language-server")
+    :hook (cmake-mode . lsp-deferred)
     :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'"))
+#+end_src
 
+To better manage syntax colors, especially with respect to function arguments,
+it is visually useful to install [[https://github.com/Lindydancer/cmake-font-lock][cmake-font-lock]].
+#+begin_src emacs-lisp
   (use-package cmake-font-lock
-    :after (cmake-mode)
     :hook (cmake-mode . cmake-font-lock-activate))
+#+end_src
 
+Finally, to compile with CMake in C++, I use [[https://github.com/atilaneves/cmake-ide/blob/master/cmake-ide.el][cmake-ide]], by indicating where the
+CMakeLists.txt file is present in the project.
+
+#+begin_src emacs-lisp
   (use-package cmake-ide
     :after projectile
+    :init (cmake-ide-setup)
     :hook (c++-mode . my/cmake-ide-find-project)
     :preface
     (defun my/cmake-ide-find-project ()
@@ -673,7 +686,6 @@ CMake is a cross-platform build system generator.
       "Switches to the *compilation* buffer after compilation."
       (other-window 1))
     :bind ([remap comment-region] . cmake-ide-compile)
-    :init (cmake-ide-setup)
     :config (advice-add 'cmake-ide-compile :after #'my/switch-to-compilation-window))
 #+end_src
 
