@@ -2183,6 +2183,8 @@ Group window-related commands.
       ("i" enlarge-window "heighten")
       ("j" shrink-window-horizontally "narrow")
       ("k" shrink-window "lower")
+      ("u" winner-undo "undo")
+      ("r" winner-redo "redo")
       ("l" enlarge-window-horizontally "widen")
       ("s" switch-window-then-swap-buffer "swap" :color teal))
      "Zoom"
