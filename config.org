@@ -627,7 +627,7 @@ file) at the root of your project.
 For this, nothing could be easier. If like me you use a =CMakeLists.txt= file for
 all your C++ projects, then you just need to install the =cmake= package on your
 operating system. From then on, the =compile.commands.json= file is generated with
-the following command:
+the following commands:
 
 #+begin_src shell
   cmake -H. -BDebug -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=YES
