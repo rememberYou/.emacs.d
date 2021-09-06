@@ -52,7 +52,6 @@
   - [[#calculator][Calculator]]
   - [[#calendar][Calendar]]
   - [[#dashboard][Dashboard]]
-  - [[#dired][Dired]]
   - [[#editorconfig][EditorConfig]]
   - [[#ending-up][Ending Up]]
   - [[#epub][EPUB]]
@@ -193,7 +192,7 @@ For a better user experience of GNU Emacs, here are the default values I use.
   (show-paren-mode 1)                               ; Show the parent
 #+end_src
 
-** File Management with XDG
+** XDG Base Directory Specification
 
 To keep the user's home and the =~/.emacs.d= folder as clean as possible, I
 follow the [[https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html][XDG base directory specification]]. Be careful that GNU Emacs will not
@@ -437,6 +436,80 @@ without having to go through =dired=.
 #+begin_src emacs-lisp
   (use-package embark
     :bind ("C-." . embark-act))
+#+end_src
+
+* File Management
+
+=dired= is a good file manager. To fine-tune its use, let's change some default
+values.
+
+#+begin_src emacs-lisp
+  (use-package dired
+    :ensure nil
+    :commands (dired dired-jump)
+    :delight "Dired "
+    :custom
+    (dired-auto-revert-buffer t)
+    (dired-dwim-target t)
+    (dired-hide-details-hide-symlink-targets nil)
+    (dired-listing-switches "-alh --group-directories-first")
+    (dired-ls-F-marks-symlinks nil)
+    (dired-recursive-copies 'always))
+#+end_src
+
+To avoid =dired= to keep buffers, I use =dired-single=.
+
+#+begin_src emacs-lisp
+  (use-package dired-single
+    :after dired
+    :bind (:map dired-mode-map
+                ([remap dired-find-file] . dired-single-buffer)
+                ([remap dired-up-directory] . dired-single-up-directory)
+                ("M-DEL" . dired-prev-subdir)))
+#+end_src
+
+By default, =dired= opens files in plain text. This behavior is sometimes
+undesirable. Hopefully, =dired-open= can be used to informs =dired= that certain
+desired file extensions must be opened with external packages to GNU Emacs.
+
+#+begin_src emacs-lisp
+  (use-package dired-open
+    :after (dired dired-jump)
+    :custom (dired-open-extensions '(("mp4" . "mpv"))))
+#+end_src
+
+To know the type of file at a glance, =all-the-icons-dired= integrates icons
+directly into =dired=.
+
+#+begin_src emacs-lisp
+  (use-package all-the-icons-dired
+    :if (display-graphic-p)
+    :hook (dired-mode . all-the-icons-dired-mode))
+#+end_src
+
+It is sometimes convenient to hide dotfiles. With =dired-hide-dotfiles= this becomes possible.
+
+#+begin_src emacs-lisp
+  (use-package dired-hide-dotfiles
+    :hook (dired-mode . dired-hide-dotfiles-mode)
+    :bind (:map dired-mode-map
+                ("h" . dired-hide-dotfiles-mode)))
+#+end_src
+
+#+begin_src emacs-lisp
+  (use-package dired-subtree
+    :after dired
+    :bind (:map dired-mode-map
+                ("<tab>" . dired-subtree-toggle)))
+#+end_src
+
+Sometimes you may have a folder with a large number of files. In this case,
+=dired-narrow= is useful to filter the files.
+
+#+begin_src emacs-lisp
+  (use-package dired-narrow
+    :bind (("C-c C-n" . dired-narrow)
+           ("C-c C-f" . dired-narrow-fuzzy)))
 #+end_src
 
 * Languages
@@ -1387,33 +1460,6 @@ Always good to have a dashboard.
     (dashboard-set-navigator t)
     (dashboard-startup-banner 'logo)
     :config (dashboard-setup-startup-hook))
-#+end_src
-
-** Dired
-
-For those who didn't know, GNU Emacs is also a file explorer.
-#+begin_src emacs-lisp
-
-  (use-package dired
-    :ensure nil
-    :delight "Dired "
-    :custom
-    (dired-auto-revert-buffer t)
-    (dired-dwim-target t)
-    (dired-hide-details-hide-symlink-targets nil)
-    (dired-listing-switches "-alh")
-    (dired-ls-F-marks-symlinks nil)
-    (dired-recursive-copies 'always))
-
-  (use-package dired-narrow
-    :bind (("C-c C-n" . dired-narrow)
-           ("C-c C-f" . dired-narrow-fuzzy)
-           ("C-c C-r" . dired-narrow-regexp)))
-
-  (use-package dired-subtree
-    :bind (:map dired-mode-map
-                ("<backtab>" . dired-subtree-cycle)
-                ("<tab>" . dired-subtree-toggle)))
 #+end_src
 
 ** EditorConfig
