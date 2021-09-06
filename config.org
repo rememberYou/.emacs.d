@@ -107,8 +107,8 @@ Wiegley, that I recommend.
 This configuration is mainly based on the following user configurations:
 - [[https://github.com/daviwil/dotfiles/blob/master/Emacs.org][David Wilson]] (=daviwil=);
 - [[https://github.com/jwiegley/dot-emacs/][John Wiegley]] (=jwiegley=);
-- [[https://github.com/angrybacon/dotemacs][Mathieu Marques]] (=angrybacon=).
-- [[https://github.com/sachac][Sacha Chua]] (=sachac=);
+- [[https://github.com/angrybacon/dotemacs][Mathieu Marques]] (=angrybacon=);
+- [[https://github.com/sachac][Sacha Chua]] (=sachac=).
 
 Thanks to them for their incredible work!
 
