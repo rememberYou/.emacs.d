@@ -10,13 +10,15 @@
 - [[#start-up][Start Up]]
   - [[#authentication][Authentication]]
   - [[#defaults][Defaults]]
-  - [[#file-management-with-xdg][File Management with XDG]]
-  - [[#customization][Customization]]
+  - [[#xdg-base-directory-specification][XDG Base Directory Specification]]
+  - [[#customizations][Customizations]]
   - [[#fonts][Fonts]]
   - [[#lsp][LSP]]
   - [[#theme][Theme]]
   - [[#remove-mouse-interface][Remove Mouse Interface]]
-- [[#system-completion][System Completion]]
+- [[#minibuffer-completion][Minibuffer Completion]]
+- [[#file-management][File Management]]
+- [[#window-management][Window Management]]
 - [[#languages][Languages]]
   - [[#c][C++]]
   - [[#cmake][CMake]]
@@ -80,7 +82,6 @@
   - [[#revealjs][Reveal.js]]
   - [[#version-control][Version Control]]
   - [[#whitespaces][Whitespaces]]
-  - [[#windows][Windows]]
   - [[#word-wrap][Word Wrap]]
   - [[#yasnippet][YASnippet]]
 - [[#org-mode][Org-Mode]]
@@ -510,6 +511,70 @@ Sometimes you may have a folder with a large number of files. In this case,
   (use-package dired-narrow
     :bind (("C-c C-n" . dired-narrow)
            ("C-c C-f" . dired-narrow-fuzzy)))
+#+end_src
+
+* Window Management
+
+Most of the time, I want to split a window and put the focus on it to perform an
+action. By default GNU Emacs does not give the focus to this new window. I have
+no idea why this is not the default behavior, but we can easily set this
+behavior.
+
+#+begin_src emacs-lisp
+  (use-package window
+    :ensure nil
+    :bind (("C-x 2" . vsplit-last-buffer)
+           ("C-x 3" . hsplit-last-buffer)
+           ;; Don't ask before killing a buffer.
+           ([remap kill-buffer] . kill-this-buffer))
+    :preface
+    (defun hsplit-last-buffer ()
+      "Gives the focus to the last created horizontal window."
+      (interactive)
+      (split-window-horizontally)
+      (other-window 1))
+
+    (defun vsplit-last-buffer ()
+      "Gives the focus to the last created vertical window."
+      (interactive)
+      (split-window-vertically)
+      (other-window 1)))
+#+end_src
+
+To maximize concentration, I prefer to only center individual windows and keep a
+default behavior when multiple windows are present.
+
+#+begin_src emacs-lisp
+  (use-package centered-window
+    :hook (after-init . centered-window-mode)
+    :custom
+    (cwm-centered-window-width 130)
+    (cwm-frame-internal-border 0)
+    (cwm-incremental-padding t)
+    (cwm-incremental-padding-% 2)
+    (cwm-left-fringe-ratio 0)
+    (cwm-use-vertical-padding t))
+#+end_src
+
+The way I move between several windows in GNU Emacs is by indicating the number
+of the window I want to move to. Most people use =ace-window=, but I prefer
+=switch-window= which displays the window number while hiding its content. I find
+this behavior more convenient than moving from window to window to get to the
+one we are looking for.
+
+#+begin_src emacs-lisp
+  (use-package switch-window
+    :bind (("C-x o" . switch-window)
+           ("C-x w" . switch-window-then-swap-buffer)))
+#+end_src
+
+There are times when I would like to bring back a windows layout with their
+content. With =winner-undo= and =winner-redo= I can easily do that.
+
+#+begin_src emacs-lisp
+  (use-package winner
+    :ensure nil
+    :hook (after-init . winner-mode))
 #+end_src
 
 * Languages
@@ -3099,70 +3164,6 @@ non-whitespace character.
     :defer 0.7
     :delight
     :config (global-hungry-delete-mode))
-#+end_src
-
-** Window Management
-
-Most of the time, I want to split a window and put the focus on it to perform an
-action. By default GNU Emacs does not give the focus to this new window. I have
-no idea why this is not the default behavior, but we can easily set this
-behavior.
-
-#+begin_src emacs-lisp
-  (use-package window
-    :ensure nil
-    :bind (("C-x 2" . vsplit-last-buffer)
-           ("C-x 3" . hsplit-last-buffer)
-           ;; Don't ask before killing a buffer.
-           ([remap kill-buffer] . kill-this-buffer))
-    :preface
-    (defun hsplit-last-buffer ()
-      "Gives the focus to the last created horizontal window."
-      (interactive)
-      (split-window-horizontally)
-      (other-window 1))
-
-    (defun vsplit-last-buffer ()
-      "Gives the focus to the last created vertical window."
-      (interactive)
-      (split-window-vertically)
-      (other-window 1)))
-#+end_src
-
-To maximize concentration, I prefer to only center individual windows and keep a
-default behavior when multiple windows are present.
-
-#+begin_src emacs-lisp
-  (use-package centered-window
-    :hook (after-init . centered-window-mode)
-    :custom
-    (cwm-centered-window-width 130)
-    (cwm-frame-internal-border 0)
-    (cwm-incremental-padding t)
-    (cwm-incremental-padding-% 2)
-    (cwm-left-fringe-ratio 0)
-    (cwm-use-vertical-padding t))
-#+end_src
-
-The way I move between several windows in GNU Emacs is by indicating the number
-of the window I want to move to. Most people use =ace-window=, but I prefer
-=switch-window= which displays the window number while hiding its content. I find
-this behavior more convenient than moving from window to window to get to the
-one we are looking for.
-
-#+begin_src emacs-lisp
-  (use-package switch-window
-    :bind (("C-x o" . switch-window)
-           ("C-x w" . switch-window-then-swap-buffer)))
-#+end_src
-
-There are times when I would like to bring back a windows layout with their
-content. With =winner-undo= and =winner-redo= I can easily do that.
-
-#+begin_src emacs-lisp
-  (use-package winner
-    :ensure nil
-    :hook (after-init . winner-mode))
 #+end_src
 
 ** Word Wrap
