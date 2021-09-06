@@ -258,35 +258,47 @@ installation.
 
 ** LSP
 
-To be able to use different /LSP/ (/Language Server Protocol/) servers according
-to the programming languages that we would like to use, we need a client for
-LSP. That's where [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] comes in!
+The main benefit of using Language Server Protocol (LSP) to configure the
+management of your programming languages is that LSP servers are also used by
+other text editors, increasing contributions to these packages. What could be
+better than benefiting from the larger community, while keeping a quality text
+editor ;-)
+
+We need a Language Server Protocol (LSP) client to use different LSP servers
+according to the programming languages that we would like to use. That's where
+[[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] comes in!
 
 #+begin_src emacs-lisp
-  (use-package lsp-mode
-    :commands lsp
-    :hook (((c-mode c++-mode dart-mode java-mode json-mode python-mode tex-mode typescript-mode xml-mode) . lsp)
-           (lsp-mode . lsp-enable-which-key-integration))
-    :custom
-    (lsp-clients-typescript-server-args '("--stdio" "--tsserver-log-file" "/dev/stderr"))
-    (lsp-enable-folding nil)
-    (lsp-enable-links nil)
-    (lsp-enable-snippet nil)
-    (lsp-prefer-flymake nil)
-    (lsp-session-file (expand-file-name (format "%s/emacs/lsp-session-v1" xdg-data)))
-    (lsp-restart 'auto-restart))
-  (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
-  (use-package lsp-ui :commands lsp-ui-mode)
-  (use-package dap-mode
-    :after lsp-mode
-    :config
-    (dap-mode t)
-    (dap-ui-mode t))
+   (use-package lsp-mode
+     :commands (lsp lsp-deferred)
+     :hook ((prog-mode . lsp-deferred)
+            (lsp-mode . lsp-enable-which-key-integration))
+     :custom
+     (lsp-enable-folding nil)
+     (lsp-enable-links nil)
+     (lsp-enable-snippet nil)
+     (lsp-keymap-prefix "C-c ;")
+     (lsp-session-file (expand-file-name (format "%s/emacs/lsp-session-v1"  xdg-data)))
+     (read-process-output-max (* 1024 1024)))
 #+end_src
 
-Another benefit of using LSP to configure the management of your programming
-languages is that LSP servers are also used by other text editors. This,
-increasing contributions to these packages.
+In addition to =lsp-mode=, it is possible to use =lsp-ui= to get additional
+information (e.g., documentation) when hovering a variable or a function.
+
+#+begin_src emacs-lisp
+  (use-package lsp-ui
+    :hook (lsp-mode . lsp-ui-mode))
+#+end_src
+
+When using =lsp=, it is likely that you will encounter programming errors. To
+navigate through these errors via the minibuffer, you can use a package for
+that. If like me, you use =consult= with your minibuffer completion, then
+=consult-lsp= is made for you.
+
+#+begin_src emacs-lisp
+  (use-package consult-lsp
+    :commands (consult-lsp-diagnostics consult-lsp-symbols))
+#+end_src
 
 ** Theme
 
