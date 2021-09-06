@@ -2675,8 +2675,7 @@ Now all that remains is to configure =mu4e=:
                             (user-mail-address . "erroriamnotfound@gmail.com")
                             (user-full-name . "Who Cares")))
     (my/set-email-account "terencio.agozzino"
-                          '(
-                            (mu4e-drafts-folder . "/personal/terencio-agozzino/drafts")
+                          '((mu4e-drafts-folder . "/personal/terencio-agozzino/drafts")
                             (mu4e-refile-folder . "/personal/terencio-agozzino/all")
                             (mu4e-sent-folder   . "/personal/terencio-agozzino/sent")
                             (mu4e-trash-folder  . "/personal/terencio-agozzino/trash")
@@ -2789,6 +2788,7 @@ Then encrypt that file with =gpg -c .authinfo= and don't forget to delete the
 #+begin_src emacs-lisp
   (use-package message
     :ensure nil
+    :after mu4e
     :custom
     (message-citation-line-format "On %B %e, %Y at %l:%M %p, %f (%n) wrote:\n")
     (message-citation-line-function 'message-insert-formatted-citation-line)
