@@ -16,6 +16,7 @@
   - [[#lsp][LSP]]
   - [[#theme][Theme]]
   - [[#remove-mouse-interface][Remove Mouse Interface]]
+- [[#system-completion][System Completion]]
 - [[#languages][Languages]]
   - [[#c][C++]]
   - [[#cmake][CMake]]
@@ -64,7 +65,6 @@
   - [[#icons][Icons]]
   - [[#irc][IRC]]
   - [[#circe][Circe]]
-  - [[#ivy][Ivy]]
   - [[#ledger][Ledger]]
   - [[#linters][Linters]]
   - [[#lorem-ipsum][Lorem Ipsum]]
@@ -332,6 +332,111 @@ I find invasive.
     (scroll-bar-mode -1)
     (tool-bar-mode -1)
     (tooltip-mode -1))
+#+end_src
+
+* System Completion
+
+Having a good completion system is very important on GNU Emacs since it is one
+of the elements we will frequently interact with. In the beginning I used =helm=,
+but I found it to be memory intensive for the few features I was using. From
+this observation I switched to =ivy= for many years, which is a faster and a
+lighter framework than =helm=. However, =ivy= is still a framework.
+
+Since then, newer completion systems have emerged (e.g., =vertico=, =selectrum=, and
+=icomplete-vertical=), designed to be optimized for a single task and nested with
+other packages with the same vision. That's why I now use =vertico= instead of
+=ivy=.
+
+*NOTE*: =selectrum= is also a good alternative to =ivy=, but is less minimal than
+=vertico=.
+
+#+begin_src emacs-lisp
+  (use-package vertico
+    :init (vertico-mode)
+    :custom (vertico-cycle t)
+    :custom-face (vertico-current ((t (:background "#3a3f5a")))))
+#+end_src
+
+To enable richer annotations (e.g., summary documentation of the functions and
+variables, as well as having the size and the last consultation of the files)
+for minibuffer completions, =marginalia= is awesome.
+
+#+begin_src emacs-lisp
+  (use-package marginalia
+    :after vertico
+    :init (marginalia-mode)
+    :custom
+    (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil)))
+#+end_src
+
+By default, =vertico= sorts the candidates according to their history position,
+then by length and finally by alphabetical. To improves searching across
+completion (e.g., by filter expressions separated by spaces), you should
+=orderless= (or =prescient=).
+
+#+begin_src emacs-lisp
+  (use-package orderless
+    :custom
+    (completion-category-defaults nil)
+    (completion-category-overrides '((file (styles . (partial-completion)))))
+    (completion-styles '(orderless)))
+#+end_src
+
+There is nothing like a collection of commands to have additional
+completions. =consult= provides this collection.
+#+begin_src emacs-lisp
+  (use-package consult
+    :after projectile
+    :bind (("<help> a" . consult-apropos)
+           ("C-M-#" . consult-register)
+           ("C-c k" . consult-kmacro)
+           ("C-x 4 b" . consult-buffer-other-window)
+           ("C-x 5 b" . consult-buffer-other-frame)
+           ("C-x M-:" . consult-complex-command)
+           ("C-x b" . consult-buffer)
+           ("C-x c SPC" . consult-mark)
+           ("C-x c o" . consult-multi-occur)
+           ("C-x r b" . consult-bookmark)
+           ("C-x r x" . consult-register)
+           ("M-#" . consult-register-load)
+           ("M-'" . consult-register-store)
+           ("M-g I" . consult-project-imenu)
+           ("M-g a" . consult-org-agenda)
+           ("M-g e" . consult-error)
+           ("M-g g" . consult-goto-line)
+           ("M-g h" . consult-org-heading)
+           ("M-g i" . consult-imenu)
+           ("M-g k" . consult-global-mark)
+           ("M-g l" . consult-line)
+           ("M-g m" . consult-mark)
+           ("M-g o" . consult-outline)
+           ("M-s G" . consult-git-grep)
+           ("M-s L" . consult-locate)
+           ("M-s f" . consult-find)
+           ("M-s g" . consult-grep)
+           ("M-s k" . consult-keep-lines)
+           ("M-s l" . consult-line)
+           ("M-s m" . consult-multi-occur)
+           ("M-s m" . consult-multi-occur)
+           ("M-s r" . consult-ripgrep)
+           ("M-s u" . consult-focus-lines)
+           :map isearch-mode-map
+           ("M-s e" . consult-isearch)
+           ("M-s l" . consult-line)
+           ("M-e" . consult-isearch))
+    :custom
+    (completion-in-region-function #'consult-completion-in-region)
+    (consult-narrow-key "<")
+    (consult-project-root-function #'projectile-project-root))
+#+end_src
+
+Finally, =embark= is great if like me you like to interact directly with your
+files (e.g., for renaming, deleting and copying) through your completion system
+without having to go through =dired=.
+
+#+begin_src emacs-lisp
+  (use-package embark
+    :bind ("C-." . embark-act))
 #+end_src
 
 * Languages
