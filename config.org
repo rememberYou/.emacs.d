@@ -19,7 +19,7 @@
 - [[#minibuffer-completion][Minibuffer Completion]]
 - [[#file-management][File Management]]
 - [[#window-management][Window Management]]
-- [[#languages][Languages]]
+- [[#programming-languages-and-tools][Programming Languages and Tools]]
   - [[#c][C++]]
   - [[#cmake][CMake]]
   - [[#css--less--scss][CSS – LESS – SCSS]]
@@ -92,7 +92,7 @@
   - [[#faces][Faces]]
   - [[#encryption--decryption][Encryption / Decryption]]
   - [[#journal][Journal]]
-  - [[#languages-1][Languages]]
+  - [[#languages][Languages]]
 
 * About
 
@@ -594,23 +594,23 @@ package, I can easily do that.
     :hook (after-init . winner-mode))
 #+end_src
 
-* Languages
+* Programming Languages and Tools
 
 Section dedicated to the definition and customization of different programming
 languages and their tools.
 
 ** C++
 
-To have a fast and stable environment, I recommend using [[#lsp][LSP]] as a
-client for LSP servers [[https://github.com/MaskRay/ccls][ccls]] and as server.
-
-To use =ccls= with GNU Emacs, you must first install it with the package manager
-of your operating system.
+When I develop in C++ with GNU Emacs, I use the[[https://github.com/MaskRay/ccls][ ccls]] LSP server. To use it, make
+sure you install it with your package manager and configure the LSP package.
 
 #+begin_src emacs-lisp
   (use-package ccls
     :after projectile
     :ensure-system-package ccls
+    :hook ((c-mode c++-mode objc-mode cuda-mode) . (lambda ()
+                                                    (require 'ccls)
+                                                    (lsp-deferred)))
     :custom
     (ccls-args nil)
     (ccls-executable (executable-find "ccls"))
@@ -618,24 +618,30 @@ of your operating system.
      (append '("compile_commands.json" ".ccls")
              projectile-project-root-files-top-down-recurring))
     :config (add-to-list 'projectile-globally-ignored-directories ".ccls-cache"))
-
-  (use-package google-c-style
-    :hook (((c-mode c++-mode) . google-set-c-style)
-           (c-mode-common . google-make-newline-indent)))
 #+end_src
 
 To allow =ccls= to know the dependencies of your =.cpp= files with your =.h=
 files, it is important to provide an =compile.commands.json= file (or a =.ccls=
 file) at the root of your project.
 
-For this, nothing could be easier. If like me you use a =CMakeLists.txt= file
-for all your C++ projects, then you just need to install the =cmake= package on
-your operating system and to generate the =compile.commands.json= file, you have
-to do:
+For this, nothing could be easier. If like me you use a =CMakeLists.txt= file for
+all your C++ projects, then you just need to install the =cmake= package on your
+operating system. From then on, the =compile.commands.json= file is generated with
+the following command:
 
 #+begin_src shell
   cmake -H. -BDebug -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=YES
   ln -s Debug/compile_commands.json
+#+end_src
+
+Finally, if you follow [[https://google.github.io/styleguide/cppguide.html][Google's C/++ conventions]] like I do, the [[https://github.com/google/styleguide/blob/gh-pages/google-c-style.el][google-c-style]]
+package changes some default values to ensure that you follow these conventions
+as much as possible.
+
+#+begin_src emacs-lisp
+  (use-package google-c-style
+    :hook (((c-mode c++-mode) . google-set-c-style)
+           (c-mode-common . google-make-newline-indent)))
 #+end_src
 
 ** CMake
