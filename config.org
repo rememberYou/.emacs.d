@@ -68,7 +68,7 @@
   - [[#ledger][Ledger]]
   - [[#linters][Linters]]
   - [[#lorem-ipsum][Lorem Ipsum]]
-  - [[#mail][Mail]]
+  - [[#mails][Mails]]
   - [[#navigation][Navigation]]
   - [[#network][Network]]
   - [[#parentheses][Parentheses]]
@@ -2621,15 +2621,14 @@ packet load attribute has no impact on =emacs-init-time=.
            ("C-c C-v s" . lorem-ipsum-insert-sentences)))
 #+end_src
 
-** Mail
+** Mails
 
 After trying =gnus= that I found too old and =notmuch= that in my opinion lacks
 features like the ability to delete some emails and be able to write emails
 easily with =org=, I finally found my happiness with =mu4e=.
 
-I use =mbsync= to be capable of synchronizing mail on IMAP server with local
-Maildir folder. I'm used to using =offlineimap=, but I find it slower than
-=mbsync=, that's why I separated myself from it.
+I use =mbsync= to synchronize emails on IMAP server with local mails dir folder. I
+used =offlineimap=, but I find it slower than =mbsync=.
 
 *NOTE:* to use =mbsync= with your Gmail account, you will need to enable access
 for less secure apps in your Google account.
@@ -2652,7 +2651,7 @@ Now all that remains is to configure =mu4e=:
   (use-package mu4e
     :ensure nil
     :ensure-system-package mu
-    :commands (mu4e)
+    :commands mu4e
     :bind (:map mu4e-headers-mode-map
                 ("M-[" . scroll-down-command)
                 ("M-]" . scroll-up-command))
