@@ -68,7 +68,6 @@
   - [[#circe][Circe]]
   - [[#ledger][Ledger]]
   - [[#linters][Linters]]
-  - [[#lorem-ipsum][Lorem Ipsum]]
   - [[#mails][Mails]]
   - [[#navigation][Navigation]]
   - [[#network][Network]]
@@ -767,7 +766,6 @@ Let's configure =emmet-mode=, to produce HTML from CSS-like selector:
 
 #+begin_src emacs-lisp
   (use-package ini-mode
-    :defer 0.4
     :mode ("\\.ini\\'"))
 #+end_src
 
@@ -782,8 +780,9 @@ Let's define the LSP client to use the LSP server:
 
 #+begin_src emacs-lisp
   (use-package lsp-java
-    :after lsp
-    :hook (java-mode . lsp)
+    :hook (java-mode . (lambda ()
+                         (require 'lsp-java)
+                         (lsp-deferred)))
     :custom (lsp-java-server-install-dir
              (expand-file-name (format "%s/eclipse.jdt.ls/server" xdg-lib))))
 #+end_src
@@ -1022,13 +1021,13 @@ operating system.
 
 #+begin_src emacs-lisp
   (use-package markdown-mode
-    :ensure-system-package (pandoc . "yay -S pandoc")
     :delight "μ "
-    :mode ("\\.markdown\\'" "\\.md\\'")
+    :ensure-system-package (pandoc . "yay -S pandoc")
+    :mode ("\\.\\(md\\|markdown\\)\\'")
     :custom (markdown-command "/usr/bin/pandoc"))
 
   (use-package markdown-preview-mode
-    :after markdown-mode
+    :commands markdown-preview-mode
     :custom
     (markdown-preview-javascript
      (list (concat "https://github.com/highlightjs/highlight.js/"
@@ -1091,7 +1090,6 @@ PHP.
 
 #+begin_src emacs-lisp
   (use-package ac-php
-    :after (company php-mode)
     :hook (php-mode . ac-php-mode)
     :custom (ac-sources '(ac-source-php))
     :config
@@ -1112,10 +1110,13 @@ the creation of these diagrams, [[http://plantuml.com/][PlantUML]] remains the b
 
 ** Python
 
-To have a fast and stable environment, I recommend to use [[https://github.com/andrew-christianson/lsp-python-ms][lsp-python-ms]]
-as LSP client and [[https://github.com/Microsoft/python-language-server][mspyls]] as LSP server as =mspyls= is faster than =pyls=.
-I use [[https://github.com/psf/black][black]] to reformat my Python buffer. Before use it, don't forget to
-install =python-black= in your system.
+To have a fast and stable environment, I recommend to use [[https://github.com/python-lsp/python-lsp-server][python-lsp-server]] as
+LSP server. =mspyls= is faster than =pylsp=, but =mspyls= has a memory leakage. For
+some reasons, I have some issues with =pyright= and =company=, the successor of
+=mspyls=. From then on, I use =pylsp= on my daily basis.
+
+I use [[https://github.com/psf/black][black]] to reformat my Python buffer. Before use it, don't forget to install
+=python-black= in your system.
 
 To sort my Python imports, [[https://github.com/paetzke/py-isort.el][py-isort]] does a good job. Also, don't forget to
 install =python-isort= in your system.
@@ -1128,16 +1129,9 @@ Let's take a look to my Python configuration:
     :hook (python-mode . blacken-mode)
     :custom (blacken-line-length 79))
 
-  (use-package lsp-pyright
-    :if (executable-find "pyright")
-    :hook (python-mode . (lambda ()
-                           (require 'lsp-pyright)
-                           (lsp)))
-    :custom
-    (lsp-pyright-venv-path "~/.cache/pypoetry/virtualenvs/"))
-
-  (use-package python
+  (use-package python-mode
     :delight "π "
+    :ensure nil
     :bind (:map python-mode-map
                 ("M-[" . python-nav-backward-block)
                 ("M-]" . python-nav-forward-block))
@@ -1152,13 +1146,20 @@ Let's take a look to my Python configuration:
             (revert-buffer t t t))
         (warn "python-mode: Cannot find autoflake executable."))))
 
+  (use-package lsp-pyright
+    :if (executable-find "pyright")
+    :hook (python-mode . (lambda ()
+                           (require 'lsp-pyright)
+                           (lsp-deferred)))
+    :custom
+    (lsp-pyright-python-executable-cmd "python3")
+    (lsp-pyright-venv-path "~/.cache/pypoetry/virtualenvs/"))
+
   (use-package py-isort
-    :after python
     :hook ((python-mode . pyvenv-mode)
            (before-save . py-isort-before-save)))
 
   (use-package pyenv-mode
-    :after python
     :hook ((python-mode . pyenv-mode)
            (projectile-switch-project . projectile-pyenv-mode-set))
     :custom (pyenv-mode-set "3.8.5")
@@ -1211,12 +1212,13 @@ server. After installed it with your package manager, you need to use
 
 #+begin_src emacs-lisp
   (use-package typescript-mode
-    :mode ("\\.ts\\'" "\\.tsx\\'")
+    :mode ("\\.\\(ts\\|tsx\\)\\'")
     :hook (typescript-mode . prettier-js-mode)
     :custom
     (add-hook 'typescript-mode-hook #'(lambda ()
                                         (enable-minor-mode
-                                         '("\\.tsx?\\'" . prettier-js-mode)))))
+                                         '("\\.tsx?\\'" . prettier-js-mode))))
+    (lsp-clients-typescript-server-args '("--stdio" "--tsserver-log-file" "/dev/stderr")))
 #+end_src
 
 ** Vue.js
@@ -1273,7 +1275,8 @@ careful to not modify it. The =yarn-mode= is a small package that automatically
 places this buffer in read-only and activates the syntax color for these files.
 
 #+begin_src emacs-lisp
-  (use-package yarn-mode :mode "yarn\\.lock\\'")
+    (use-package yarn-mode
+      :mode "yarn\\.lock\\'")
 #+end_src
 
 * Advanced Configuration
@@ -1326,8 +1329,8 @@ I use =company= with =company-box= that allows a company front-end with icons.
 
 #+begin_src emacs-lisp
   (use-package company-box
+    :if (display-graphic-p)
     :after company
-    :delight
     :hook (company-mode . company-box-mode))
 #+end_src
 
@@ -1562,46 +1565,46 @@ The code below, executes =org-babel-tangle= asynchronously when
 =config.org= is saved.
 
 #+begin_src emacs-lisp
-  (use-package async)
+    (use-package async :after org)
 
-  (defvar *config-file* (expand-file-name "config.org" user-emacs-directory)
-    "The configuration file.")
+    (defvar *config-file* (expand-file-name "config.org" user-emacs-directory)
+      "The configuration file.")
 
-  (defvar *config-last-change* (nth 5 (file-attributes *config-file*))
-    "Last modification time of the configuration file.")
+    (defvar *config-last-change* (nth 5 (file-attributes *config-file*))
+      "Last modification time of the configuration file.")
 
-  (defvar *show-async-tangle-results* nil
-    "Keeps *emacs* async buffers around for later inspection.")
+    (defvar *show-async-tangle-results* nil
+      "Keeps *emacs* async buffers around for later inspection.")
 
-  (defun my/config-updated ()
-    "Checks if the configuration file has been updated since the last time."
-    (time-less-p *config-last-change*
-                 (nth 5 (file-attributes *config-file*))))
+    (defun my/config-updated ()
+      "Checks if the configuration file has been updated since the last time."
+      (time-less-p *config-last-change*
+                   (nth 5 (file-attributes *config-file*))))
 
-  (defun my/config-tangle ()
-    "Tangles the org file asynchronously."
-    (when (my/config-updated)
-      (setq *config-last-change*
-            (nth 5 (file-attributes *config-file*)))
-      (my/async-babel-tangle *config-file*)))
+    (defun my/config-tangle ()
+      "Tangles the org file asynchronously."
+      (when (my/config-updated)
+        (setq *config-last-change*
+              (nth 5 (file-attributes *config-file*)))
+        (my/async-babel-tangle *config-file*)))
 
-  (defun my/async-babel-tangle (org-file)
-    "Tangles the org file asynchronously."
-    (let ((init-tangle-start-time (current-time))
-          (file (buffer-file-name))
-          (async-quiet-switch "-q"))
-      (async-start
-       `(lambda ()
-          (require 'org)
-          (org-babel-tangle-file ,org-file))
-       (unless *show-async-tangle-results*
-         `(lambda (result)
-            (if result
-                (message "SUCCESS: %s successfully tangled (%.2fs)."
-                         ,org-file
-                         (float-time (time-subtract (current-time)
-                                                    ',init-tangle-start-time)))
-              (message "ERROR: %s as tangle failed." ,org-file)))))))
+    (defun my/async-babel-tangle (org-file)
+      "Tangles the org file asynchronously."
+      (let ((init-tangle-start-time (current-time))
+            (file (buffer-file-name))
+            (async-quiet-switch "-q"))
+        (async-start
+         `(lambda ()
+            (require 'org)
+            (org-babel-tangle-file ,org-file))
+         (unless *show-async-tangle-results*
+           `(lambda (result)
+              (if result
+                  (message "SUCCESS: %s successfully tangled (%.2fs)."
+                           ,org-file
+                           (float-time (time-subtract (current-time)
+                                                      ',init-tangle-start-time)))
+                (message "ERROR: %s as tangle failed." ,org-file)))))))
 #+end_src
 
 ** EPUB
@@ -1775,7 +1778,6 @@ having to count the spaces, I can see that the code is well indented.
 
 #+begin_src emacs-lisp
   (use-package highlight-indent-guides
-    :defer 0.3
     :hook (prog-mode . highlight-indent-guides-mode)
     :custom (highlight-indent-guides-method 'character))
 #+end_src
@@ -2406,7 +2408,7 @@ I used =guide-key= in my past days, but =which-key= is a good replacement.
   (use-package which-key
     :defer 0.2
     :delight
-    :custom which-key-idle-delay 0.5
+    :custom (which-key-idle-delay 0.5)
     :config (which-key-mode))
 #+end_src
 
@@ -2523,8 +2525,7 @@ Now all we have to do is configure =ledger-mode=:
 #+begin_src emacs-lisp
   (use-package ledger-mode
     :ensure-system-package (ledger . "yay -S --noconfirm ledger")
-    :mode ("\\.dat\\'"
-           "\\.ledger\\'")
+    :mode ("\\.\\(dat\\|ledger\\)\\'")
     :bind (:map ledger-mode-map
                 ("C-x C-s" . my/ledger-save))
     :hook (ledger-mode . ledger-flymake-enable)
@@ -3002,7 +3003,7 @@ exists as well).
 
 #+begin_src emacs-lisp
   (use-package projectile
-    :defer 1
+    :hook (after-init . projectile-mode)
     :preface
     (defun my/projectile-compilation-buffers (&optional project)
       "Get a list of a project's compilation buffers.
@@ -3099,18 +3100,19 @@ Git clients exist, only Magit and Git itself deserve to be called porcelains.
 [[https://github.com/tarsius][Jonas Bernoulli]]
 #+end_quote
 
+#+begin_src emacs-lisp
   (use-package git-commit
     :after magit
-    :hook (git-commit-mode . my/git-commit-auto-fill-everywhere)
-    :custom (git-commit-summary-max-length 50)
     :preface
     (defun my/git-commit-auto-fill-everywhere ()
       "Ensures that the commit body does not exceed 72 characters."
       (setq fill-column 72)
-      (setq-local comment-auto-fill-only-comments nil)))
-#+begin_src emacs-lisp
+      (setq-local comment-auto-fill-only-comments nil))
+    :hook (git-commit-mode . my/git-commit-auto-fill-everywhere)
+    :custom (git-commit-summary-max-length 50))
 
-  (use-package magit :defer 0.3
+  (use-package magit
+    :commands magit-status
     :custom
     (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
