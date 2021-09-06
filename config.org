@@ -350,7 +350,7 @@ I found it to be memory intensive for the few features I was using. From this
 observation I switched to [[https://github.com/abo-abo/swiper][ivy]] for many years, which is a faster and a lighter
 framework than =helm=. However, =ivy= is still a framework.
 
-Since then, newer completion systems have emerged (e.g., [[https://github.com/minad/vertico][vertico]], [[https://github.com/minad/vertico][selectrum]]=,
+Since then, newer completion systems have emerged (e.g., [[https://github.com/minad/vertico][vertico]], [[https://github.com/minad/vertico][selectrum]],
 and [[https://github.com/oantolin/icomplete-vertical][icomplete-vertical]]), designed to be optimized for a single task and nested
 with other packages with the same vision. That's why I now use =vertico= instead
 of =ivy=.
@@ -367,7 +367,7 @@ of =ivy=.
 
 To enable richer annotations (e.g., summary documentation of the functions and
 variables, as well as having the size and the last consultation of the files)
-for minibuffer completions, =marginalia= is awesome.
+for minibuffer completions, [[https://github.com/minad/marginalia/][marginalia]] is awesome.
 
 #+begin_src emacs-lisp
   (use-package marginalia
@@ -573,7 +573,7 @@ this behavior.
 #+end_src
 
 The way I move between several windows in GNU Emacs is by indicating the number
-of the window I want to move to. Most people use [[https://github.com/abo-abo/ace-window][ace-window]]=, but I prefer
+of the window I want to move to. Most people use [[https://github.com/abo-abo/ace-window][ace-window]], but I prefer
 [[https://github.com/dimitri/switch-window][switch-window]] which displays the window number while hiding its content. I find
 this behavior more convenient than moving from window to window to get to the
 one we are looking for.
