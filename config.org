@@ -1132,7 +1132,7 @@ server. After installed it with your package manager, you need to use
 
 #+begin_src emacs-lisp
   (use-package typescript-mode
-    :mode ("\\.\\(ts\\|tsx\\)\\'")
+    :mode ("\\.ts\\'" "\\.tsx\\'")
     :hook (typescript-mode . prettier-js-mode)
     :custom
     (add-hook 'typescript-mode-hook #'(lambda ()
@@ -3250,16 +3250,9 @@ authoring documents with a fast and effective plain-text system.
   (use-package org
     :ensure org-plus-contrib
     :delight "Θ "
+    :hook (org-mode . turn-off-auto-fill)
     :bind ("C-c i" . org-insert-structure-template)
     :preface
-    (defun my/org-compare-times (clocked estimated)
-      "Gets the ratio between the timed time and the estimated time."
-      (if (and (> (length clocked) 0) estimated)
-          (format "%.2f"
-                  (/ (* 1.0 (org-hh:mm-string-to-minutes clocked))
-                     (org-hh:mm-string-to-minutes estimated)))
-        ""))
-
     (defun my/org-archive-done-tasks ()
       "Archives finished or cancelled tasks."
       (interactive)
@@ -3268,6 +3261,14 @@ authoring documents with a fast and effective plain-text system.
          (org-archive-subtree)
          (setq org-map-continue-from (outline-previous-heading)))
        "TODO=\"DONE\"|TODO=\"CANCELLED\"" (if (org-before-first-heading-p) 'file 'tree)))
+
+    (defun my/org-compare-times (clocked estimated)
+      "Gets the ratio between the timed time and the estimated time."
+      (if (and (> (length clocked) 0) estimated)
+          (format "%.2f"
+                  (/ (* 1.0 (org-hh:mm-string-to-minutes clocked))
+                     (org-hh:mm-string-to-minutes estimated)))
+        ""))
 
     (defun my/org-jump ()
       "Jumps to a specific task."
@@ -3279,23 +3280,28 @@ authoring documents with a fast and effective plain-text system.
       "Activates speed commands on list items too."
       (or (and (looking-at org-outline-regexp) (looking-back "^\**"))
           (save-excursion (and (looking-at (org-item-re)) (looking-back "^[ \t]*")))))
+
     (defmacro ignore-args (fnc)
       "Returns function that ignores its arguments and invokes FNC."
       `(lambda (&rest _rest)
          (funcall ,fnc)))
     :hook ((after-save . my/config-tangle)
            (auto-save . org-save-all-org-buffers)
-           (org-mode . org-indent-mode))
+           (org-mode . org-indent-mode)
+           (org-mode . visual-line-mode))
     :custom
     (org-archive-location "~/.personal/archives/%s::")
     (org-blank-before-new-entry '((heading . t)
                                   (plain-list-item . t)))
+    (org-confirm-babel-evaluate nil)
     (org-cycle-include-plain-lists 'integrate)
     (org-ditaa-jar-path "~/.local/lib/ditaa0_9.jar")
+    (org-ellipsis " ▾")
     (org-expiry-inactive-timestamps t)
     (org-export-backends '(ascii beamer html icalendar latex man md org texinfo))
+    (org-hide-emphasis-markers t)
     (org-log-done 'time)
-    (org-log-into-drawer "LOGBOOK")
+    (org-log-into-drawer t)
     (org-modules '(org-crypt
                    org-habit
                    org-mouse
@@ -3304,30 +3310,47 @@ authoring documents with a fast and effective plain-text system.
     (org-refile-allow-creating-parent-nodes 'confirm)
     (org-refile-use-cache nil)
     (org-refile-use-outline-path nil)
-    (org-refile-targets '((org-agenda-files . (:maxlevel . 6))))
+    (org-refile-targets '((org-agenda-files . (:maxlevel . 1))))
     (org-startup-folded nil)
     (org-startup-with-inline-images t)
-    (org-tag-alist '(("@coding" . ?c)
-                     ("@computer" . ?l)
-                     ("@errands" . ?e)
-                     ("@home" . ?h)
-                     ("@phone" . ?p)
-                     ("@reading" . ?r)
-                     ("@school" . ?s)
-                     ("@work" . ?b)
-                     ("@writing" . ?w)
-                     ("crypt" . ?C)
-                     ("fuzzy" . ?0)
-                     ("highenergy" . ?1)))
+    (org-tag-alist
+     '((:startgroup . "Context")
+       ("@errands" . ?e)
+       ("@home" . ?h)
+       ("@work" . ?w)
+       (:endgroup)
+       (:startgroup . "Difficulty")
+       ("easy" . ?E)
+       ("medium" . ?M)
+       ("challenging" . ?C)
+       (:endgroup)
+       ("bug" . ?b)
+       ("car" . ?v)
+       ("future" . ?F)
+       ("goal" . ?g)
+       ("health" . ?H)
+       ("house" . ?O)
+       ("meeting" . ?m)
+       ("planning" . ?p)
+       ("phone" . ?0)
+       ("purchase" . ?P)
+       ("reading" . ?r)
+       ("review" . ?R)
+       ("study" . ?s)
+       ("sport" . ?S)
+       ("talk" . ?T)
+       ("tech" . ?t)
+       ("trip" . ?I)
+       ("thinking" . ?i)
+       ("update" . ?u)
+       ("watch" . ?W)
+       ("writing" . ?g)))
     (org-tags-exclude-from-inheritance '("crypt" "project"))
     (org-todo-keywords '((sequence "TODO(t)"
                                    "STARTED(s)"
-                                   "WAITING(w@/!)"
-                                   "SOMEDAY(.)" "|" "DONE(x!)" "CANCELLED(c@)")
-                         (sequence "TOBUY"
-                                   "TOSHRINK"
-                                   "TOCUT"
-                                   "TOSEW" "|" "DONE(x)")))
+                                   "NEXT(n)"
+                                   "SOMEDAY(.)"
+                                   "WAITING(w)""|" "DONE(x!)" "CANCELLED(c@)")))
     (org-use-effective-time t)
     (org-use-speed-commands 'my/org-use-speed-commands-for-headings-and-lists)
     (org-yank-adjusted-subtrees t)
@@ -3341,10 +3364,18 @@ authoring documents with a fast and effective plain-text system.
     (add-to-list 'org-speed-commands-user '("s" call-interactively 'org-schedule))
     (add-to-list 'org-speed-commands-user '("x" org-todo "DONE"))
     (add-to-list 'org-speed-commands-user '("y" org-todo-yesterday "DONE"))
+    (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+    (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+    (add-to-list 'org-structure-template-alist '("py" . "src python"))
     (advice-add 'org-deadline :after (ignore-args #'org-save-all-org-buffers))
+    (advice-add 'org-refile :after 'org-save-all-org-buffers)
     (advice-add 'org-schedule :after (ignore-args #'org-save-all-org-buffers))
     (advice-add 'org-store-log-note :after (ignore-args #'org-save-all-org-buffers))
     (advice-add 'org-todo :after (ignore-args #'org-save-all-org-buffers))
+    ;; Replace list hyphen with dot
+    (font-lock-add-keywords 'org-mode
+                            '(("^ *\\([-]\\) "
+                               (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
     (org-clock-persistence-insinuate)
     (org-load-modules-maybe t))
 #+end_src
@@ -3376,6 +3407,7 @@ my time to the fullest.
 I put my =org= files in [[https://github.com/syncthing/syncthing][Syncthing]] in order to be able to check my agenda and
 update it from several computers and smartphones.
 
+#+begin_src emacs-lisp
   (use-package org-agenda
     :ensure nil
     :bind (:map org-agenda-mode-map
@@ -3398,6 +3430,34 @@ update it from several computers and smartphones.
       (org-agenda-switch-to)
       (org-capture 0 "t"))
     :custom
+    (org-agenda-category-icon-alist
+    `(("home" ,(list (all-the-icons-faicon "home" :v-adjust -0.05)) nil nil :ascent center :mask heuristic)
+      ("inbox" ,(list (all-the-icons-faicon "inbox" :v-adjust -0.1)) nil nil :ascent center :mask heuristic)
+      ("people" ,(list (all-the-icons-material "people" :v-adjust -0.25)) nil nil :ascent center :mask heuristic)
+      ("routine" ,(list (all-the-icons-material "repeat":v-adjust -0.25)) nil nil :ascent center :mask heuristic)
+      ))
+    (org-agenda-custom-commands
+     '(("d" "Dashboard"
+        ((agenda "" ((org-deadline-warning-days 7)))
+         (todo "NEXT"
+               ((org-agenda-overriding-header "Next Tasks")))
+         (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))))
+
+       ("n" "Next Tasks"
+        ((agenda "" ((org-deadline-warning-days 7)))
+         (todo "NEXT"
+               ((org-agenda-overriding-header "Next Tasks")))))
+
+       ("h" "Home Tasks" tags-todo "+home")
+       ("w" "Work Tasks" tags-todo "+work")
+
+       ("E" "Easy Tasks" tags-todo "+easy")
+       ("C" "Challenging Tasks" tags-todo "+challenging")
+
+       ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
+        ((org-agenda-overriding-header "Low Effort Tasks")
+         (org-agenda-max-todos 20)
+         (org-agenda-files org-agenda-files)))))
     (org-agenda-dim-blocked-tasks t)
     (org-agenda-files '("~/.personal/agenda"))
     (org-agenda-inhibit-startup t)
@@ -3407,12 +3467,13 @@ update it from several computers and smartphones.
     (org-agenda-skip-scheduled-if-done t)
     (org-agenda-span 2)
     (org-agenda-start-on-weekday 6)
+    (org-agenda-start-with-log-mode t)
     (org-agenda-sticky nil)
-    (org-agenda-tags-column -100)
+    (org-agenda-tags-column 90)
     (org-agenda-time-grid '((daily today require-timed)))
     (org-agenda-use-tag-inheritance t)
     (org-columns-default-format "%14SCHEDULED %Effort{:} %1PRIORITY %TODO %50ITEM %TAGS")
-    (org-default-notes-file "~/.personal/agenda/organizer.org")
+    (org-default-notes-file "~/.personal/agenda/inbox.org")
     (org-directory "~/.personal")
     (org-enforce-todo-dependencies t)
     (org-habit-completed-glyph ?✓)
@@ -3420,7 +3481,6 @@ update it from several computers and smartphones.
     (org-habit-show-habits-only-for-today nil)
     (org-habit-today-glyph ?‖)
     (org-track-ordered-property-with-tag t))
-#+begin_src emacs-lisp
 #+end_src
 
 ** Bullets
@@ -3442,70 +3502,68 @@ information.
 #+begin_src emacs-lisp
   (use-package org-capture
     :ensure nil
-    :after org
     :preface
-    (defvar my/org-basic-task-template "* TODO %^{Task}
-  :PROPERTIES:
-  :Effort: %^{effort|1:00|0:05|0:15|0:30|2:00|4:00}
-  :END:
-  Captured %<%Y-%m-%d %H:%M>" "Template for basic task.")
-
-    (defvar my/org-contacts-template "* %(org-contacts-template-name)
-  :PROPERTIES:
-  :ADDRESS: %^{289 Cleveland St. Brooklyn, 11206 NY, USA}
-  :BIRTHDAY: %^{yyyy-mm-dd}
-  :EMAIL: %(org-contacts-template-email)
-  :NOTE: %^{NOTE}
-  :END:" "Template for org-contacts.")
-
-    (defvar my/org-ledger-card-template "%(org-read-date) %^{Payee}
-    Expenses:%^{Account}  €%^{Amount}
-    Liabilities:CreditsCards:Belfius" "Template for credit card transaction with ledger.")
-
-    (defvar my/org-ledger-cash-template "%(org-read-date) * %^{Payee}
-    Expenses:%^{Account}  €%^{Amount}
-    Assets:Cash:Wallet" "Template for cash transaction with ledger.")
+    (defvar my/org-active-task-template
+      (concat "* NEXT %^{Task}\n"
+              ":PROPERTIES:\n"
+              ":Effort: %^{effort|1:00|0:05|0:15|0:30|2:00|4:00}\n"
+              ":CAPTURED: %<%Y-%m-%d %H:%M>\n"
+              ":END:") "Template for basic task.")
+    (defvar my/org-appointment
+      (concat "* TODO %^{Appointment}\n"
+              "SCHEDULED: %t\n") "Template for appointment task.")
+    (defvar my/org-basic-task-template
+      (concat "* TODO %^{Task}\n"
+              ":PROPERTIES:\n"
+              ":Effort: %^{effort|1:00|0:05|0:15|0:30|2:00|4:00}\n"
+              ":CAPTURED: %<%Y-%m-%d %H:%M>\n"
+              ":END:") "Template for basic task.")
+    (defvar my/org-contacts-template
+      (concat "* %(org-contacts-template-name)\n"
+              ":PROPERTIES:\n"
+              ":BIRTHDAY: %^{YYYY-MM-DD}\n"
+              ":END:") "Template for a contact.")
     :custom
     (org-capture-templates
-     `(("B" "Book" checkitem (file+headline "~/.personal/other/books.org" "Books")
-        "- [ ] %^{Book}"
-        :immediate-finish t)
-
-       ("L" "Learning" checkitem (file+headline "~/.personal/other/learning.org" "Things")
-        "- [ ] %^{Thing}"
-        :immediate-finish t)
-
-       ("M" "Movie" checkitem (file+headline "~/.personal/other/movies.org" "Movies")
-        "- [ ] %^{Movie}"
-        :immediate-finish t)
-
-       ("P" "Purchase" checkitem (file+headline "~/.personal/other/purchases.org" "Purchases")
-        "- [ ] %^{Item}"
-        :immediate-finish t)
-
+     `(
        ("c" "Contact" entry (file+headline "~/.personal/agenda/contacts.org" "Friends"),
         my/org-contacts-template
         :empty-lines 1)
 
-       ("l" "Ledger")
-
-       ("lb" "Bank" plain (file ,(format "~/.personal/ledger/ledger-%s.dat" (format-time-string "%Y"))),
-        my/org-ledger-card-template
-        :empty-lines 1
-        :immediate-finish t)
-
-       ("lc" "Cash" plain (file ,(format "~/.personal/ledger/ledger-%s.dat" (format-time-string "%Y"))),
-        my/org-ledger-cash-template
-        :empty-lines 1
-        :immediate-finish t)
-
        ("p" "People" entry (file+headline "~/.personal/agenda/people.org" "Tasks"),
         my/org-basic-task-template
         :empty-lines 1)
+       ("a" "Appointment" entry (file+headline "~/.personal/agenda/people.org" "Appointments"),
+        my/org-appointment
+        :empty-lines 1)
+       ("m" "Meeting" entry (file+headline "~/.personal/agenda/people.org" "Meetings")
+        "* Meeting with %? :meeting:\n%U" :clock-in t :clock-resume t :empty-lines 1)
+       ("P" "Phone Call" entry (file+headline "~/.personal/agenda/people.org" "Phone Calls")
+        "* Phone %? :phone:\n%U" :clock-in t :clock-resume t)
 
-       ("t" "Task" entry (file+headline "~/.personal/agenda/organizer.org" "Tasks"),
+       ("i" "New Item")
+       ("ib" "Book" checkitem (file+headline "~/.personal/items/books.org" "Books")
+        "- [ ] %^{Title} -- %^{Author} %? :@home:reading:\n%U"
+        :immediate-finish t)
+       ("il" "Learning" checkitem (file+headline "~/.personal/items/learning.org" "Things")
+        "- [ ] %^{Thing} :@home:"
+        :immediate-finish t)
+       ("im" "Movie" checkitem (file+headline "~/.personal/items/movies.org" "Movies")
+        "- [ ] %^{Title}  :@home:watch:\n%U"
+        :immediate-finish t)
+       ("ip" "Purchase" checkitem (file+headline "~/.personal/items/purchases.org" "Purchases")
+        "- [ ] %^{Item}  :@home:purchase:\n%U"
+        :immediate-finish t)
+
+       ("t" "New Task")
+       ("ta" "Active" entry (file+headline "~/.personal/agenda/inbox.org" "Active"),
+        my/org-active-task-template
+        :empty-lines 1
+        :immediate-finish t)
+       ("tb" "Backlog" entry (file+headline "~/.personal/agenda/inbox.org" "Backlog"),
         my/org-basic-task-template
-        :empty-lines 1))))
+        :empty-lines 1
+        :immediate-finish t))))
 #+end_src
 
 ** Clock
@@ -3558,17 +3616,17 @@ Finally, I *take a 30-minute break every two hours*.
 To allow this, I use =org-pomodoro= making sure I get that in my status bar:
 #+begin_src emacs-lisp
   (use-package org-pomodoro
-    :defer 0.5
+    :after org
     :custom
     (alert-user-configuration (quote ((((:category . "org-pomodoro")) libnotify nil))))
     (org-pomodoro-audio-player "/usr/bin/mpv")
-    (org-pomodoro-finished-sound "~/Audio/pomodoro_finished.mp3")
+    (org-pomodoro-finished-sound "~/audio/pomodoro_finished.mp3")
     (org-pomodoro-format " %s")
-    (org-pomodoro-killed-sound "~/Audio/pomodoro_killed.mp3")
-    (org-pomodoro-long-break-sound "~/Audio/pomodoro_long.mp3")
-    (org-pomodoro-overtime-sound "~/Audio/pomodoro_overtime.mp3")
-    (org-pomodoro-short-break-sound "~/Audio/pomodoro_short.mp3")
-    (org-pomodoro-start-sound "~/Audio/pomodoro_start.mp3")
+    (org-pomodoro-killed-sound "~/audio/pomodoro_killed.mp3")
+    (org-pomodoro-long-break-sound "~/audio/pomodoro_long.mp3")
+    (org-pomodoro-overtime-sound "~/audio/pomodoro_overtime.mp3")
+    (org-pomodoro-short-break-sound "~/audio/pomodoro_short.mp3")
+    (org-pomodoro-start-sound "~/audio/pomodoro_start.mp3")
     (org-pomodoro-start-sound-p t))
 #+end_src
 
@@ -3581,24 +3639,23 @@ that to install it, this one is available with =org-plus-contrib=.
 #+begin_src emacs-lisp
   (use-package org-contacts
     :ensure nil
-    :after org
     :custom (org-contacts-files '("~/.personal/agenda/contacts.org")))
 #+end_src
 
-** Custormization
+** Faces
 
 Let's change the foreground and the weight of each keyword.
 
 #+begin_src emacs-lisp
   (use-package org-faces
     :ensure nil
-    :after org
     :custom
     (org-todo-keyword-faces
-     '(("DONE" . (:foreground "cyan" :weight bold))
-       ("SOMEDAY" . (:foreground "gray" :weight bold))
-       ("TODO" . (:foreground "green" :weight bold))
-       ("WAITING" . (:foreground "red" :weight bold)))))
+     '(("DONE"    . (:foreground "#8abeb7" :weight bold))
+       ("NEXT"    . (:foreground "#f0c674" :weight bold))
+       ("SOMEDAY" . (:foreground "#b294bb" :weight bold))
+       ("TODO"    . (:foreground "#b5bd68" :weight bold))
+       ("WAITING" . (:foreground "#de935f" :weight bold)))))
 #+end_src
 
 ** Encryption / Decryption
@@ -3615,7 +3672,6 @@ identifier, by yours (or =nil= to allow symmetric encryption).
 #+begin_src emacs-lisp
   (use-package org-crypt
     :ensure nil
-    :after org
     :init (org-crypt-use-before-save-magic)
     :custom (org-crypt-key "E9AADC36E94A672D1A07D49B208FCDBB98190562"))
 #+end_src
@@ -3656,10 +3712,13 @@ growth.
 With that, I can compile many languages with =org-mode=.
 
 #+begin_src emacs-lisp
+  (use-package jupyter :ensure nil :after org)
+  (use-package python :ensure nil :after org)
   (use-package ob-C :ensure nil :after org)
   (use-package ob-css :ensure nil :after org)
   (use-package ob-ditaa :ensure nil :after org)
   (use-package ob-dot :ensure nil :after org)
+  (use-package ob-ein :ensure nil :after org)
   (use-package ob-emacs-lisp :ensure nil :after org)
   (use-package ob-gnuplot :ensure nil :after org)
   (use-package ob-java :ensure nil :after org)
