@@ -2,7 +2,7 @@
 #+TITLE: GNU Emacs Configuration
 #+PROPERTY: header-args:emacs-lisp :tangle ./config.el :mkdirp yes
 
-* Table of Content                                                    :TOC:
+* Table of Content                                                      :TOC:
 - [[#about][About]]
 - [[#emacs-initialization][Emacs Initialization]]
   - [[#packages-sources][Packages Sources]]
