@@ -2217,7 +2217,7 @@ electric-indent-mode.
            (emacs-lisp-mode . aggressive-indent-mode)
            (js-mode . aggressive-indent-mode)
            (lisp-mode . aggressive-indent-mode))
-    :custom (aggressive-indent-comments-too))
+    :custom (aggressive-indent-comments-too t))
 #+end_src
 
 *** =electric-operator=
