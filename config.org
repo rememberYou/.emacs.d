@@ -89,7 +89,7 @@
   - [[#capture][Capture]]
   - [[#clock][Clock]]
   - [[#contacts][Contacts]]
-  - [[#custormization][Custormization]]
+  - [[#faces][Faces]]
   - [[#encryption--decryption][Encryption / Decryption]]
   - [[#journal][Journal]]
   - [[#languages-1][Languages]]
@@ -222,7 +222,7 @@ to create them yourself.
     "The XDG lib base directory.")
 #+end_src
 
-** Customization
+** Customizations
 
 To avoid overloading the GNU Emacs customization =init.el= file made by the
 user with the UI, I add the generated code in a separate file.
