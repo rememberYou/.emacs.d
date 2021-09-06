@@ -3163,18 +3163,6 @@ hiding its contents.
            ("C-x w" . switch-window-then-swap-buffer)))
 #+end_src
 
-*** =windmove=
-
-Allows you to move from one window to another with something more natural than
-cycling through =C-x o= (=other-window=).
-
-#+begin_src emacs-lisp
-  (use-package windmove
-    :bind (("C-c h" . windmove-left)
-           ("C-c j" . windmove-down)
-           ("C-c k" . windmove-up)
-           ("C-c l" . windmove-right)))
-#+end_src
 
 *** =winner=
 
