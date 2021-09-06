@@ -26,7 +26,7 @@
 
 ;; Make startup faster by reducing the frequency of garbage
 ;; collection.
-(setq gc-cons-threshold (* 50 1000 1000))
+(setq gc-cons-threshold (* 100 1024 1024))
 
 (require 'package)
 (package-initialize)
