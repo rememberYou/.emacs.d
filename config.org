@@ -607,7 +607,8 @@ client for LSP servers and [[https://github.com/vscode-langservers/vscode-css-la
 ** CSV
 
 #+begin_src emacs-lisp
-  (use-package csv-mode)
+  (use-package csv-mode
+    :mode ("\\.\\(csv\\|tsv\\)\\'"))
 #+end_src
 
 ** Dart
