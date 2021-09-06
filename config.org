@@ -6,7 +6,7 @@
 - [[#about][About]]
 - [[#emacs-initialization][Emacs Initialization]]
   - [[#packages-sources][Packages Sources]]
-  - [[#use-package][use-package]]
+  - [[#package-configurations][Package Configurations]]
 - [[#start-up][Start Up]]
   - [[#authentication][Authentication]]
   - [[#defaults][Defaults]]
@@ -97,7 +97,7 @@
 * About
 
 After using GNU Emacs for a while, I decided to create my own config to simplify
-my daily life by adding scripts, and useful functions. For more informations
+my daily life by adding scripts and useful functions. For more informations
 about myself, you can visit my [[https://rememberyou.github.io/][website]].
 
 To manage package configurations, I use the [[https://github.com/jwiegley/use-package/][use-package]] package from John
@@ -118,7 +118,7 @@ your GNU Emacs.
 
 ** Packages Sources
 
-In order to install packages, it is useful to configure the package sources.
+To install packages, it is useful to configure the package sources.
 
 #+begin_src emacs-lisp
   (setq package-archives '(("elpa" . "https://elpa.gnu.org/packages/")
@@ -126,10 +126,9 @@ In order to install packages, it is useful to configure the package sources.
                            ("org" . "http://orgmode.org/elpa/")))
 #+end_src
 
-** use-package
+** Package Configurations
 
-To be able to manage its configuration with =use-package=, you must first
-install it, if it is not already done.
+To manage the package configurations with =use-package=, you must install it with the following snippet code
 
 #+begin_src emacs-lisp
   (unless (package-installed-p 'use-package)
@@ -152,15 +151,18 @@ simplicity. Afterward, this encrypted file is placed in [[https://github.com/syn
 easily use my configuration on other devices.
 
 #+begin_src emacs-lisp
-  (setq auth-sources '("~/.config/gnupg/shared/authinfo.gpg"
-                       "~/.authinfo.gpg"
-                       "~/.authinfo"
-                       "~/.netrc"))
+  (use-package auth-source
+    :ensure nil
+    :custom
+    (auth-sources '("~/.config/gnupg/shared/authinfo.gpg"
+                    "~/.authinfo.gpg"
+                    "~/.authinfo"
+                    "~/.netrc")))
 #+end_src
 
 ** Defaults
 
-For a better user experience of GNU Emacs, here are the default values I use.
+For a better user experience of GNU Emacs, here are the default values that I use.
 
 #+begin_src emacs-lisp
   (setq-default
@@ -224,18 +226,16 @@ to create them yourself.
 
 ** Customizations
 
-To avoid overloading the GNU Emacs customization =init.el= file made by the
-user with the UI, I add the generated code in a separate file.
-
-I also made sure to follow the XDG base directory specification for the
-=auto-save-file= folder to keep my =~/.emacs.d= folder clean.
+To avoid overloading the GNU Emacs customization =init.el= file made with the UI,
+I add the generated code in a separate file.
 
 #+begin_src emacs-lisp
-  (setq-default
-   auto-save-list-file-name (expand-file-name (format "%s/emacs/auto-save-list" xdg-data))
-   custom-file (expand-file-name (format "%s/emacs/custom.el" xdg-data)))
-  (when (file-exists-p custom-file)
-    (load custom-file t))
+  (use-package cus-edit
+    :ensure nil
+    :custom (custom-file (expand-file-name (format "%s/emacs/custom.el" xdg-data)))
+    :config
+    (when (file-exists-p custom-file)
+      (load custom-file t)))
 #+end_src
 
 ** Fonts
@@ -244,15 +244,15 @@ Spending most of our time on GNU Emacs, it is important to use a font that will
 make our reading easier. [[https://github.com/adobe-fonts/source-code-pro][Source Code Pro]] is one of the best monospaced font.
 
 #+begin_src emacs-lisp
-  (set-face-attribute 'default nil :font "Source Code Pro Medium")
+  (set-face-attribute 'default nil :font "Source Code Pro")
   (set-fontset-font t 'latin "Noto Sans")
 #+end_src
 
-Don't forget to install this font with your system manager and to check the font
-installation.
+Do not forget to install this font with your system manager and to check the
+font installation.
 
 #+begin_src shell
-  fc-list | grep "Source Code Pro Medium"
+  fc-list | grep "Source Code Pro"
 #+end_src
 
 ** LSP
@@ -301,9 +301,9 @@ that. If like me, you use =consult= with your minibuffer completion, then
 
 ** Theme
 
-I'm a fan of [[https://github.com/ChrisKempson/Tomorrow-Theme][tomorrow-night]] and combined with [[https://github.com/seagle0128/doom-modeline][doom-modeline]], it's happiness! To
-be able to get icons in the =doom-modeline=, you will need to install the icons
-with [[#Icons][all-the-icons]].
+I am a fan of [[https://github.com/ChrisKempson/Tomorrow-Theme][tomorrow-night]] and combined with [[https://github.com/seagle0128/doom-modeline][doom-modeline]] it's happiness! To
+get icons in the =doom-modeline=, you will need to install the icons with
+[[#Icons][all-the-icons]].
 
 #+begin_src emacs-lisp
   (use-package doom-themes
@@ -316,28 +316,23 @@ with [[#Icons][all-the-icons]].
     :custom (doom-modeline-icon (display-graphic-p)))
 #+end_src
 
-I also like to visually distinguish a real buffer from a popup.
 
-#+begin_quote
-=solaire-mode= is an aesthetic plugin designed to visually distinguish "real"
-buffers (i.e. file-visiting code buffers where you do most of your work) from
-"unreal" buffers (like popups, sidebars, log buffers, terminals, etc) by giving
-the latter a slightly different -- often darker -- background.
-
-[[https://github.com/hlissner/emacs-solaire-mode][Henrik Lissner]]
-#+end_quote
+Since we do not do things by halves, it is also interesting to visually
+differentiate "real" buffers (e.g., buffers that contain our work) from "unreal"
+buffers (e.g., popups) by giving the latter a darker color. From then on,
+[[https://github.com/hlissner/emacs-solaire-mode][solar-mode]] is the ideal package.
 
 #+begin_src emacs-lisp
   (use-package solaire-mode
+    :defer 0.1
     :custom (solaire-mode-remap-fringe t)
-    :config (solaire-global-mode +1))
+    :config (solaire-global-mode))
 #+end_src
 
 ** Remove Mouse Interface
 
-Since I never use the mouse with GNU Emacs, I prefer not to use certain
-graphical elements as seen as the menu bar, toolbar, scrollbar, and tooltip that
-I find invasive.
+If you have to use the mouse with GNU Emacs, you probably have the wrong text
+editor. Let's remove all those menu items related to the mouse interface.
 
 #+begin_src emacs-lisp
   (when window-system
@@ -350,15 +345,15 @@ I find invasive.
 * Minibuffer Completion
 
 Having a good minibuffer completion is important on GNU Emacs since it is one of
-the elements we will frequently interact with. In the beginning I used =helm=, but
+the elements we will frequently interact with. In the beginning I used [[https://github.com/emacs-helm/helm][helm]], but
 I found it to be memory intensive for the few features I was using. From this
-observation I switched to =ivy= for many years, which is a faster and a lighter
+observation I switched to [[https://github.com/abo-abo/swiper][ivy]] for many years, which is a faster and a lighter
 framework than =helm=. However, =ivy= is still a framework.
 
-Since then, newer completion systems have emerged (e.g., =vertico=, =selectrum=, and
-=icomplete-vertical=), designed to be optimized for a single task and nested with
-other packages with the same vision. That's why I now use =vertico= instead of
-=ivy=.
+Since then, newer completion systems have emerged (e.g., [[https://github.com/minad/vertico][vertico]], [[https://github.com/minad/vertico][selectrum]]=,
+and [[https://github.com/oantolin/icomplete-vertical][icomplete-vertical]]), designed to be optimized for a single task and nested
+with other packages with the same vision. That's why I now use =vertico= instead
+of =ivy=.
 
 *NOTE*: =selectrum= is also a good alternative to =ivy=, but is less minimal than
 =vertico=.
@@ -383,17 +378,18 @@ for minibuffer completions, =marginalia= is awesome.
 #+end_src
 
 If like me you like to have icons associated with candidates, you can use
-=all-the-icons-completion=.
+[[https://github.com/iyefrat/all-the-icons-completion][all-the-icons-completion]].
 
 #+begin_src emacs-lisp
   (use-package all-the-icons-completion
     :after (marginalia all-the-icons)
     :hook (marginalia-mode . all-the-icons-completion-marginalia-setup))
 #+end_src
+
 By default, =vertico= sorts the candidates according to their history position,
 then by length and finally by alphabetical. To improves searching across
 completion (e.g., by filter expressions separated by spaces), you should
-=orderless= (or =prescient=).
+[[https://github.com/oantolin/orderless][orderless]] (or [[https://github.com/raxod502/prescient.el][prescient]]).
 
 #+begin_src emacs-lisp
   (use-package orderless
@@ -404,7 +400,8 @@ completion (e.g., by filter expressions separated by spaces), you should
 #+end_src
 
 There is nothing like a collection of commands to have additional
-completions. =consult= provides this collection.
+completions. [[https://github.com/minad/consult][consult]] provides this collection.
+
 #+begin_src emacs-lisp
   (use-package consult
     :after projectile
@@ -443,7 +440,7 @@ completions. =consult= provides this collection.
     (register-preview-function #'consult-register-preview))
 #+end_src
 
-Finally, =embark= is great if like me you like to interact directly with your
+Finally, [[https://github.com/oantolin/embark/][embark]] is great if like me you like to interact directly with your
 files (e.g., for renaming, deleting and copying) through your completion system
 without having to go through =dired=.
 
@@ -471,7 +468,7 @@ values.
     (dired-recursive-copies 'always))
 #+end_src
 
-To avoid =dired= to keep buffers, I use =dired-single=.
+To avoid =dired= to keep buffers, I use [[https://github.com/crocket/dired-single][dired-single]].
 
 #+begin_src emacs-lisp
   (use-package dired-single
@@ -483,7 +480,7 @@ To avoid =dired= to keep buffers, I use =dired-single=.
 #+end_src
 
 By default, =dired= opens files in plain text. This behavior is sometimes
-undesirable. Hopefully, =dired-open= can be used to informs =dired= that certain
+undesirable. Hopefully, [[https://github.com/Fuco1/dired-hacks/blob/master/dired-open.el][dired-open]] can be used to informs =dired= that certain
 desired file extensions must be opened with external packages to GNU Emacs.
 
 #+begin_src emacs-lisp
@@ -492,7 +489,7 @@ desired file extensions must be opened with external packages to GNU Emacs.
     :custom (dired-open-extensions '(("mp4" . "mpv"))))
 #+end_src
 
-To know the type of file at a glance, =all-the-icons-dired= integrates icons
+To know the type of file at a glance, [[https://github.com/jtbm37/all-the-icons-dired][all-the-icons-dired]] integrates icons
 directly into =dired=.
 
 #+begin_src emacs-lisp
@@ -501,7 +498,8 @@ directly into =dired=.
     :hook (dired-mode . all-the-icons-dired-mode))
 #+end_src
 
-It is sometimes convenient to hide dotfiles. With =dired-hide-dotfiles= this becomes possible.
+It is sometimes convenient to hide dotfiles. With [[https://github.com/mattiasb/dired-hide-dotfiles][dired-hide-dotfiles]] this
+becomes possible.
 
 #+begin_src emacs-lisp
   (use-package dired-hide-dotfiles
@@ -509,6 +507,9 @@ It is sometimes convenient to hide dotfiles. With =dired-hide-dotfiles= this bec
     :bind (:map dired-mode-map
                 ("h" . dired-hide-dotfiles-mode)))
 #+end_src
+
+I like being able to =<TAB>= on a folder and see its contents, without me getting
+into it. [[https://github.com/Fuco1/dired-hacks/blob/master/dired-subtree.el][dired-subtree]] allows this behavior.
 
 #+begin_src emacs-lisp
   (use-package dired-subtree
@@ -518,10 +519,11 @@ It is sometimes convenient to hide dotfiles. With =dired-hide-dotfiles= this bec
 #+end_src
 
 Sometimes you may have a folder with a large number of files. In this case,
-=dired-narrow= is useful to filter the files.
+[[https://github.com/Fuco1/dired-hacks/blob/master/dired-narrow.el][dired-narrow]] is useful to filter the files.
 
 #+begin_src emacs-lisp
   (use-package dired-narrow
+    :ensure nil
     :bind (("C-c C-n" . dired-narrow)
            ("C-c C-f" . dired-narrow-fuzzy)))
 #+end_src
@@ -555,7 +557,8 @@ behavior.
 #+end_src
 
 To maximize concentration, I prefer to only center individual windows and keep a
-default behavior when multiple windows are present.
+default behavior when multiple windows are present. [[https://github.com/anler/centered-window-mode][centered-window]] deals with
+this behavior.
 
 #+begin_src emacs-lisp
   (use-package centered-window
@@ -570,8 +573,8 @@ default behavior when multiple windows are present.
 #+end_src
 
 The way I move between several windows in GNU Emacs is by indicating the number
-of the window I want to move to. Most people use =ace-window=, but I prefer
-=switch-window= which displays the window number while hiding its content. I find
+of the window I want to move to. Most people use [[https://github.com/abo-abo/ace-window][ace-window]]=, but I prefer
+[[https://github.com/dimitri/switch-window][switch-window]] which displays the window number while hiding its content. I find
 this behavior more convenient than moving from window to window to get to the
 one we are looking for.
 
@@ -582,7 +585,8 @@ one we are looking for.
 #+end_src
 
 There are times when I would like to bring back a windows layout with their
-content. With =winner-undo= and =winner-redo= I can easily do that.
+content. With the =winner-undo= and =winner-redo= commands from the built-in =winner=
+package, I can easily do that.
 
 #+begin_src emacs-lisp
   (use-package winner
