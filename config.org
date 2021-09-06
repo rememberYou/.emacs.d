@@ -1171,7 +1171,7 @@ However, =xml-mode= exists to help us:
 #+begin_src emacs-lisp
   (use-package xml-mode
     :ensure nil
-    :mode ("\\.wsdl\\'" "\\.xsd\\'"))
+    :mode ("\\.\\(xsd\\|wsdl\\)\\'"))
 #+end_src
 
 ** YAML
