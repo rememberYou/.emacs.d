@@ -665,7 +665,7 @@ it is visually useful to install [[https://github.com/Lindydancer/cmake-font-loc
 #+end_src
 
 Finally, to compile with CMake in C++, I use [[https://github.com/atilaneves/cmake-ide/blob/master/cmake-ide.el][cmake-ide]], by indicating where the
-CMakeLists.txt file is present in the project.
+=CMakeLists.txt= file is present in the project.
 
 #+begin_src emacs-lisp
   (use-package cmake-ide
