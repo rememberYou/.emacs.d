@@ -1539,15 +1539,17 @@ The code below, executes =org-babel-tangle= asynchronously when
 
 #+begin_src emacs-lisp
   (use-package helpful
+    :commands (helpful-callable helpful-command helpful-function helpful-key
+                                helpful-symbol helpful-variable)
     :custom
     (counsel-describe-function-function #'helpful-callable)
     (counsel-describe-variable-function #'helpful-variable)
     :bind
-    ([remap describe-function] . helpful-function)
-    ([remap describe-symbol] . helpful-symbol)
-    ([remap describe-variable] . helpful-variable)
     ([remap describe-command] . helpful-command)
-    ([remap describe-key] . helpful-key))
+    ([remap describe-function] . helpful-function)
+    ([remap describe-key] . helpful-key)
+    ([remap describe-symbol] . helpful-symbol)
+    ([remap describe-variable] . helpful-variable))
 #+end_src
 
 ** Spelling
