@@ -2576,18 +2576,6 @@ Flycheck lints warnings and errors directly within buffers.
     (flycheck-add-mode 'typescript-tslint 'web-mode))
 #+end_src
 
-** Lorem Ipsum
-
-I could use =try= when I need to use =lipsum=, but since I use =defer=, the
-packet load attribute has no impact on =emacs-init-time=.
-
-#+begin_src emacs-lisp
-  (use-package lorem-ipsum
-    :bind (("C-c C-v l" . lorem-ipsum-insert-list)
-           ("C-c C-v p" . lorem-ipsum-insert-paragraphs)
-           ("C-c C-v s" . lorem-ipsum-insert-sentences)))
-#+end_src
-
 ** Mails
 
 After trying =gnus= that I found too old and =notmuch= that in my opinion lacks
