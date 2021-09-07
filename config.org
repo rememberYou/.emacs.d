@@ -1237,18 +1237,21 @@ install this LSP server through =lsp-mode= or with your system package manager.
 
 ** TypeScript
 
-If you use GNU Emacs 27+, I recommend to use [[https://github.com/ananthakumaran/tide][typescript-language-server]] as LSP
-server. After installed it with your package manager, you need to use
-=typescript-mode= to get the syntax color:
+For my TypeScript adventures, the [[http://github.com/ananthakumaran/typescript.el][typescript-mode]] package and the
+[[https://github.com/typescript-language-server/typescript-language-server][typescript-language-server]] (=ts-ls=) LSP server are more than enough. To use the
+LSP server, do not forget to configure the LSP package and to install this LSP
+server through =lsp-mode= or with your system package manager.
+
+Finally, I also use =prettier-js= to ensure proper indentation of my code. To
+enable it, you must install the =prettier= package with your package manager
+system.
 
 #+begin_src emacs-lisp
   (use-package typescript-mode
+    :hook ((typescript-mode . prettier-js-mode)
+           (typescript-mode . lsp-deferred))
     :mode ("\\.\\(ts\\|tsx\\)\\'")
-    :hook (typescript-mode . prettier-js-mode)
     :custom
-    (add-hook 'typescript-mode-hook #'(lambda ()
-                                        (enable-minor-mode
-                                         '("\\.tsx?\\'" . prettier-js-mode))))
     (lsp-clients-typescript-server-args '("--stdio" "--tsserver-log-file" "/dev/stderr")))
 #+end_src
 
