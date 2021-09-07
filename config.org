@@ -1102,13 +1102,15 @@ PHP.
 
 ** PlantUML
 
-It is often useful to be able to make diagrams for various large projects. For
-the creation of these diagrams, [[http://plantuml.com/][PlantUML]] remains the best.
+To make my UML diagrams with [[https://plantuml.com/][PlantUML]], I use [[https://github.com/skuro/plantuml-mode][plantuml-mode]]. Make sure you
+[[https://plantuml.com/download][download the PlantUML compiled JAR]] and to indicate the path (e.g.,
+=~/.local/lib/plantuml.jar=) of this JAR file with the =plantuml-jar-path= variable.
 
 #+begin_src emacs-lisp
   (use-package plantuml-mode
     :mode ("\\.\\(plantuml\\|puml\\)\\'")
-    :custom (plantuml-jar-path (expand-file-name (format "%s/plantuml.jar" xdg-lib))))
+    :custom (plantuml-jar-path
+             (expand-file-name (format "%s/plantuml.jar" xdg-lib))))
 #+end_src
 
 ** Python
