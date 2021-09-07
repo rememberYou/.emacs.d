@@ -22,7 +22,6 @@
 - [[#programming-languages-and-tools][Programming Languages and Tools]]
   - [[#c][C++]]
   - [[#cmake][CMake]]
-  - [[#css--less--scss][CSS – LESS – SCSS]]
   - [[#csv][CSV]]
   - [[#dart][Dart]]
   - [[#docker][Docker]]
@@ -40,6 +39,7 @@
   - [[#python][Python]]
   - [[#shell-script][Shell-script]]
   - [[#sql][SQL]]
+  - [[#style-sheet][Style Sheet]]
   - [[#typescript][TypeScript]]
   - [[#vuejs][Vue.js]]
   - [[#xml][XML]]
@@ -689,21 +689,6 @@ Finally, to compile with CMake in C++, I use [[https://github.com/atilaneves/cma
     :config (advice-add 'cmake-ide-compile :after #'my/switch-to-compilation-window))
 #+end_src
 
-** CSS – LESS – SCSS
-
-To have a fast and stable environment, I recommend using [[#lsp][LSP]] as a
-client for LSP servers and [[https://github.com/vscode-langservers/vscode-css-languageserver-bin][vscode-css-languageserver-bin]] as server.
-
-#+begin_src emacs-lisp
-  (use-package css-mode
-    :ensure nil
-    :custom (css-indent-offset 2))
-  (use-package less-css-mode :mode "\\.less\\'")
-  (use-package scss-mode
-    :ensure nil
-    :mode "\\.scss\\'")
-#+end_src
-
 ** CSV
 
 #+begin_src emacs-lisp
@@ -1224,6 +1209,21 @@ save a shell script file that begins with a =#!= shebang:
   (use-package sql-indent
     :after (:any sql sql-interactive-mode)
     :delight sql-mode "Σ ")
+#+end_src
+
+** Style Sheet
+
+GNU Emacs already has built-in packages for style sheet langages (e.g., CSS,
+LESS, and SCSS). Therefore, installing an appropriate LSP server and making sure
+that the variables are properly indented is more than enough. For the LSP
+server, I use [[https://github.com/vscode-langservers/vscode-css-languageserver][vscode-css-languageserver]] although it does not support the LESS
+language.
+
+#+begin_src emacs-lisp
+  (use-package css-mode
+    :ensure nil
+    :mode ("\\.css\\'")
+    :custom (css-indent-offset 2))
 #+end_src
 
 ** TypeScript
