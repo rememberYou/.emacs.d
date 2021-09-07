@@ -1000,13 +1000,13 @@ Minor mode with distinct support for =\label=, =\ref= and =\cite= in LaTeX.
 
 ** Lua
 
-I rarely program in Lua, but when I do, =lua-mode= satisfies me amply.
+I rarely program in Lua, but when I do, [[https://github.com/immerrr/lua-mode][lua-mode]] with [[https://emacs-lsp.github.io/lsp-mode/page/lsp-lua-language-server/][lua-language-server]] as LSP
+server satisfies me amply. To use it, do not forget to configure the LSP package
+and to install this LSP server through =lsp-mode= or with your system package
+manager.
 
 #+begin_src emacs-lisp
-  (use-package lua-mode
-    :delight "Λ "
-    :mode "\\.lua\\'"
-    :interpreter ("lua" . lua-mode))
+  (use-package lua-mode :delight "Λ" :mode "\\.lua\\'")
 #+end_src
 
 ** Markdown
