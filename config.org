@@ -1252,7 +1252,8 @@ system.
            (typescript-mode . lsp-deferred))
     :mode ("\\.\\(ts\\|tsx\\)\\'")
     :custom
-    (lsp-clients-typescript-server-args '("--stdio" "--tsserver-log-file" "/dev/stderr")))
+    (lsp-clients-typescript-server-args '("--stdio" "--tsserver-log-file" "/dev/stderr"))
+    (typescript-indent-level 2))
 #+end_src
 
 ** XML
