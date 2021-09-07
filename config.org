@@ -23,9 +23,8 @@
   - [[#c][C++]]
   - [[#cmake][CMake]]
   - [[#csv][CSV]]
-  - [[#dart][Dart]]
-  - [[#docker][Docker]]
-  - [[#emacs-lisp][Emacs Lisp]]
+  - [[#dart-and-flutter][Dart and Flutter]]
+  - [[#dockerfile][Dockerfile]]
   - [[#html][HTML]]
   - [[#ini][INI]]
   - [[#java][Java]]
@@ -297,6 +296,18 @@ that. If like me, you use =consult= with your minibuffer completion, then
 #+begin_src emacs-lisp
   (use-package consult-lsp
     :commands (consult-lsp-diagnostics consult-lsp-symbols))
+#+end_src
+
+Finally, if like me you need a debugger, [[https://github.com/emacs-lsp/dap-mode][dap-mode]] uses the Debug Adapter
+Protocol wire protocol for communication between client and Debug Server. You
+won't find a better debugger.
+
+#+begin_src emacs-lisp
+  (use-package dap-mode
+    :after lsp-mode
+    :config
+    (dap-mode t)
+    (dap-ui-mode t))
 #+end_src
 
 ** Theme
@@ -692,63 +703,44 @@ For my viewing pleasure, =csv-mode= provides a color syntax when editing CSV
 files.
 
 #+begin_src emacs-lisp
-  (use-package csv-mode
-    :mode ("\\.\\(csv\\|tsv\\)\\'"))
+  (use-package csv-mode :mode ("\\.\\(csv\\|tsv\\)\\'"))
 #+end_src
 
-** Dart
+** Dart and Flutter
 
-To have a fast and stable environment, I recommend using [[#lsp][LSP]] as a
-client for LSP servers and [[https://github.com/natebosch/dart_language_server][dart_language_server]] as server.
-
-To use =dart_language_server= with GNU Emacs, you must first install it
-with the package manager of your operating system.
+For the few times I have to develop in Dart, [[https://github.com/bradyt/dart-mode][dart-mode]] with [[https://emacs-lsp.github.io/lsp-dart/][lsp-dart]] as server
+LSP is great! To use it, make sure you install =dart= with your package manager and
+to configure the LSP package.
 
 #+begin_src emacs-lisp
   (use-package dart-mode
-    :defer 2
-    :custom
-    (dart-format-on-save t)
-    (dart-sdk-path "/opt/dart-sdk/bin/")
+    :after projectile
+    :mode "\\.dart\\'"
     :config
     (add-to-list 'projectile-project-root-files-bottom-up "pubspec.yaml")
     (add-to-list 'projectile-project-root-files-bottom-up "BUILD"))
-
-  (use-package flutter
-    :after dart-mode
-    :bind (:map dart-mode-map
-                ("C-c C-c" . flutter-run-or-hot-reload))
-    :custom (flutter-sdk-path "/opt/flutter/bin/"))
-
-  (use-package flutter-l10n-flycheck
-    :after flutter
-    :config (flutter-l10n-flycheck-setup))
 #+end_src
 
-** Docker
-
-I like to use Docker when I need to install various databases or other services
-that only work on a particular operating system. Docker ensures me to keep my operating
-system clean.
+To configure =lsp-dart=, nothing difficult. Remember to indicate the path to the
+Dart SDK dir. Finally, if you use Flutter, do not forget to install it too.
 
 #+begin_src emacs-lisp
-  (use-package dockerfile-mode
-    :delight "δ "
-    :mode "Dockerfile\\'")
+  (use-package lsp-dart
+    :hook (dart-mode . lsp-deferred)
+    :custom
+    (lsp-dart-dap-flutter-hot-reload-on-save t)
+    (lsp-dart-sdk-dir "/opt/flutter/bin/cache/dart-sdk/"))
 #+end_src
 
-** Emacs Lisp
+** Dockerfile
+
+I often use Docker with Dockerfile. To support it with LSP and GNU Emacs, the
+package dockerfile-mode with [[dockerfile-language-server-nodejs][dockerfile-language-server-nodejs]] (=dockerfile-ls=)
+as LSP server is enough. To use it, make sure you install it with your package
+manager and to configure the LSP package.
 
 #+begin_src emacs-lisp
-  (use-package elisp-mode :ensure nil :delight "ξ ")
-#+end_src
-
-Provides minibuffer hints when working with Emacs Lisp.
-
-#+begin_src emacs-lisp
-  (use-package eldoc
-    :delight
-    :hook (emacs-lisp-mode . eldoc-mode))
+  (use-package dockerfile-mode :delight "δ " :mode "Dockerfile\\'")
 #+end_src
 
 ** HTML
@@ -772,8 +764,7 @@ Let's configure =emmet-mode=, to produce HTML from CSS-like selector:
 To modify the INI files, you need to install the =ini-mode= package.
 
 #+begin_src emacs-lisp
-  (use-package ini-mode
-    :mode ("\\.ini\\'"))
+  (use-package ini-mode :mode "\\.ini\\'")
 #+end_src
 
 ** Java
@@ -917,8 +908,9 @@ Here is an example configuration for a project that uses =requirejs= and
 
 JSON is probably the data format I use the most in the web. That's why its setup
 below is a bit more advanced. As LSP server I prefer
-[[https://emacs-lsp.github.io/lsp-mode/page/lsp-json/][vscode-json-langaugeserver]]. Although [[https://github.com/joshwnj/json-mode][json-mode]] is a package that is no longer
-under development, it still satisfies my needs.
+[[https://emacs-lsp.github.io/lsp-mode/page/lsp-json/][vscode-json-langaugeserver]]. To use it, make sure you install it with your
+package manager and to configure the LSP package. Although [[https://github.com/joshwnj/json-mode][json-mode]] is a
+package that is no longer under development, it still satisfies my needs.
 
 #+begin_src emacs-lisp
   (use-package json-mode
@@ -1216,11 +1208,11 @@ save a shell script file that begins with a =#!= shebang:
 
 ** Style Sheet
 
-GNU Emacs already has built-in packages for style sheet langages (e.g., CSS,
+GNU Emacs already has built-in packages for style sheet languages (e.g., CSS,
 LESS, and SCSS). Therefore, installing an appropriate LSP server and making sure
 that the variables are properly indented is more than enough. For the LSP
-server, I use [[https://github.com/vscode-langservers/vscode-css-languageserver][vscode-css-languageserver]] although it does not support the LESS
-language.
+server, I use [[https://github.com/vscode-langservers/vscode-css-languageserver][vscode-css-languageserver]] (=css-ls=) although it does not support
+the LESS language.
 
 #+begin_src emacs-lisp
   (use-package css-mode
@@ -1246,6 +1238,19 @@ server. After installed it with your package manager, you need to use
     (lsp-clients-typescript-server-args '("--stdio" "--tsserver-log-file" "/dev/stderr")))
 #+end_src
 
+** XML
+
+To manage XML related files the =nxml-mode= package built into GNU Emacs and the
+[[https://emacs-lsp.github.io/lsp-mode/page/lsp-xml/][LemMinX]] (=xmlls=) LSP server does the job. To use it, make sure you install it
+with your package manager and to configure the LSP package.
+
+#+begin_src emacs-lisp
+  (use-package nxml-mode
+    :ensure nil
+    :hook (nxml-mode . lsp-deferred)
+    :mode ("\\.\\(xml\\|xsd\\|wsdl\\)\\'"))
+#+end_src
+
 ** Vue.js
 
 If you need to program in =Vue.js=, I wish you good luck in having a fast and
@@ -1269,26 +1274,17 @@ Let's define [[https://github.com/AdamNiederer/vue-mode][vue-mode]] as major mod
     (vue-html-extra-indent 2))
 #+end_src
 
-** XML
-
-Unfortunately, XML is still used, especially for creating web services in SOAP.
-However, =xml-mode= exists to help us:
-
-#+begin_src emacs-lisp
-  (use-package xml-mode
-    :ensure nil
-    :mode ("\\.\\(xsd\\|wsdl\\)\\'"))
-#+end_src
-
 ** YAML
 
-=yaml-mode= gives me the possibility to easily manage =.yml= files.
+When I have to develop through YAML files, the [[https://github.com/yoshiki/yaml-mode][yaml-mode]] package with the
+[[https://emacs-lsp.github.io/lsp-mode/page/lsp-yaml/][yaml-language-server]] LSP server meets my needs. To use it, make sure you install
+it with your package manager and to configure the LSP package.
 
 #+begin_src emacs-lisp
   (use-package yaml-mode
-    :delight "ψ "
-    :mode "\\.yml\\'"
-    :interpreter ("yml" . yml-mode))
+    :delight "ψ"
+    :hook (yaml-mode . lsp-deferred)
+    :mode ("\\.\\(yaml\\|yml\\)\\'"))
 #+end_src
 
 ** Yarn
@@ -1318,10 +1314,13 @@ and multiple, selectable "styles", whose use is fully customizable by the user.
 [[https://github.com/jwiegley/alert][John Wiegley]]
 #+end_quote
 
-  (use-package alert
-    :defer 1
-    :custom (alert-default-style 'libnotify))
 #+begin_src emacs-lisp
+    (use-package org-wild-notifier
+      :after org
+      :custom
+      (alert-default-style 'libnotify)
+      (org-wild-notifier-notification-title "Agenda Reminder")
+      :config (org-wild-notifier-mode))
 #+end_src
 
 ** Auto-Completion
