@@ -22,13 +22,15 @@
 - [[#programming-languages-and-tools][Programming Languages and Tools]]
   - [[#c][C++]]
   - [[#cmake][CMake]]
-  - [[#data-storage][Data Storage]]
+  - [[#csv][CSV]]
   - [[#dart][Dart]]
   - [[#docker][Docker]]
   - [[#emacs-lisp][Emacs Lisp]]
   - [[#html][HTML]]
+  - [[#ini][INI]]
   - [[#java][Java]]
   - [[#javascript][JavaScript]]
+  - [[#json][JSON]]
   - [[#latex][LaTeX]]
   - [[#lua][Lua]]
   - [[#markdown][Markdown]]
@@ -39,7 +41,9 @@
   - [[#sql][SQL]]
   - [[#style-sheet][Style Sheet]]
   - [[#typescript][TypeScript]]
+  - [[#xml][XML]]
   - [[#vuejs][Vue.js]]
+  - [[#yaml][YAML]]
   - [[#yarn][Yarn]]
 - [[#advanced-configuration][Advanced Configuration]]
   - [[#alert][Alert]]
@@ -682,13 +686,7 @@ Finally, to compile with CMake in C++, I use [[https://github.com/atilaneves/cma
     :config (advice-add 'cmake-ide-compile :after #'my/switch-to-compilation-window))
 #+end_src
 
-** Data Storage
-
-Sooner or later, one is confronted with having to edit files related to data
-storage through languages such as CSV, JSON, INI, XML and YAML. This sub-section
-is about improving their editing with GNU Emacs.
-
-*** CSV
+** CSV
 
 For my viewing pleasure, =csv-mode= provides a color syntax when editing CSV
 files.
@@ -696,68 +694,6 @@ files.
 #+begin_src emacs-lisp
   (use-package csv-mode
     :mode ("\\.\\(csv\\|tsv\\)\\'"))
-#+end_src
-
-*** JSON
-
-JSON is probably the data format I use the most in the web. That's why its setup
-below is a bit more advanced. As LSP server I prefer
-[[https://emacs-lsp.github.io/lsp-mode/page/lsp-json/][vscode-json-langaugeserver]]. Although [[https://github.com/joshwnj/json-mode][json-mode]] is a package that is no longer
-under development, it still satisfies my needs.
-
-#+begin_src emacs-lisp
-  (use-package json-mode
-    :delight "J "
-    :mode "\\.json\\'"
-    :hook (before-save . my/json-mode-before-save-hook)
-    :preface
-    (defun my/json-mode-before-save-hook ()
-      (when (eq major-mode 'json-mode)
-        (json-pretty-print-buffer)))
-
-    (defun my/json-array-of-numbers-on-one-line (encode array)
-      "Prints the arrays of numbers in one line."
-      (let* ((json-encoding-pretty-print
-              (and json-encoding-pretty-print
-                   (not (loop for x across array always (numberp x)))))
-             (json-encoding-separator (if json-encoding-pretty-print "," ", ")))
-        (funcall encode array)))
-    :config (advice-add 'json-encode-array :around #'my/json-array-of-numbers-on-one-line))
-#+end_src
-
-*** INI
-
-To modify the INI files, you need to install the =ini-mode= package.
-
-#+begin_src emacs-lisp
-  (use-package ini-mode
-    :mode ("\\.ini\\'"))
-#+end_src
-
-*** XML
-
-To manage XML related files the =nxml-mode= package built into GNU Emacs and the
-[[https://emacs-lsp.github.io/lsp-mode/page/lsp-xml/][LemMinX]] (=xmlls=) LSP server does the job. To use it, make sure you install it
-with your package manager and to configure the LSP package.
-
-#+begin_src emacs-lisp
-  (use-package nxml-mode
-    :ensure nil
-    :hook (nxml-mode . lsp-deferred)
-    :mode ("\\.\\(xml\\|xsd\\|wsdl\\)\\'"))
-#+end_src
-
-*** YAML
-
-When I have to develop through YAML files, the [[https://github.com/yoshiki/yaml-mode][yaml-mode]] package with the
-[[https://emacs-lsp.github.io/lsp-mode/page/lsp-yaml/][yaml-language-server]] LSP server meets my needs. To use it, make sure you install
-it with your package manager and to configure the LSP package.
-
-#+begin_src emacs-lisp
-  (use-package yaml-mode
-    :delight "ψ"
-    :hook (yaml-mode . lsp-deferred)
-    :mode ("\\.\\(yaml\\|yml\\)\\'"))
 #+end_src
 
 ** Dart
@@ -829,6 +765,15 @@ Let's configure =emmet-mode=, to produce HTML from CSS-like selector:
   (use-package emmet-mode
     :delight
     :hook (css-mode sgml-mode web-mode))
+#+end_src
+
+** INI
+
+To modify the INI files, you need to install the =ini-mode= package.
+
+#+begin_src emacs-lisp
+  (use-package ini-mode
+    :mode ("\\.ini\\'"))
 #+end_src
 
 ** Java
@@ -965,6 +910,34 @@ Here is an example configuration for a project that uses =requirejs= and
       }
     }
   }
+#+end_src
+
+
+** JSON
+
+JSON is probably the data format I use the most in the web. That's why its setup
+below is a bit more advanced. As LSP server I prefer
+[[https://emacs-lsp.github.io/lsp-mode/page/lsp-json/][vscode-json-langaugeserver]]. Although [[https://github.com/joshwnj/json-mode][json-mode]] is a package that is no longer
+under development, it still satisfies my needs.
+
+#+begin_src emacs-lisp
+  (use-package json-mode
+    :delight "J "
+    :mode "\\.json\\'"
+    :hook (before-save . my/json-mode-before-save-hook)
+    :preface
+    (defun my/json-mode-before-save-hook ()
+      (when (eq major-mode 'json-mode)
+        (json-pretty-print-buffer)))
+
+    (defun my/json-array-of-numbers-on-one-line (encode array)
+      "Prints the arrays of numbers in one line."
+      (let* ((json-encoding-pretty-print
+              (and json-encoding-pretty-print
+                   (not (loop for x across array always (numberp x)))))
+             (json-encoding-separator (if json-encoding-pretty-print "," ", ")))
+        (funcall encode array)))
+    :config (advice-add 'json-encode-array :around #'my/json-array-of-numbers-on-one-line))
 #+end_src
 
 ** LaTeX
