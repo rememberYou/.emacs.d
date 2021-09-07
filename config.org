@@ -1231,7 +1231,7 @@ install this LSP server through =lsp-mode= or with your system package manager.
 #+begin_src emacs-lisp
   (use-package css-mode
     :ensure nil
-    :mode ("\\.css\\'")
+    :mode "\\.css\\'"
     :custom (css-indent-offset 2))
 #+end_src
 
