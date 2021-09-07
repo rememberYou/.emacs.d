@@ -612,8 +612,9 @@ languages and their tools.
 
 ** C++
 
-When I develop in C++ with GNU Emacs, I use the [[https://github.com/MaskRay/ccls][ccls]] LSP server. To use it, make
-sure you install it with your package manager and to configure the LSP package.
+When I develop in C++ with GNU Emacs, I use the [[https://github.com/MaskRay/ccls][ccls]] LSP server. To use it,
+do not forget to configure the LSP package and to install this LSP server through
+=lsp-mode= or with your system package manager.
 
 #+begin_src emacs-lisp
   (use-package ccls
@@ -656,8 +657,9 @@ as much as possible.
 
 CMake is a cross-platform build system generator. For its support with GNU
 Emacs, the [[https://github.com/Kitware/CMake/blob/master/Auxiliary/cmake-mode.el][cmake-mode]] package with the installation of the [[https://emacs-lsp.github.io/lsp-mode/page/lsp-cmake/][cmake-language-server]]
-LSP server is sufficient. To use it, make sure you install it with your package
-manager and to configure the LSP package.
+LSP server is sufficient. To use it, do not forget to configure the LSP package
+and to install this LSP server through =lsp-mode= or with your system package
+manager.
 
 #+begin_src emacs-lisp
   (use-package cmake-mode
@@ -709,8 +711,8 @@ files.
 ** Dart and Flutter
 
 For the few times I have to develop in Dart, [[https://github.com/bradyt/dart-mode][dart-mode]] with [[https://emacs-lsp.github.io/lsp-dart/][lsp-dart]] as server
-LSP is great! To use it, make sure you install =dart= with your package manager and
-to configure the LSP package.
+LSP is great! To use it, do not forget to configure the LSP package and to
+install =dart= with your system package manager.
 
 #+begin_src emacs-lisp
   (use-package dart-mode
@@ -722,7 +724,8 @@ to configure the LSP package.
 #+end_src
 
 To configure =lsp-dart=, nothing difficult. Remember to indicate the path to the
-Dart SDK dir. Finally, if you use Flutter, do not forget to install it too.
+Dart SDK dir. Finally, if you use Flutter, do not forget to install it too with
+your system package manager.
 
 #+begin_src emacs-lisp
   (use-package lsp-dart
@@ -736,8 +739,9 @@ Dart SDK dir. Finally, if you use Flutter, do not forget to install it too.
 
 I often use Docker with Dockerfile. To support it with LSP and GNU Emacs, the
 package dockerfile-mode with [[dockerfile-language-server-nodejs][dockerfile-language-server-nodejs]] (=dockerfile-ls=)
-as LSP server is enough. To use it, make sure you install it with your package
-manager and to configure the LSP package.
+as LSP server is enough. To use it, do not forget to configure the LSP package
+and to install this LSP server through =lsp-mode= or with your system package
+manager.
 
 #+begin_src emacs-lisp
   (use-package dockerfile-mode :delight "δ " :mode "Dockerfile\\'")
@@ -745,19 +749,12 @@ manager and to configure the LSP package.
 
 ** HTML
 
-To have a fast and stable environment, I recommend using [[#lsp][LSP]] as a
-client for LSP servers and [[https://github.com/vscode-langservers/vscode-html-languageserver][vscode-html-languageserver]] as server.
-
-To use =vscode-html-languageserver= with GNU Emacs, you must first install it
-with the package manager of your operating system.
-
-Let's configure =emmet-mode=, to produce HTML from CSS-like selector:
-
-#+begin_src emacs-lisp
-  (use-package emmet-mode
-    :delight
-    :hook (css-mode sgml-mode web-mode))
-#+end_src
+Rare are the times when I had to code in raw HTML. When it was the case, I used
+the [[https://emacs-lsp.github.io/lsp-mode/page/lsp-html/][vscode-html-languageserver-bin]] (=html-ls=) LSP server with =html-mode=. To use
+it, do not forget to configure the LSP package and to install this LSP server
+through =lsp-mode= or with your system package manager. However, there are times
+when I have to handle CSS and JavaScript directly in the HTML. For this reason,
+I use [[https://github.com/fxbois/web-mode][web-mode]] while keeping the LSP server to benefit from =lsp-ui=.
 
 ** INI
 
@@ -814,7 +811,7 @@ blog which I found very well explained.
 [[https://emacs.cafe/emacs/javascript/setup/2017/05/09/emacs-setup-javascript-2.html][Setting up Emacs for JavaScript (part #2)]]
 
 I like to use [[https://prettier.io/][prettier]] to get my TypeScript code clean. To use it,
-don't forget to install it with your package manager.
+do not forget to install it with your package manager.
 
 #+begin_src emacs-lisp
   (use-package prettier-js
@@ -902,7 +899,6 @@ Here is an example configuration for a project that uses =requirejs= and
     }
   }
 #+end_src
-
 
 ** JSON
 
@@ -1078,7 +1074,7 @@ The function below provides my own PHP configuration with =flycheck=.
     (make-local-variable 'web-mode-css-indent-offset))
 #+end_src
 
-Don't forget to add the following line in the =web-mode= package
+do not forget to add the following line in the =web-mode= package
 configuration:
 
 #+BEGIN_EXAMPLE
@@ -1117,10 +1113,10 @@ LSP server. =mspyls= is faster than =pylsp=, but =mspyls= has a memory leakage. 
 some reasons, I have some issues with =pyright= and =company=, the successor of
 =mspyls=. From then on, I use =pylsp= on my daily basis.
 
-I use [[https://github.com/psf/black][black]] to reformat my Python buffer. Before use it, don't forget to install
+I use [[https://github.com/psf/black][black]] to reformat my Python buffer. Before use it, do not forget to install
 =python-black= in your system.
 
-To sort my Python imports, [[https://github.com/paetzke/py-isort.el][py-isort]] does a good job. Also, don't forget to
+To sort my Python imports, [[https://github.com/paetzke/py-isort.el][py-isort]] does a good job. Also, do not forget to
 install =python-isort= in your system.
 
 Let's take a look to my Python configuration:
@@ -1212,7 +1208,8 @@ GNU Emacs already has built-in packages for style sheet languages (e.g., CSS,
 LESS, and SCSS). Therefore, installing an appropriate LSP server and making sure
 that the variables are properly indented is more than enough. For the LSP
 server, I use [[https://github.com/vscode-langservers/vscode-css-languageserver][vscode-css-languageserver]] (=css-ls=) although it does not support
-the LESS language.
+the LESS language. To use it, do not forget to configure the LSP package and to
+install this LSP server through =lsp-mode= or with your system package manager.
 
 #+begin_src emacs-lisp
   (use-package css-mode
@@ -1241,8 +1238,9 @@ server. After installed it with your package manager, you need to use
 ** XML
 
 To manage XML related files the =nxml-mode= package built into GNU Emacs and the
-[[https://emacs-lsp.github.io/lsp-mode/page/lsp-xml/][LemMinX]] (=xmlls=) LSP server does the job. To use it, make sure you install it
-with your package manager and to configure the LSP package.
+[[https://emacs-lsp.github.io/lsp-mode/page/lsp-xml/][LemMinX]] (=xmlls=) LSP server does the job. To use it, do not forget to configure
+the LSP package and to install this LSP server through =lsp-mode= or with your
+system package manager.
 
 #+begin_src emacs-lisp
   (use-package nxml-mode
@@ -1260,7 +1258,7 @@ use it, I pulled my hair out.
 Until this day, [[https://github.com/emacs-lsp-legacy/lsp-vue][lsp-vue]] as LSP client and [[https://github.com/vuejs/vetur/tree/master/server][vue-language-server]] as LSP server,
 seems to be the best combo so far.
 
-*NOTE:* =lsp-vue= is included in =lsp-mode=. Therefore, don't forget to
+*NOTE:* =lsp-vue= is included in =lsp-mode=. Therefore, do not forget to
 configure [[#lsp][lsp-mode]].
 
 Let's define [[https://github.com/AdamNiederer/vue-mode][vue-mode]] as major mode of our =.vue= files:
@@ -1277,8 +1275,9 @@ Let's define [[https://github.com/AdamNiederer/vue-mode][vue-mode]] as major mod
 ** YAML
 
 When I have to develop through YAML files, the [[https://github.com/yoshiki/yaml-mode][yaml-mode]] package with the
-[[https://emacs-lsp.github.io/lsp-mode/page/lsp-yaml/][yaml-language-server]] LSP server meets my needs. To use it, make sure you install
-it with your package manager and to configure the LSP package.
+[[https://emacs-lsp.github.io/lsp-mode/page/lsp-yaml/][yaml-language-server]] LSP server meets my needs. To use it, do not forget to
+configure the LSP package and to install this LSP server through =lsp-mode= or
+with your system package manager.
 
 #+begin_src emacs-lisp
   (use-package yaml-mode
@@ -1304,7 +1303,7 @@ places this buffer in read-only and activates the syntax color for these files.
 
 ** Alert
 
-Most packages use =alerts= to make notifications with =libnotify=. Don't forget
+Most packages use =alerts= to make notifications with =libnotify=. Do not forget
 to first install a notification daemon, like =dunst=.
 
 #+begin_quote
@@ -2483,14 +2482,14 @@ learn from more competent people than me on a subject.
 
 Besides, for people like me, who want to store your password in a /GPG/ file,
 you just need to specify a file priority list with =auth-sources=. Of course,
-don't forget to add this line in your =.authinfo.gpg= file and if possible in
+do not forget to add this line in your =.authinfo.gpg= file and if possible in
 the first line, where /<nickname>/ and /<password>/ match your login details.
 
 #+BEGIN_EXAMPLE
   machine irc.libera.chat login <nickname> password <password> port 6697
 #+END_EXAMPLE
 
-Then encrypt that file with =gpg -c .authinfo= and don't forget to delete the
+Then encrypt that file with =gpg -c .authinfo= and do not forget to delete the
 =.authinfo= file.
 
 ** Circe
