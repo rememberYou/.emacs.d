@@ -1011,16 +1011,24 @@ manager.
 
 ** Markdown
 
-Before you can use this package, make sure you install =pandoc= on your
-operating system.
+To edit my files in Markdown, I use [[https://github.com/jrblevin/markdown-mode][markdown-mode]] with [[https://emacs-lsp.github.io/lsp-mode/page/lsp-markdown/][unified-language-server]]
+as LSP server. To use it, do not forget to configure the LSP package and to
+install this LSP server with your system package manager. Added to that, to
+convert Markdown files, you can also install [[https://github.com/jgm/pandoc][pandoc]] with your package manager
+system.
 
 #+begin_src emacs-lisp
   (use-package markdown-mode
-    :delight "μ "
+    :delight "μ"
     :ensure-system-package (pandoc . "yay -S pandoc")
     :mode ("\\.\\(md\\|markdown\\)\\'")
     :custom (markdown-command "/usr/bin/pandoc"))
+#+end_src
 
+Finally, it is always good to have a preview of the Markdown rendering. The
+[[https://github.com/ancane/markdown-preview-mode][markdown-preview-mode]] package allows this.
+
+#+begin_src emacs-lisp
   (use-package markdown-preview-mode
     :commands markdown-preview-mode
     :custom
@@ -1028,12 +1036,12 @@ operating system.
      (list (concat "https://github.com/highlightjs/highlight.js/"
                    "9.15.6/highlight.min.js")
            "<script>
-              $(document).on('mdContentChange', function() {
-                $('pre code').each(function(i, block)  {
-                  hljs.highlightBlock(block);
+                $(document).on('mdContentChange', function() {
+                  $('pre code').each(function(i, block)  {
+                    hljs.highlightBlock(block);
+                  });
                 });
-              });
-            </script>"))
+              </script>"))
     (markdown-preview-stylesheets
      (list (concat "https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/"
                    "3.0.1/github-markdown.min.css")
@@ -1041,16 +1049,16 @@ operating system.
                    "9.15.6/styles/github.min.css")
 
            "<style>
-              .markdown-body {
-                box-sizing: border-box;
-                min-width: 200px;
-                max-width: 980px;
-                margin: 0 auto;
-                padding: 45px;
-              }
+                .markdown-body {
+                  box-sizing: border-box;
+                  min-width: 200px;
+                  max-width: 980px;
+                  margin: 0 auto;
+                  padding: 45px;
+                }
 
-              @media (max-width: 767px) { .markdown-body { padding: 15px; } }
-            </style>")))
+                @media (max-width: 767px) { .markdown-body { padding: 15px; } }
+              </style>")))
 #+end_src
 
 ** PHP
