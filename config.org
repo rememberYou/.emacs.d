@@ -1281,7 +1281,7 @@ with your system package manager.
 
 #+begin_src emacs-lisp
   (use-package vue-mode
-    :delight "V "
+    :delight "V"
     :hook (vue-mode . lsp-deferred)
     :mode "\\.vue\\'"
     :custom (vue-html-extra-indent 2))
