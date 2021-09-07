@@ -766,30 +766,27 @@ To modify the INI files, you need to install the =ini-mode= package.
 
 ** Java
 
-To have a fast and stable environment, I recommend using [[https://github.com/emacs-lsp/lsp-java][lsp-java]] as
-LSP client and [[https://projects.eclipse.org/projects/eclipse.jdt.ls][Eclipse JDT Language Server]] as LSP server.
-
-*NOTE:* before configuring =lsp-java=, don't forget to configure [[#lsp][lsp-mode]].
-
-Let's define the LSP client to use the LSP server:
+To support Java with GNU Emacs, I use [[https://github.com/emacs-lsp/lsp-java][lsp-java]] as LSP client with [[https://projects.eclipse.org/projects/eclipse.jdt.ls][Eclipse JDT
+Language Server]] (=jdtls=) as LSP server. To use it, do not forget to configure the
+LSP package and to install this LSP server through =lsp-mode= or with your system
+package manager. If the LSP server is not yet installed, LSP will install it in
+the =~/.emacs.d/.cache/lsp/eclipse.jdt.ls/= directory. Personally, I like to
+follow XDG conventions by moving the LSP server to a more appropriate location
+(e.g., =~/.local/lib/eclipse.jdt.ls=).
 
 #+begin_src emacs-lisp
   (use-package lsp-java
-    :hook (java-mode . (lambda ()
-                         (require 'lsp-java)
-                         (lsp-deferred)))
+    :hook (java-mode . lsp-deferred)
     :custom (lsp-java-server-install-dir
-             (expand-file-name (format "%s/eclipse.jdt.ls/server" xdg-lib))))
+             (expand-file-name (format "%s/eclipse.jdt.ls/" xdg-lib))))
 #+end_src
 
-*** Gradle
-
-Most of my Java projects are made with =gradle=. The configuration is easy
-enough:
+Most of my Java projects are made with =gradle=. From then on, [[https://github.com/jacobono/emacs-gradle-mode][gradle-mode]] with
+the configuration below allows me to compile my Java project with gradle easily.
 
 #+begin_src emacs-lisp
   (use-package gradle-mode
-    :mode ("\\.java\\'" "\\.gradle\\'")
+    :hook (java-mode . gradle-mode)
     :bind (:map gradle-mode-map
                 ("C-c C-c" . gradle-build)
                 ("C-c C-t" . gradle-test))
