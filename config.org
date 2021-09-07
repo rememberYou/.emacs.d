@@ -1201,12 +1201,22 @@ save a shell script file that begins with a =#!= shebang:
 
 ** SQL
 
-=sql-indent= gives me the possibility to easily manage =.sql= files.
+For handling SQL files, the =sql-mode= built-in package of GNU Emacs with the [[https://emacs-lsp.github.io/lsp-mode/page/lsp-sqls/][sqls]]
+LSP server does the job.
+
+#+begin_src emacs-lisp
+  (use-package sql-mode
+    :ensure nil
+    :ensure-system-package (sqls . "yay -S sqls")
+    :mode "\\.sql\\'")
+#+end_src
+
+Finally, I use [[https://github.com/alex-hhh/emacs-sql-indent][sql-indent]] to better manage the indentations of my SQL queries.
 
 #+begin_src emacs-lisp
   (use-package sql-indent
-    :after (:any sql sql-interactive-mode)
-    :delight sql-mode "Σ ")
+    :delight sql-mode "Σ"
+    :hook (sql-mode . sqlind-minor-mode))
 #+end_src
 
 ** Style Sheet
