@@ -1272,25 +1272,19 @@ system package manager.
 
 ** Vue.js
 
-If you need to program in =Vue.js=, I wish you good luck in having a fast and
-stable environment. Fortunately, I rarely use =Vue.js=, but the little I had to
-use it, I pulled my hair out.
-
-Until this day, [[https://github.com/emacs-lsp-legacy/lsp-vue][lsp-vue]] as LSP client and [[https://github.com/vuejs/vetur/tree/master/server][vue-language-server]] as LSP server,
-seems to be the best combo so far.
-
-*NOTE:* =lsp-vue= is included in =lsp-mode=. Therefore, do not forget to
-configure [[#lsp][lsp-mode]].
-
-Let's define [[https://github.com/AdamNiederer/vue-mode][vue-mode]] as major mode of our =.vue= files:
+God keep me away from [[https://vuejs.org/][Vue.js]]. The few times I had to develop with it, I pulled
+my hair out. For its support, I managed to get some semblance of stability with
+the [[https://github.com/AdamNiederer/vue-mode][vue-mode]] package and the [[https://github.com/vuejs/vetur/tree/master/server][vue-language-server]] (=vls=) LSP. However, the CSS
+support with =vue-mode= is not great. To use the LSP server, do not forget to
+configure the LSP package and to install this LSP server through =lsp-mode= or
+with your system package manager.
 
 #+begin_src emacs-lisp
   (use-package vue-mode
     :delight "V "
+    :hook (vue-mode . lsp-deferred)
     :mode "\\.vue\\'"
-    :custom
-    (mmm-submode-decoration-level 0)
-    (vue-html-extra-indent 2))
+    :custom (vue-html-extra-indent 2))
 #+end_src
 
 ** YAML
