@@ -40,8 +40,8 @@
   - [[#sql][SQL]]
   - [[#style-sheet][Style Sheet]]
   - [[#typescript][TypeScript]]
-  - [[#xml][XML]]
   - [[#vuejs][Vue.js]]
+  - [[#xml][XML]]
   - [[#yaml][YAML]]
 - [[#advanced-configuration][Advanced Configuration]]
   - [[#alert][Alert]]
@@ -468,7 +468,7 @@ values.
   (use-package dired
     :ensure nil
     :commands (dired dired-jump)
-    :delight "Dired "
+    :delight "Dired"
     :custom
     (dired-auto-revert-buffer t)
     (dired-dwim-target t)
@@ -618,7 +618,7 @@ to configure the LSP package and to install this LSP server through LSP mode or
 with your system package manager.
 
 Finally, the following snippet ensures that execution right (with =chmod +x=) is
-automatically granted to save a shell script file that begins with a =#!= shebang:
+automatically granted to save a shell script file that begins with a =#!= shebang.
 
 #+begin_src emacs-lisp
   (use-package sh-script
@@ -760,7 +760,7 @@ and to install this LSP server through LSP mode or with your system package
 manager.
 
 #+begin_src emacs-lisp
-  (use-package dockerfile-mode :delight "δ " :mode "Dockerfile\\'")
+  (use-package dockerfile-mode :delight "δ" :mode "Dockerfile\\'")
 #+end_src
 
 ** HTML
@@ -879,7 +879,7 @@ package that is no longer under development, it still satisfies my needs.
 
 #+begin_src emacs-lisp
   (use-package json-mode
-    :delight "J "
+    :delight "J"
     :mode "\\.json\\'"
     :hook (before-save . my/json-mode-before-save-hook)
     :preface
@@ -1116,8 +1116,8 @@ Let's take a look to my Python configuration:
     :custom (blacken-line-length 79))
 
   (use-package python-mode
-    :delight "π "
     :ensure nil
+    :delight "π"
     :bind (:map python-mode-map
                 ("M-[" . python-nav-backward-block)
                 ("M-]" . python-nav-forward-block))
@@ -1165,19 +1165,7 @@ Let's take a look to my Python configuration:
     :config
     (pyvenv-tracking-mode 1))
 #+end_src
-
-** Shell-script
-
-A recent thing when you create/edit a shell script file is to automatically
-grant it execution rights (with =chmod +x=).
-
-The snippet below ensures that the execution right is automatically granted to
-save a shell script file that begins with a =#!= shebang:
-
-#+begin_src emacs-lisp
-  (use-package sh-script
-    :ensure nil
-    :hook (after-save . executable-make-buffer-file-executable-if-script-p))
+    :config (pyvenv-tracking-mode))
 #+end_src
 
 ** SQL
@@ -1221,11 +1209,13 @@ install this LSP server through LSP mode or with your system package manager.
 For my TypeScript adventures, the [[http://github.com/ananthakumaran/typescript.el][typescript-mode]] package and the
 [[https://github.com/typescript-language-server/typescript-language-server][typescript-language-server]] (=ts-ls=) LSP server are more than enough. To use the
 LSP server, do not forget to configure the LSP package and to install this LSP
-server through LSP mode or with your system package manager.
+server through LSP mode or with your system package manager if it is not already
+done.
 
 Finally, I also use =prettier-js= to ensure proper indentation of my code. To
 enable it, you must install the =prettier= package with your package manager
-system.
+system. Concerning the configuration of prettier, this is done in the JavaScript
+section.
 
 #+begin_src emacs-lisp
   (use-package typescript-mode
@@ -1235,20 +1225,6 @@ system.
     :custom
     (lsp-clients-typescript-server-args '("--stdio" "--tsserver-log-file" "/dev/stderr"))
     (typescript-indent-level 2))
-#+end_src
-
-** XML
-
-To manage XML related files the =nxml-mode= package built into GNU Emacs and the
-[[https://emacs-lsp.github.io/lsp-mode/page/lsp-xml/][LemMinX]] (=xmlls=) LSP server does the job. To use it, do not forget to configure
-the LSP package and to install this LSP server through LSP mode or with your
-system package manager.
-
-#+begin_src emacs-lisp
-  (use-package nxml-mode
-    :ensure nil
-    :hook (nxml-mode . lsp-deferred)
-    :mode ("\\.\\(xml\\|xsd\\|wsdl\\)\\'"))
 #+end_src
 
 ** Vue.js
@@ -1268,6 +1244,20 @@ with your system package manager.
     :custom (vue-html-extra-indent 2))
 #+end_src
 
+** XML
+
+To manage XML related files the =nxml-mode= package built into GNU Emacs and the
+[[https://emacs-lsp.github.io/lsp-mode/page/lsp-xml/][LemMinX]] (=xmlls=) LSP server does the job. To use it, do not forget to configure
+the LSP package and to install this LSP server through LSP mode or with your
+system package manager.
+
+#+begin_src emacs-lisp
+  (use-package nxml-mode
+    :ensure nil
+    :hook (nxml-mode . lsp-deferred)
+    :mode ("\\.\\(xml\\|xsd\\|wsdl\\)\\'"))
+#+end_src
+
 ** YAML
 
 When I have to develop through YAML files, the [[https://github.com/yoshiki/yaml-mode][yaml-mode]] package with the
@@ -1280,19 +1270,6 @@ with your system package manager.
     :delight "ψ"
     :hook (yaml-mode . lsp-deferred)
     :mode ("\\.\\(yaml\\|yml\\)\\'"))
-#+end_src
-
-** Yarn
-
-Most of the web project that you will do, will use =yarn= as dependency management.
-
-It may be useful to take a look at the generated =yarn.lock= file. However, be
-careful to not modify it. The =yarn-mode= is a small package that automatically
-places this buffer in read-only and activates the syntax color for these files.
-
-#+begin_src emacs-lisp
-    (use-package yarn-mode
-      :mode "yarn\\.lock\\'")
 #+end_src
 
 * Advanced Configuration
@@ -2354,7 +2331,7 @@ An autonomous emacs major-mode for editing web templates.
 
 #+begin_src emacs-lisp
   (use-package web-mode
-    :delight "☸ "
+    :delight "☸"
     :hook ((css-mode web-mode) . rainbow-mode)
     :mode (("\\.blade\\.php\\'" . web-mode)
            ("\\.html?\\'" . web-mode)
@@ -2802,7 +2779,7 @@ Similar to IRC, if you want to store your password in a /GPG/ file, you just
 need to specify a file priority list with =auth-sources=, to tell GNU Emacs
 where to start looking for your password first.
 
-Then encrypt that file with =gpg -c .authinfo= and don't forget to delete the
+Then encrypt that file with =gpg -c .authinfo= and do not forget to delete the
 =.authinfo= file.
 
 #+begin_src emacs-lisp
@@ -3217,7 +3194,7 @@ and automatically expand it into function templates.
     :config (yasnippet-snippets-initialize))
 
   (use-package yasnippet
-    :delight yas-minor-mode " υ"
+    :delight yas-minor-mode "υ"
     :hook (yas-minor-mode . my/disable-yas-if-no-snippets)
     :config (yas-global-mode)
     :preface
@@ -3245,7 +3222,7 @@ authoring documents with a fast and effective plain-text system.
 #+begin_src emacs-lisp
   (use-package org
     :ensure org-plus-contrib
-    :delight "Θ "
+    :delight "Θ"
     :hook (org-mode . turn-off-auto-fill)
     :bind ("C-c i" . org-insert-structure-template)
     :preface
