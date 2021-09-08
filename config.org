@@ -26,7 +26,6 @@
   - [[#csv][CSV]]
   - [[#dart-and-flutter][Dart and Flutter]]
   - [[#dockerfile][Dockerfile]]
-  - [[#html][HTML]]
   - [[#ini][INI]]
   - [[#java][Java]]
   - [[#javascript][JavaScript]]
@@ -34,7 +33,7 @@
   - [[#latex][LaTeX]]
   - [[#lua][Lua]]
   - [[#markdown][Markdown]]
-  - [[#php][PHP]]
+  - [[#php-and-html][PHP and HTML]]
   - [[#plantuml][PlantUML]]
   - [[#python][Python]]
   - [[#sql][SQL]]
@@ -763,15 +762,6 @@ manager.
   (use-package dockerfile-mode :delight "δ" :mode "Dockerfile\\'")
 #+end_src
 
-** HTML
-
-Rare are the times when I had to code in raw HTML. When it was the case, I used
-the [[https://emacs-lsp.github.io/lsp-mode/page/lsp-html/][vscode-html-languageserver-bin]] (=html-ls=) LSP server with =html-mode=. To use
-it, do not forget to configure the LSP package and to install this LSP server
-through LSP mode or with your system package manager. However, there are times
-when I have to handle CSS and JavaScript directly in the HTML. For this reason,
-I use [[https://github.com/fxbois/web-mode][web-mode]] while keeping the LSP server to benefit from =lsp-ui=.
-
 ** INI
 
 To modify the INI files, you need to install the =ini-mode= package.
@@ -1042,43 +1032,38 @@ Finally, it is always good to have a preview of the Markdown rendering. The
             </style>")))
 #+end_src
 
-** PHP
+** PHP and HTML
 
-https://github.com/felixfbecker/php-language-server
+I hope to never develop in PHP again. The few times I had to do it, I use mainly
+use [[https://github.com/fxbois/web-mode][web-mode]] with [[https://github.com/bmewburn/vscode-intelephense][intelephense]] (=iph=) as LSP server for PHP and
+[[https://emacs-lsp.github.io/lsp-mode/page/lsp-html/][vscode-html-languageserver]] (=html-ls=) as LSP server for HTML. To use them, do not
+forget to configure the LSP package and to install these LSP servers through LSP
+mode or with your system package manager.
 
-For people who wonder, I don't use =php-mode= because it can't handle
-files that contain PHP and HTML. Also, why use another package when
-=web-mode= already provides everything I need?
-
-The function below provides my own PHP configuration with =flycheck=.
-
-#+begin_src emacs-lisp
-  (defun my/php-setup ()
-    (web-mode)
-    (make-local-variable 'web-mode-code-indent-offset)
-    (make-local-variable 'web-mode-markup-indent-offset)
-    (make-local-variable 'web-mode-css-indent-offset))
-#+end_src
-
-do not forget to add the following line in the =web-mode= package
-configuration:
-
-#+BEGIN_EXAMPLE
-  (add-to-list 'auto-mode-alist '("\\.php$" . my/php-setup))
-#+END_EXAMPLE
-
-I like to use =ac-php= to enable GNU Emacs auto-completion for
-PHP.
-
-**NOTE:** =ac-php= supports =company mode= and =auto-complete=.
+*NOTE:* to deal with HTML, I rarely use =html-mode= which does not handle HTML well
+in the presence of CSS and JavaScript.
 
 #+begin_src emacs-lisp
-  (use-package ac-php
-    :hook (php-mode . ac-php-mode)
-    :custom (ac-sources '(ac-source-php))
-    :config
-    (ac-php-core-eldoc-setup)
-    (auto-complete-mode t))
+  (use-package web-mode
+    :delight "☸"
+    :preface
+    (defun enable-minor-mode (my-pair)
+      "Enable minor mode if filename match the regexp."
+      (if (buffer-file-name)
+          (if (string-match (car my-pair) buffer-file-name)
+              (funcall (cdr my-pair)))))
+    :mode ("\\.\\(html\\|jsx\\|php\\)\\'" . web-mode)
+    :hook (web-mode . (lambda ()
+                        (enable-minor-mode
+                         '("\\.jsx?\\'" . prettier-js-mode))))
+    :custom
+    (web-mode-attr-indent-offset 2)
+    (web-mode-block-padding 2)
+    (web-mode-css-indent-offset 2)
+    (web-mode-code-indent-offset 2)
+    (web-mode-comment-style 2)
+    (web-mode-enable-current-element-highlight t)
+    (web-mode-markup-indent-offset 2))
 #+end_src
 
 ** PlantUML
@@ -2348,74 +2333,6 @@ this, Emacs treats "undo itself as another editing that can be undone".
     :custom
     (undo-tree-visualizer-timestamps t)
     (undo-tree-visualizer-diff t))
-#+end_src
-
-*** =web-mode=
-
-An autonomous emacs major-mode for editing web templates.
-
-#+begin_src emacs-lisp
-  (use-package web-mode
-    :delight "☸"
-    :hook ((css-mode web-mode) . rainbow-mode)
-    :mode (("\\.blade\\.php\\'" . web-mode)
-           ("\\.html?\\'" . web-mode)
-           ("\\.jsx\\'" . web-mode)
-           ("\\.php$" . my/php-setup))
-    :preface
-    (defun enable-minor-mode (my-pair)
-      "Enable minor mode if filename match the regexp."
-      (if (buffer-file-name)
-          (if (string-match (car my-pair) buffer-file-name)
-              (funcall (cdr my-pair)))))
-    :custom
-    (web-mode-attr-indent-offset 2)
-    (web-mode-block-padding 2)
-    (web-mode-css-indent-offset 2)
-    (web-mode-code-indent-offset 2)
-    (web-mode-comment-style 2)
-    (web-mode-enable-current-element-highlight t)
-    (web-mode-markup-indent-offset 2))
-
-  (add-hook 'web-mode-hook #'(lambda ()
-                               (enable-minor-mode
-                                '("\\.js?\\'" . prettier-js-mode))))
-
-  (add-hook 'web-mode-hook #'(lambda ()
-                               (enable-minor-mode
-                                '("\\.jsx?\\'" . prettier-js-mode))))
-
-  (add-hook 'web-mode-hook #'(lambda ()
-                               (enable-minor-mode
-                                '("\\.ts?\\'" . prettier-js-mode))))
-
-
-  (setq web-mode-code-indent-offset                   2
-        web-mode-markup-indent-offset                 2
-        web-mode-css-indent-offset                    2
-        web-mode-enable-html-entities-fontification   nil
-        web-mode-enable-block-face                    nil
-        web-mode-enable-comment-annotation            nil
-        web-mode-enable-comment-interpolation         nil
-        web-mode-enable-control-block-indentation     nil
-        web-mode-enable-css-colorization              nil
-        web-mode-enable-current-column-highlight      nil
-        web-mode-enable-current-element-highlight     nil
-        web-mode-enable-element-content-fontification nil
-        web-mode-enable-heredoc-fontification         nil
-        web-mode-enable-inlays                        nil
-        web-mode-enable-optional-tags                 nil
-        web-mode-enable-part-face                     nil
-        web-mode-enable-sexp-functions                nil
-        web-mode-enable-sql-detection                 nil
-        web-mode-enable-string-interpolation          nil
-        web-mode-enable-whitespace-fontification      nil
-        web-mode-enable-auto-expanding                nil
-        web-mode-enable-auto-indentation              nil
-        web-mode-enable-auto-closing                  nil
-        web-mode-enable-auto-opening                  nil
-        web-mode-enable-auto-pairing                  nil
-        web-mode-enable-auto-quoting                  nil)
 #+end_src
 
 *** =which-key=
