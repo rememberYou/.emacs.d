@@ -1424,50 +1424,6 @@ minimal GUI.
     (browse-url-generic-program "qutebrowser"))
 #+end_src
 
-*** =engine-mode=
-
-I use it to do most of my web searches without leaving GNU Emacs.
-
-#+begin_src emacs-lisp
-  (use-package engine-mode
-    :defer 3
-    :config
-    (defengine amazon
-      "http://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords=%s"
-      :keybinding "a")
-
-    (defengine duckduckgo
-      "https://duckduckgo.com/?q=%s"
-      :keybinding "d")
-
-    (defengine github
-      "https://github.com/search?ref=simplesearch&q=%s"
-      :keybinding "g")
-
-    (defengine google-images
-      "http://www.google.com/images?hl=en&source=hp&biw=1440&bih=795&gbv=2&aq=f&aqi=&aql=&oq=&q=%s"
-      :keybinding "i")
-
-    (defengine google-maps
-      "http://maps.google.com/maps?q=%s"
-      :keybinding "m"
-      :docstring "Mappin' it up.")
-
-    (defengine stack-overflow
-      "https://stackoverflow.com/search?q=%s"
-      :keybinding "s")
-
-    (defengine youtube
-      "http://www.youtube.com/results?aq=f&oq=&search_query=%s"
-      :keybinding "y")
-
-    (defengine wikipedia
-      "http://www.wikipedia.org/search-redirect.php?language=en&go=Go&search=%s"
-      :keybinding "w"
-      :docstring "Searchin' the wikis.")
-    (engine-mode t))
-#+end_src
-
 ** Calculator
 
 May be useful in a timely manner.
@@ -1825,7 +1781,6 @@ seamless, it's like a minor mode that disables itself auto-magically.
            ("C-c m" . hydra-magit/body)
            ("C-c o" . hydra-org/body)
            ("C-c p" . hydra-projectile/body)
-           ("C-c q" . hydra-query/body)
            ("C-c s" . hydra-spelling/body)
            ("C-c t" . hydra-tex/body)
            ("C-c u" . hydra-upload/body)
@@ -2083,22 +2038,9 @@ Group Projectile commands.
       ("s" counsel-rg "search"))))
 #+end_src
 
-*** Hydra / Query
 
-Group Query commands.
 
 #+begin_src emacs-lisp
-  (pretty-hydra-define hydra-query
-    (:hint nil :color teal :quit-key "q" :title (with-faicon "search" "Engine-Mode" 1 -0.05))
-    ("Query"
-     (("a" engine/search-amazon "amazon")
-      ("d" engine/search-duckduckgo "duckduckgo")
-      ("g" engine/search-github "github")
-      ("i" engine/search-google-images "google images")
-      ("m" engine/search-google-maps "google maps")
-      ("s" engine/search-stack-overflow "stack overflow")
-      ("w" engine/search-wikipedia "wikipedia")
-      ("y" engine/search-youtube "youtube"))))
 #+end_src
 
 *** Hydra / Spelling
