@@ -1415,7 +1415,7 @@ certain files with GNU Emacs.
 By default GNU Emacs provides the =browse-url= package to open a browser based on
 a query entered via our lovely text editor. Personally, I still prefer to
 directly use my browser, namely [[https://github.com/qutebrowser/qutebrowser][qutebrowser]]. However, nothing prevents us from
-configuring the =browse-url= packet.
+configuring the =browse-url= package.
 
 #+begin_src emacs-lisp
   (use-package browse-url
