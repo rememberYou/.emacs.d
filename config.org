@@ -667,9 +667,9 @@ automatically granted to save a shell script file that begins with a =#!= sheban
 
 ** C++
 
-When I develop in C++ with GNU Emacs, I use the [[https://github.com/MaskRay/ccls][ccls]] LSP server. To use it,
-do not forget to configure the LSP package and to install this LSP server through
-LSP mode or with your system package manager.
+When I develop in C++ with GNU Emacs, I use the [[https://github.com/MaskRay/ccls][ccls]] LSP server. To use it, do
+not forget to configure the LSP package and to install this LSP server through
+your system package manager.
 
 #+begin_src emacs-lisp
   (use-package ccls
@@ -1412,9 +1412,10 @@ certain files with GNU Emacs.
 
 ** Browser
 
-I try to avoid using the mouse as much as possible, even for
-navigation. Therefore, I use [[https://github.com/qutebrowser/qutebrowser][qutebrowser]], a keyboard-focused browser with a
-minimal GUI.
+By default GNU Emacs provides the =browse-url= package to open a browser based on
+a query entered via our lovely text editor. Personally, I still prefer to
+directly use my browser, namely [[https://github.com/qutebrowser/qutebrowser][qutebrowser]]. However, nothing prevents us from
+configuring the =browse-url= packet.
 
 #+begin_src emacs-lisp
   (use-package browse-url
