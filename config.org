@@ -608,7 +608,7 @@ package, I can easily do that.
 
 Section dedicated to the definition and customization of different programming
 languages and their tools. If you have the need to specify other programming
-languages, please check out the [[https://emacs-lsp.github.io/lsp-mode/page/languages/][language section]] of the LSP mode website.
+languages, please check out the [[https://emacs-lsp.github.io/lsp-mode/page/languages/][languages section]] of the LSP mode website.
 
 ** Bash
 
@@ -873,7 +873,7 @@ syntax color and avoid modifying it, the [[https://github.com/anachronic/yarn-mo
 
 JSON is probably the data format I use the most in the web. That's why its setup
 below is a bit more advanced. As LSP server I prefer
-[[https://emacs-lsp.github.io/lsp-mode/page/lsp-json/][vscode-json-langaugeserver]]. To use it, make sure you install it with your
+[[https://emacs-lsp.github.io/lsp-mode/page/lsp-json/][vscode-json-languageserver]]. To use it, make sure you install it with your
 package manager and to configure the LSP package. Although [[https://github.com/joshwnj/json-mode][json-mode]] is a
 package that is no longer under development, it still satisfies my needs.
 
