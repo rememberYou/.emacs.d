@@ -16,6 +16,7 @@
   - [[#lsp][LSP]]
   - [[#theme][Theme]]
   - [[#remove-mouse-interface][Remove Mouse Interface]]
+- [[#buffer-management][Buffer Management]]
 - [[#minibuffer-completion][Minibuffer Completion]]
 - [[#file-management][File Management]]
 - [[#window-management][Window Management]]
@@ -47,7 +48,6 @@
   - [[#auto-completion][Auto-Completion]]
   - [[#backups][Backups]]
   - [[#browser][Browser]]
-  - [[#buffers][Buffers]]
   - [[#calculator][Calculator]]
   - [[#calendar][Calendar]]
   - [[#dashboard][Dashboard]]
@@ -349,6 +349,46 @@ editor. Let's remove all those menu items related to the mouse interface.
     (scroll-bar-mode -1)
     (tool-bar-mode -1)
     (tooltip-mode -1))
+#+end_src
+
+* Buffer Management
+
+Buffers can quickly become a mess to manage. To manage them better, I use the
+=ibuffer= built-in package instead of =buffer-menu=, to have a nicer visual
+interface with a syntax color.
+
+In addition, some buffers may contain useful temporary information that should
+not be killed by accident. I make sure to set the buffers =*scratch*= and
+=*Messages*= to read-only.
+
+#+begin_src emacs-lisp
+  (use-package ibuffer
+    :ensure nil
+    :preface
+    (defvar *protected-buffers* '("*scratch*" "*Messages*")
+      "Buffers that cannot be killed.")
+
+    (defun my/protected-buffers ()
+      "Protects some buffers from being killed."
+      (dolist (buffer *protected-buffers*)
+        (with-current-buffer buffer
+          (emacs-lock-mode 'kill))))
+    :hook (after-init . my/protected-buffer)
+    :bind ("C-x C-b" . ibuffer))
+#+end_src
+
+I also use [[https://github.com/purcell/ibuffer-projectile][ibuffer-projectile]] to group the buffers in =ibuffer=
+list by projectile project.
+
+#+begin_src emacs-lisp
+  (use-package ibuffer-projectile
+    :after ibuffer
+    :preface
+    (defun my/ibuffer-projectile ()
+      (ibuffer-projectile-set-filter-groups)
+      (unless (eq ibuffer-sorting-mode 'alphabetic)
+        (ibuffer-do-sort-by-alphabetic)))
+    :hook (ibuffer . my/ibuffer-projectile))
 #+end_src
 
 * Minibuffer Completion
@@ -1426,40 +1466,6 @@ I use it to do most of my web searches without leaving GNU Emacs.
       :keybinding "w"
       :docstring "Searchin' the wikis.")
     (engine-mode t))
-#+end_src
-
-** Buffers
-
-Buffers can quickly become a mess. For some people, it's not a problem, but I
-like being able to find my way easily.
-
-#+begin_src emacs-lisp
-  (use-package ibuffer
-    :bind ("C-x C-b" . ibuffer))
-
-  (use-package ibuffer-projectile
-    :after ibuffer
-    :preface
-    (defun my/ibuffer-projectile ()
-      (ibuffer-projectile-set-filter-groups)
-      (unless (eq ibuffer-sorting-mode 'alphabetic)
-        (ibuffer-do-sort-by-alphabetic)))
-    :hook (ibuffer . my/ibuffer-projectile))
-#+end_src
-
-Some buffers should not be deleted by accident:
-
-#+begin_src emacs-lisp
-  (defvar *protected-buffers* '("*scratch*" "*Messages*")
-    "Buffers that cannot be killed.")
-
-  (defun my/protected-buffers ()
-    "Protects some buffers from being killed."
-    (dolist (buffer *protected-buffers*)
-      (with-current-buffer buffer
-        (emacs-lock-mode 'kill))))
-
-  (add-hook 'after-init-hook #'my/protected-buffers)
 #+end_src
 
 ** Calculator
