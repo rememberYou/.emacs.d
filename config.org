@@ -1096,31 +1096,21 @@ To make my UML diagrams with [[https://plantuml.com/][PlantUML]], I use [[https:
 
 ** Python
 
-To have a fast and stable environment, I recommend to use [[https://github.com/python-lsp/python-lsp-server][python-lsp-server]] as
-LSP server. =mspyls= is faster than =pylsp=, but =mspyls= has a memory leakage. For
-some reasons, I have some issues with =pyright= and =company=, the successor of
-=mspyls=. From then on, I use =pylsp= on my daily basis.
+Python with GNU Emacs is one of the best supported languages. By using
+=python-mode= and [[https://github.com/microsoft/pyright][pyright]] as LSP server, it's fun to develop in Python.
 
-I use [[https://github.com/psf/black][black]] to reformat my Python buffer. Before use it, do not forget to install
-=python-black= in your system.
-
-To sort my Python imports, [[https://github.com/paetzke/py-isort.el][py-isort]] does a good job. Also, do not forget to
-install =python-isort= in your system.
-
-Let's take a look to my Python configuration:
+With =python-mode= I like to add some bindings to speed up the code code
+navigation in Python. Besides that, I use [[https://github.com/myint/autoflake][autoflake]] to remove unused imports and
+variables.
 
 #+begin_src emacs-lisp
-  (use-package blacken
-    :delight
-    :hook (python-mode . blacken-mode)
-    :custom (blacken-line-length 79))
-
-  (use-package python-mode
+  (use-package python
     :ensure nil
     :delight "π"
     :bind (:map python-mode-map
                 ("M-[" . python-nav-backward-block)
-                ("M-]" . python-nav-forward-block))
+                ("M-]" . python-nav-forward-block)
+                ("M-|" . python-remove-unused-imports))
     :preface
     (defun python-remove-unused-imports()
       "Removes unused imports and unused variables with autoflake."
@@ -1131,20 +1121,65 @@ Let's take a look to my Python configuration:
                                    (shell-quote-argument (buffer-file-name))))
             (revert-buffer t t t))
         (warn "python-mode: Cannot find autoflake executable."))))
+#+end_src
 
+I have tried several LSP servers. I have experienced that =mspyls= is faster than
+=pylsp=, but =mspyls= has a memory leakage and became depreciated in favor of
+=pyright=. To configure pyright with GNU Emacs, the [[https://github.com/emacs-lsp/lsp-pyright][lsp-pyright]] package is
+enough.
+
+#+begin_src emacs-lisp
   (use-package lsp-pyright
     :if (executable-find "pyright")
+    ;; To properly load `lsp-pyrigt', the `require' instruction is important.
     :hook (python-mode . (lambda ()
                            (require 'lsp-pyright)
                            (lsp-deferred)))
     :custom
     (lsp-pyright-python-executable-cmd "python3")
     (lsp-pyright-venv-path "~/.cache/pypoetry/virtualenvs/"))
+#+end_src
 
+To make sure my Python code is well formatted, I use [[https://github.com/psf/black][black]]. Feel free to install
+it in your virtual environment or directly on your system.
+
+#+begin_src emacs-lisp
+  (use-package blacken
+    :delight
+    :hook (python-mode . blacken-mode)
+    :custom (blacken-line-length 79))
+#+end_src
+
+To sort my Python imports, [[https://github.com/paetzke/py-isort.el][py-isort]] does a good job. Also, do not forget to
+install in your virtual environment or directly on your system.
+
+#+begin_src emacs-lisp
   (use-package py-isort
-    :hook ((python-mode . pyvenv-mode)
-           (before-save . py-isort-before-save)))
+    :hook ((before-save . py-isort-before-save)
+           (python-mode . pyvenv-mode)))
+#+end_src
 
+I use a single virtual environment for all my Python projects. The combination
+of [[https://docs.python.org/3/library/venv.html][venv]] with [[https://github.com/jorgenschaefer/pyvenv][pyvenv]] does the job well. When I encounter a Python buffer, my
+virtual environment activates and stays activated even after I finish working in
+Python. A better behavior would be to define a function through a
+=kill-buffer-hook= that would call the =pyvenv-deactivate= command when all Python
+buffers are closed.
+
+#+begin_src emacs-lisp
+  (use-package pyvenv
+    :after python
+    :custom
+    (pyvenv-default-virtual-env-name (expand-file-name (format "%s/myenv/" xdg-data)))
+    (pyvenv-workon (expand-file-name (format "%s/myenv/" xdg-data)))
+    :config (pyvenv-tracking-mode))
+#+end_src
+
+Finally, to better manage the different versions of Python through projects, I
+use [[https://github.com/pyenv/pyenv][pyenv]] through [[https://github.com/pythonic-emacs/pyenv-mode][pyenv-mode]]-mode. To use it, make sure you have =pyenv= installed
+on your system.
+
+#+begin_src emacs-lisp
   (use-package pyenv-mode
     :hook ((python-mode . pyenv-mode)
            (projectile-switch-project . projectile-pyenv-mode-set))
@@ -1156,16 +1191,6 @@ Let's take a look to my Python configuration:
         (if (member project (pyenv-mode-versions))
             (pyenv-mode-set project)
           (pyenv-mode-unset)))))
-
-  (use-package pyvenv
-    :after python
-    :custom
-    (pyvenv-default-virtual-env-name (expand-file-name (format "%s/myenv/" xdg-data)))
-    (pyvenv-workon (expand-file-name (format "%s/myenv/" xdg-data)))
-    :config
-    (pyvenv-tracking-mode 1))
-#+end_src
-    :config (pyvenv-tracking-mode))
 #+end_src
 
 ** SQL
