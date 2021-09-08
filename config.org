@@ -1427,11 +1427,22 @@ configuring the =browse-url= package.
 
 ** Calculator
 
-May be useful in a timely manner.
+On a daily basis, you may have to make calculations or conversions from one unit
+to another. With the =calc build-in package it is possible to do this easily
+with GNU Emacs.
+
+Among the useful commands within =calc= that you should know:
+- =calc-algebraic-entry= (=='==): allows you to enter a value and its unit to later
+  to convert it or associate it with an operation.
+- =calc-convert-units= (==u c==): converts the output of an algebraic entry (e.g.,
+  =25 m= -> =25000 mm=).
+- =calc-simplify-units= (==u s==): simplifies the output of an algebraic entry
+  (e.g., =5 m + 23 m= -> =5.023 m=).
+- =calc-view-units-table= (==u V==): displays a table of units supported by calc.
 
 #+begin_src emacs-lisp
   (use-package calc
-    :defer t
+    :ensure nil
     :custom
     (math-additional-units
      '((GiB "1024 * MiB" "Giga Byte")
@@ -1442,6 +1453,7 @@ May be useful in a timely manner.
        (Mib "1024 * Kib" "Mega Bit")
        (Kib "1024 * b" "Kilo Bit")
        (b "B / 8" "Bit")))
+    ;; Resets the calc's cache.
     (math-units-table nil))
 #+end_src
 
