@@ -608,13 +608,30 @@ package, I can easily do that.
 * Programming Languages and Tools
 
 Section dedicated to the definition and customization of different programming
-languages and their tools.
+languages and their tools. If you have the need to specify other programming
+languages, please check out the [[https://emacs-lsp.github.io/lsp-mode/page/languages/][language section]] of the LSP mode website.
+
+** Bash
+
+Being a UNIX user, I often do Bash. Since GNU Emacs already supports it, I only
+use the [[https://emacs-lsp.github.io/lsp-mode/page/lsp-bash/][bash-language-server]] (=bash-ls=) as LSP server. To use it, do not forget
+to configure the LSP package and to install this LSP server through LSP mode or
+with your system package manager.
+
+Finally, the following snippet ensures that execution right (with =chmod +x=) is
+automatically granted to save a shell script file that begins with a =#!= shebang:
+
+#+begin_src emacs-lisp
+  (use-package sh-script
+    :ensure nil
+    :hook (after-save . executable-make-buffer-file-executable-if-script-p))
+#+end_src
 
 ** C++
 
 When I develop in C++ with GNU Emacs, I use the [[https://github.com/MaskRay/ccls][ccls]] LSP server. To use it,
 do not forget to configure the LSP package and to install this LSP server through
-=lsp-mode= or with your system package manager.
+LSP mode or with your system package manager.
 
 #+begin_src emacs-lisp
   (use-package ccls
@@ -658,7 +675,7 @@ as much as possible.
 CMake is a cross-platform build system generator. For its support with GNU
 Emacs, the [[https://github.com/Kitware/CMake/blob/master/Auxiliary/cmake-mode.el][cmake-mode]] package with the installation of the [[https://emacs-lsp.github.io/lsp-mode/page/lsp-cmake/][cmake-language-server]]
 LSP server is sufficient. To use it, do not forget to configure the LSP package
-and to install this LSP server through =lsp-mode= or with your system package
+and to install this LSP server through LSP mode or with your system package
 manager.
 
 #+begin_src emacs-lisp
@@ -740,7 +757,7 @@ your system package manager.
 I often use Docker with Dockerfile. To support it with LSP and GNU Emacs, the
 package dockerfile-mode with [[dockerfile-language-server-nodejs][dockerfile-language-server-nodejs]] (=dockerfile-ls=)
 as LSP server is enough. To use it, do not forget to configure the LSP package
-and to install this LSP server through =lsp-mode= or with your system package
+and to install this LSP server through LSP mode or with your system package
 manager.
 
 #+begin_src emacs-lisp
@@ -752,7 +769,7 @@ manager.
 Rare are the times when I had to code in raw HTML. When it was the case, I used
 the [[https://emacs-lsp.github.io/lsp-mode/page/lsp-html/][vscode-html-languageserver-bin]] (=html-ls=) LSP server with =html-mode=. To use
 it, do not forget to configure the LSP package and to install this LSP server
-through =lsp-mode= or with your system package manager. However, there are times
+through LSP mode or with your system package manager. However, there are times
 when I have to handle CSS and JavaScript directly in the HTML. For this reason,
 I use [[https://github.com/fxbois/web-mode][web-mode]] while keeping the LSP server to benefit from =lsp-ui=.
 
@@ -768,7 +785,7 @@ To modify the INI files, you need to install the =ini-mode= package.
 
 To support Java with GNU Emacs, I use [[https://github.com/emacs-lsp/lsp-java][lsp-java]] as LSP client with [[https://projects.eclipse.org/projects/eclipse.jdt.ls][Eclipse JDT
 Language Server]] (=jdtls=) as LSP server. To use it, do not forget to configure the
-LSP package and to install this LSP server through =lsp-mode= or with your system
+LSP package and to install this LSP server through LSP mode or with your system
 package manager. If the LSP server is not yet installed, LSP will install it in
 the =~/.emacs.d/.cache/lsp/eclipse.jdt.ls/= directory. Personally, I like to
 follow XDG conventions by moving the LSP server to a more appropriate location
@@ -968,7 +985,7 @@ choice.
   (setq-default TeX-engine 'xetex)
 #+end_src
 
-By default, =lsp-mode= uses =lsp-tex= as the LSP client for LaTeX. However, I prefer
+By default, LSP mode uses =lsp-tex= as the LSP client for LaTeX. However, I prefer
 to use [[https://github.com/ROCKTAKEY/lsp-latex][lsp-latex]] which fully supports =texlab=
 (cf. https://github.com/ROCKTAKEY/lsp-latex/issues/26)
 
@@ -1011,7 +1028,7 @@ package =bibtex= improves the visual and provides several commands.
 
 I rarely program in Lua, but when I do, [[https://github.com/immerrr/lua-mode][lua-mode]] with [[https://emacs-lsp.github.io/lsp-mode/page/lsp-lua-language-server/][lua-language-server]] as LSP
 server satisfies me amply. To use it, do not forget to configure the LSP package
-and to install this LSP server through =lsp-mode= or with your system package
+and to install this LSP server through LSP mode or with your system package
 manager.
 
 #+begin_src emacs-lisp
@@ -1235,7 +1252,7 @@ LESS, and SCSS). Therefore, installing an appropriate LSP server and making sure
 that the variables are properly indented is more than enough. For the LSP
 server, I use [[https://github.com/vscode-langservers/vscode-css-languageserver][vscode-css-languageserver]] (=css-ls=) although it does not support
 the LESS language. To use it, do not forget to configure the LSP package and to
-install this LSP server through =lsp-mode= or with your system package manager.
+install this LSP server through LSP mode or with your system package manager.
 
 #+begin_src emacs-lisp
   (use-package css-mode
@@ -1249,7 +1266,7 @@ install this LSP server through =lsp-mode= or with your system package manager.
 For my TypeScript adventures, the [[http://github.com/ananthakumaran/typescript.el][typescript-mode]] package and the
 [[https://github.com/typescript-language-server/typescript-language-server][typescript-language-server]] (=ts-ls=) LSP server are more than enough. To use the
 LSP server, do not forget to configure the LSP package and to install this LSP
-server through =lsp-mode= or with your system package manager.
+server through LSP mode or with your system package manager.
 
 Finally, I also use =prettier-js= to ensure proper indentation of my code. To
 enable it, you must install the =prettier= package with your package manager
@@ -1269,7 +1286,7 @@ system.
 
 To manage XML related files the =nxml-mode= package built into GNU Emacs and the
 [[https://emacs-lsp.github.io/lsp-mode/page/lsp-xml/][LemMinX]] (=xmlls=) LSP server does the job. To use it, do not forget to configure
-the LSP package and to install this LSP server through =lsp-mode= or with your
+the LSP package and to install this LSP server through LSP mode or with your
 system package manager.
 
 #+begin_src emacs-lisp
@@ -1285,7 +1302,7 @@ God keep me away from [[https://vuejs.org/][Vue.js]]. The few times I had to dev
 my hair out. For its support, I managed to get some semblance of stability with
 the [[https://github.com/AdamNiederer/vue-mode][vue-mode]] package and the [[https://github.com/vuejs/vetur/tree/master/server][vue-language-server]] (=vls=) LSP. However, the CSS
 support with =vue-mode= is not great. To use the LSP server, do not forget to
-configure the LSP package and to install this LSP server through =lsp-mode= or
+configure the LSP package and to install this LSP server through LSP mode or
 with your system package manager.
 
 #+begin_src emacs-lisp
@@ -1300,7 +1317,7 @@ with your system package manager.
 
 When I have to develop through YAML files, the [[https://github.com/yoshiki/yaml-mode][yaml-mode]] package with the
 [[https://emacs-lsp.github.io/lsp-mode/page/lsp-yaml/][yaml-language-server]] LSP server meets my needs. To use it, do not forget to
-configure the LSP package and to install this LSP server through =lsp-mode= or
+configure the LSP package and to install this LSP server through LSP mode or
 with your system package manager.
 
 #+begin_src emacs-lisp
