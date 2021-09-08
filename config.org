@@ -927,21 +927,24 @@ package that is no longer under development, it still satisfies my needs.
 
 ** LaTeX
 
-I use LaTeX for my reports, CVs, summaries, etc.
+Being a lover of beautiful writing, it is important for me to have a stable
+LaTeX environment. To have access to this stability, I use the =tex-mode= built-in
+package and [[https://github.com/latex-lsp/texlab][texlab]] as LSP server. To use it, make sure you install it with your
+package manager and to configure the LSP package.
 
 #+begin_src emacs-lisp
   (use-package tex
-    :ensure auctex
+    :ensure nil
+    :preface
+    (defun my/switch-to-help-window (&optional ARG REPARSE)
+      "Switches to the *TeX Help* buffer after compilation."
+      (other-window 1))
+    :hook (LaTeX-mode . reftex-mode)
     :bind (:map TeX-mode-map
                 ("C-c C-o" . TeX-recenter-output-buffer)
                 ("C-c C-l" . TeX-next-error)
                 ("M-[" . outline-previous-heading)
                 ("M-]" . outline-next-heading))
-    :hook (LaTeX-mode . reftex-mode)
-    :preface
-    (defun my/switch-to-help-window (&optional ARG REPARSE)
-      "Switches to the *TeX Help* buffer after compilation."
-      (other-window 1))
     :custom
     (TeX-auto-save t)
     (TeX-byte-compile t)
@@ -956,46 +959,52 @@ I use LaTeX for my reports, CVs, summaries, etc.
     (advice-add 'TeX-recenter-output-buffer :after #'my/switch-to-help-window)
     ;; the ":hook" doesn't work for this one... don't ask me why.
     (add-hook 'TeX-after-compilation-finished-functions 'TeX-revert-document-buffer))
-
-  ;; (use-package lsp-latex
-  ;;   :if (executable-find "texlab")
-  ;;   :hook (LaTeX-mode . (lambda ()
-  ;;                         (require 'lsp-latex)
-  ;;                         (lsp)))
-  ;;   :custom (lsp-latex-build-on-save t))
-
-  (use-package bibtex
-    :after auctex
-    :hook (bibtex-mode . my/bibtex-fill-column)
-    :preface
-    (defun my/bibtex-fill-column ()
-      "Ensures that each entry does not exceed 120 characters."
-      (setq fill-column 120)))
-
-  (use-package company-auctex
-    :after (auctex company)
-    :config (company-auctex-init))
-
-  (use-package company-math :after (auctex company))
 #+end_src
 
-I want a TeX engine that can deal with Unicode and use any font I like.
+Also, I like to use a TeX engine that can handle Unicode and use the font of my
+choice.
 
 #+begin_src emacs-lisp
   (setq-default TeX-engine 'xetex)
 #+end_src
 
-*** =reftex=
+By default, =lsp-mode= uses =lsp-tex= as the LSP client for LaTeX. However, I prefer
+to use lsp-latex which fully supports texlab (*SEE:*
+https://github.com/ROCKTAKEY/lsp-latex/issues/26)
 
-Minor mode with distinct support for =\label=, =\ref= and =\cite= in LaTeX.
+#+begin_src emacs-lisp
+  (use-package lsp-latex
+    :if (executable-find "texlab")
+    ;; To properly load `lsp-latex', the `require' instruction is important.
+    :hook (LaTeX-mode . (lambda ()
+                          (require 'lsp-latex)
+                          (lsp-deferred)))
+    :custom (lsp-latex-build-on-save t))
+#+end_src
+
+To easier deal with =\label, =\ref=, and =\cite= commands in LaTeX, I use the =reftex=
+built-in package.
 
 #+begin_src emacs-lisp
   (use-package reftex
-    :after auctex
+    :ensure nil
     :custom
-    (reftex-plug-into-AUCTeX t)
     (reftex-save-parse-info t)
     (reftex-use-multiple-selection-buffers t))
+#+end_src
+
+Finally, it is often useful to put our hands in a bibliography in LaTeX. The built-in
+package =bibtex= improves the visual and provides several commands.
+
+#+begin_src emacs-lisp
+  (use-package bibtex
+    :ensure nil
+    :preface
+    (defun my/bibtex-fill-column ()
+      "Ensures that each entry does not exceed 120 characters."
+      (setq fill-column 120))
+    :hook ((bibtex-mode . lsp-deferred)
+           (bibtex-mode . my/bibtex-fill-column)))
 #+end_src
 
 ** Lua
