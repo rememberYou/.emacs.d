@@ -16,7 +16,7 @@
   - [[#lsp][LSP]]
   - [[#theme][Theme]]
   - [[#remove-mouse-interface][Remove Mouse Interface]]
-- [[#save-configuration][Save Configuration]]
+- [[#saving-configuration][Saving Configuration]]
 - [[#backups][Backups]]
 - [[#management][Management]]
   - [[#buffers][Buffers]]
@@ -350,7 +350,7 @@ editor. Let's remove all those menu items related to the mouse interface.
     (tooltip-mode -1))
 #+end_src
 
-* Save Configuration
+* Saving Configuration
 
 A good practice is to use an =.org= file to modify your GNU Emacs configuration
 with =org-mode= and to load this configuration via an =.el= file. This way you can
