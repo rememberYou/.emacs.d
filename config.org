@@ -322,7 +322,7 @@ get icons in the =doom-modeline=, you will need to install the icons with
     (doom-themes-org-config))
 
   (use-package doom-modeline
-    :hook (after-init . doom-modeline-init)
+    :init (doom-modeline-mode)
     :custom (doom-modeline-icon (display-graphic-p)))
 #+end_src
 
