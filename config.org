@@ -1452,20 +1452,32 @@ Among the useful commands within =calc= that you should know:
 
 ** Calendar
 
-Remembering all the dates is not obvious, especially since some varies every
-year. To remember each important date, I recorded the list of important
-dates according to my country, Belgium. It is very likely that some dates are
-different in your country, therefore, adapt the configuration below accordingly.
+It is important to know the vacations and remember some official dates to better
+organize your vacation planning and gift buying. The built-in =calendar= and
+=holidays= packages are there to remind these dates to us.
 
 #+begin_src emacs-lisp
   (use-package calendar
     :ensure nil
-    :custom (calendar-mark-holidays-flag t))
+    :bind ("C-c 0" . calendar)
+    :custom
+    (calendar-mark-holidays-flag t)
+    (calendar-week-start-day 1))
+#+end_src
 
+By default GNU Emacs fills in too many dates and most of the ones I am
+interested in are not included. Especially those specific to vacations in my
+country. For this reason, I specify to =holidays= to hide some dates and add some
+others.
+
+#+begin_src emacs-lisp
   (use-package holidays
     :ensure nil
     :custom
     (holiday-bahai-holidays nil)
+    (holiday-hebrew-holidays nil)
+    (holiday-islamic-holidays nil)
+    (holiday-oriental-holidays nil)
     (holiday-christian-holidays
      '((holiday-fixed 1 6 "Epiphany")
        (holiday-fixed 2 2 "Candlemas")
@@ -1488,15 +1500,13 @@ different in your country, therefore, adapt the configuration below accordingly.
        (holiday-fixed 3 8 "International Women's Day")
        (holiday-fixed 10 31 "Halloween")
        (holiday-fixed 11 11 "Armistice of 1918")))
-    (holiday-hebrew-holidays nil)
-    (holiday-islamic-holidays nil)
     (holiday-local-holidays
      '((holiday-fixed 5 1 "Labor Day")
        (holiday-float 3 0 0 "Grandmothers' Day")
        (holiday-float 4 4 3 "Secretary's Day")
        (holiday-float 5 0 2 "Mother's Day")
-       (holiday-float 6 0 3 "Father's Day")))
-    (holiday-oriental-holidays nil))
+       (holiday-float 6 0 2 "Father's Day")
+       (holiday-fixed 7 21 "Belgian National Day"))))
 #+end_src
 
 ** Dashboard
