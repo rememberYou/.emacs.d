@@ -403,7 +403,7 @@ into the =init.el= file.
                            ,org-file
                            (float-time (time-subtract (current-time)
                                                       ',init-tangle-start-time)))
-                (message "[✗] %s as tangle failed." ,org-file)))))))
+                (message "[✗] %s as tangle failed." ,org-file))))))))
 #+end_src
 
 * Backups
