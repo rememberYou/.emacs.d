@@ -420,14 +420,14 @@ the command execution according to a file at each save of this file.
   (use-package files
     :ensure nil
     :preface
-    (defvar *afilename-cmd*
+    (defvar afilename-cmd
       `((,(format "%s/X11/Xresources" xdg-config) . ,(format "xrdb -merge %s/X11/Xresources" xdg-config))
         (,(format "%s/xbindkeysrc" (getenv "HOME")) . "xbindkeys -p"))
       "File association list with their respective command.")
 
     (defun my/cmd-after-saved-file ()
       "Executes a command after saved a specific file."
-      (let* ((match (assoc (buffer-file-name) *afilename-cmd*)))
+      (let* ((match (assoc (buffer-file-name) afilename-cmd)))
         (when match
           (shell-command (cdr match)))))
     :hook (after-save . my/cmd-after-saved-file)
@@ -467,12 +467,12 @@ not be killed by accident. I make sure to set the buffers =*scratch*= and
   (use-package ibuffer
     :ensure nil
     :preface
-    (defvar *protected-buffers* '("*scratch*" "*Messages*")
+    (defvar protected-buffers '("*scratch*" "*Messages*")
       "Buffers that cannot be killed.")
 
     (defun my/protected-buffers ()
       "Protects some buffers from being killed."
-      (dolist (buffer *protected-buffers*)
+      (dolist (buffer protected-buffers)
         (with-current-buffer buffer
           (emacs-lock-mode 'kill))))
     :hook (after-init . my/protected-buffer)
@@ -1459,6 +1459,8 @@ with your system package manager.
 
 * Advanced Configuration
 
+This section contains the configuration of anecdotal GNU Emacs packages.
+
 ** Browser
 
 By default GNU Emacs provides the =browse-url= package to open a browser based on
@@ -1565,7 +1567,11 @@ others.
 
 ** Dashboard
 
-Always good to have a dashboard.
+Organization is even more important in the 21st century than it was before. What
+could be better than launching GNU Emacs with a dashboard that lists the tasks
+of the week with =org-agenda= and a list of projects we have recently contributed
+to with =projectile=. To our delight the [[https://github.com/emacs-dashboard/emacs-dashboard][dashboard]] package offers these features
+and more.
 
 #+begin_src emacs-lisp
   (use-package dashboard
@@ -1585,15 +1591,14 @@ Always good to have a dashboard.
 
 ** EditorConfig
 
-[[https://editorconfig.org/][EditorConfig]] helps maintain consistent coding styles for multiple developers
-working on the same project across various editors and IDEs.
+It often happens that you have to work on the same project as other
+developers. To keep a coding style you can use [[https://editorconfig.org/][EditorConfig]] through the
+[[https://github.com/editorconfig/editorconfig-emacs][editorconfig]] package.
 
 #+begin_src emacs-lisp
 (use-package editorconfig
   :defer 0.3
-  :config (editorconfig-mode 1))
-#+end_src
-
+  :config (editorconfig-mode))
 #+end_src
 
 ** EPUB
