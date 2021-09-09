@@ -16,11 +16,12 @@
   - [[#lsp][LSP]]
   - [[#theme][Theme]]
   - [[#remove-mouse-interface][Remove Mouse Interface]]
-- [[#buffer-management][Buffer Management]]
 - [[#backups][Backups]]
+- [[#management][Management]]
+  - [[#buffers][Buffers]]
+  - [[#files][Files]]
+  - [[#windows][Windows]]
 - [[#minibuffer-completion][Minibuffer Completion]]
-- [[#file-management][File Management]]
-- [[#window-management][Window Management]]
 - [[#programming-languages-and-tools][Programming Languages and Tools]]
   - [[#bash][Bash]]
   - [[#c][C++]]
@@ -351,7 +352,6 @@ editor. Let's remove all those menu items related to the mouse interface.
     (tooltip-mode -1))
 #+end_src
 
-* Buffer Management
 * Backups
 
 It is important to have file backups available with GNU Emacs. It is rare when I
@@ -394,6 +394,12 @@ the command execution according to a file at each save of this file.
     (version-control t))
 #+end_src
 
+* Management
+
+Section dedicated to managing buffers, files, and windows on GNU Emacs to
+provide a more pleasant experience.
+
+** Buffers
 
 Buffers can quickly become a mess to manage. To manage them better, I use the
 =ibuffer= built-in package instead of =buffer-menu=, to have a nicer visual
@@ -419,8 +425,8 @@ not be killed by accident. I make sure to set the buffers =*scratch*= and
     :bind ("C-x C-b" . ibuffer))
 #+end_src
 
-I also use [[https://github.com/purcell/ibuffer-projectile][ibuffer-projectile]] to group the buffers in =ibuffer=
-list by projectile project.
+I also use [[https://github.com/purcell/ibuffer-projectile][ibuffer-projectile]] to group the buffers in =ibuffer= list by [[#projectile][projectile]]
+project.
 
 #+begin_src emacs-lisp
   (use-package ibuffer-projectile
@@ -433,114 +439,7 @@ list by projectile project.
     :hook (ibuffer . my/ibuffer-projectile))
 #+end_src
 
-* Minibuffer Completion
-
-Having a good minibuffer completion is important on GNU Emacs since it is one of
-the elements we will frequently interact with. In the beginning I used [[https://github.com/emacs-helm/helm][helm]], but
-I found it to be memory intensive for the few features I was using. From this
-observation I switched to [[https://github.com/abo-abo/swiper][ivy]] for many years, which is a faster and a lighter
-framework than =helm=. However, =ivy= is still a framework.
-
-Since then, newer completion systems have emerged (e.g., [[https://github.com/minad/vertico][vertico]], [[https://github.com/minad/vertico][selectrum]],
-and [[https://github.com/oantolin/icomplete-vertical][icomplete-vertical]]), designed to be optimized for a single task and nested
-with other packages with the same vision. That's why I now use =vertico= instead
-of =ivy=.
-
-*NOTE*: =selectrum= is also a good alternative to =ivy=, but is less minimal than
-=vertico=.
-
-#+begin_src emacs-lisp
-  (use-package vertico
-    :init (vertico-mode)
-    :custom (vertico-cycle t)
-    :custom-face (vertico-current ((t (:background "#3a3f5a")))))
-#+end_src
-
-To enable richer annotations (e.g., summary documentation of the functions and
-variables, as well as having the size and the last consultation of the files)
-for minibuffer completions, [[https://github.com/minad/marginalia/][marginalia]] is awesome.
-
-#+begin_src emacs-lisp
-  (use-package marginalia
-    :after vertico
-    :init (marginalia-mode)
-    :custom
-    (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil)))
-#+end_src
-
-If like me you like to have icons associated with candidates, you can use
-[[https://github.com/iyefrat/all-the-icons-completion][all-the-icons-completion]].
-
-#+begin_src emacs-lisp
-  (use-package all-the-icons-completion
-    :after (marginalia all-the-icons)
-    :hook (marginalia-mode . all-the-icons-completion-marginalia-setup))
-#+end_src
-
-By default, =vertico= sorts the candidates according to their history position,
-then by length and finally by alphabetical. To improves searching across
-completion (e.g., by filter expressions separated by spaces), you should
-[[https://github.com/oantolin/orderless][orderless]] (or [[https://github.com/raxod502/prescient.el][prescient]]).
-
-#+begin_src emacs-lisp
-  (use-package orderless
-    :custom
-    (completion-category-defaults nil)
-    (completion-category-overrides '((file (styles . (partial-completion)))))
-    (completion-styles '(orderless)))
-#+end_src
-
-There is nothing like a collection of commands to have additional
-completions. [[https://github.com/minad/consult][consult]] provides this collection.
-
-#+begin_src emacs-lisp
-  (use-package consult
-    :after projectile
-    :bind  (;; Related to the control commands.
-            ("<help> a" . consult-apropos)
-            ("C-x b" . consult-buffer)
-            ("C-x M-:" . consult-complex-command)
-            ("C-c k" . consult-kmacro)
-            ;; Related to the navigation.
-            ("M-g a" . consult-org-agenda)
-            ("M-g e" . consult-error)
-            ("M-g g" . consult-goto-line)
-            ("M-g h" . consult-org-heading)
-            ("M-g i" . consult-imenu)
-            ("M-g k" . consult-global-mark)
-            ("M-g l" . consult-line)
-            ("M-g m" . consult-mark)
-            ("M-g o" . consult-outline)
-            ("M-g I" . consult-project-imenu)
-            ;; Related to the search and selection.
-            ("M-s G" . consult-git-grep)
-            ("M-s g" . consult-grep)
-            ("M-s k" . consult-keep-lines)
-            ("M-s l" . consult-locate)
-            ("M-s m" . consult-multi-occur)
-            ("M-s r" . consult-ripgrep)
-            ("M-s u" . consult-focus-lines)
-            ("M-s f" . consult-find))
-    :custom
-    (completion-in-region-function #'consult-completion-in-region)
-    (consult-narrow-key "<")
-    (consult-project-root-function #'projectile-project-root)
-    ;; Provides consistent display for both `consult-register' and the register
-    ;; preview when editing registers.
-    (register-preview-delay 0)
-    (register-preview-function #'consult-register-preview))
-#+end_src
-
-Finally, [[https://github.com/oantolin/embark/][embark]] is great if like me you like to interact directly with your
-files (e.g., for renaming, deleting and copying) through your completion system
-without having to go through =dired=.
-
-#+begin_src emacs-lisp
-  (use-package embark
-    :bind ("C-." . embark-act))
-#+end_src
-
-* File Management
+** Files
 
 =dired= is a good file manager. To fine-tune its use, let's change some default
 values.
@@ -619,7 +518,7 @@ Sometimes you may have a folder with a large number of files. In this case,
            ("C-c C-f" . dired-narrow-fuzzy)))
 #+end_src
 
-* Window Management
+** Windows
 
 Most of the time, I want to split a window and put the focus on it to perform an
 action. By default GNU Emacs does not give the focus to this new window. I have
@@ -683,6 +582,153 @@ package, I can easily do that.
   (use-package winner
     :ensure nil
     :hook (after-init . winner-mode))
+#+end_src
+
+* Minibuffer Completion
+
+Having a good minibuffer completion is important on GNU Emacs since it is one of
+the elements we will frequently interact with. In the beginning I used [[https://github.com/emacs-helm/helm][helm]], but
+I found it to be memory intensive for the few features I was using. From this
+observation I switched to [[https://github.com/abo-abo/swiper][ivy]] for many years, which is a faster and a lighter
+framework than =helm=. However, =ivy= is still a framework.
+
+Since then, newer completion systems have emerged (e.g., [[https://github.com/minad/vertico][vertico]], [[https://github.com/minad/vertico][selectrum]],
+and [[https://github.com/oantolin/icomplete-vertical][icomplete-vertical]]), designed to be optimized for a single task and nested
+with other packages with the same vision. That's why I now use =vertico= instead
+of =ivy=.
+
+*NOTE*: =selectrum= is also a good alternative to =ivy=, but is less minimal than
+=vertico=.
+
+#+begin_src emacs-lisp
+  (use-package vertico
+    :init (vertico-mode)
+    :custom (vertico-cycle t)
+    :custom-face (vertico-current ((t (:background "#3a3f5a")))))
+#+end_src
+
+To enable richer annotations (e.g., summary documentation of the functions and
+variables, as well as having the size and the last consultation of the files)
+for minibuffer completions, [[https://github.com/minad/marginalia/][marginalia]] is awesome.
+
+#+begin_src emacs-lisp
+  (use-package marginalia
+    :after vertico
+    :init (marginalia-mode)
+    :custom
+    (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil)))
+#+end_src
+
+If like me you like to have icons associated with candidates, you can use
+[[https://github.com/iyefrat/all-the-icons-completion][all-the-icons-completion]].
+
+#+begin_src emacs-lisp
+  (use-package all-the-icons-completion
+    :after (marginalia all-the-icons)
+    :hook (marginalia-mode . all-the-icons-completion-marginalia-setup))
+#+end_src
+
+By default, =vertico= sorts the candidates according to their history position,
+then by length and finally by alphabetical. To improves searching across
+completion (e.g., by filter expressions separated by spaces), you should
+[[https://github.com/oantolin/orderless][orderless]] (or [[https://github.com/raxod502/prescient.el][prescient]]).
+
+#+begin_src emacs-lisp
+  (use-package orderless
+    :custom
+    (completion-category-defaults nil)
+    (completion-category-overrides '((file (styles . (initials)))))
+    (completion-styles '(orderless)))
+#+end_src
+
+There is nothing like a collection of commands to have additional
+completions. [[https://github.com/minad/consult][consult]] provides this collection.
+
+#+begin_src emacs-lisp
+  (use-package consult
+    :after projectile
+    :bind  (;; Related to the control commands.
+            ("<help> a" . consult-apropos)
+            ("C-x b" . consult-buffer)
+            ("C-x M-:" . consult-complex-command)
+            ("C-c k" . consult-kmacro)
+            ;; Related to the navigation.
+            ("M-g a" . consult-org-agenda)
+            ("M-g e" . consult-error)
+            ("M-g g" . consult-goto-line)
+            ("M-g h" . consult-org-heading)
+            ("M-g i" . consult-imenu)
+            ("M-g k" . consult-global-mark)
+            ("M-g l" . consult-line)
+            ("M-g m" . consult-mark)
+            ("M-g o" . consult-outline)
+            ("M-g I" . consult-project-imenu)
+            ;; Related to the search and selection.
+            ("M-s G" . consult-git-grep)
+            ("M-s g" . consult-grep)
+            ("M-s k" . consult-keep-lines)
+            ("M-s l" . consult-locate)
+            ("M-s m" . consult-multi-occur)
+            ("M-s r" . consult-ripgrep)
+            ("M-s u" . consult-focus-lines)
+            ("M-s f" . consult-find))
+    :custom
+    (completion-in-region-function #'consult-completion-in-region)
+    (consult-narrow-key "<")
+    (consult-project-root-function #'projectile-project-root)
+    ;; Provides consistent display for both `consult-register' and the register
+    ;; preview when editing registers.
+    (register-preview-delay 0)
+    (register-preview-function #'consult-register-preview))
+#+end_src
+
+Finally, [[https://github.com/oantolin/embark/][embark]] is great if like me you like to interact directly with your
+files (e.g., for renaming, deleting and copying) through your completion system
+without having to go through =dired=.
+
+#+begin_src emacs-lisp
+  (use-package embark
+    :bind ("C-." . embark-act))
+#+end_src
+
+* Auto-Completion
+
+Auto-completion with GNU Emacs is mainly combined with LSP mode.  Therefore the
+development of any programming language is made easier with auto-completion,
+which involves a completion at point followed by the display of a small pop-in
+containing the candidates.
+
+Nowadays there are two main possibilities: [[https://github.com/company-mode/company-mode][company-node]] and [[https://github.com/minad/corfu][corfu]]. Personally I
+have tried to make an attempt with =corfu= but I always prefer =company-mode= as it
+seems to be easier and smoother to configure.
+
+#+begin_src emacs-lisp
+  (use-package company
+    :after lsp-mode
+    :hook (lsp-mode . company-mode)
+    :custom
+    (company-begin-commands '(self-insert-command))
+    (company-idle-delay 0)
+    (company-minimum-prefix-length 1)
+    (company-show-quick-access t)
+    (company-tooltip-align-annotations 't))
+#+end_src
+
+To get nice candidate icons differentiating a function from a variable at a
+glance, I use [[https://github.com/sebastiencs/company-box/][company-box]]
+
+#+begin_src emacs-lisp
+  (use-package company-box
+    :if (display-graphic-p)
+    :after company
+    :hook (company-mode . company-box-mode))
+#+end_src
+
+#+begin_src emacs-lisp
+  ;; (use-package company-prescient
+  ;;   :after company
+  ;;   :custom (company-prescient-sort-length-enable nil)
+  ;;   :config (company-prescient-mode))
 #+end_src
 
 * Programming Languages and Tools
