@@ -47,7 +47,6 @@
   - [[#xml][XML]]
   - [[#yaml][YAML]]
 - [[#advanced-configuration][Advanced Configuration]]
-  - [[#alert][Alert]]
   - [[#browser][Browser]]
   - [[#calculator][Calculator]]
   - [[#calendar][Calendar]]
@@ -1403,30 +1402,6 @@ with your system package manager.
 #+end_src
 
 * Advanced Configuration
-
-** Alert
-
-Most packages use =alerts= to make notifications with =libnotify=. Do not forget
-to first install a notification daemon, like =dunst=.
-
-#+begin_quote
-Alert is a Growl-workalike for Emacs which uses a common notification interface
-and multiple, selectable "styles", whose use is fully customizable by the user.
-
-[[https://github.com/jwiegley/alert][John Wiegley]]
-#+end_quote
-
-#+begin_src emacs-lisp
-    (use-package org-wild-notifier
-      :after org
-      :custom
-      (alert-default-style 'libnotify)
-      (org-wild-notifier-notification-title "Agenda Reminder")
-      :config (org-wild-notifier-mode))
-#+end_src
-    :custom
-
-#+end_src
 
 ** Browser
 
@@ -3375,6 +3350,18 @@ update it from several computers and smartphones.
     (org-habit-show-habits-only-for-today nil)
     (org-habit-today-glyph ?‖)
     (org-track-ordered-property-with-tag t))
+#+end_src
+
+To get notifications about TODO items in =org-agenda=.
+
+#+begin_src emacs-lisp
+  (use-package org-wild-notifier
+    :after org
+    :custom
+    (alert-default-style 'libnotify)
+    (org-wild-notifier-notification-title "Agenda Reminder")
+    :config (org-wild-notifier-mode))
+
 #+end_src
 
 ** Bullets
