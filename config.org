@@ -1596,12 +1596,15 @@ developers. To keep a coding style you can use [[https://editorconfig.org/][Edit
 [[https://github.com/editorconfig/editorconfig-emacs][editorconfig]] package.
 
 #+begin_src emacs-lisp
-(use-package editorconfig
-  :defer 0.3
-  :config (editorconfig-mode))
+  (use-package editorconfig
+    :defer 0.3
+    :config (editorconfig-mode))
 #+end_src
 
 ** EPUB
+
+Sometimes I have to read digital books in EPUB format. The [[https://github.com/wasamasa/nov.el][nov]] package allows to
+open this kind of file.
 
 #+begin_src emacs-lisp
   (use-package nov
@@ -1611,21 +1614,24 @@ developers. To keep a coding style you can use [[https://editorconfig.org/][Edit
 
 ** Helpful
 
-[[https://github.com/Wilfred/helpful][Helpful]] gives more user-friendly documentation with =C-h f=.
+To have a more user-friendly documentation I use the [[https://github.com/Wilfred/helpful][helpful]] package.
 
 #+begin_src emacs-lisp
   (use-package helpful
-    :commands (helpful-callable helpful-command helpful-function helpful-key
-                                helpful-symbol helpful-variable)
-    :custom
-    (counsel-describe-function-function #'helpful-callable)
-    (counsel-describe-variable-function #'helpful-variable)
+    :commands (helpful-at-point
+               helpful-callable
+               helpful-command
+               helpful-function
+               helpful-key
+               helpful-macro
+               helpful-variable)
     :bind
-    ([remap describe-command] . helpful-command)
-    ([remap describe-function] . helpful-function)
-    ([remap describe-key] . helpful-key)
+    ([remap display-local-help] . helpful-at-point)
+    ([remap describe-function] . helpful-callable)
+    ([remap describe-variable] . helpful-variable)
     ([remap describe-symbol] . helpful-symbol)
-    ([remap describe-variable] . helpful-variable))
+    ([remap describe-key] . helpful-key)
+    ([remap describe-command] . helpful-command))
 #+end_src
 
 ** Spelling
