@@ -17,6 +17,7 @@
   - [[#theme][Theme]]
   - [[#remove-mouse-interface][Remove Mouse Interface]]
 - [[#buffer-management][Buffer Management]]
+- [[#backups][Backups]]
 - [[#minibuffer-completion][Minibuffer Completion]]
 - [[#file-management][File Management]]
 - [[#window-management][Window Management]]
@@ -46,7 +47,6 @@
 - [[#advanced-configuration][Advanced Configuration]]
   - [[#alert][Alert]]
   - [[#auto-completion][Auto-Completion]]
-  - [[#backups][Backups]]
   - [[#browser][Browser]]
   - [[#calculator][Calculator]]
   - [[#calendar][Calendar]]
@@ -352,6 +352,48 @@ editor. Let's remove all those menu items related to the mouse interface.
 #+end_src
 
 * Buffer Management
+* Backups
+
+It is important to have file backups available with GNU Emacs. It is rare when I
+have to go back into backups and when I do, it is to go back to a previous
+backup of a buffer.
+
+Finally, some saved files require a command to be run so that changes within the
+file are taken into account. The =my/cmd-after-saved-file= function below handles
+the command execution according to a file at each save of this file.
+
+#+begin_src emacs-lisp
+  (use-package files
+    :ensure nil
+    :preface
+    (defvar *afilename-cmd*
+      `((,(format "%s/X11/Xresources" xdg-config) . ,(format "xrdb -merge %s/X11/Xresources" xdg-config))
+        (,(format "%s/xbindkeysrc" (getenv "HOME")) . "xbindkeys -p"))
+      "File association list with their respective command.")
+
+    (defun my/cmd-after-saved-file ()
+      "Executes a command after saved a specific file."
+      (let* ((match (assoc (buffer-file-name) *afilename-cmd*)))
+        (when match
+          (shell-command (cdr match)))))
+    :hook (after-save . my/cmd-after-saved-file)
+    :init
+    ;; Create the "~/.cache/emacs/auto-save" folder if it does not exist.
+    (let ((auto-save-folder (expand-file-name
+                             (file-name-as-directory
+                              (expand-file-name (format "%s/emacs/auto-save/" xdg-cache))))))
+      (unless (file-exists-p (locate-user-emacs-file auto-save-folder))
+        (make-directory (locate-user-emacs-file auto-save-folder))))
+    :custom
+    (auto-save-file-name-transforms
+     `((".*" ,(expand-file-name (format "%s/emacs/auto-save/" xdg-cache) t))))
+    (backup-directory-alist
+     `(("." . ,(expand-file-name (format "%s/emacs/backups/" xdg-data)))))
+    (delete-old-versions t)
+    (vc-make-backup-files t)
+    (version-control t))
+#+end_src
+
 
 Buffers can quickly become a mess to manage. To manage them better, I use the
 =ibuffer= built-in package instead of =buffer-menu=, to have a nicer visual
@@ -1380,34 +1422,6 @@ I use =company= with =company-box= that allows a company front-end with icons.
     :hook (company-mode . company-box-mode))
 #+end_src
 
-** Backups
-
-It is important to have a stable backup environment. Don't hesitate to save a
-lot.
-
-*NOTE:* the functions defined below avoid running a bash command when saving
-certain files with GNU Emacs.
-
-#+begin_src emacs-lisp
-  (use-package files
-    :ensure nil
-    :preface
-    (defvar *afilename-cmd*
-      `((,(format "%s/X11/Xresources" xdg-config) . ,(format "xrdb -merge %s/X11/Xresources" xdg-config))
-        (,(format "%s/xbindkeysrc" (getenv "HOME")) . "xbindkeys -p"))
-      "File association list with their respective command.")
-
-    (defun my/cmd-after-saved-file ()
-      "Execute a command after saved a specific file."
-      (let* ((match (assoc (buffer-file-name) *afilename-cmd*)))
-        (when match
-          (shell-command (cdr match)))))
-    :hook (after-save . my/cmd-after-saved-file)
-    :custom
-    (backup-directory-alist `(("." . ,(expand-file-name (format "%s/emacs/backups/" xdg-data)))))
-    (delete-old-versions -1)
-    (vc-make-backup-files t)
-    (version-control t))
 #+end_src
 
 ** Browser
