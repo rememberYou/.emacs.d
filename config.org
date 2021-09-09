@@ -22,6 +22,7 @@
   - [[#files][Files]]
   - [[#windows][Windows]]
 - [[#minibuffer-completion][Minibuffer Completion]]
+- [[#auto-completion][Auto-Completion]]
 - [[#programming-languages-and-tools][Programming Languages and Tools]]
   - [[#bash][Bash]]
   - [[#c][C++]]
@@ -47,7 +48,6 @@
   - [[#yaml][YAML]]
 - [[#advanced-configuration][Advanced Configuration]]
   - [[#alert][Alert]]
-  - [[#auto-completion][Auto-Completion]]
   - [[#browser][Browser]]
   - [[#calculator][Calculator]]
   - [[#calendar][Calendar]]
@@ -1432,41 +1432,7 @@ and multiple, selectable "styles", whose use is fully customizable by the user.
       (org-wild-notifier-notification-title "Agenda Reminder")
       :config (org-wild-notifier-mode))
 #+end_src
-
-** Auto-Completion
-
-=company= provides auto-completion at point and displays a small pop-in
-containing the candidates.
-
-#+begin_quote
-Company is a text completion framework for Emacs. The name stands for "complete
-anything". It uses pluggable back-ends and front-ends to retrieve and display
-completion candidates.
-
-[[http://company-mode.github.io/][Dmitry Gutov]]
-#+end_quote
-
-#+begin_src emacs-lisp
-  (use-package company
-    :defer 0.5
-    :delight
     :custom
-    (company-begin-commands '(self-insert-command))
-    (company-idle-delay 0)
-    (company-minimum-prefix-length 2)
-    (company-show-numbers t)
-    (company-tooltip-align-annotations 't)
-    (global-company-mode t))
-#+end_src
-
-I use =company= with =company-box= that allows a company front-end with icons.
-
-#+begin_src emacs-lisp
-  (use-package company-box
-    :if (display-graphic-p)
-    :after company
-    :hook (company-mode . company-box-mode))
-#+end_src
 
 #+end_src
 
