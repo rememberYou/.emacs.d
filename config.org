@@ -630,7 +630,7 @@ If like me you like to have icons associated with candidates, you can use
 By default, =vertico= sorts the candidates according to their history position,
 then by length and finally by alphabetical. To improves searching across
 completion (e.g., by filter expressions separated by spaces), you should
-[[https://github.com/oantolin/orderless][orderless]] (or [[https://github.com/raxod502/prescient.el][prescient]]).
+use [[https://github.com/oantolin/orderless][orderless]] (or [[https://github.com/raxod502/prescient.el][prescient]]).
 
 #+begin_src emacs-lisp
   (use-package orderless
@@ -714,20 +714,13 @@ seems to be easier and smoother to configure.
 #+end_src
 
 To get nice candidate icons differentiating a function from a variable at a
-glance, I use [[https://github.com/sebastiencs/company-box/][company-box]]
+glance, I use [[https://github.com/sebastiencs/company-box/][company-box]].
 
 #+begin_src emacs-lisp
   (use-package company-box
     :if (display-graphic-p)
     :after company
     :hook (company-mode . company-box-mode))
-#+end_src
-
-#+begin_src emacs-lisp
-  ;; (use-package company-prescient
-  ;;   :after company
-  ;;   :custom (company-prescient-sort-length-enable nil)
-  ;;   :config (company-prescient-mode))
 #+end_src
 
 * Programming Languages and Tools
