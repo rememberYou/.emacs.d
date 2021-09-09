@@ -16,6 +16,7 @@
   - [[#lsp][LSP]]
   - [[#theme][Theme]]
   - [[#remove-mouse-interface][Remove Mouse Interface]]
+- [[#save-configuration][Save Configuration]]
 - [[#backups][Backups]]
 - [[#management][Management]]
   - [[#buffers][Buffers]]
@@ -52,7 +53,6 @@
   - [[#calendar][Calendar]]
   - [[#dashboard][Dashboard]]
   - [[#editorconfig][EditorConfig]]
-  - [[#ending-up][Ending Up]]
   - [[#epub][EPUB]]
   - [[#helpful][Helpful]]
   - [[#spelling][Spelling]]
@@ -348,6 +348,62 @@ editor. Let's remove all those menu items related to the mouse interface.
     (scroll-bar-mode -1)
     (tool-bar-mode -1)
     (tooltip-mode -1))
+#+end_src
+
+* Save Configuration
+
+A good practice is to use an =.org= file to modify your GNU Emacs configuration
+with =org-mode= and to load this configuration via an =.el= file. This way you can
+maintain an =org-mode= configuration and still get a faster load.
+
+Using the [[https://github.com/jwiegley/emacs-async][async]] package and the =org-babel-tangle= command, the code below will
+executes =org-babel-tangle= asynchronously when =config.org= is saved, to update the
+=config.el= file. From then on, you only need to specify the loading of this file
+into the =init.el= file.
+
+#+begin_src emacs-lisp
+  (use-package async
+    :after org
+    :preface
+    (defvar config-file (expand-file-name "config.org" user-emacs-directory)
+      "The configuration file.")
+
+    (defvar config-last-change (nth 5 (file-attributes config-file))
+      "The last modification time of the configuration file.")
+
+    (defvar show-async-tangle-results nil
+      "Keeps *emacs* async buffers around for later inspection.")
+
+    (defun my/config-tangle ()
+      "Tangles the org file asynchronously."
+      (when (my/config-updated)
+        (setq config-last-change
+              (nth 5 (file-attributes config-file)))
+        (my/async-babel-tangle config-file)))
+
+    (defun my/config-updated ()
+      "Checks if the configuration file has been updated since the last time."
+      (time-less-p config-last-change
+                   (nth 5 (file-attributes config-file))))
+
+    (defun my/async-babel-tangle (org-file)
+      "Tangles the org file asynchronously."
+      (let ((init-tangle-start-time (current-time))
+            (file (buffer-file-name))
+            (async-quiet-switch "-q"))
+        (async-start
+         `(lambda ()
+            (require 'org)
+
+            (org-babel-tangle-file ,org-file))
+         (unless show-async-tangle-results
+           `(lambda (result)
+              (if result
+                  (message "[✓] %s successfully tangled (%.2fs)"
+                           ,org-file
+                           (float-time (time-subtract (current-time)
+                                                      ',init-tangle-start-time)))
+                (message "[✗] %s as tangle failed." ,org-file)))))))
 #+end_src
 
 * Backups
@@ -1538,55 +1594,6 @@ working on the same project across various editors and IDEs.
   :config (editorconfig-mode 1))
 #+end_src
 
-** Ending Up
-
-I'm using an =.org= file to maintain my GNU Emacs configuration. However, at its
-launch, it will load the =config.el= source file for a faster loading.
-
-The code below, executes =org-babel-tangle= asynchronously when
-=config.org= is saved.
-
-#+begin_src emacs-lisp
-    (use-package async :after org)
-
-    (defvar *config-file* (expand-file-name "config.org" user-emacs-directory)
-      "The configuration file.")
-
-    (defvar *config-last-change* (nth 5 (file-attributes *config-file*))
-      "Last modification time of the configuration file.")
-
-    (defvar *show-async-tangle-results* nil
-      "Keeps *emacs* async buffers around for later inspection.")
-
-    (defun my/config-updated ()
-      "Checks if the configuration file has been updated since the last time."
-      (time-less-p *config-last-change*
-                   (nth 5 (file-attributes *config-file*))))
-
-    (defun my/config-tangle ()
-      "Tangles the org file asynchronously."
-      (when (my/config-updated)
-        (setq *config-last-change*
-              (nth 5 (file-attributes *config-file*)))
-        (my/async-babel-tangle *config-file*)))
-
-    (defun my/async-babel-tangle (org-file)
-      "Tangles the org file asynchronously."
-      (let ((init-tangle-start-time (current-time))
-            (file (buffer-file-name))
-            (async-quiet-switch "-q"))
-        (async-start
-         `(lambda ()
-            (require 'org)
-            (org-babel-tangle-file ,org-file))
-         (unless *show-async-tangle-results*
-           `(lambda (result)
-              (if result
-                  (message "SUCCESS: %s successfully tangled (%.2fs)."
-                           ,org-file
-                           (float-time (time-subtract (current-time)
-                                                      ',init-tangle-start-time)))
-                (message "ERROR: %s as tangle failed." ,org-file)))))))
 #+end_src
 
 ** EPUB
