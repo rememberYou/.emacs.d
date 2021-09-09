@@ -326,7 +326,6 @@ get icons in the =doom-modeline=, you will need to install the icons with
     :custom (doom-modeline-icon (display-graphic-p)))
 #+end_src
 
-
 Since we do not do things by halves, it is also interesting to visually
 differentiate "real" buffers (e.g., buffers that contain our work) from "unreal"
 buffers (e.g., popups) by giving the latter a darker color. From then on,
