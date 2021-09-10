@@ -265,17 +265,17 @@ according to the programming languages that we would like to use. That's where
 [[https://github.com/emacs-lsp/lsp-mode][lsp-mode]] comes in!
 
 #+begin_src emacs-lisp
-   (use-package lsp-mode
-     :commands (lsp lsp-deferred)
-     :hook ((prog-mode . lsp-deferred)
-            (lsp-mode . lsp-enable-which-key-integration))
-     :custom
-     (lsp-enable-folding nil)
-     (lsp-enable-links nil)
-     (lsp-enable-snippet nil)
-     (lsp-keymap-prefix "C-c ;")
-     (lsp-session-file (expand-file-name (format "%s/emacs/lsp-session-v1"  xdg-data)))
-     (read-process-output-max (* 1024 1024)))
+  (use-package lsp-mode
+    :commands (lsp lsp-deferred)
+    :hook ((prog-mode . lsp-deferred)
+           (lsp-mode . lsp-enable-which-key-integration))
+    :custom
+    (lsp-enable-folding nil)
+    (lsp-enable-links nil)
+    (lsp-enable-snippet nil)
+    (lsp-keymap-prefix "C-c ;")
+    (lsp-session-file (expand-file-name (format "%s/emacs/lsp-session-v1"  xdg-data)))
+    (read-process-output-max (* 1024 1024)))
 #+end_src
 
 In addition to =lsp-mode=, it is possible to use =lsp-ui= to get additional
@@ -1638,7 +1638,7 @@ To have a more user-friendly documentation I use the [[https://github.com/Wilfre
 
 No one is immune to spelling mistakes. It is therefore crucial to check our
 spelling when we write documents, reply to an email or perform any other writing
-task. With =abbrev=, =flyspell=, =ispell=, and LanguageTool, you will have the tools
+task. With =abbrev=, =flyspell=, =ispell=, and LanguageTool, you will have the weapons
 to reduce those nasty little spelling and grammar mistakes.
 
 *** Abbreviations
