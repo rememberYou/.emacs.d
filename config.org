@@ -24,6 +24,11 @@
   - [[#windows][Windows]]
 - [[#minibuffer-completion][Minibuffer Completion]]
 - [[#auto-completion][Auto-Completion]]
+- [[#spelling][Spelling]]
+  - [[#abbreviations][Abbreviations]]
+  - [[#fly-spell][Fly Spell]]
+  - [[#spell-checker][Spell Checker]]
+  - [[#grammar-checker][Grammar Checker]]
 - [[#programming-languages-and-tools][Programming Languages and Tools]]
   - [[#bash][Bash]]
   - [[#c][C++]]
@@ -55,7 +60,6 @@
   - [[#editorconfig][EditorConfig]]
   - [[#epub][EPUB]]
   - [[#helpful][Helpful]]
-  - [[#spelling][Spelling]]
   - [[#history][History]]
   - [[#highlight-indentation][Highlight indentation]]
   - [[#hydra][Hydra]]
@@ -776,6 +780,145 @@ glance, I use [[https://github.com/sebastiencs/company-box/][company-box]].
     :if (display-graphic-p)
     :after company
     :hook (company-mode . company-box-mode))
+#+end_src
+
+
+* Spelling
+
+No one is immune to spelling mistakes. It is therefore crucial to check our
+spelling when we write documents, reply to an email or perform any other writing
+task. With =abbrev=, =flyspell=, =ispell=, and LanguageTool, you will have the weapons
+to reduce those nasty little spelling and grammar mistakes.
+
+** Abbreviations
+
+According to a list of misspelled words, the =abbrev= built-in package
+automatically corrects these words on the fly.
+
+#+begin_src emacs-lisp
+  (use-package abbrev
+    :ensure nil
+    :delight
+    :hook (text-mode . abbrev-mode)
+    :custom (abbrev-file-name (expand-file-name (format "%s/emacs/abbrev_defs" xdg-data)))
+    :config
+    (if (file-exists-p abbrev-file-name)
+        (quietly-read-abbrev-file)))
+#+end_src
+
+** Fly Spell
+
+I use the =flyspell= built-in package to enable spell checking on-the-fly in GNU
+Emacs. A useful =flyspell= command is =flyspell-auto-correct-word= (=M-TAB=) which
+automatically corrects a word according to the best suggestion.
+
+#+begin_src emacs-lisp
+  (use-package flyspell
+    :ensure nil
+    :delight
+    :hook ((text-mode . flyspell-mode)
+           (prog-mode . flyspell-prog-mode))
+    :custom
+    ;; Add correction to abbreviation table.
+    (flyspell-abbrev-p t)
+    (flyspell-default-dictionary "en-US")
+    (flyspell-issue-message-flag nil)
+    (flyspell-issue-welcome-flag nil))
+#+end_src
+
+** Spell Checker
+
+To correct spelling mistakes, the =ispell= built-in package use a spell checker
+package (e.g., [[https://github.com/hunspell/hunspell][hunspell]] or [[https://github.com/GNUAspell/aspell][aspell]]). The =aspell= spell checker package would make
+it easier to spot errors in camelCase, which can be handy when
+programming. However, I personally use =hunspell= which only checks the spelling
+of comments in the code and because it is more consistent on fly spells than
+=aspell=.
+
+To use =hunspell= you need to install it with your system package manager, as well
+as install the desired language dictionaries (e.g., =hunspell-en_US= and
+=hunspell-fr=).
+
+Finally, you can check that you have installed the language dictionaries by
+using the =hunspell -D= command.
+
+#+begin_src emacs-lisp
+  (use-package ispell
+    :preface
+    (defun my/switch-language ()
+      "Switches between the English and French for ispell, flyspell, and LanguageTool."
+      (interactive)
+      (let* ((current-dictionary ispell-current-dictionary)
+             (new-dictionary (if (string= current-dictionary "en_US") "fr_BE" "en_US")))
+        (ispell-change-dictionary new-dictionary)
+        (if (string= new-dictionary "fr_BE")
+            (progn
+              (setq lsp-ltex-language "fr")
+              (lui-flyspell-change-dictionary "fr_BE"))
+          (progn
+            (setq lsp-ltex-language "en-US")
+            (lui-flyspell-change-dictionary "en_US")))
+        (flyspell-buffer)
+        (message "[✓] Dictionary switched to %s" new-dictionary)))
+    :hook (text-mode . ispell-minor-mode)
+    :custom
+    (ispell-hunspell-dict-paths-alist
+     '(("en_US" "/usr/share/hunspell/en_US.aff")
+       ("fr_BE" "/usr/share/hunspell/fr_BE.aff")))
+    ;; Save words in the personal dictionary without asking.
+    (ispell-silently-savep t)
+    :config
+    (setenv "LANG" "en_US")
+    (cond ((executable-find "hunspell")
+           (setq ispell-program-name "hunspell")
+           (setq ispell-local-dictionary-alist '(("en_US"
+                                                  "[[:alpha:]]"
+                                                  "[^[:alpha:]]"
+                                                  "['’-]"
+                                                  t
+                                                  ("-d" "en_US" )
+                                                  nil
+                                                  utf-8)
+                                                 ("fr_BE"
+                                                  "[[:alpha:]ÀÂÇÈÉÊËÎÏÔÙÛÜàâçèéêëîïôùûü]"
+                                                  "[^[:alpha:]ÀÂÇÈÉÊËÎÏÔÙÛÜàâçèéêëîïôùûü]"
+                                                  "['’-]"
+                                                  t
+                                                  ("-d" "fr_BE")
+                                                  nil
+                                                  utf-8))))
+          ((executable-find "aspell")
+           (setq ispell-program-name "aspell")
+           (setq ispell-extra-args '("--sug-mode=ultra"))))
+    ;; Ignore file sections for spell checking.
+    (add-to-list 'ispell-skip-region-alist '("#\\+begin_align" . "#\\+end_align"))
+    (add-to-list 'ispell-skip-region-alist '("#\\+begin_align*" . "#\\+end_align*"))
+    (add-to-list 'ispell-skip-region-alist '("#\\+begin_equation" . "#\\+end_equation"))
+    (add-to-list 'ispell-skip-region-alist '("#\\+begin_equation*" . "#\\+end_equation*"))
+    (add-to-list 'ispell-skip-region-alist '("#\\+begin_example" . "#\\+end_example"))
+    (add-to-list 'ispell-skip-region-alist '("#\\+begin_labeling" . "#\\+end_labeling"))
+    (add-to-list 'ispell-skip-region-alist '("#\\+begin_src" . "#\\+end_src"))
+    (add-to-list 'ispell-skip-region-alist '("\\$" . "\\$"))
+    (add-to-list 'ispell-skip-region-alist '(org-property-drawer-re))
+    (add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:")))
+#+end_src
+
+** Grammar Checker
+
+[[https://languagetool.org/][LanguageTool]] is great for correcting your grammar while you are writing or
+saving your buffer. Combined with =abbrev-mode= and =flyspell=, you will have better
+quality documents. To use LanguageTool with LSP mode, the [[https://github.com/emacs-languagetool/lsp-ltex][lsp-ltex]] package is
+what you need. The first time you use it, it will download the [[https://github.com/valentjn/ltex-ls][LTEX Language
+Server]] LSP server for you.
+
+*NOTE:* I don't hook =lsp-ltex= to =text-mode= since it would process the =config.org=
+file which has too many errors to be processed properly.
+
+#+begin_src emacs-lisp
+  (use-package lsp-ltex
+    :custom
+    (lsp-ltex-enabled nil)
+    (lsp-ltex-mother-tongue "fr"))
 #+end_src
 
 * Programming Languages and Tools
@@ -1632,144 +1775,6 @@ To have a more user-friendly documentation I use the [[https://github.com/Wilfre
     ([remap describe-symbol] . helpful-symbol)
     ([remap describe-key] . helpful-key)
     ([remap describe-command] . helpful-command))
-#+end_src
-
-** Spelling
-
-No one is immune to spelling mistakes. It is therefore crucial to check our
-spelling when we write documents, reply to an email or perform any other writing
-task. With =abbrev=, =flyspell=, =ispell=, and LanguageTool, you will have the weapons
-to reduce those nasty little spelling and grammar mistakes.
-
-*** Abbreviations
-
-According to a list of misspelled words, the =abbrev= built-in package
-automatically corrects these words on the fly.
-
-#+begin_src emacs-lisp
-  (use-package abbrev
-    :ensure nil
-    :delight
-    :hook (text-mode . abbrev-mode)
-    :custom (abbrev-file-name (expand-file-name (format "%s/emacs/abbrev_defs" xdg-data)))
-    :config
-    (if (file-exists-p abbrev-file-name)
-        (quietly-read-abbrev-file)))
-#+end_src
-
-*** Fly Spell
-
-I use the =flyspell= built-in package to enable spell checking on-the-fly in GNU
-Emacs. A useful =flyspell= command is =flyspell-auto-correct-word= (=M-TAB=) which
-automatically corrects a word according to the best suggestion.
-
-#+begin_src emacs-lisp
-  (use-package flyspell
-    :ensure nil
-    :delight
-    :hook ((text-mode . flyspell-mode)
-           (prog-mode . flyspell-prog-mode))
-    :custom
-    ;; Add correction to abbreviation table.
-    (flyspell-abbrev-p t)
-    (flyspell-default-dictionary "en-US")
-    (flyspell-issue-message-flag nil)
-    (flyspell-issue-welcome-flag nil))
-#+end_src
-
-*** Spell Checker
-
-To correct spelling mistakes, the =ispell= built-in package use a spell checker
-package (e.g., [[https://github.com/hunspell/hunspell][hunspell]] or [[https://github.com/GNUAspell/aspell][aspell]]). The =aspell= spell checker package would make
-it easier to spot errors in camelCase, which can be handy when
-programming. However, I personally use =hunspell= which only checks the spelling
-of comments in the code and because it is more consistent on fly spells than
-=aspell=.
-
-To use =hunspell= you need to install it with your system package manager, as well
-as install the desired language dictionaries (e.g., =hunspell-en_US= and
-=hunspell-fr=).
-
-Finally, you can check that you have installed the language dictionaries by
-using the =hunspell -D= command.
-
-#+begin_src emacs-lisp
-  (use-package ispell
-    :preface
-    (defun my/switch-language ()
-      "Switches between the English and French for ispell, flyspell, and LanguageTool."
-      (interactive)
-      (let* ((current-dictionary ispell-current-dictionary)
-             (new-dictionary (if (string= current-dictionary "en_US") "fr_BE" "en_US")))
-        (ispell-change-dictionary new-dictionary)
-        (if (string= new-dictionary "fr_BE")
-            (progn
-              (setq lsp-ltex-language "fr")
-              (lui-flyspell-change-dictionary "fr_BE"))
-          (progn
-            (setq lsp-ltex-language "en-US")
-            (lui-flyspell-change-dictionary "en_US")))
-        (flyspell-buffer)
-        (message "[✓] Dictionary switched to %s" new-dictionary)))
-    :hook (text-mode . ispell-minor-mode)
-    :custom
-    (ispell-hunspell-dict-paths-alist
-     '(("en_US" "/usr/share/hunspell/en_US.aff")
-       ("fr_BE" "/usr/share/hunspell/fr_BE.aff")))
-    ;; Save words in the personal dictionary without asking.
-    (ispell-silently-savep t)
-    :config
-    (setenv "LANG" "en_US")
-    (cond ((executable-find "hunspell")
-           (setq ispell-program-name "hunspell")
-           (setq ispell-local-dictionary-alist '(("en_US"
-                                                  "[[:alpha:]]"
-                                                  "[^[:alpha:]]"
-                                                  "['’-]"
-                                                  t
-                                                  ("-d" "en_US" )
-                                                  nil
-                                                  utf-8)
-                                                 ("fr_BE"
-                                                  "[[:alpha:]ÀÂÇÈÉÊËÎÏÔÙÛÜàâçèéêëîïôùûü]"
-                                                  "[^[:alpha:]ÀÂÇÈÉÊËÎÏÔÙÛÜàâçèéêëîïôùûü]"
-                                                  "['’-]"
-                                                  t
-                                                  ("-d" "fr_BE")
-                                                  nil
-                                                  utf-8))))
-          ((executable-find "aspell")
-           (setq ispell-program-name "aspell")
-           (setq ispell-extra-args '("--sug-mode=ultra"))))
-    ;; Ignore file sections for spell checking.
-    (add-to-list 'ispell-skip-region-alist '("#\\+begin_align" . "#\\+end_align"))
-    (add-to-list 'ispell-skip-region-alist '("#\\+begin_align*" . "#\\+end_align*"))
-    (add-to-list 'ispell-skip-region-alist '("#\\+begin_equation" . "#\\+end_equation"))
-    (add-to-list 'ispell-skip-region-alist '("#\\+begin_equation*" . "#\\+end_equation*"))
-    (add-to-list 'ispell-skip-region-alist '("#\\+begin_example" . "#\\+end_example"))
-    (add-to-list 'ispell-skip-region-alist '("#\\+begin_labeling" . "#\\+end_labeling"))
-    (add-to-list 'ispell-skip-region-alist '("#\\+begin_src" . "#\\+end_src"))
-    (add-to-list 'ispell-skip-region-alist '("\\$" . "\\$"))
-    (add-to-list 'ispell-skip-region-alist '(org-property-drawer-re))
-    (add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:")))
-#+end_src
-
-*** Grammar Checker
-
-[[https://languagetool.org/][LanguageTool]] is great for correcting your grammar while you are writing or
-saving your buffer. Combined with =abbrev-mode= and =flyspell=, you will have better
-quality documents. To use LanguageTool with LSP mode, the [[https://github.com/emacs-languagetool/lsp-ltex][lsp-ltex]] package is
-what you need. The first time you use it, it will download the [[https://github.com/valentjn/ltex-ls][LTEX Language
-Server]] LSP server for you.
-
-*NOTE:* I don't hook =lsp-ltex= to =text-mode= since it would process the =config.org=
-file which has too many errors to be processed properly.
-
-#+begin_src emacs-lisp
-  (use-package lsp-ltex
-    :custom
-    (lsp-ltex-enabled nil)
-    (lsp-ltex-mother-tongue "fr"))
 #+end_src
 
 ** Highlight Indentation
