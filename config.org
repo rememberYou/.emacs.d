@@ -475,8 +475,8 @@ not be killed by accident. I make sure to set the buffers =*scratch*= and
       (dolist (buffer protected-buffers)
         (with-current-buffer buffer
           (emacs-lock-mode 'kill))))
-    :hook (after-init . my/protected-buffer)
-    :bind ("C-x C-b" . ibuffer))
+    :bind ("C-x C-b" . ibuffer)
+    :init (my/protected-buffers))
 #+end_src
 
 I also use [[https://github.com/purcell/ibuffer-projectile][ibuffer-projectile]] to group the buffers in =ibuffer= list by [[#projectile][projectile]]
