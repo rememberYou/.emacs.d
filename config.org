@@ -1786,21 +1786,17 @@ at a glance if an indentation is bad through block highlight.
 
 ** History
 
-Provides the ability to have commands and their history saved so that whenever
-you return to work, you can re-run things as you need them. This is not a
-radical function, it is part of a good user experience.
+There are times when it is necessary to remember a command. The =savehist=
+built-in package allows you to save commands in a file so that you can run them
+again later.
 
 #+begin_src emacs-lisp
   (use-package savehist
     :ensure nil
     :custom
     (history-delete-duplicates t)
-    (history-length t)
-    (savehist-additional-variables '(kill-ring search-ring regexp-search-ring))
+    (history-length 25)
     (savehist-file (expand-file-name (format "%s/emacs/history" xdg-cache)))
-    (savehist-save-minibuffer-history 1)
-    :config (savehist-mode 1))
-#+end_src
 
 ** Highlight indentation
 
@@ -1811,6 +1807,7 @@ having to count the spaces, I can see that the code is well indented.
   (use-package highlight-indent-guides
     :hook (prog-mode . highlight-indent-guides-mode)
     :custom (highlight-indent-guides-method 'character))
+    :config (savehist-mode))
 #+end_src
 
 ** Hydra
