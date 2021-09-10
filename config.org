@@ -66,7 +66,6 @@
   - [[#general][General]]
   - [[#icons][Icons]]
   - [[#irc][IRC]]
-  - [[#circe][Circe]]
   - [[#ledger][Ledger]]
   - [[#linters][Linters]]
   - [[#mails][Mails]]
@@ -2395,29 +2394,26 @@ find.
 
 ** IRC
 
-IRC is the best way for me to get a quick answer to a simple question and to
-learn from more competent people than me on a subject.
+IRC is the best way for me to get a quick answer to a question and to learn from
+more competent people than me on a subject.
 
-Besides, for people like me, who want to store your password in a /GPG/ file,
-you just need to specify a file priority list with =auth-sources=. Of course,
-do not forget to add this line in your =.authinfo.gpg= file and if possible in
-the first line, where /<nickname>/ and /<password>/ match your login details.
+To start using IRC, you will need to [[https://libera.chat/guides/registration][create an account]]. Once your account is
+created, you can store it in your =.authinfo.gpg= file and add this file to the
+=auth-sources= variable.
+
+To add your IRC account in the =authinfo.gpg= file, add in the following line with
+your credentials:
 
 #+BEGIN_EXAMPLE
   machine irc.libera.chat login <nickname> password <password> port 6697
 #+END_EXAMPLE
 
-Then encrypt that file with =gpg -c .authinfo= and do not forget to delete the
-=.authinfo= file.
-
-** Circe
-
-After spending many years on erc, I decided to move to =circe= which I find more
-user friendly.
+After spending many years on ERC, I decided to move to [[https://github.com/emacs-circe/circe][circe]] as a IRC client
+which I find more user-friendly.
 
 #+begin_src emacs-lisp
   (use-package circe
-    :defer 0.5
+    :commands circe
     :preface
     (defun my-fetch-password (&rest params)
       (require 'auth-source)
@@ -2427,11 +2423,14 @@ user friendly.
               (if (functionp secret)
                   (funcall secret)
                 secret))
-          (error "Password not found for %S" params))))
+          (error "[✗] Password not found for %S" params))))
 
     (defun my-nickserv-password (server)
       (my-fetch-password :login "rememberYou" :machine "irc.libera.chat"))
     :custom
+    (circe-default-part-message nil)
+    (circe-default-quit-message nil)
+    (circe-format-say (format "{nick:+%ss}: {body}" 8))
     (circe-network-options
      '(("Libera Chat"
         :nick "rememberYou"
