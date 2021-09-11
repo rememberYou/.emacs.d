@@ -2283,14 +2283,15 @@ and other features.
     (remove-hook 'paradox-after-execute-functions #'paradox--report-buffer-print))
 #+end_src
 
-*** =rainbow-mode=
+*** Color Display for Hex Values
 
-Colorize colors as text with their value.
+To automatically display a color to hex code values, the [[https://elpa.gnu.org/packages/rainbow-mode.html][rainbow-mode]] package is
+useful.
 
 #+begin_src emacs-lisp
   (use-package rainbow-mode
     :delight
-    :hook (prog-mode))
+    :hook ((prog-mode text-mode) . rainbow-mode))
 #+end_src
 
 **** Replace the current file with the saved one
