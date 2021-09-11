@@ -753,7 +753,7 @@ development of any programming language is made easier with auto-completion,
 which involves a completion at point followed by the display of a small pop-in
 containing the candidates.
 
-Nowadays there are two main possibilities: [[https://github.com/company-mode/company-mode][company-node]] and [[https://github.com/minad/corfu][corfu]]. Personally I
+Nowadays there are two main possibilities: [[https://github.com/company-mode/company-mode][company-mode]] and [[https://github.com/minad/corfu][corfu]]. Personally I
 have tried to make an attempt with =corfu= but I always prefer =company-mode= as it
 seems to be easier and smoother to configure.
 
