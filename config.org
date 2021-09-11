@@ -70,7 +70,6 @@
   - [[#linters][Linters]]
   - [[#mails][Mails]]
   - [[#navigation][Navigation]]
-  - [[#network][Network]]
   - [[#parentheses][Parentheses]]
   - [[#paste][Paste]]
   - [[#pdf][PDF]]
@@ -2777,34 +2776,6 @@ efficient way to go to the beginning of a line with =move-beginning-of-line=
   (use-package imenu
     :ensure nil
     :bind ("C-r" . imenu))
-#+end_src
-
-** Network
-
-It is sometimes useful to have information about an IP address and to calculate
-an IP address range.
-
-#+begin_src emacs-lisp
-  (use-package ipcalc :defer 4)
-
-  (defun ipinfo (ip)
-    "Returns the detail of an IP address from a certain IP, using ipinfo.io"
-    (interactive "sEnter IP to query (blank for own IP): ")
-    (request
-     (concat "https://ipinfo.io/" ip)
-     :headers '(("User-Agent" . "Emacs ipinfo.io Client")
-                ("Accept" . "application/json")
-                ("Content-Type" . "application/json;charset=utf-8"))
-     :parser 'json-read
-     :success (cl-function
-               (lambda (&key data &allow-other-keys)
-                 (message
-                  (mapconcat
-                   (lambda (e)
-                     (format "%10s: %s" (capitalize (symbol-name (car e))) (cdr e)))
-                   data "\n"))))
-     :error (cl-function (lambda (&rest args &key error-thrown &allow-other-keys)
-                           (message "Can't receive ipinfo. Error %S " error-thrown)))))
 #+end_src
 
 ** Parentheses
