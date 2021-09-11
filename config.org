@@ -1209,9 +1209,14 @@ LaTeX environment. To have access to this stability, I use the =tex-mode= built-
 package and [[https://github.com/latex-lsp/texlab][texlab]] as LSP server. To use it, make sure you install it with your
 package manager and to configure the LSP package.
 
+With =tex-mode= we need to ensure to install AUCTeX, which is a built-in package
+for writing and formatting TeX files in GNU Emacs. With =AUCTeX you can for
+example use the =TeX-command-master= (=C-c C-c=) command to compile your TeX files
+and the =LaTeX-environment= (=C-c C-e=) command to insert a LaTeX environment.
+
 #+begin_src emacs-lisp
   (use-package tex
-    :ensure nil
+    :ensure auctex
     :preface
     (defun my/switch-to-help-window (&optional ARG REPARSE)
       "Switches to the *TeX Help* buffer after compilation."
