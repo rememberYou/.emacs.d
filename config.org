@@ -818,7 +818,7 @@ automatically corrects a word according to the best suggestion.
     :custom
     ;; Add correction to abbreviation table.
     (flyspell-abbrev-p t)
-    (flyspell-default-dictionary "en-US")
+    (flyspell-default-dictionary "en_US")
     (flyspell-issue-message-flag nil)
     (flyspell-issue-welcome-flag nil))
 #+end_src
