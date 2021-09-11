@@ -373,22 +373,22 @@ into the =init.el= file.
       "The last modification time of the configuration file.")
 
     (defvar show-async-tangle-results nil
-      "Keeps *emacs* async buffers around for later inspection.")
+      "Keep *emacs* async buffers around for later inspection.")
 
     (defun my/config-tangle ()
-      "Tangles the org file asynchronously."
+      "Tangle the org file asynchronously."
       (when (my/config-updated)
         (setq config-last-change
               (nth 5 (file-attributes config-file)))
         (my/async-babel-tangle config-file)))
 
     (defun my/config-updated ()
-      "Checks if the configuration file has been updated since the last time."
+      "Check if the configuration file has been updated since the last time."
       (time-less-p config-last-change
                    (nth 5 (file-attributes config-file))))
 
     (defun my/async-babel-tangle (org-file)
-      "Tangles the org file asynchronously."
+      "Tangle the org file asynchronously."
       (let ((init-tangle-start-time (current-time))
             (file (buffer-file-name))
             (async-quiet-switch "-q"))
@@ -427,7 +427,7 @@ the command execution according to a file at each save of this file.
       "File association list with their respective command.")
 
     (defun my/cmd-after-saved-file ()
-      "Executes a command after saved a specific file."
+      "Execute a command after saved a specific file."
       (let* ((match (assoc (buffer-file-name) afilename-cmd)))
         (when match
           (shell-command (cdr match)))))
@@ -469,10 +469,10 @@ not be killed by accident. I make sure to set the buffers =*scratch*= and
     :ensure nil
     :preface
     (defvar protected-buffers '("*scratch*" "*Messages*")
-      "Buffers that cannot be killed.")
+      "Buffer that cannot be killed.")
 
     (defun my/protected-buffers ()
-      "Protects some buffers from being killed."
+      "Protect some buffers from being killed."
       (dolist (buffer protected-buffers)
         (with-current-buffer buffer
           (emacs-lock-mode 'kill))))
@@ -589,13 +589,13 @@ behavior.
            ([remap kill-buffer] . kill-this-buffer))
     :preface
     (defun hsplit-last-buffer ()
-      "Gives the focus to the last created horizontal window."
+      "Focus to the last created horizontal window."
       (interactive)
       (split-window-horizontally)
       (other-window 1))
 
     (defun vsplit-last-buffer ()
-      "Gives the focus to the last created vertical window."
+      "Focus the last created vertical window."
       (interactive)
       (split-window-vertically)
       (other-window 1)))
@@ -843,7 +843,7 @@ using the =hunspell -D= command.
   (use-package ispell
     :preface
     (defun my/switch-language ()
-      "Switches between the English and French for ispell, flyspell, and LanguageTool."
+      "Switch between the English and French for ispell, flyspell, and LanguageTool."
       (interactive)
       (let* ((current-dictionary ispell-current-dictionary)
              (new-dictionary (if (string= current-dictionary "en_US") "fr_BE" "en_US")))
@@ -1023,7 +1023,7 @@ Finally, to compile with CMake in C++, I use [[https://github.com/atilaneves/cma
       (cmake-ide-load-db))
 
     (defun my/switch-to-compilation-window ()
-      "Switches to the *compilation* buffer after compilation."
+      "Switch to the *compilation* buffer after compilation."
       (other-window 1))
     :bind ([remap comment-region] . cmake-ide-compile)
     :config (advice-add 'cmake-ide-compile :after #'my/switch-to-compilation-window))
@@ -1110,7 +1110,7 @@ the configuration below allows me to compile my Java project with gradle easily.
     :hook (java-mode . gradle-mode)
     :preface
     (defun my/switch-to-compilation-window ()
-      "Switches to the *compilation* buffer after compilation."
+      "Switch to the *compilation* buffer after compilation."
       (other-window 1))
     :bind (:map gradle-mode-map
                 ("C-c C-c" . gradle-build)
@@ -1193,7 +1193,7 @@ package that is no longer under development, it still satisfies my needs.
         (json-pretty-print-buffer)))
 
     (defun my/json-array-of-numbers-on-one-line (encode array)
-      "Prints the arrays of numbers in one line."
+      "Print the arrays of numbers in one line."
       (let* ((json-encoding-pretty-print
               (and json-encoding-pretty-print
                    (not (loop for x across array always (numberp x)))))
@@ -1278,7 +1278,7 @@ package =bibtex= improves the visual and provides several commands.
     :ensure nil
     :preface
     (defun my/bibtex-fill-column ()
-      "Ensures that each entry does not exceed 120 characters."
+      "Ensure that each entry does not exceed 120 characters."
       (setq fill-column 120))
     :hook ((bibtex-mode . lsp-deferred)
            (bibtex-mode . my/bibtex-fill-column)))
@@ -1413,7 +1413,7 @@ variables.
                 ("M-|" . python-remove-unused-imports))
     :preface
     (defun python-remove-unused-imports()
-      "Removes unused imports and unused variables with autoflake."
+      "Remove unused imports and unused variables with autoflake."
       (interactive)
       (if (executable-find "autoflake")
           (progn
@@ -1842,19 +1842,19 @@ seamless, it's like a minor mode that disables itself auto-magically.
     :after hydra
     :preface
     (defun with-alltheicon (icon str &optional height v-adjust face)
-      "Displays an icon from all-the-icon."
+      "Display an icon from all-the-icon."
       (s-concat (all-the-icons-alltheicon icon :v-adjust (or v-adjust 0) :height (or height 1) :face face) " " str))
 
     (defun with-faicon (icon str &optional height v-adjust face)
-      "Displays an icon from Font Awesome icon."
+      "Display an icon from Font Awesome icon."
       (s-concat (all-the-icons-faicon icon ':v-adjust (or v-adjust 0) :height (or height 1) :face face) " " str))
 
     (defun with-fileicon (icon str &optional height v-adjust face)
-      "Displays an icon from the Atom File Icons package."
+      "Display an icon from the Atom File Icons package."
       (s-concat (all-the-icons-fileicon icon :v-adjust (or v-adjust 0) :height (or height 1) :face face) " " str))
 
     (defun with-octicon (icon str &optional height v-adjust face)
-      "Displays an icon from the GitHub Octicons."
+      "Display an icon from the GitHub Octicons."
       (s-concat (all-the-icons-octicon icon :v-adjust (or v-adjust 0) :height (or height 1) :face face) " " str)))
 #+end_src
 
@@ -2409,14 +2409,14 @@ which I find more user-friendly.
     :commands circe
     :preface
     (defun my/circe-count-nicks ()
-      "Displays the number of users connected on the current channel."
+      "Display the number of users connected on the current channel."
       (interactive)
       (when (eq major-mode 'circe-channel-mode)
         (message "%i users are online on %s."
                  (length (circe-channel-nicks)) (buffer-name))))
 
     (defun my/circe-fetch-password (&rest params)
-      "Fetchs the NickServ password for an username."
+      "Fetch the NickServ password for an username."
       (require 'auth-source)
       (let ((match (car (apply 'auth-source-search params))))
         (if match
@@ -2427,7 +2427,7 @@ which I find more user-friendly.
           (error "[✗] Password not found for %S" params))))
 
     (defun my/circe-nickserv-password (server)
-      "Fetchs the NickServ password for the Libera Chat."
+      "Fetch the NickServ password for the Libera Chat."
       (my/circle-fetch-password :login "rememberYou" :machine "irc.libera.chat"))
     :custom
     (circe-default-part-message nil)
@@ -2753,7 +2753,7 @@ efficient way to go to the beginning of a line with =move-beginning-of-line=
 
 #+begin_src emacs-lisp
   (defun my/smarter-move-beginning-of-line (arg)
-    "Moves point back to indentation of beginning of line.
+    "Move point back to indentation of beginning of line.
 
      Move point to the first non-whitespace character on this line.
      If point is already there, move to the beginning of the line.
@@ -3019,7 +3019,7 @@ Git clients exist, only Magit and Git itself deserve to be called porcelains.
     :after magit
     :preface
     (defun my/git-commit-auto-fill-everywhere ()
-      "Ensures that the commit body does not exceed 72 characters."
+      "Ensure that the commit body does not exceed 72 characters."
       (setq fill-column 72)
       (setq-local comment-auto-fill-only-comments nil))
     :hook (git-commit-mode . my/git-commit-auto-fill-everywhere)
@@ -3145,7 +3145,7 @@ authoring documents with a fast and effective plain-text system.
     :bind ("C-c i" . org-insert-structure-template)
     :preface
     (defun my/org-archive-done-tasks ()
-      "Archives finished or cancelled tasks."
+      "Archive finished or cancelled tasks."
       (interactive)
       (org-map-entries
        (lambda ()
@@ -3154,7 +3154,7 @@ authoring documents with a fast and effective plain-text system.
        "TODO=\"DONE\"|TODO=\"CANCELLED\"" (if (org-before-first-heading-p) 'file 'tree)))
 
     (defun my/org-compare-times (clocked estimated)
-      "Gets the ratio between the timed time and the estimated time."
+      "Get the ratio between the timed time and the estimated time."
       (if (and (> (length clocked) 0) estimated)
           (format "%.2f"
                   (/ (* 1.0 (org-hh:mm-string-to-minutes clocked))
@@ -3162,13 +3162,13 @@ authoring documents with a fast and effective plain-text system.
         ""))
 
     (defun my/org-jump ()
-      "Jumps to a specific task."
+      "Jump to a specific task."
       (interactive)
       (let ((current-prefix-arg '(4)))
         (call-interactively 'org-refile)))
 
     (defun my/org-use-speed-commands-for-headings-and-lists ()
-      "Activates speed commands on list items too."
+      "Activate speed commands on list items too."
       (or (and (looking-at org-outline-regexp) (looking-back "^\**"))
           (save-excursion (and (looking-at (org-item-re)) (looking-back "^[ \t]*")))))
 
@@ -3593,13 +3593,13 @@ growth.
            ("C-c Y" . journal-file-yesterday))
     :preface
     (defun get-journal-file-yesterday ()
-      "Gets filename for yesterday's journal entry."
+      "Get filename for yesterday's journal entry."
       (let* ((yesterday (time-subtract (current-time) (days-to-time 1)))
              (daily-name (format-time-string "%Y%m%d" yesterday)))
         (expand-file-name (concat org-journal-dir daily-name))))
 
     (defun journal-file-yesterday ()
-      "Creates and load a file based on yesterday's date."
+      "Create and load a file based on yesterday's date."
       (interactive)
       (find-file (get-journal-file-yesterday)))
     :custom
