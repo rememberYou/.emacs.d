@@ -314,8 +314,7 @@ won't find a better debugger.
 ** Theme
 
 I am a fan of [[https://github.com/ChrisKempson/Tomorrow-Theme][tomorrow-night]] and combined with [[https://github.com/seagle0128/doom-modeline][doom-modeline]] it's happiness! To
-get icons in the =doom-modeline=, you will need to install the icons with
-[[#Icons][all-the-icons]].
+get icons in the =doom-modeline=, you will need to install [[#icons][icons]].
 
 #+begin_src emacs-lisp
   (use-package doom-themes
