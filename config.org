@@ -2266,22 +2266,16 @@ Moves the current line (or if marked, the current region's, whole lines).
 
 *** =paradox=
 
-Improved GNU Emacs standard package menu.
-
-#+begin_quote
-Project for modernizing Emacs' Package Menu. With improved appearance, mode-line
-information. Github integration, customizability, asynchronous upgrading, and
-more.
-
-[[https://github.com/Malabarba/paradox][Artur Malabarba]]
-#+end_quote
+The package listing menu has a simplistic interface. The [[https://github.com/Malabarba/paradox][paradox]] package
+improves the display of this interface, provides different mode line information
+and other features.
 
 #+begin_src emacs-lisp
   (use-package paradox
     :defer 1
     :custom
-    (paradox-column-width-package 27)
-    (paradox-column-width-version 13)
+    (paradox-column-width-package 25)
+    (paradox-display-star-count nil)
     (paradox-execute-asynchronously t)
     (paradox-hide-wiki-packages t)
     :config
