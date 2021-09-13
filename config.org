@@ -36,6 +36,8 @@
   - [[#csv][CSV]]
   - [[#dart-and-flutter][Dart and Flutter]]
   - [[#dockerfile][Dockerfile]]
+  - [[#epub][EPUB]]
+  - [[#gnuplot][Gnuplot]]
   - [[#ini][INI]]
   - [[#java][Java]]
   - [[#javascript][JavaScript]]
@@ -58,7 +60,6 @@
   - [[#calendar][Calendar]]
   - [[#dashboard][Dashboard]]
   - [[#editorconfig][EditorConfig]]
-  - [[#epub][EPUB]]
   - [[#helpful][Helpful]]
   - [[#highlight-indentation][Highlight Indentation]]
   - [[#history][History]]
@@ -1077,6 +1078,31 @@ manager.
   (use-package dockerfile-mode :delight "δ" :mode "Dockerfile\\'")
 #+end_src
 
+** EPUB
+
+Sometimes I have to read digital books in EPUB format. The [[https://github.com/wasamasa/nov.el][nov]] package allows to
+open this kind of file.
+
+#+begin_src emacs-lisp
+  (use-package nov
+    :mode ("\\.epub\\'" . nov-mode)
+    :custom (nov-text-width 75))
+#+end_src
+
+** Gnuplot
+
+Whether professionally or personally, it is often necessary to visualize your
+data in a quality graph. [[http://www.gnuplot.info/][Gnuplot]] is the perfect tool for this and the[[https://github.com/emacsorphanage/gnuplot][ gnuplot]]
+package allows to support this tool with GNU Emacs. To use gnuplot, do not
+forget to install it with your system package manager.
+
+#+begin_src emacs-lisp
+  (use-package gnuplot
+    :mode "\\.\\(gp\\|gpi\\|plt\\)'"
+    :bind (:map gnuplot-mode-map
+                ("C-c C-c".  gnuplot-send-buffer-to-gnuplot)))
+#+end_src
+
 ** INI
 
 To modify the INI files, you need to install the =ini-mode= package.
@@ -1746,17 +1772,6 @@ developers. To keep a coding style you can use [[https://editorconfig.org/][Edit
     :config (editorconfig-mode))
 #+end_src
 
-** EPUB
-
-Sometimes I have to read digital books in EPUB format. The [[https://github.com/wasamasa/nov.el][nov]] package allows to
-open this kind of file.
-
-#+begin_src emacs-lisp
-  (use-package nov
-    :mode ("\\.epub\\'" . nov-mode)
-    :custom (nov-text-width 75))
-#+end_src
-
 ** Helpful
 
 To have a more user-friendly documentation I use the [[https://github.com/Wilfred/helpful][helpful]] package.
@@ -2243,19 +2258,8 @@ operators.
     :delight
     :hook (python-mode . electric-operator-mode))
 #+end_src
-
-*** =gnuplot=
-
-To generate a fast and quality graphic, =gnuplot= is perfect.
-
-#+begin_src emacs-lisp
-  (use-package gnuplot
-    :ensure-system-package gnuplot
-    :defer 2)
-
-  (use-package gnuplot-mode
-    :after gnuplot
-    :mode "\\.gp\\'")
+    :hook ((css-mode java-mode js2-mode
+                     python-mode sql-mode typescript-mode) . electric-operator-mode))
 #+end_src
 
 *** =move-text=
