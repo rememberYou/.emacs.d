@@ -1015,7 +1015,7 @@ Finally, to compile with CMake in C++, I use [[https://github.com/atilaneves/cma
     :hook (c++-mode . my/cmake-ide-find-project)
     :preface
     (defun my/cmake-ide-find-project ()
-      "Finds the directory of the project for cmake-ide."
+      "Find the directory of the project for cmake-ide."
       (with-eval-after-load 'projectile
         (setq cmake-ide-project-dir (projectile-project-root))
         (setq cmake-ide-build-dir (concat cmake-ide-project-dir "build")))
@@ -1824,20 +1824,10 @@ again later.
 
 ** Hydra
 
-Hydra allows me to display a list of all the commands implemented in the echo
-area and easily interact with them.
-
-#+begin_quote
-Once you summon the Hydra through the prefixed binding (the body + any one
-head), all heads can be called in succession with only a short extension.
-
-The Hydra is vanquished once Hercules, any binding that isn't the Hydra's head,
-arrives. Note that Hercules, besides vanquishing the Hydra, will still serve his
-original purpose, calling his proper command. This makes the Hydra very
-seamless, it's like a minor mode that disables itself auto-magically.
-
-[[https://github.com/abo-abo/hydra][Oleh Krehel]]
-#+end_quote
+GNU Emacs has so many commands per mode that it is tedious to remember all the
+keybindings for quick access.  Fortunately, [[https://github.com/abo-abo/hydra][hydra]] allows you to create menu
+commands and on the basis of a popup, display the commands you have associated
+with it.
 
 #+begin_src emacs-lisp
   (use-package hydra
@@ -1906,9 +1896,9 @@ Group circe commands.
   (pretty-hydra-define hydra-circe
     (:hint nil :color teal :quit-key "q" :title (with-faicon "comments-o" "Circe" 1 -0.05))
     ("Action"
-     (
-      ("c" circe "connect")
-      ("r" circe-reconnect "reconnect"))))
+     (("c" circe "connect")
+      ("r" circe-reconnect "reconnect")
+      ("u" my/circe-count-nicks "user"))))
 #+end_src
 
 *** Hydra / Clock
@@ -2223,21 +2213,12 @@ Group window-related commands.
 
 ** General
 
-*** =aggressive-indent=
+*** Better Indentations
 
-Auto-indent code as you write.
-
-#+begin_quote
-=electric-indent-mode= is enough to keep your code nicely aligned when all you
-do is type. However, once you start shifting blocks around, transposing lines,
-or slurping and barfing sexps, indentation is bound to go wrong.
-
-=aggressive-indent-mode= is a minor mode that keeps your code *always* indented.
-It reindents after every change, making it more reliable than
-electric-indent-mode.
-
-[[https://github.com/Malabarba/aggressive-indent-mode][Artur Malabarba]]
-#+end_quote
+By default GNU Emacs auto-indents the code while typing with
+electric-indent-mode, but the indentation made is wrong when moving blocks,
+transposing lines and so on. The [[https://github.com/Malabarba/aggressive-indent-mode][aggresive-indent]] package is an improved version
+of the previous mode, allowing a code to be always indented.
 
 #+begin_src emacs-lisp
   (use-package aggressive-indent
@@ -2245,36 +2226,40 @@ electric-indent-mode.
     :custom (aggressive-indent-comments-too t))
 #+end_src
 
-*** =electric-operator=
+*** Spaces Around the Operators
 
-=electric-operator= is an emacs minor-mode to automatically add spacing around
-operators.
+To automatically add spacing around operators as you develop, the
+[[https://github.com/davidshepherd7/electric-operator][electric-operator]] package is there for that.
+
+*NOTE:* I don't use =electric-operator= for C-like languages which works a bit less
+well according to the author of the package.
 
 #+begin_src emacs-lisp
   (use-package electric-operator
     :delight
-    :hook (python-mode . electric-operator-mode))
-#+end_src
     :hook ((css-mode java-mode js2-mode
                      python-mode sql-mode typescript-mode) . electric-operator-mode))
 #+end_src
 
-*** =move-text=
+*** Moving Lines or Regions
 
-Moves the current line (or if marked, the current region's, whole lines).
+Sometimes it is useful to be able to move a line or a region up and down without
+having to =kill-region= (=C-w=) and =yank (C-y)=. With the =move-text-up= and
+=move-text-down= commands, the [[https://github.com/emacsfodder/move-text][move-text]] package allows to moves the current line
+or if marked, the current region's, whole lines.
 
 #+begin_src emacs-lisp
-  (use-package move-text
+(use-package move-text
     :bind (("M-p" . move-text-up)
            ("M-n" . move-text-down))
     :config (move-text-default-bindings))
 #+end_src
 
-*** =paradox=
+*** Better Package Menu Interface
 
-The package listing menu has a simplistic interface. The [[https://github.com/Malabarba/paradox][paradox]] package
-improves the display of this interface, provides different mode line information
-and other features.
+The package menu has a simplistic interface. The [[https://github.com/Malabarba/paradox][paradox]] package improves the
+display of this interface, provides different mode line information and other
+features.
 
 #+begin_src emacs-lisp
   (use-package paradox
