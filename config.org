@@ -2249,7 +2249,7 @@ having to =kill-region= (=C-w=) and =yank (C-y)=. With the =move-text-up= and
 or if marked, the current region's, whole lines.
 
 #+begin_src emacs-lisp
-(use-package move-text
+  (use-package move-text
     :bind (("M-p" . move-text-up)
            ("M-n" . move-text-down))
     :config (move-text-default-bindings))
@@ -2269,9 +2269,7 @@ features.
     (paradox-display-star-count nil)
     (paradox-execute-asynchronously t)
     (paradox-hide-wiki-packages t)
-    :config
-    (paradox-enable)
-    (remove-hook 'paradox-after-execute-functions #'paradox--report-buffer-print))
+    :config (paradox-enable))
 #+end_src
 
 *** Color Display for Hex Values
@@ -2285,7 +2283,7 @@ useful.
     :hook ((prog-mode text-mode) . rainbow-mode))
 #+end_src
 
-**** Replace the current file with the saved one
+*** Replace the current file with the saved one
 
 Avoids call the function or reload Emacs.
 
@@ -2298,12 +2296,13 @@ Avoids call the function or reload Emacs.
     :config (global-auto-revert-mode))
 #+end_src
 
-*** =try=
+*** Try Packages
 
-Useful to temporary use a package.
+It happens that I want to try a GNU Emacs package without installing it. The [[https://github.com/larstvei/Try][try]]
+package allows this behavior.
 
 #+begin_src emacs-lisp
-  (use-package try :defer 5)
+  (use-package try :commands try)
 #+end_src
 
 *** =undo-tree=
@@ -2361,12 +2360,10 @@ of a term, without breaking its workflow, is ideal.
 
 ** Icons
 
-To integrate icons with =doom-modeline=, =switch-to-buffer=, =counsel-find-file=
-and many other functions; [[https://github.com/domtronn/all-the-icons.el/][all-the-icons]] is just the best package that you can
-find.
-
-*NOTE:* if it's the first time that you install the package, you must run
-=M-x all-the-icons-install-fonts=.
+To integrate icons with =doom-modeline= and other packages, [[https://github.com/domtronn/all-the-icons.el/][all-the-icons]] is the
+best package that you can have with GNU Emacs. To download the icons on your
+machine, you must run the =all-the-icons-install-fonts= command when you install
+this package.
 
 #+begin_src emacs-lisp
   (use-package all-the-icons
@@ -2908,7 +2905,6 @@ exists as well).
 
 #+begin_src emacs-lisp
   (use-package projectile
-    :hook (after-init . projectile-mode)
     :preface
     (defun my/projectile-compilation-buffers (&optional project)
       "Get a list of a project's compilation buffers.
@@ -2933,10 +2929,6 @@ exists as well).
     (projectile-mode-line '(:eval (projectile-project-name)))
     (projectile-switch-project-action #'projectile-dired)
     :config (projectile-global-mode))
-
-  (use-package counsel-projectile
-    :after (counsel projectile)
-    :config (counsel-projectile-mode 1))
 #+end_src
 
 ** Recent Files
