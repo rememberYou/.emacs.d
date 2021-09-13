@@ -607,15 +607,15 @@ default behavior when multiple windows are present. [[https://github.com/anler/c
 this behavior.
 
 #+begin_src emacs-lisp
-  (use-package centered-window
-    :hook (after-init . centered-window-mode)
-    :custom
-    (cwm-centered-window-width 130)
-    (cwm-frame-internal-border 0)
-    (cwm-incremental-padding t)
-    (cwm-incremental-padding-% 2)
-    (cwm-left-fringe-ratio 0)
-    (cwm-use-vertical-padding t))
+    (use-package centered-window
+      :custom
+      (cwm-centered-window-width 130)
+      (cwm-frame-internal-border 0)
+      (cwm-incremental-padding t)
+      (cwm-incremental-padding-% 2)
+      (cwm-left-fringe-ratio 0)
+      (cwm-use-vertical-padding t)
+      :config (centered-window-mode))
 #+end_src
 
 The way I move between several windows in GNU Emacs is by indicating the number
@@ -637,7 +637,7 @@ package, I can easily do that.
 #+begin_src emacs-lisp
   (use-package winner
     :ensure nil
-    :hook (after-init . winner-mode))
+    :config (winner-mode))
 #+end_src
 
 * Minibuffer Completion
@@ -2241,10 +2241,7 @@ electric-indent-mode.
 
 #+begin_src emacs-lisp
   (use-package aggressive-indent
-    :hook ((css-mode . aggressive-indent-mode)
-           (emacs-lisp-mode . aggressive-indent-mode)
-           (js-mode . aggressive-indent-mode)
-           (lisp-mode . aggressive-indent-mode))
+    :hook (prog-mode . aggressive-indent-mode)
     :custom (aggressive-indent-comments-too t))
 #+end_src
 
@@ -2313,7 +2310,7 @@ Avoids call the function or reload Emacs.
     :delight auto-revert-mode
     :bind ("C-x R" . revert-buffer)
     :custom (auto-revert-verbose nil)
-    :config (global-auto-revert-mode 1))
+    :config (global-auto-revert-mode))
 #+end_src
 
 *** =try=
