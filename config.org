@@ -2305,20 +2305,6 @@ package allows this behavior.
   (use-package try :commands try)
 #+end_src
 
-*** =undo-tree=
-
-GNU Emacs's undo system allows you to recover any past state of a buffer. To do
-this, Emacs treats "undo itself as another editing that can be undone".
-
-#+begin_src emacs-lisp
-  (use-package undo-tree
-    :delight
-    :bind ("C--" . undo-tree-redo)
-    :init (global-undo-tree-mode)
-    :custom
-    (undo-tree-visualizer-timestamps t)
-    (undo-tree-visualizer-diff t))
-#+end_src
 
 *** =which-key=
 
