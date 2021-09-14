@@ -3036,23 +3036,13 @@ Git clients exist, only Magit and Git itself deserve to be called porcelains.
                                        (hydra-merge/body)))))
 #+end_src
 
-In addition to that, I like to see the lines that are being modified in the file
-while it is being edited.
+Finally, I like to know the modified lines of a file while I edit it
 
 #+begin_src emacs-lisp
   (use-package git-gutter
     :defer 0.3
     :delight
-    :init (global-git-gutter-mode +1))
-#+end_src
-
-Finally, one last package that I like to use with Git to easily see the changes
-made by previous commits.
-
-#+begin_src emacs-lisp
-  (use-package git-timemachine
-    :defer 1
-    :delight)
+    :config (global-git-gutter-mode))
 #+end_src
 
 ** Whitespaces
