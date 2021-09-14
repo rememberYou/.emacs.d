@@ -693,7 +693,7 @@ use [[https://github.com/oantolin/orderless][orderless]] (or [[https://github.co
   (use-package orderless
     :custom
     (completion-category-defaults nil)
-    (completion-category-overrides '((file (styles . (initials)))))
+    (completion-category-overrides '((file (styles . (partial-completion)))))
     (completion-styles '(orderless)))
 #+end_src
 
