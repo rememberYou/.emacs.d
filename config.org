@@ -660,7 +660,7 @@ of =ivy=.
   (use-package vertico
     :init (vertico-mode)
     :custom (vertico-cycle t)
-    :custom-face (vertico-current ((t (:background "#3a3f5a")))))
+    :custom-face (vertico-current ((t (:background "#1d1f21")))))
 #+end_src
 
 To enable richer annotations (e.g., summary documentation of the functions and
