@@ -3057,43 +3057,27 @@ made by previous commits.
 
 ** Whitespaces
 
-It is often annoying to see unnecessary blank spaces at the end of a line or
-file. Let's get ride of them:
+It is annoying to see useless blank spaces at the end of a line or a file. Let's
+get rid of these spaces. Most of the time, I also like to have justified texts.
 
 #+begin_src emacs-lisp
   (use-package simple
     :ensure nil
-    :hook (before-save . delete-trailing-whitespace))
+    :delight (auto-fill-function)
+    :hook ((before-save . delete-trailing-whitespace)
+           ((prog-mode text-mode) . turn-on-auto-fill))
+    :custom (set-mark-command-repeat-pop t))
 #+end_src
 
-*** =hungry-delete=
-
-#+begin_quote
-Deleting a whitespace character will delete all whitespace until the next
-non-whitespace character.
-
-[[https://github.com/nflath/hungry-delete][Nathaniel Flath]]
-#+end_quote
+Finally, I also like is to be able to delete every consecutive space characters
+when a space character is deleted. The [[https://github.com/nflath/hungry-delete][hungry-delete]] package allows this
+behavior.
 
 #+begin_src emacs-lisp
   (use-package hungry-delete
     :defer 0.7
     :delight
     :config (global-hungry-delete-mode))
-#+end_src
-
-** Word Wrap
-
-I like to have lines of the same length.
-
-#+begin_src emacs-lisp
-  (use-package simple
-    :ensure nil
-    :delight (auto-fill-function)
-    :bind ("C-x p" . pop-to-mark-command)
-    :hook ((prog-mode . turn-on-auto-fill)
-           (text-mode . turn-on-auto-fill))
-    :custom (set-mark-command-repeat-pop t))
 #+end_src
 
 ** YASnippet
