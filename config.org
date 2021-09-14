@@ -2283,9 +2283,10 @@ useful.
     :hook ((prog-mode text-mode) . rainbow-mode))
 #+end_src
 
-*** Replace the current file with the saved one
+*** Replace the Current File with the Saved One
 
-Avoids call the function or reload Emacs.
+Sometimes you may want to discard your changes to a file and revert to the saved
+version of this file.
 
 #+begin_src emacs-lisp
   (use-package autorevert
