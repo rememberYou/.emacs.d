@@ -564,8 +564,8 @@ into it. [[https://github.com/Fuco1/dired-hacks/blob/master/dired-subtree.el][di
                 ("<tab>" . dired-subtree-toggle)))
 #+end_src
 
-Sometimes you may have a folder with a large number of files. In this case,
-[[https://github.com/Fuco1/dired-hacks/blob/master/dired-narrow.el][dired-narrow]] is useful to filter the files.
+Finally, to manage folders with a large number of files, it may be useful to
+filter with [[https://github.com/Fuco1/dired-hacks/blob/master/dired-narrow.el][dired-narrow]]
 
 #+begin_src emacs-lisp
   (use-package dired-narrow
@@ -596,7 +596,7 @@ behavior.
       (other-window 1))
 
     (defun vsplit-last-buffer ()
-      "Focus the last created vertical window."
+      "Focus to the last created vertical window."
       (interactive)
       (split-window-vertically)
       (other-window 1)))
