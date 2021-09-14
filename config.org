@@ -1161,10 +1161,12 @@ with your system package manager
 
 #+begin_src emacs-lisp
   (use-package js2-mode
+    :after flycheck
     :mode "\\.js\\'"
     :hook ((js2-mode . js2-imenu-extras-mode)
            (js2-mode . prettier-js-mode))
-    :custom (js-indent-level 2))
+    :custom (js-indent-level 2)
+    :config (flycheck-add-mode 'javascript-eslint 'js2-mode))
 #+end_src
 
 I like to use [[https://prettier.io/][prettier]] to get my TypeScript code clean. To use it, do not forget
@@ -1438,10 +1440,7 @@ variables.
   (use-package python
     :ensure nil
     :delight "π"
-    :bind (:map python-mode-map
-                ("M-[" . python-nav-backward-block)
-                ("M-]" . python-nav-forward-block)
-                ("M-|" . python-remove-unused-imports))
+    :after flycheck
     :preface
     (defun python-remove-unused-imports()
       "Remove unused imports and unused variables with autoflake."
@@ -1451,7 +1450,14 @@ variables.
             (shell-command (format "autoflake --remove-all-unused-imports -i %s"
                                    (shell-quote-argument (buffer-file-name))))
             (revert-buffer t t t))
-        (warn "python-mode: Cannot find autoflake executable."))))
+        (warn "[✗] python-mode: Cannot find autoflake executable.")))
+    :bind (:map python-mode-map
+                ("M-[" . python-nav-backward-block)
+                ("M-]" . python-nav-forward-block)
+                ("M-|" . python-remove-unused-imports))
+    :custom
+    (flycheck-pylintrc "~/.pylintrc")
+    (flycheck-python-pylint-executable "/usr/bin/pylint"))
 #+end_src
 
 I have tried several LSP servers. I have experienced that =mspyls= is faster than
@@ -1556,8 +1562,10 @@ install this LSP server through LSP mode or with your system package manager.
 #+begin_src emacs-lisp
   (use-package css-mode
     :ensure nil
+    :after flycheck
     :mode "\\.css\\'"
-    :custom (css-indent-offset 2))
+    :custom (css-indent-offset 2)
+    :config (flycheck-stylelintrc "~/.stylelintrc.json"))
 #+end_src
 
 ** TypeScript
@@ -1575,12 +1583,17 @@ section.
 
 #+begin_src emacs-lisp
   (use-package typescript-mode
+    :after flycheck
     :hook ((typescript-mode . prettier-js-mode)
            (typescript-mode . lsp-deferred))
     :mode ("\\.\\(ts\\|tsx\\)\\'")
     :custom
+    ;; TSLint is depreciated in favor of ESLint.
+    (flycheck-disable-checker 'typescript-tslint)
     (lsp-clients-typescript-server-args '("--stdio" "--tsserver-log-file" "/dev/stderr"))
-    (typescript-indent-level 2))
+    (typescript-indent-level 2)
+    :config
+    (flycheck-add-mode 'javascript-eslint 'typescript-mode))
 #+end_src
 
 ** Vue.js
@@ -2491,21 +2504,21 @@ Finally, to provides a =flychecker= checker for Ledger files, you can use
 
 ** Linters
 
-Flycheck lints warnings and errors directly within buffers.
+To integrate syntax checking during development, [[https://www.flycheck.org/][Flycheck]] lints warnings and
+errors directly within buffers. To use it, you need to install the [[https://github.com/flycheck/flycheck][flycheck]]
+package on GNU Emacs and install the necessary linters for the programming
+languages you use, via your system package manager.
+
+*NOTE:* The GNU Emacs community has produced a number of [[https://github.com/flycheck/flycheck/blob/master/doc/community/extensions.rst][extensions to Flycheck]].
 
 #+begin_src emacs-lisp
   (use-package flycheck
-    :defer 2
     :delight
-    :init (global-flycheck-mode)
-    :custom
-    (flycheck-display-errors-delay .3)
-    (flycheck-pylintrc "~/.pylintrc")
-    (flycheck-python-pylint-executable "/usr/bin/pylint")
-    (flycheck-stylelintrc "~/.stylelintrc.json")
-    :config
-    (flycheck-add-mode 'javascript-eslint 'web-mode)
-    (flycheck-add-mode 'typescript-tslint 'web-mode))
+    :hook (lsp-mode . flycheck-mode)
+    :bind (:map flycheck-mode-map
+                ("M-'" . flycheck-previous-error)
+                ("M-\\" . flycheck-next-error))
+    :custom (flycheck-display-errors-delay .3))
 #+end_src
 
 ** Mails
