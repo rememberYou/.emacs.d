@@ -67,7 +67,7 @@
   - [[#general][General]]
   - [[#icons][Icons]]
   - [[#irc][IRC]]
-  - [[#ledger][Ledger]]
+  - [[#money-management][Money Management]]
   - [[#linters][Linters]]
   - [[#mails][Mails]]
   - [[#navigation][Navigation]]
@@ -2438,33 +2438,42 @@ which I find more user-friendly.
     (enable-circe-display-images))
 #+end_src
 
-** Ledger
+Finally if like me you would like to be informed by desktop notifications when
+you are mentioned on IRC, the [[https://github.com/eqyiel/circe-notifications][circe-notifications]] package allows you to do that.
 
-#+begin_quote
-Ledger is a powerful, double-entry accounting system that is accessed from the
-UNIX command-line.
 
-[[https://github.com/ledger/ledger][John Wiegley]]
-#+end_quote
+** Money Management
 
-Before you can use this configuration, make sure you install =ledger= on your
-operating system.
+Good money management is a skill to be acquired as soon as possible. Fortunately
+for us, [[https://www.ledger-cli.org/][Ledger]] allows you to have a double-entry accounting system directly from
+the UNIX command line. To use Ledger with GNU Emacs, you need to the [[https://github.com/ledger/ledger-mode][ledger-mode]]
+package. However, do not forget to install the =ledger= package with your system
+package manager.
 
-Now all we have to do is configure =ledger-mode=:
+I discovered Ledger as a student and learning how to manage time and expenses at
+the same time was too much. I decided for the time being to briefly learn Ledger
+and focus more on time management. One issue I had with Ledger was the lack of
+support from my bank to export my transactions into a file type that Ledger
+could understand. Unfortunately, since I often made bank transfers, encoding
+each payment by hand was a pain. For the curious people, alternatives to Ledger
+exist, some of which are open-source and proprietary (e.g., [[https://www.youneedabudget.com/][YNAB]]).
+
+*NOTE:* by default, Ledger uses the [[ https://xkcd.com/1179/][ISO 8601]] format to write dates, which is the
+recommended format.
 
 #+begin_src emacs-lisp
   (use-package ledger-mode
     :ensure-system-package (ledger . "yay -S --noconfirm ledger")
     :mode ("\\.\\(dat\\|ledger\\)\\'")
-    :bind (:map ledger-mode-map
-                ("C-x C-s" . my/ledger-save))
-    :hook (ledger-mode . ledger-flymake-enable)
     :preface
     (defun my/ledger-save ()
-      "Automatically clean the ledger buffer at each save."
+      "Clean the ledger buffer at each save."
       (interactive)
       (ledger-mode-clean-buffer)
       (save-buffer))
+    :bind (:map ledger-mode-map
+                ("C-x C-s" . my/ledger-save))
+    :hook (ledger-mode . ledger-flymake-enable)
     :custom
     (ledger-clear-whole-transactions t)
     (ledger-reconcile-default-commodity "EUR")
@@ -2479,12 +2488,14 @@ Now all we have to do is configure =ledger-mode=:
        ("equity" "%(binary) --real [[ledger-mode-flags]] -f %(ledger-file) equity")
        ("income statement" "%(binary) --invert --real -S -T [[ledger-mode-flags]] -f %(ledger-file) bal ^income ^expenses -p \"this month\""))
      (ledger-report-use-header-line nil)))
-
-  (use-package flycheck-ledger :after ledger-mode)
 #+end_src
 
-*NOTE:* by default, =ledger= uses the [[ https://xkcd.com/1179/][ISO 8601]] format to write dates, which is the recommended
-format.
+Finally, to provides a =flychecker= checker for Ledger files, you can use
+[[https://github.com/purcell/flycheck-ledger][flycheck-ledger]].
+
+#+begin_src emacs-lisp
+  (use-package flycheck-ledger :after ledger-mode)
+#+end_src
 
 ** Linters
 
