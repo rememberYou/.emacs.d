@@ -2335,14 +2335,16 @@ I used =guide-key= in my past days, but =which-key= is a good replacement.
     :config (which-key-mode))
 #+end_src
 
-*** =wiki-summary=
+*** Summary of Terms
 
-It is impossible to know everything, which is why a quick description
-of a term, without breaking its workflow, is ideal.
+Occasionally, I would like to have a summary of a term directly on GNU Emacs,
+before that I would like to know more about this term. The [[https://github.com/jozefg/wiki-summary.el][wiki-summary]] package
+allows this behavior.
 
 #+begin_src emacs-lisp
   (use-package wiki-summary
-    :defer 1
+    :commands (wiki-summary wiki-summary-insert)
+    :bind ("C-c W" . wiki-summary)
     :preface
     (defun my/format-summary-in-buffer (summary)
       "Given a summary, sticks it in the *wiki-summary* buffer and displays
@@ -2353,9 +2355,10 @@ of a term, without breaking its workflow, is ideal.
           (fill-paragraph)
           (goto-char (point-min))
           (view-mode))
-        (pop-to-buffer buf))))
-
-  (advice-add 'wiki-summary/format-summary-in-buffer :override #'my/format-summary-in-buffer)
+        (pop-to-buffer buf)))
+    :config
+    (advice-add 'wiki-summary/format-summary-in-buffer
+                :override #'my/format-summary-in-buffer))
 #+end_src
 
 ** Icons
