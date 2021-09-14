@@ -2369,10 +2369,8 @@ more competent people than me on a subject.
 
 To start using IRC, you will need to [[https://libera.chat/guides/registration][create an account]]. Once your account is
 created, you can store it in your =.authinfo.gpg= file and add this file to the
-=auth-sources= variable.
-
-To add your IRC account in the =authinfo.gpg= file, add in the following line with
-your credentials:
+=auth-sources= variable. To add your IRC account in the =authinfo.gpg= file, add in
+the following line with your credentials:
 
 #+BEGIN_EXAMPLE
   machine irc.libera.chat login <nickname> password <password> port 6697
@@ -2430,6 +2428,11 @@ which I find more user-friendly.
 Finally if like me you would like to be informed by desktop notifications when
 you are mentioned on IRC, the [[https://github.com/eqyiel/circe-notifications][circe-notifications]] package allows you to do that.
 
+#+begin_src emacs-lisp
+  (use-package circe-notifications
+    :after circe
+    :hook (circe-server-connected . enable-circe-notifications))
+#+end_src
 
 ** Money Management
 
