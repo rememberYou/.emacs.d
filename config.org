@@ -2307,12 +2307,11 @@ package allows this behavior.
 #+end_src
 
 
-*** =which-key=
+*** Displays Available Keybindings in Popup
 
-It's difficult to remember all the keyboard shortcuts. The =which-key= package
-helps to solve this.
-
-I used =guide-key= in my past days, but =which-key= is a good replacement.
+It is difficult to remember all the keyboard shortcuts. The [[https://github.com/justbur/emacs-which-key][which-key]] package
+helps to solve this. I used [[https://github.com/kai2nenobu/guide-key][guide-key]] in my past days, but =which-key= is a good
+replacement.
 
 #+begin_src emacs-lisp
   (use-package which-key
