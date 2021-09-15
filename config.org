@@ -79,7 +79,7 @@
   - [[#recent-files][Recent Files]]
   - [[#requests][Requests]]
   - [[#revealjs][Reveal.js]]
-  - [[#version-control][Version Control]]
+  - [[#version-control-system][Version Control System]]
   - [[#whitespaces][Whitespaces]]
   - [[#word-wrap][Word Wrap]]
   - [[#yasnippet][YASnippet]]
@@ -2986,32 +2986,27 @@ files, in order to make =~/.emacs.d= a cleaner place.
 #+end_src
 
 ** Reveal.js
+** Version Control System
 
 I tend to use Beamer for scientific presentations, and Reveal.js for others.
+It is quite common to work on [[https://git-scm.com/][Git]] repositories, therefore it is important to
+have a configuration that suits us. To interact with Git, GNU Emacs has [[https://github.com/magit/magit][magit]]
+which is the best tool I have tested. With =magit= you can directly interact with
+your repositories through an interface.
 
 #+begin_src emacs-lisp
   (use-package org-re-reveal
     :after org
+  (use-package magit
+    :commands magit-status
     :custom
     (org-reveal-mathjax t)
     (org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/"))
+    (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 #+end_src
 
-** Version Control
-
-It is quite common to work on Git repositories, so it is important to have a
-configuration that we like.
-
-#+begin_quote
-[[https://github.com/magit/magit][Magit]] is an interface to the version control system Git, implemented as an Emacs
-package. Magit aspires to be a complete Git porcelain. While we cannot (yet)
-claim that Magit wraps and improves upon each and every Git command, it is
-complete enough to allow even experienced Git users to perform almost all of
-their daily version control tasks directly from within Emacs. While many fine
-Git clients exist, only Magit and Git itself deserve to be called porcelains.
-
-[[https://github.com/tarsius][Jonas Bernoulli]]
-#+end_quote
+To make sure that the summary and the body of the commits respect the
+conventions, the [[https://github.com/magit/magit/blob/master/lisp/git-commit.el][git-commit]] package is perfect.
 
 #+begin_src emacs-lisp
   (use-package git-commit
@@ -3023,20 +3018,22 @@ Git clients exist, only Magit and Git itself deserve to be called porcelains.
       (setq-local comment-auto-fill-only-comments nil))
     :hook (git-commit-mode . my/git-commit-auto-fill-everywhere)
     :custom (git-commit-summary-max-length 50))
-
-  (use-package magit
-    :commands magit-status
-    :custom
-    (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
-
-  (use-package smerge-mode
-    :after hydra
-    :hook (magit-diff-visit-file . (lambda ()
-                                     (when smerge-mode
-                                       (hydra-merge/body)))))
 #+end_src
 
-Finally, I like to know the modified lines of a file while I edit it
+To manage [[https://www.gnu.org/software/diffutils/manual/html_node/diff3-Options.html][diff3]] conflicts with Git, the smerge-mode builtin package is helpful.
+
+#+begin_src emacs-lisp
+  (use-package smerge-mode
+    :after hydra
+    :delight " ∓"
+    :commands smerge-mode
+    :bind (:map smerge-mode-map
+                ("M-g n" . smerge-next)
+                ("M-g p" . smerge-prev))
+    :hook (magit-diff-visit-file . hydra-merge/body))
+#+end_src
+
+Finally, I like to know the modified lines of a file while I edit it.
 
 #+begin_src emacs-lisp
   (use-package git-gutter
