@@ -184,7 +184,6 @@ For a better user experience of GNU Emacs, here are the default values that I us
    user-mail-address "terencio.agozzino@gmail.com"  ; Set the email address of the current user
    vc-follow-symlinks t                             ; Always follow the symlinks
    view-read-only t)                                ; Always open read-only buffers in view-mode
-  (cd "~/")                                         ; Move to the user directory
   (column-number-mode 1)                            ; Show the column number
   (fset 'yes-or-no-p 'y-or-n-p)                     ; Replace yes/no prompts with y/n
   (global-hl-line-mode)                             ; Hightlight current line
