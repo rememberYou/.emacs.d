@@ -957,6 +957,7 @@ file which has too many errors to be processed properly.
 
 #+begin_src emacs-lisp
   (use-package lsp-ltex
+    :disabled
     :custom
     (lsp-ltex-enabled nil)
     (lsp-ltex-mother-tongue "fr"))
