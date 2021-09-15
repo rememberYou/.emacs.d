@@ -678,7 +678,32 @@ of =ivy=.
 
 #+begin_src emacs-lisp
   (use-package vertico
+    :preface
+    (defun vertico-directory--completing-file-p ()
+      "Return non-nil when completing file names."
+      (eq 'file
+          (completion-metadata-get
+           (completion-metadata
+            (buffer-substring (minibuffer-prompt-end)
+                              (max (minibuffer-prompt-end) (point)))
+            minibuffer-completion-table
+            minibuffer-completion-predicate)
+           'category)))
+
+    (defun vertico-directory-up ()
+      "Delete directory before point."
+      (interactive)
+      (when (and (> (point) (minibuffer-prompt-end))
+                 (eq (char-before) ?/)
+                 (vertico-directory--completing-file-p))
+        (save-excursion
+          (goto-char (1- (point)))
+          (when (search-backward "/" (minibuffer-prompt-end) t)
+            (delete-region (1+ (point)) (point-max))
+            t))))
     :init (vertico-mode)
+    :bind (:map vertico-map
+                ("C-<backspace>" . vertico-directory-up))
     :custom (vertico-cycle t)
     :custom-face (vertico-current ((t (:background "#1d1f21")))))
 #+end_src
