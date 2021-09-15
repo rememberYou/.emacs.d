@@ -2834,24 +2834,27 @@ parenthesis. Anyway, if you don't like it, you can try taking a look at
 
 ** Paste
 
-#+begin_quote
-This mode allows to paste whole buffers or parts of buffers to pastebin-like
-services. It supports more than one service and will failover if one service
-fails.
-
-[[https://github.com/etu/webpaste.el][Elis Hirwing]]
-#+end_quote
+To get or provide help, it is important to be able to parse a whole buffer or a
+region of this buffer. The [[https://github.com/etu/webpaste.el][webpaste]] package allows you to parse your code using a
+pastebin-like service.
 
 #+begin_src emacs-lisp
-  (use-package webpaste :defer 1)
+  (use-package webpaste
+    :commands (webpaste-paste-buffer
+               webpaste-paste-buffer-or-region
+               webpaste-paste-region)
+    :bind (("C-c C-p C-b" . webpaste-paste-buffer)
+           ("C-c C-p C-p" . webpaste-paste-buffer-or-region)
+           ("C-c C-p C-r" . webpaste-paste-region))
+    :custom (webpaste-provider-priority '("dpaste.org" "dpaste.com" "ix.io")))
 #+end_src
 
-Same principle for images with =imgbb=. This package selects an image
-and upload it to [[https://imgbb.com/][imgbb]], making sure to display the URL of the image in
-the minibuffer and place it in the kill ring.
+Similarly, the [[https://github.com/ecraven/imgbb.el][imgbb]] package allows you to select and upload images using the [[https://imgbb.com/][imgbb]] service.
 
 #+begin_src emacs-lisp
-  (use-package imgbb :defer 2)
+  (use-package imgbb
+    :commands imgbb-upload
+    :bind ("C-c C-p C-i" . imgbb-upload))
 #+end_src
 
 ** PDF
