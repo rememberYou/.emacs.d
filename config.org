@@ -2988,23 +2988,17 @@ files, in order to make =~/.emacs.d= a cleaner place.
     (url-cookie-file (expand-file-name (format "%s/emacs/url/cookies/" xdg-data))))
 #+end_src
 
-** Reveal.js
 ** Version Control System
 
-I tend to use Beamer for scientific presentations, and Reveal.js for others.
 It is quite common to work on [[https://git-scm.com/][Git]] repositories, therefore it is important to
 have a configuration that suits us. To interact with Git, GNU Emacs has [[https://github.com/magit/magit][magit]]
 which is the best tool I have tested. With =magit= you can directly interact with
 your repositories through an interface.
 
 #+begin_src emacs-lisp
-  (use-package org-re-reveal
-    :after org
   (use-package magit
     :commands magit-status
     :custom
-    (org-reveal-mathjax t)
-    (org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/"))
     (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 #+end_src
 
