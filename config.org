@@ -1205,7 +1205,7 @@ with your system package manager
 
 #+begin_src emacs-lisp
   (use-package js2-mode
-    :after flycheck
+    :ensure flycheck
     :mode "\\.js\\'"
     :hook ((js2-mode . js2-imenu-extras-mode)
            (js2-mode . prettier-js-mode))
@@ -1482,9 +1482,8 @@ variables.
 
 #+begin_src emacs-lisp
   (use-package python
-    :ensure nil
+    :ensure flycheck
     :delight "π"
-    :after flycheck
     :preface
     (defun python-remove-unused-imports()
       "Remove unused imports and unused variables with autoflake."
@@ -1605,8 +1604,7 @@ install this LSP server through LSP mode or with your system package manager.
 
 #+begin_src emacs-lisp
   (use-package css-mode
-    :ensure nil
-    :after flycheck
+    :ensure flycheck
     :mode "\\.css\\'"
     :custom (css-indent-offset 2)
     :config (flycheck-stylelintrc "~/.stylelintrc.json"))
@@ -1627,7 +1625,7 @@ section.
 
 #+begin_src emacs-lisp
   (use-package typescript-mode
-    :after flycheck
+    :ensure flycheck
     :hook ((typescript-mode . prettier-js-mode)
            (typescript-mode . lsp-deferred))
     :mode ("\\.\\(ts\\|tsx\\)\\'")
