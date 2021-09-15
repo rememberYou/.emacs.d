@@ -77,8 +77,6 @@
   - [[#point-and-region][Point and Region]]
   - [[#projectile][Projectile]]
   - [[#recent-files][Recent Files]]
-  - [[#requests][Requests]]
-  - [[#revealjs][Reveal.js]]
   - [[#version-control-system][Version Control System]]
   - [[#whitespaces][Whitespaces]]
   - [[#word-wrap][Word Wrap]]
@@ -222,6 +220,28 @@ to create them yourself.
 
   (defvar xdg-lib (getenv "XDG_LIB_HOME")
     "The XDG lib base directory.")
+#+end_src
+
+Some GNU Emacs packages implicitly use the [[https://github.com/tkf/emacs-request][request]] package to make HTTP
+requests. By default, the data for this package is stored in the GNU Emacs
+directory. Let's change this value to respect the XDG base directory
+specifications.
+
+#+begin_src emacs-lisp
+  (use-package request
+    :custom
+    (request-storage-directory (expand-file-name (format "%s/emacs/request/" xdg-data))))
+#+end_src
+
+Similarly, GNU Emacs has the built-in url-cookie package to manage
+cookies. Let's also change this value to respect the XDG base directory
+specifications.
+
+#+begin_src emacs-lisp
+  (use-package url-cookie
+    :ensure nil
+    :custom
+    (url-cookie-file (expand-file-name (format "%s/emacs/url/cookies/" xdg-data))))
 #+end_src
 
 ** Customizations
@@ -2969,23 +2989,6 @@ Provides fast access to the recent files.
     (recentf-max-saved-items 200)
     (recentf-save-file (expand-file-name (format "%s/emacs/recentf" xdg-cache)))
     :config (run-at-time nil (* 5 60) 'recentf-save-list))
-#+end_src
-
-** Requests
-
-Let's follow the [[https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html][XDG base directory specification]] for the request and cookies
-files, in order to make =~/.emacs.d= a cleaner place.
-
-#+begin_src emacs-lisp
-  (use-package request
-    :ensure nil
-    :custom
-    (request-storage-directory (expand-file-name (format "%s/emacs/request/" xdg-data))))
-
-  (use-package url-cookie
-    :ensure nil
-    :custom
-    (url-cookie-file (expand-file-name (format "%s/emacs/url/cookies/" xdg-data))))
 #+end_src
 
 ** Version Control System
