@@ -855,6 +855,8 @@ I use the =flyspell= built-in package to enable spell checking on-the-fly in GNU
 Emacs. A useful =flyspell= command is =flyspell-auto-correct-word= (=M-TAB=) which
 automatically corrects a word according to the best suggestion.
 
+*NOTE:* a call to`flyspell-buffer` could be extremely slow.
+
 #+begin_src emacs-lisp
   (use-package flyspell
     :ensure nil
@@ -896,14 +898,11 @@ using the =hunspell -D= command.
         (ispell-change-dictionary new-dictionary)
         (if (string= new-dictionary "fr_BE")
             (progn
-              (setq lsp-ltex-language "fr")
-              (lui-flyspell-change-dictionary "fr_BE"))
+              (setq lsp-ltex-language "fr"))
           (progn
-            (setq lsp-ltex-language "en-US")
-            (lui-flyspell-change-dictionary "en_US")))
+            (setq lsp-ltex-language "en-US")))
         (flyspell-buffer)
         (message "[✓] Dictionary switched to %s" new-dictionary)))
-    :hook (text-mode . ispell-minor-mode)
     :custom
     (ispell-hunspell-dict-paths-alist
      '(("en_US" "/usr/share/hunspell/en_US.aff")
