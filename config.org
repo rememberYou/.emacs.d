@@ -14,6 +14,7 @@
   - [[#customizations][Customizations]]
   - [[#fonts][Fonts]]
   - [[#lsp][LSP]]
+  - [[#package-manager][Package Manager]]
   - [[#theme][Theme]]
   - [[#remove-mouse-interface][Remove Mouse Interface]]
 - [[#saving-configuration][Saving Configuration]]
@@ -328,6 +329,32 @@ won't find a better debugger.
     :config
     (dap-mode t)
     (dap-ui-mode t))
+#+end_src
+
+** Package Manager
+
+Contrary to what some users might think, =use-package= is not a package
+manager. To download and use packages that are not available in package sources,
+I use [[https://github.com/raxod502/straight.el][straight]]. The snippet below takes care of installing =straight=.
+
+#+begin_src emacs-lisp
+  ;; Bootstrap straight
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+        (bootstrap-version 5))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
+
+  ;; Integrates `straight' directly into the `use-package' package through the
+  ;; `:straight' expression.
+  (straight-use-package 'use-package)
 #+end_src
 
 ** Theme
@@ -677,29 +704,7 @@ of =ivy=.
 
 #+begin_src emacs-lisp
   (use-package vertico
-    :preface
-    (defun vertico-directory--completing-file-p ()
-      "Return non-nil when completing file names."
-      (eq 'file
-          (completion-metadata-get
-           (completion-metadata
-            (buffer-substring (minibuffer-prompt-end)
-                              (max (minibuffer-prompt-end) (point)))
-            minibuffer-completion-table
-            minibuffer-completion-predicate)
-           'category)))
-
-    (defun vertico-directory-up ()
-      "Delete directory before point."
-      (interactive)
-      (when (and (> (point) (minibuffer-prompt-end))
-                 (eq (char-before) ?/)
-                 (vertico-directory--completing-file-p))
-        (save-excursion
-          (goto-char (1- (point)))
-          (when (search-backward "/" (minibuffer-prompt-end) t)
-            (delete-region (1+ (point)) (point-max))
-            t))))
+    :straight (:local-repo "vertico/extensions")
     :init (vertico-mode)
     :bind (:map vertico-map
                 ("C-<backspace>" . vertico-directory-up))
