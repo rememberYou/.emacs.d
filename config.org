@@ -5,7 +5,7 @@
 * Table of Content                                                      :TOC:
 - [[#about][About]]
 - [[#emacs-initialization][Emacs Initialization]]
-  - [[#packages-sources][Packages Sources]]
+  - [[#package-sources][Package Sources]]
   - [[#package-configurations][Package Configurations]]
 - [[#start-up][Start Up]]
   - [[#authentication][Authentication]]
@@ -114,7 +114,7 @@ Thanks to them for their incredible work!
 This section contains the basic commands you need to know to properly initialize
 your GNU Emacs.
 
-** Packages Sources
+** Package Sources
 
 To install packages, it is useful to configure the package sources.
 
