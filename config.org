@@ -76,7 +76,7 @@
   - [[#paste][Paste]]
   - [[#pdf][PDF]]
   - [[#point-and-region][Point and Region]]
-  - [[#projectile][Projectile]]
+  - [[#project-interactions][Project Interactions]]
   - [[#recent-files][Recent Files]]
   - [[#version-control-system][Version Control System]]
   - [[#whitespaces][Whitespaces]]
@@ -2144,20 +2144,20 @@ Group Projectile commands.
   (pretty-hydra-define hydra-projectile
     (:hint nil :color teal :quit-key "q" :title (with-faicon "rocket" "Projectile" 1 -0.05))
     ("Buffers"
-     (("b" counsel-projectile-switch-to-buffer "list")
+     (("b" projectile-switch-to-buffer "list")
       ("k" projectile-kill-buffers "kill all")
       ("S" projectile-save-project-buffers "save all"))
      "Find"
-     (("d" counsel-projectile-find-dir "directory")
+     (("d" projectile-find-dir "directory")
       ("D" projectile-dired "root")
-      ("f" counsel-projectile-find-file "file")
-      ("p" counsel-projectile-switch-project "project"))
+      ("f" projectile-find-file "file")
+      ("p" consult-projectile "project"))
      "Other"
      (("i" projectile-invalidate-cache "reset cache"))
      "Search"
      (("r" projectile-replace "replace")
       ("R" projectile-replace-regexp "regexp replace")
-      ("s" counsel-rg "search"))))
+      ("s" counsel-ripgrep "search"))))
 #+end_src
 
 
@@ -2961,45 +2961,34 @@ I find it useful to delete a line and a region with only =C-w=.
              (line-beginning-position 2)))))
 #+end_src
 
-** Projectile
-
-#+begin_quote
-Projectile is a project interaction library for Emacs. Its goal is to provide a
-nice set of features operating on a project level without introducing external
-dependencies (when feasible). For instance - finding project files has a
-portable implementation written in pure Emacs Lisp without the use of GNU find
-(but for performance sake an indexing mechanism backed by external commands
-exists as well).
-
-[[https://github.com/bbatsov/projectile][Bozhidar Batsov]]
-#+end_quote
+To interact with your projects characterized by a folder with at least one
+special file (e.g., a VCS marker or a project descriptor file like =pom.xml= or
+=Gemfile=), the [[https://github.com/bbatsov/projectile][projectile]] package is a must on GNU Emacs.
 
 #+begin_src emacs-lisp
   (use-package projectile
-    :preface
-    (defun my/projectile-compilation-buffers (&optional project)
-      "Get a list of a project's compilation buffers.
-    If PROJECT is not specified the command acts on the current project."
-      (let* ((project-root (or project (projectile-project-root)))
-             (buffer-list (mapcar #'process-buffer compilation-in-progress))
-             (all-buffers (cl-remove-if-not
-                           (lambda (buffer)
-                             (projectile-project-buffer-p buffer project-root))
-                           buffer-list)))
-        (if projectile-buffers-filter-function
-            (funcall projectile-buffers-filter-function all-buffers)
-          all-buffers)))
+    :diminish (projectile-mode)
     :custom
     (projectile-cache-file (expand-file-name (format "%s/emacs/projectile.cache" xdg-cache)))
-    (projectile-completion-system 'ivy)
     (projectile-enable-caching t)
     (projectile-keymap-prefix (kbd "C-c C-p"))
-    (when (file-directory-p (expand-file-name (format "%s/git" xdg-data)))
-      (projectile-project-search-path '(expand-file-name (format "%s/git" xdg-data))))
     (projectile-known-projects-file (expand-file-name (format "%s/emacs/projectile-bookmarks.eld" xdg-cache)))
     (projectile-mode-line '(:eval (projectile-project-name)))
+    ;; Define the folder containing git repositories (e.g., ~/.local/share/git).
+    (projectile-project-search-path '("~/.local/share/git"))
     (projectile-switch-project-action #'projectile-dired)
     :config (projectile-global-mode))
+#+end_src
+
+Finally, I also use =projectile= with =consult= through the [[https://gitlab.com/OlMon/consult-projectile][counsult-projectile]]
+package.
+
+#+begin_src emacs-lisp
+  (use-package consult-projectile
+    :after (consult projectile)
+    :straight (consult-projectile :type git :host gitlab :repo
+                                  "OlMon/consult-projectile" :branch "master")
+    :commands (consult-projectile))
 #+end_src
 
 ** Recent Files
