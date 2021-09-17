@@ -910,7 +910,7 @@ automatically corrects a word according to the best suggestion.
 #+begin_src emacs-lisp
   (use-package flyspell
     :ensure nil
-    :delight "🐝"
+    :delight
     :hook ((text-mode . flyspell-mode)
            (prog-mode . flyspell-prog-mode))
     :custom
