@@ -3045,7 +3045,7 @@ Finally, I like to know the modified lines of a file while I edit it.
     :config (global-git-gutter-mode))
 #+end_src
 
-** Whitespaces
+** Whitespaces and Kill
 
 It is annoying to see useless blank spaces at the end of a line or a file. Let's
 get rid of these spaces. Most of the time, I also like to have justified texts.
@@ -3054,8 +3054,21 @@ get rid of these spaces. Most of the time, I also like to have justified texts.
   (use-package simple
     :ensure nil
     :delight (auto-fill-function)
+    :preface
+    (defun my/kill-region-or-line ()
+      "When called interactively with no active region, kill the whole line."
+      (interactive)
+      (if current-prefix-arg
+          (progn
+            (kill-new (buffer-string))
+            (delete-region (point-min) (point-max)))
+        (progn (if (use-region-p)
+                   (kill-region (region-beginning) (region-end) t)
+                 (kill-region (line-beginning-position) (line-beginning-position
+                                                         2))))))
     :hook ((before-save . delete-trailing-whitespace)
            ((prog-mode text-mode) . turn-on-auto-fill))
+    :bind ("C-w" . my/kill-region-or-line)
     :custom (set-mark-command-repeat-pop t))
 #+end_src
 
