@@ -2939,27 +2939,7 @@ of the =pdf-tools= package.
     (pdf-view-use-scaling t))
 #+end_src
 
-** Point and Region
-
-Increase region by semantic units. It tries to be smart about it and adapt to
-the structure of the current major mode.
-
-#+begin_src emacs-lisp
-  (use-package expand-region
-    :bind (("C-+" . er/contract-region)
-           ("C-=" . er/expand-region)))
-#+end_src
-
-I find it useful to delete a line and a region with only =C-w=.
-
-#+begin_src emacs-lisp
-  (defadvice kill-region (before slick-cut activate compile)
-    "When called interactively with no active region, kill a single line instead."
-    (interactive
-     (if mark-active (list (region-beginning) (region-end))
-       (list (line-beginning-position)
-             (line-beginning-position 2)))))
-#+end_src
+** Project Interactions
 
 To interact with your projects characterized by a folder with at least one
 special file (e.g., a VCS marker or a project descriptor file like =pom.xml= or
