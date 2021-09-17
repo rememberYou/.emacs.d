@@ -2993,22 +2993,24 @@ package.
 
 ** Recent Files
 
-Provides fast access to the recent files.
+It could be useful to have easy access to recently modified files.
 
 #+begin_src emacs-lisp
   (use-package recentf
-    :bind ("C-c r" . recentf-open-files)
+    :ensure nil
+    :bind ("C-x C-r" . recentf-open-files)
     :init (recentf-mode)
     :custom
-    (recentf-exclude (list "COMMIT_EDITMSG"
-                           "~$"
-                           "/scp:"
+    (recentf-exclude (list "/scp:"
                            "/ssh:"
                            "/sudo:"
-                           "/tmp/"))
+                           "/tmp/"
+                           "~$"
+                           "COMMIT_EDITMSG"))
     (recentf-max-menu-items 15)
     (recentf-max-saved-items 200)
     (recentf-save-file (expand-file-name (format "%s/emacs/recentf" xdg-cache)))
+    ;; Save recent files every 5 minutes to manage abnormal output.
     :config (run-at-time nil (* 5 60) 'recentf-save-list))
 #+end_src
 
