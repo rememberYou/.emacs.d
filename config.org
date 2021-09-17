@@ -59,29 +59,31 @@
   - [[#browser][Browser]]
   - [[#calculator][Calculator]]
   - [[#calendar][Calendar]]
+  - [[#color-display-in-text][Color Display in Text]]
   - [[#dashboard][Dashboard]]
+  - [[#displays-available-keybindings-in-popup][Displays Available Keybindings in Popup]]
+  - [[#documentation][Documentation]]
   - [[#editorconfig][EditorConfig]]
-  - [[#helpful][Helpful]]
-  - [[#highlight-indentation][Highlight Indentation]]
   - [[#history][History]]
   - [[#hydra][Hydra]]
-  - [[#general][General]]
   - [[#icons][Icons]]
+  - [[#indentations][Indentations]]
   - [[#irc][IRC]]
-  - [[#money-management][Money Management]]
   - [[#linters][Linters]]
   - [[#mails][Mails]]
-  - [[#navigation][Navigation]]
+  - [[#money-management][Money Management]]
+  - [[#package-menu][Package Menu]]
   - [[#parentheses][Parentheses]]
   - [[#paste][Paste]]
   - [[#pdf][PDF]]
-  - [[#point-and-region][Point and Region]]
   - [[#project-interactions][Project Interactions]]
+  - [[#snippets][Snippets]]
+  - [[#spaces-around-the-operators][Spaces Around the Operators]]
   - [[#recent-files][Recent Files]]
+  - [[#term-definitions][Term Definitions]]
+  - [[#try-packages][Try Packages]]
   - [[#version-control-system][Version Control System]]
-  - [[#whitespaces][Whitespaces]]
-  - [[#word-wrap][Word Wrap]]
-  - [[#yasnippet][YASnippet]]
+  - [[#whitespaces-and-kill][Whitespaces and Kill]]
 - [[#org-mode][Org-Mode]]
   - [[#agenda][Agenda]]
   - [[#bullets][Bullets]]
@@ -527,24 +529,68 @@ not be killed by accident. I make sure to set the buffers =*scratch*= and
     :init (my/protected-buffers))
 #+end_src
 
-I also use [[https://github.com/purcell/ibuffer-projectile][ibuffer-projectile]] to group the buffers in =ibuffer= list by [[#projectile][projectile]]
-project.
+For buffer navigation, the next function is a more efficient way to go to the
+beginning of a line with =move-beginning-of-line= (=C-a=) and =back-to-indentation=
+(=M-m=).
 
 #+begin_src emacs-lisp
-  (use-package ibuffer-projectile
-    :after ibuffer
+  (use-package imenu
+    :ensure nil
     :preface
-    (defun my/ibuffer-projectile ()
-      (ibuffer-projectile-set-filter-groups)
-      (unless (eq ibuffer-sorting-mode 'alphabetic)
-        (ibuffer-do-sort-by-alphabetic)))
-    :hook (ibuffer . my/ibuffer-projectile))
+    (defun my/smarter-move-beginning-of-line (arg)
+      "Move point back to indentation of beginning of line.
+
+     Move point to the first non-whitespace character on this line.
+     If point is already there, move to the beginning of the line.
+     Effectively toggle between the first non-whitespace character and
+     the beginning of the line.
+
+     If ARG is not nil or 1, move forward ARG - 1 lines first. If
+     point reaches the beginning or end of the buffer, stop there."
+      (interactive "^p")
+      (setq arg (or arg 1))
+
+      ;; Move lines first
+      (when (/= arg 1)
+        (let ((line-move-visual nil))
+          (forward-line (1- arg))))
+
+      (let ((orig-point (point)))
+        (back-to-indentation)
+        (when (= orig-point (point))
+          (move-beginning-of-line 1))))
+    :bind (("C-a" . my/smarter-move-beginning-of-line)
+           ("C-r" . imenu)))
+#+end_src
+
+Finally, it is useful to be able to move a line or a region up and down without
+having to =kill-region= (=C-w=) and =yank (C-y)=. With the =move-text-up= and
+=move-text-down= commands, the [[https://github.com/emacsfodder/move-text][move-text]] package allows to moves the current line
+or if marked, the current region's, whole lines.
+
+#+begin_src emacs-lisp
+  (use-package move-text
+    :bind (("M-p" . move-text-up)
+           ("M-n" . move-text-down))
+    :config (move-text-default-bindings))
 #+end_src
 
 ** Files
 
-=dired= is a good file manager. To fine-tune its use, let's change some default
-values.
+Sometimes you may want to discard your changes to a file and revert to the saved
+version of this file.
+
+#+begin_src emacs-lisp
+  (use-package autorevert
+    :ensure nil
+    :delight auto-revert-mode
+    :bind ("C-x R" . revert-buffer)
+    :custom (auto-revert-verbose nil)
+    :config (global-auto-revert-mode))
+#+end_src
+
+To manage your files, =dired= is already a good file manager. To fine-tune its
+use, let's change some default values.
 
 #+begin_src emacs-lisp
   (use-package dired
@@ -864,7 +910,7 @@ automatically corrects a word according to the best suggestion.
 #+begin_src emacs-lisp
   (use-package flyspell
     :ensure nil
-    :delight
+    :diminish " 🐝"
     :hook ((text-mode . flyspell-mode)
            (prog-mode . flyspell-prog-mode))
     :custom
@@ -1796,6 +1842,17 @@ others.
        (holiday-fixed 7 21 "Belgian National Day"))))
 #+end_src
 
+** Color Display in Text
+
+To automatically display a color when using typing a color or hex code values,
+the [[https://elpa.gnu.org/packages/rainbow-mode.html][rainbow-mode]] package is useful.
+
+#+begin_src emacs-lisp
+  (use-package rainbow-mode
+    :delight
+    :hook ((prog-mode text-mode) . rainbow-mode))
+#+end_src
+
 ** Dashboard
 
 Organization is even more important in the 21st century than it was before. What
@@ -1820,19 +1877,21 @@ and more.
     :config (dashboard-setup-startup-hook))
 #+end_src
 
-** EditorConfig
+** Displays Available Keybindings in Popup
 
-It often happens that you have to work on the same project as other
-developers. To keep a coding style you can use [[https://editorconfig.org/][EditorConfig]] through the
-[[https://github.com/editorconfig/editorconfig-emacs][editorconfig]] package.
+It is difficult to remember all the keyboard shortcuts. The [[https://github.com/justbur/emacs-which-key][which-key]] package
+helps to solve this. I used [[https://github.com/kai2nenobu/guide-key][guide-key]] in my past days, but =which-key= is a good
+replacement.
 
 #+begin_src emacs-lisp
-  (use-package editorconfig
-    :defer 0.3
-    :config (editorconfig-mode))
+  (use-package which-key
+    :defer 0.2
+    :delight
+    :custom (which-key-idle-delay 0.5)
+    :config (which-key-mode))
 #+end_src
 
-** Helpful
+** Documentation
 
 To have a more user-friendly documentation I use the [[https://github.com/Wilfred/helpful][helpful]] package.
 
@@ -1854,16 +1913,16 @@ To have a more user-friendly documentation I use the [[https://github.com/Wilfre
     ([remap describe-command] . helpful-command))
 #+end_src
 
-** Highlight Indentation
+** EditorConfig
 
-With code nesting, it is important to always have a discrete visual on the
-indentation of our code. The [[https://github.com/DarthFennec/highlight-indent-guides/][highlight-indent-guides]] package allows you to see
-at a glance if an indentation is bad through block highlight.
+It often happens that you have to work on the same project as other
+developers. To keep a coding style you can use [[https://editorconfig.org/][EditorConfig]] through the
+[[https://github.com/editorconfig/editorconfig-emacs][editorconfig]] package.
 
 #+begin_src emacs-lisp
-  (use-package highlight-indent-guides
-    :hook (prog-mode . highlight-indent-guides-mode)
-    :custom (highlight-indent-guides-method 'character))
+  (use-package editorconfig
+    :defer 0.3
+    :config (editorconfig-mode))
 #+end_src
 
 ** History
@@ -2271,142 +2330,6 @@ Group window-related commands.
       ("=" (text-scale-increase 0) "reset"))))
 #+end_src
 
-** General
-
-*** Better Indentations
-
-By default GNU Emacs auto-indents the code while typing with
-electric-indent-mode, but the indentation made is wrong when moving blocks,
-transposing lines and so on. The [[https://github.com/Malabarba/aggressive-indent-mode][aggresive-indent]] package is an improved version
-of the previous mode, allowing a code to be always indented.
-
-#+begin_src emacs-lisp
-  (use-package aggressive-indent
-    :hook (prog-mode . aggressive-indent-mode)
-    :custom (aggressive-indent-comments-too t))
-#+end_src
-
-*** Spaces Around the Operators
-
-To automatically add spacing around operators as you develop, the
-[[https://github.com/davidshepherd7/electric-operator][electric-operator]] package is there for that.
-
-*NOTE:* I don't use =electric-operator= for C-like languages which works a bit less
-well according to the author of the package.
-
-#+begin_src emacs-lisp
-  (use-package electric-operator
-    :delight
-    :hook ((css-mode java-mode js2-mode
-                     python-mode sql-mode typescript-mode) . electric-operator-mode))
-#+end_src
-
-*** Moving Lines or Regions
-
-Sometimes it is useful to be able to move a line or a region up and down without
-having to =kill-region= (=C-w=) and =yank (C-y)=. With the =move-text-up= and
-=move-text-down= commands, the [[https://github.com/emacsfodder/move-text][move-text]] package allows to moves the current line
-or if marked, the current region's, whole lines.
-
-#+begin_src emacs-lisp
-  (use-package move-text
-    :bind (("M-p" . move-text-up)
-           ("M-n" . move-text-down))
-    :config (move-text-default-bindings))
-#+end_src
-
-*** Better Package Menu Interface
-
-The package menu has a simplistic interface. The [[https://github.com/Malabarba/paradox][paradox]] package improves the
-display of this interface, provides different mode line information and other
-features.
-
-#+begin_src emacs-lisp
-  (use-package paradox
-    :defer 1
-    :custom
-    (paradox-column-width-package 25)
-    (paradox-display-star-count nil)
-    (paradox-execute-asynchronously t)
-    (paradox-hide-wiki-packages t)
-    :config (paradox-enable))
-#+end_src
-
-*** Color Display for Hex Values
-
-To automatically display a color to hex code values, the [[https://elpa.gnu.org/packages/rainbow-mode.html][rainbow-mode]] package is
-useful.
-
-#+begin_src emacs-lisp
-  (use-package rainbow-mode
-    :delight
-    :hook ((prog-mode text-mode) . rainbow-mode))
-#+end_src
-
-*** Replace the Current File with the Saved One
-
-Sometimes you may want to discard your changes to a file and revert to the saved
-version of this file.
-
-#+begin_src emacs-lisp
-  (use-package autorevert
-    :ensure nil
-    :delight auto-revert-mode
-    :bind ("C-x R" . revert-buffer)
-    :custom (auto-revert-verbose nil)
-    :config (global-auto-revert-mode))
-#+end_src
-
-*** Try Packages
-
-It happens that I want to try a GNU Emacs package without installing it. The [[https://github.com/larstvei/Try][try]]
-package allows this behavior.
-
-#+begin_src emacs-lisp
-  (use-package try :commands try)
-#+end_src
-
-
-*** Displays Available Keybindings in Popup
-
-It is difficult to remember all the keyboard shortcuts. The [[https://github.com/justbur/emacs-which-key][which-key]] package
-helps to solve this. I used [[https://github.com/kai2nenobu/guide-key][guide-key]] in my past days, but =which-key= is a good
-replacement.
-
-#+begin_src emacs-lisp
-  (use-package which-key
-    :defer 0.2
-    :delight
-    :custom (which-key-idle-delay 0.5)
-    :config (which-key-mode))
-#+end_src
-
-*** Summary of Terms
-
-Occasionally, I would like to have a summary of a term directly on GNU Emacs,
-before that I would like to know more about this term. The [[https://github.com/jozefg/wiki-summary.el][wiki-summary]] package
-allows this behavior.
-
-#+begin_src emacs-lisp
-  (use-package wiki-summary
-    :commands (wiki-summary wiki-summary-insert)
-    :bind ("C-c W" . wiki-summary)
-    :preface
-    (defun my/format-summary-in-buffer (summary)
-      "Given a summary, sticks it in the *wiki-summary* buffer and displays
-       the buffer."
-      (let ((buf (generate-new-buffer "*wiki-summary*")))
-        (with-current-buffer buf
-          (princ summary buf)
-          (fill-paragraph)
-          (goto-char (point-min))
-          (view-mode))
-        (pop-to-buffer buf)))
-    :config
-    (advice-add 'wiki-summary/format-summary-in-buffer
-                :override #'my/format-summary-in-buffer))
-#+end_src
-
 ** Icons
 
 To integrate icons with =doom-modeline= and other packages, [[https://github.com/domtronn/all-the-icons.el/][all-the-icons]] is the
@@ -2420,6 +2343,29 @@ this package.
     :commands all-the-icons-install-fonts
     :config (unless (find-font (font-spec :name "all-the-icons"))
               (all-the-icons-install-fonts t)))
+#+end_src
+
+** Indentations
+
+By default GNU Emacs auto-indents the code while typing with
+=electric-indent-mode=, but the indentation made is wrong when moving blocks,
+transposing lines and so on. The [[https://github.com/Malabarba/aggressive-indent-mode][aggresive-indent]] package is an improved version
+of the previous mode, allowing a code to be always indented.
+
+#+begin_src emacs-lisp
+  (use-package aggressive-indent
+    :hook (prog-mode . aggressive-indent-mode)
+    :custom (aggressive-indent-comments-too t))
+#+end_src
+
+With code nesting, it is important to always have a discrete visual on the
+indentation of our code. The [[https://github.com/DarthFennec/highlight-indent-guides/][highlight-indent-guides]] package allows you to see
+at a glance if an indentation is bad through block highlight.
+
+#+begin_src emacs-lisp
+  (use-package highlight-indent-guides
+    :hook (prog-mode . highlight-indent-guides-mode)
+    :custom (highlight-indent-guides-method 'character))
 #+end_src
 
 ** IRC
@@ -2494,61 +2440,6 @@ you are mentioned on IRC, the [[https://github.com/eqyiel/circe-notifications][c
     :hook (circe-server-connected . enable-circe-notifications))
 #+end_src
 
-** Money Management
-
-Good money management is a skill to be acquired as soon as possible. Fortunately
-for us, [[https://www.ledger-cli.org/][Ledger]] allows you to have a double-entry accounting system directly from
-the UNIX command line. To use Ledger with GNU Emacs, you need to the [[https://github.com/ledger/ledger-mode][ledger-mode]]
-package. However, do not forget to install the =ledger= package with your system
-package manager.
-
-I discovered Ledger as a student and learning how to manage time and expenses at
-the same time was too much. I decided for the time being to briefly learn Ledger
-and focus more on time management. One issue I had with Ledger was the lack of
-support from my bank to export my transactions into a file type that Ledger
-could understand. Unfortunately, since I often made bank transfers, encoding
-each payment by hand was a pain. For the curious people, alternatives to Ledger
-exist, some of which are open-source and proprietary (e.g., [[https://www.youneedabudget.com/][YNAB]]).
-
-*NOTE:* by default, Ledger uses the [[ https://xkcd.com/1179/][ISO 8601]] format to write dates, which is the
-recommended format.
-
-#+begin_src emacs-lisp
-  (use-package ledger-mode
-    :ensure-system-package (ledger . "yay -S --noconfirm ledger")
-    :mode ("\\.\\(dat\\|ledger\\)\\'")
-    :preface
-    (defun my/ledger-save ()
-      "Clean the ledger buffer at each save."
-      (interactive)
-      (ledger-mode-clean-buffer)
-      (save-buffer))
-    :bind (:map ledger-mode-map
-                ("C-x C-s" . my/ledger-save))
-    :hook (ledger-mode . ledger-flymake-enable)
-    :custom
-    (ledger-clear-whole-transactions t)
-    (ledger-reconcile-default-commodity "EUR")
-    (ledger-reports
-     '(("account statement" "%(binary) reg --real [[ledger-mode-flags]] -f %(ledger-file) ^%(account)")
-       ("balance sheet" "%(binary) --real [[ledger-mode-flags]] -f %(ledger-file) bal ^assets ^liabilities ^equity")
-       ("budget" "%(binary) --empty -S -T [[ledger-mode-flags]] -f %(ledger-file) bal ^assets:bank ^assets:receivables ^assets:cash ^assets:budget")
-       ("budget goals" "%(binary) --empty -S -T [[ledger-mode-flags]] -f %(ledger-file) bal ^assets:bank ^assets:receivables ^assets:cash ^assets:'budget goals'")
-       ("budget obligations" "%(binary) --empty -S -T [[ledger-mode-flags]] -f %(ledger-file) bal ^assets:bank ^assets:receivables ^assets:cash ^assets:'budget obligations'")
-       ("budget debts" "%(binary) --empty -S -T [[ledger-mode-flags]] -f %(ledger-file) bal ^assets:bank ^assets:receivables ^assets:cash ^assets:'budget debts'")
-       ("cleared" "%(binary) cleared [[ledger-mode-flags]] -f %(ledger-file)")
-       ("equity" "%(binary) --real [[ledger-mode-flags]] -f %(ledger-file) equity")
-       ("income statement" "%(binary) --invert --real -S -T [[ledger-mode-flags]] -f %(ledger-file) bal ^income ^expenses -p \"this month\""))
-     (ledger-report-use-header-line nil)))
-#+end_src
-
-Finally, to provides a =flychecker= checker for Ledger files, you can use
-[[https://github.com/purcell/flycheck-ledger][flycheck-ledger]].
-
-#+begin_src emacs-lisp
-  (use-package flycheck-ledger :after ledger-mode)
-#+end_src
-
 ** Linters
 
 To integrate syntax checking during development, [[https://www.flycheck.org/][Flycheck]] lints warnings and
@@ -2570,23 +2461,22 @@ languages you use, via your system package manager.
 
 ** Mails
 
-After trying =gnus= that I found too old and =notmuch= that in my opinion lacks
-features like the ability to delete some emails and be able to write emails
-easily with =org=, I finally found my happiness with =mu4e=.
+After trying the =gnus= built-in package that I found too old and =notmuch= that in
+my opinion lacks features like the ability to delete some emails and be able to
+write emails easily with =org=, I finally found my happiness with =mu4e=.
 
-I use =mbsync= to synchronize emails on IMAP server with local mails dir folder. I
-used =offlineimap=, but I find it slower than =mbsync=.
+I used =offlineimap=, but I find it slower than =mbsync=. This is why I now use
+=mbsync= to synchronize emails on IMAP server with local mails dir folder.
 
 *NOTE:* to use =mbsync= with your Gmail account, you will need to enable access
 for less secure apps in your Google account.
 
 *** mu4e
 
-Before you can use this configuration, make sure you install =mu= on your
-operating system and create directories corresponding to those in your mailbox.
-
-Then, initialize the =mu= database, by replacing values of =--maildir= and
-=--my-address= with yours:
+Before that you can use this configuration, make sure to install =mu= on your
+operating system and to create directories corresponding to those in your
+mailbox. Then, initialize the =mu= database, by replacing values of =--maildir= and
+=--my-address= with yours.
 
 #+begin_src shell
   mu init --maildir ~/mails --my-address=${EMAIL}
@@ -2764,7 +2654,7 @@ notifications and modeline display for =mu4e=:
 
 Before you can send mails, create the =.authinfo= file if it is not already
 done. Then add the following two lines replacing /terencio.agozzino/ (which
-corresponds to my gmail address terencio.agozzino@gmail.com without the domain
+corresponds to my /terencio.agozzino@gmail.com/ Gmail address without the domain
 name) and /<password>/ by those that match your real information:
 
 #+BEGIN_EXAMPLE
@@ -2772,12 +2662,10 @@ name) and /<password>/ by those that match your real information:
   machine smtp.gmail.com login terencio.agozzino@gmail.com password <password> port 587
 #+END_EXAMPLE
 
-Similar to IRC, if you want to store your password in a /GPG/ file, you just
-need to specify a file priority list with =auth-sources=, to tell GNU Emacs
-where to start looking for your password first.
-
-Then encrypt that file with =gpg -c .authinfo= and do not forget to delete the
-=.authinfo= file.
+Similar to IRC, if you want to store your password in a /GPG/ file, you just need
+to specify a file priority list with =auth-sources=, to specify to GNU Emacs where
+to start looking for your password first. Then encrypt that file with =gpg -c
+.authinfo= and do not forget to delete the =.authinfo= file.
 
 #+begin_src emacs-lisp
   (use-package message
@@ -2791,46 +2679,79 @@ Then encrypt that file with =gpg -c .authinfo= and do not forget to delete the
     (mml-secure-openpgp-signers '("208FCDBB98190562")))
 #+end_src
 
-All you need now is to test sending your mails with =C-x m= or directly from
+All you need to do now is to test sending your mails with =C-x m= or directly from
 =mu4e=!
 
-** Navigation
+** Money Management
 
-Navigation is an important part of productivity. The next function is a more
-efficient way to go to the beginning of a line with =move-beginning-of-line=
-(=C-a=) and =back-to-indentation= (=M-m=).
+Good money management is a skill to be acquired as soon as possible. Fortunately
+for us, [[https://www.ledger-cli.org/][Ledger]] allows you to have a double-entry accounting system directly from
+the UNIX command line. To use Ledger with GNU Emacs, you need to the [[https://github.com/ledger/ledger-mode][ledger-mode]]
+package. However, do not forget to install the =ledger= package with your system
+package manager.
 
-*FROM:* http://emacsredux.com/blog/2013/05/22/smarter-navigation-to-the-beginning-of-a-line/
+I discovered Ledger as a student and learning how to manage time and expenses at
+the same time was too much. I decided for the time being to briefly learn Ledger
+and focus more on time management. One issue I had with Ledger was the lack of
+support from my bank to export my transactions into a file type that Ledger
+could understand. Unfortunately, since I often made bank transfers, encoding
+each payment by hand was a pain. For the curious people, alternatives to Ledger
+exist, some of which are open-source and proprietary (e.g., [[https://www.youneedabudget.com/][YNAB]]).
+
+*NOTE:* by default, Ledger uses the [[ https://xkcd.com/1179/][ISO 8601]] format to write dates, which is the
+recommended format.
 
 #+begin_src emacs-lisp
-  (defun my/smarter-move-beginning-of-line (arg)
-    "Move point back to indentation of beginning of line.
+  (use-package ledger-mode
+    :ensure-system-package (ledger . "yay -S --noconfirm ledger")
+    :mode ("\\.\\(dat\\|ledger\\)\\'")
+    :preface
+    (defun my/ledger-save ()
+      "Clean the ledger buffer at each save."
+      (interactive)
+      (ledger-mode-clean-buffer)
+      (save-buffer))
+    :bind (:map ledger-mode-map
+                ("C-x C-s" . my/ledger-save))
+    :hook (ledger-mode . ledger-flymake-enable)
+    :custom
+    (ledger-clear-whole-transactions t)
+    (ledger-reconcile-default-commodity "EUR")
+    (ledger-reports
+     '(("account statement" "%(binary) reg --real [[ledger-mode-flags]] -f %(ledger-file) ^%(account)")
+       ("balance sheet" "%(binary) --real [[ledger-mode-flags]] -f %(ledger-file) bal ^assets ^liabilities ^equity")
+       ("budget" "%(binary) --empty -S -T [[ledger-mode-flags]] -f %(ledger-file) bal ^assets:bank ^assets:receivables ^assets:cash ^assets:budget")
+       ("budget goals" "%(binary) --empty -S -T [[ledger-mode-flags]] -f %(ledger-file) bal ^assets:bank ^assets:receivables ^assets:cash ^assets:'budget goals'")
+       ("budget obligations" "%(binary) --empty -S -T [[ledger-mode-flags]] -f %(ledger-file) bal ^assets:bank ^assets:receivables ^assets:cash ^assets:'budget obligations'")
+       ("budget debts" "%(binary) --empty -S -T [[ledger-mode-flags]] -f %(ledger-file) bal ^assets:bank ^assets:receivables ^assets:cash ^assets:'budget debts'")
+       ("cleared" "%(binary) cleared [[ledger-mode-flags]] -f %(ledger-file)")
+       ("equity" "%(binary) --real [[ledger-mode-flags]] -f %(ledger-file) equity")
+       ("income statement" "%(binary) --invert --real -S -T [[ledger-mode-flags]] -f %(ledger-file) bal ^income ^expenses -p \"this month\""))
+     (ledger-report-use-header-line nil)))
+#+end_src
 
-     Move point to the first non-whitespace character on this line.
-     If point is already there, move to the beginning of the line.
-     Effectively toggle between the first non-whitespace character and
-     the beginning of the line.
+Finally, to provides a =flychecker= checker for Ledger files, you can use
+[[https://github.com/purcell/flycheck-ledger][flycheck-ledger]].
 
-     If ARG is not nil or 1, move forward ARG - 1 lines first. If
-     point reaches the beginning or end of the buffer, stop there."
-    (interactive "^p")
-    (setq arg (or arg 1))
+#+begin_src emacs-lisp
+  (use-package flycheck-ledger :after ledger-mode)
+#+end_src
 
-    ;; Move lines first
-    (when (/= arg 1)
-      (let ((line-move-visual nil))
-        (forward-line (1- arg))))
+** Package Menu
 
-    (let ((orig-point (point)))
-      (back-to-indentation)
-      (when (= orig-point (point))
-        (move-beginning-of-line 1))))
+The package menu has a simplistic interface. The [[https://github.com/Malabarba/paradox][paradox]] package improves the
+display of this interface, provides different mode line information and other
+features.
 
-  (global-set-key (kbd "C-a") 'my/smarter-move-beginning-of-line)
-
-  (use-package imenu
-    :ensure nil
-    :bind ("C-r" . imenu))
+#+begin_src emacs-lisp
+  (use-package paradox
+    :defer 1
+    :custom
+    (paradox-column-width-package 25)
+    (paradox-display-star-count nil)
+    (paradox-execute-asynchronously t)
+    (paradox-hide-wiki-packages t)
+    :config (paradox-enable))
 #+end_src
 
 ** Parentheses
@@ -2843,40 +2764,33 @@ to change the appearance of the highlight of the parentheses pairs.
     :ensure nil
     :custom (show-paren-delay 0)
     :config
-    (set-face-background 'show-paren-match "#262b36")
+    (set-face-background 'show-paren-match "#161719")
     (set-face-bold 'show-paren-match t)
     (set-face-foreground 'show-paren-match "#ffffff"))
 #+end_src
 
-*** =rainbow-delimiters=
-
-#+begin_quote
-rainbow-delimiters is a "rainbow parentheses"-like mode which highlights
-delimiters such as parentheses, brackets or braces according to their
-depth. Each successive level is highlighted in a different color. This makes it
-easy to spot matching delimiters, orient yourself in the code, and tell which
-statements are at a given depth.
-
-[[https://github.com/Fanael/rainbow-delimiters][Fanael Linithien]]
-#+end_quote
+Then, I also like to highlight brackets and other delimiters (e.g., brackets or
+braces) with a different color, depending on their depth. The [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]
+package allows such behavior.
 
 #+begin_src emacs-lisp
   (use-package rainbow-delimiters
     :hook (prog-mode . rainbow-delimiters-mode))
 #+end_src
 
-*** =smartparens=
-
-In my opinion, it is the most powerful package to deal with the
-parenthesis. Anyway, if you don't like it, you can try taking a look at
-=paredit= or =autopair=.
+Finally, to manage your parenthesis, I recommend to use [[https://github.com/Fuco1/smartparens][smartparens]] which is in
+my opinion a better alternative to [[https://github.com/emacsmirror/paredit][paredit]] or to the built-in =electric-pair-mode=
+package.
 
 #+begin_src emacs-lisp
   (use-package smartparens
-    :defer 1
     :delight
-    :custom (sp-escape-quotes-after-insert nil)
-    :config (smartparens-global-mode 1))
+    :hook (prog-mode . smartparens-mode)
+    :bind (("M-'" . sp-backward-sexp)
+           ("M-\\" . sp-forward-sexp)
+           ("M-(" . sp-wrap-round)
+           ("M-[" . sp-wrap-curly))
+    :custom (sp-escape-quotes-after-insert nil))
 #+end_src
 
 ** Paste
@@ -2960,8 +2874,7 @@ special file (e.g., a VCS marker or a project descriptor file like =pom.xml= or
     :config (projectile-global-mode))
 #+end_src
 
-Finally, I also use =projectile= with =consult= through the [[https://gitlab.com/OlMon/consult-projectile][counsult-projectile]]
-package.
+I also use =projectile= with =consult= through the [[https://gitlab.com/OlMon/consult-projectile][counsult-projectile]] package.
 
 #+begin_src emacs-lisp
   (use-package consult-projectile
@@ -2969,6 +2882,53 @@ package.
     :straight (consult-projectile :type git :host gitlab :repo
                                   "OlMon/consult-projectile" :branch "master")
     :commands (consult-projectile))
+#+end_src
+
+Finally, [[https://github.com/purcell/ibuffer-projectile][ibuffer-projectile]] is helpful to group the buffers in the =ibuffer= list
+by [[#projectile][projectile]] project.
+
+#+begin_src emacs-lisp
+  (use-package ibuffer-projectile
+    :after ibuffer
+    :preface
+    (defun my/ibuffer-projectile ()
+      (ibuffer-projectile-set-filter-groups)
+      (unless (eq ibuffer-sorting-mode 'alphabetic)
+        (ibuffer-do-sort-by-alphabetic)))
+    :hook (ibuffer . my/ibuffer-projectile))
+#+end_src
+
+** Snippets
+
+#+begin_src emacs-lisp
+  (use-package yasnippet-snippets
+    :after yasnippet
+    :config (yasnippet-snippets-initialize))
+  -  (use-package yasnippet
+       :delight yas-minor-mode "υ"
+       :hook (yas-minor-mode . my/disable-yas-if-no-snippets)
+       :config (yas-global-mode)
+       :preface
+       (defun my/disable-yas-if-no-snippets ()
+         (when (and yas-minor-mode (null (yas--get-snippet-tables)))
+           (yas-minor-mode -1))))
+  (use-package ivy-yasnippet :after yasnippet)
+  (use-package react-snippets :after yasnippet)
+#+end_src
+
+** Spaces Around the Operators
+
+To automatically add spacing around operators as you develop, the
+[[https://github.com/davidshepherd7/electric-operator][electric-operator]] package is there for that.
+
+*NOTE:* I don't use =electric-operator= for C-like languages which works a bit less
+well according to the author of the package.
+
+#+begin_src emacs-lisp
+  (use-package electric-operator
+    :delight
+    :hook ((css-mode java-mode js2-mode
+                     python-mode sql-mode typescript-mode) . electric-operator-mode))
 #+end_src
 
 ** Recent Files
@@ -2992,6 +2952,41 @@ It could be useful to have easy access to recently modified files.
     (recentf-save-file (expand-file-name (format "%s/emacs/recentf" xdg-cache)))
     ;; Save recent files every 5 minutes to manage abnormal output.
     :config (run-at-time nil (* 5 60) 'recentf-save-list))
+#+end_src
+
+** Term Definitions
+
+Occasionally, I would like to have a summary of a term directly on GNU Emacs,
+before that I would like to know more about this term. The [[https://github.com/jozefg/wiki-summary.el][wiki-summary]] package
+allows this behavior.
+
+#+begin_src emacs-lisp
+  (use-package wiki-summary
+    :commands (wiki-summary wiki-summary-insert)
+    :bind ("C-c W" . wiki-summary)
+    :preface
+    (defun my/format-summary-in-buffer (summary)
+      "Given a summary, sticks it in the *wiki-summary* buffer and displays
+       the buffer."
+      (let ((buf (generate-new-buffer "*wiki-summary*")))
+        (with-current-buffer buf
+          (princ summary buf)
+          (fill-paragraph)
+          (goto-char (point-min))
+          (view-mode))
+        (pop-to-buffer buf)))
+    :config
+    (advice-add 'wiki-summary/format-summary-in-buffer
+                :override #'my/format-summary-in-buffer))
+#+end_src
+
+** Try Packages
+
+It happens that I want to try a GNU Emacs package without installing it. The [[https://github.com/larstvei/Try][try]]
+package allows this behavior.
+
+#+begin_src emacs-lisp
+  (use-package try :commands try)
 #+end_src
 
 ** Version Control System
@@ -3081,33 +3076,6 @@ behavior.
     :defer 0.7
     :delight
     :config (global-hungry-delete-mode))
-#+end_src
-
-** YASnippet
-
-#+begin_quote
-YASnippet is a template system for Emacs. It allows you to type an abbreviation
-and automatically expand it into function templates.
-
-[[https://github.com/joaotavora/yasnippet][João Távora]]
-#+end_quote
-
-#+begin_src emacs-lisp
-  (use-package yasnippet-snippets
-    :after yasnippet
-    :config (yasnippet-snippets-initialize))
-
-  (use-package yasnippet
-    :delight yas-minor-mode "υ"
-    :hook (yas-minor-mode . my/disable-yas-if-no-snippets)
-    :config (yas-global-mode)
-    :preface
-    (defun my/disable-yas-if-no-snippets ()
-      (when (and yas-minor-mode (null (yas--get-snippet-tables)))
-        (yas-minor-mode -1))))
-
-  (use-package ivy-yasnippet :after yasnippet)
-  (use-package react-snippets :after yasnippet)
 #+end_src
 
 * Org-Mode
