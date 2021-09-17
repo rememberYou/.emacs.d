@@ -910,7 +910,7 @@ automatically corrects a word according to the best suggestion.
 #+begin_src emacs-lisp
   (use-package flyspell
     :ensure nil
-    :diminish " 🐝"
+    :delight "🐝"
     :hook ((text-mode . flyspell-mode)
            (prog-mode . flyspell-prog-mode))
     :custom
@@ -1844,8 +1844,8 @@ others.
 
 ** Color Display in Text
 
-To automatically display a color when using typing a color or hex code values,
-the [[https://elpa.gnu.org/packages/rainbow-mode.html][rainbow-mode]] package is useful.
+To automatically display a color when typing a color or hex code values, the
+[[https://elpa.gnu.org/packages/rainbow-mode.html][rainbow-mode]] package is useful.
 
 #+begin_src emacs-lisp
   (use-package rainbow-mode
@@ -1879,7 +1879,7 @@ and more.
 
 ** Displays Available Keybindings in Popup
 
-It is difficult to remember all the keyboard shortcuts. The [[https://github.com/justbur/emacs-which-key][which-key]] package
+It is difficult to remember every keyboard shortcuts. The [[https://github.com/justbur/emacs-which-key][which-key]] package
 helps to solve this. I used [[https://github.com/kai2nenobu/guide-key][guide-key]] in my past days, but =which-key= is a good
 replacement.
 
