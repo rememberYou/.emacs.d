@@ -129,7 +129,7 @@ To install packages, it is useful to configure the package sources.
 
 ** Package Configurations
 
-To manage the package configurations with =use-package=, you must install it with the following snippet code
+To manage the package configurations with =use-package=, you must install it with the following code snippet.
 
 #+begin_src emacs-lisp
   (unless (package-installed-p 'use-package)
@@ -142,7 +142,8 @@ To manage the package configurations with =use-package=, you must install it wit
 
 * Start Up
 
-This section contains some more advanced commands to customize your GNU Emacs.
+This section contains the packages and configurations needed to get started with
+GNU Emacs.
 
 ** Authentication
 
@@ -235,7 +236,7 @@ specifications.
     (request-storage-directory (expand-file-name (format "%s/emacs/request/" xdg-data))))
 #+end_src
 
-Similarly, GNU Emacs has the built-in url-cookie package to manage
+Similarly, GNU Emacs has the built-in =url-cookie= package to manage
 cookies. Let's also change this value to respect the XDG base directory
 specifications.
 
@@ -1525,11 +1526,9 @@ To make my UML diagrams with [[https://plantuml.com/][PlantUML]], I use [[https:
 ** Python
 
 Python with GNU Emacs is one of the best supported languages. By using
-=python-mode= and [[https://github.com/microsoft/pyright][pyright]] as LSP server, it's fun to develop in Python.
-
-With =python-mode= I like to add some bindings to speed up the code code
-navigation in Python. Besides that, I use [[https://github.com/myint/autoflake][autoflake]] to remove unused imports and
-variables.
+=python-mode= and [[https://github.com/microsoft/pyright][pyright]] as LSP server, it's fun to develop in Python. With
+=python-mode= I like to add some bindings to speed up the code code navigation in
+Python. Besides that, I use [[https://github.com/myint/autoflake][autoflake]] to remove unused imports and variables.
 
 #+begin_src emacs-lisp
   (use-package python
