@@ -374,7 +374,9 @@ get icons in the =doom-modeline=, you will need to install [[#icons][icons]].
 
   (use-package doom-modeline
     :init (doom-modeline-mode)
-    :custom (doom-modeline-icon (display-graphic-p)))
+    :custom
+    (doom-modeline-icon (display-graphic-p))
+    (doom-modeline-mu4e t))
 #+end_src
 
 Since we do not do things by halves, it is also interesting to visually
