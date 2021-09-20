@@ -84,7 +84,8 @@
   - [[#try-packages][Try Packages]]
   - [[#version-control-system][Version Control System]]
   - [[#whitespaces-and-kill][Whitespaces and Kill]]
-- [[#org-mode][Org-Mode]]
+- [[#org-mode][Org Mode]]
+  - [[#first-steps][First Steps]]
   - [[#agenda][Agenda]]
   - [[#bullets][Bullets]]
   - [[#capture][Capture]]
@@ -409,7 +410,8 @@ maintain an =org-mode= configuration and still get a faster load.
 
 Using the [[https://github.com/jwiegley/emacs-async][async]] package and the =org-babel-tangle= command, the code below will
 executes =org-babel-tangle= asynchronously when =config.org= is saved, to update the
-=config.el= file. From then on, you only need to specify the loading of this file
+=config.el= file. From then on, you only need to add a add the =my/config-tangle=
+function to the =after-save= hook and specify the loading of the =config.el= file
 into the =init.el= file.
 
 #+begin_src emacs-lisp
@@ -2643,7 +2645,6 @@ notifications and modeline display for =mu4e=:
 
 #+begin_src emacs-lisp
   (use-package mu4e-alert
-    :after mu4e
     :hook ((after-init . mu4e-alert-enable-mode-line-display)
            (after-init . mu4e-alert-enable-notifications))
     :config (mu4e-alert-set-default-style 'libnotify))
@@ -2903,6 +2904,7 @@ by [[#projectile][projectile]] project.
   (use-package yasnippet-snippets
     :after yasnippet
     :config (yasnippet-snippets-initialize))
+
   (use-package yasnippet
     :delight yas-minor-mode "υ"
     :hook (yas-minor-mode . my/disable-yas-if-no-snippets)
@@ -2911,6 +2913,7 @@ by [[#projectile][projectile]] project.
     (defun my/disable-yas-if-no-snippets ()
       (when (and yas-minor-mode (null (yas--get-snippet-tables)))
         (yas-minor-mode -1))))
+
   (use-package ivy-yasnippet :after yasnippet)
   (use-package react-snippets :after yasnippet)
 #+end_src
@@ -3077,18 +3080,17 @@ behavior.
     :config (global-hungry-delete-mode))
 #+end_src
 
-* Org-Mode
+* Org Mode
 
-One of my favorite modes in GNU Emacs. I mainly use it to organize my life, take
-notes and make my presentations, but you can do lots of things with
-it. =org-mode= it's like the sky, without limits.
+[[https://orgmode.org/][Org Mode]] is one of my favorite modes in GNU Emacs. I mainly use it to write
+notes and manage my time to enjoy a better organization of my life, but you can
+do lots of things with it. It is like the sky, without limits.
 
-#+begin_quote
-Org mode is for keeping notes, maintaining TODO lists, planning projects, and
-authoring documents with a fast and effective plain-text system.
+** First Steps
 
-[[http://orgmode.org/][Carsten Dominik]]
-#+end_quote
+To use Org Mode, GNU Emacs already has the =org= built-in package. However, some
+extra packages are in the [[https://orgmode.org/worg/org-contrib/][org-plus-contrib]] package. It is therefore a good idea
+to install it.
 
 #+begin_src emacs-lisp
   (use-package org
@@ -3105,14 +3107,6 @@ authoring documents with a fast and effective plain-text system.
          (org-archive-subtree)
          (setq org-map-continue-from (outline-previous-heading)))
        "TODO=\"DONE\"|TODO=\"CANCELLED\"" (if (org-before-first-heading-p) 'file 'tree)))
-
-    (defun my/org-compare-times (clocked estimated)
-      "Get the ratio between the timed time and the estimated time."
-      (if (and (> (length clocked) 0) estimated)
-          (format "%.2f"
-                  (/ (* 1.0 (org-hh:mm-string-to-minutes clocked))
-                     (org-hh:mm-string-to-minutes estimated)))
-        ""))
 
     (defun my/org-jump ()
       "Jump to a specific task."
@@ -3139,9 +3133,7 @@ authoring documents with a fast and effective plain-text system.
                                   (plain-list-item . t)))
     (org-confirm-babel-evaluate nil)
     (org-cycle-include-plain-lists 'integrate)
-    (org-ditaa-jar-path "~/.local/lib/ditaa0_9.jar")
     (org-ellipsis " ▾")
-    (org-expiry-inactive-timestamps t)
     (org-export-backends '(ascii beamer html icalendar latex man md org texinfo))
     (org-hide-emphasis-markers t)
     (org-log-done 'time)
@@ -3200,9 +3192,7 @@ authoring documents with a fast and effective plain-text system.
     (org-yank-adjusted-subtrees t)
     :config
     (add-to-list 'org-global-properties '("Effort_ALL". "0:05 0:15 0:30 1:00 2:00 3:00 4:00"))
-    (add-to-list 'org-speed-commands-user '("!" my/org-clock-in-and-track))
     (add-to-list 'org-speed-commands-user '("$" call-interactively 'org-archive-subtree))
-    (add-to-list 'org-speed-commands-user '("d" my/org-move-line-to-destination))
     (add-to-list 'org-speed-commands-user '("i" call-interactively 'org-clock-in))
     (add-to-list 'org-speed-commands-user '("o" call-interactively 'org-clock-out))
     (add-to-list 'org-speed-commands-user '("s" call-interactively 'org-schedule))
@@ -3212,9 +3202,9 @@ authoring documents with a fast and effective plain-text system.
     (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
     (add-to-list 'org-structure-template-alist '("py" . "src python"))
     (advice-add 'org-deadline :after (ignore-args #'org-save-all-org-buffers))
-    (advice-add 'org-refile :after 'org-save-all-org-buffers)
     (advice-add 'org-schedule :after (ignore-args #'org-save-all-org-buffers))
     (advice-add 'org-store-log-note :after (ignore-args #'org-save-all-org-buffers))
+    (advice-add 'org-refile :after 'org-save-all-org-buffers)
     (advice-add 'org-todo :after (ignore-args #'org-save-all-org-buffers))
     ;; Replace list hyphen with dot
     (font-lock-add-keywords 'org-mode
@@ -3224,8 +3214,9 @@ authoring documents with a fast and effective plain-text system.
     (org-load-modules-maybe t))
 #+end_src
 
-If like me, you're tired of manually updating your tables of contents, =toc-org=
-will maintain a table of contents at the first heading that has a =:TOC:= tag.
+If like me you want to automatically update the tables of contents of your =.org=
+files, [[https://github.com/snosov1/toc-org][toc-org]] is the ideal package. To automate these tables of contents, you
+only need to use the =:TOC:= tag in the first heading of these tables of contents.
 
 #+begin_src emacs-lisp
   (use-package toc-org
@@ -3233,7 +3224,9 @@ will maintain a table of contents at the first heading that has a =:TOC:= tag.
     :hook (org-mode . toc-org-enable))
 #+end_src
 
-For a cleaner online mode.
+To indent the text in Org Mode according to the structure of the plan, the
+=org-indent= built-in package is fine, but I don't want to see it loaded in the
+modeline.
 
 #+begin_src emacs-lisp
   (use-package org-indent :ensure nil :after org :delight)
@@ -3243,43 +3236,38 @@ For a cleaner online mode.
 
 Nowadays, it is crucial to be organized. Even more than before. That is why it
 is important to take the time to make a configuration that is simple to use and
-that makes your life easier with an irreproachable organization.
+that makes your life easier with an irreproachable organization. The =org-agenda=
+built-in package allows me to be organized in my daily tasks. As a result, I can
+use my time to the fullest.
 
-=org-agenda= allows me to be organized with daily tasks. As a result, I can use
-my time to the fullest.
-
-I put my =org= files in [[https://github.com/syncthing/syncthing][Syncthing]] in order to be able to check my agenda and
-update it from several computers and smartphones.
+*NOTE:* To synchronize and access my calendar via multiple devices (e.g.,
+smartphone or other laptop), I synchronize my =.org= files with [[https://github.com/syncthing/syncthing][Syncthing]]
 
 #+begin_src emacs-lisp
   (use-package org-agenda
     :ensure nil
     :bind (:map org-agenda-mode-map
-                ("X" . my/org-agenda-mark-done-and-add-followup)
-                ("x" . my/org-agenda-done))
+                ("X" . my/org-agenda-mark-done-next)
+                ("x" . my/org-agenda-mark-done))
     :preface
-    (defun my/org-agenda-done (&optional arg)
-      "Mark current TODO as done.
-    This changes the line at point, all other lines in the agenda referring to
-    the same tree node, and the headline of the tree node in the Org-mode file."
+    (defun my/org-agenda-mark-done (&optional arg)
+      "Mark the current TODO as done in org-agenda."
       (interactive "P")
       (org-agenda-todo "DONE"))
 
-    (defun my/org-agenda-mark-done-and-add-followup ()
-      "Mark the current TODO as done and add another task after it.
-     Creates it at the same level as the previous task, so it's better to use
-     this with to-do items than with projects or headings."
+    (defun my/org-agenda-mark-done-next ()
+      "Mark the current TODO as done and add another task after it."
       (interactive)
       (org-agenda-todo "DONE")
       (org-agenda-switch-to)
       (org-capture 0 "t"))
     :custom
     (org-agenda-category-icon-alist
-    `(("home" ,(list (all-the-icons-faicon "home" :v-adjust -0.05)) nil nil :ascent center :mask heuristic)
-      ("inbox" ,(list (all-the-icons-faicon "inbox" :v-adjust -0.1)) nil nil :ascent center :mask heuristic)
-      ("people" ,(list (all-the-icons-material "people" :v-adjust -0.25)) nil nil :ascent center :mask heuristic)
-      ("routine" ,(list (all-the-icons-material "repeat":v-adjust -0.25)) nil nil :ascent center :mask heuristic)
-      ))
+     `(("home" ,(list (all-the-icons-faicon "home" :v-adjust -0.05)) nil nil :ascent center :mask heuristic)
+       ("inbox" ,(list (all-the-icons-faicon "inbox" :v-adjust -0.1)) nil nil :ascent center :mask heuristic)
+       ("people" ,(list (all-the-icons-material "people" :v-adjust -0.25)) nil nil :ascent center :mask heuristic)
+       ("routine" ,(list (all-the-icons-material "repeat":v-adjust -0.25)) nil nil :ascent center :mask heuristic)
+       ))
     (org-agenda-custom-commands
      '(("d" "Dashboard"
         ((agenda "" ((org-deadline-warning-days 7)))
@@ -3327,7 +3315,8 @@ update it from several computers and smartphones.
     (org-track-ordered-property-with-tag t))
 #+end_src
 
-To get notifications about TODO items in =org-agenda=.
+Finally, I use [[https://github.com/akhramov/org-wild-notifier.el][org-wild-notifier]] to get notifications about TODO items in
+=org-agenda=.
 
 #+begin_src emacs-lisp
   (use-package org-wild-notifier
@@ -3336,12 +3325,11 @@ To get notifications about TODO items in =org-agenda=.
     (alert-default-style 'libnotify)
     (org-wild-notifier-notification-title "Agenda Reminder")
     :config (org-wild-notifier-mode))
-
 #+end_src
 
 ** Bullets
 
-Prettier [[https://github.com/sabof/org-bullets][bullets]] in org-mode.
+Let's add prettier bullets in Org Mode with [[https://github.com/sabof/org-bullets][org-bullets]].
 
 #+begin_src emacs-lisp
   (use-package org-bullets
