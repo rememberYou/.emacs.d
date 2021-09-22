@@ -755,7 +755,7 @@ of =ivy=.
 
 #+begin_src emacs-lisp
   (use-package vertico
-    :straight (:local-repo "vertico/extensions")
+    :straight (:files (:defaults "extensions/*"))
     :init (vertico-mode)
     :bind (:map vertico-map
                 ("C-<backspace>" . vertico-directory-up))
