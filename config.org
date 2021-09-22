@@ -3474,12 +3474,13 @@ take a 30 minute break. To use the Pomodoro technique with GNU Emacs, the
 
 ** Contacts
 
-The best solution to maintain your contacts. I tend to use =org-contacts= to
-remember their birthdays, so I can be the first to wish them that. Be careful
-that to install it, this one is available with =org-plus-contrib=.
+Managing your business and personal contact information can quickly turn into a
+mess. Several solutions exist in GNU Emacs. Personally I use the =org-contacts=
+package available in the =org-plus-contrib= package.
 
 #+begin_src emacs-lisp
   (use-package org-contacts
+    :after org
     :ensure nil
     :custom (org-contacts-files '("~/.personal/agenda/contacts.org")))
 #+end_src
