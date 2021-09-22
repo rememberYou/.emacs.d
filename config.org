@@ -3249,6 +3249,9 @@ smartphone or other laptop), I synchronize my =.org= files with [[https://github
   (use-package org-agenda
     :ensure nil
     :bind (:map org-agenda-mode-map
+                ("C-n" . org-agenda-next-item)
+                ("C-p" . org-agenda-previous-item)
+                ("j" . org-agenda-goto)
                 ("X" . my/org-agenda-mark-done-next)
                 ("x" . my/org-agenda-mark-done))
     :preface
