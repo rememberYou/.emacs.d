@@ -3503,14 +3503,9 @@ Let's change the foreground and the weight of each keyword.
 
 ** Encryption / Decryption
 
-To be able to enable encryption and decryption of =.gpg= files with =org-mode=,
-we will need to install =gnupg2=.
-
-Once this is done, we simply configure =org-crypt= to accept our public key
-identifier to allow asymmetric encryption.
-
-*NOTE:* you need to modify the =org-crypt-key= variable to replace my key
-identifier, by yours (or =nil= to allow symmetric encryption).
+To encrypt and decrypt GPG files with =org-mode=, you need to add =org-crypt= in
+your =org-modules=, install =gnupg= with your system manager package and create a
+GPG key pair with the public key specified to =org-crypt=.
 
 #+begin_src emacs-lisp
   (use-package org-crypt
