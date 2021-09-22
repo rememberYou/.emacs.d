@@ -3417,9 +3417,8 @@ information.
 
 ** Clock
 
-Being organized is one thing, but being optimal is another. =org-clock= allows
-you to estimate your tasks and time them. This is useful, since with experience,
-you can have a better estimate of the time that needs to be given to each task.
+To estimate and track the time of my tasks, GNU Emacs provides the =org-clock=
+built-in package.
 
 #+begin_src emacs-lisp
   (use-package org-clock
@@ -3451,18 +3450,12 @@ you can have a better estimate of the time that needs to be given to each task.
     (org-show-notification-handler (lambda (msg) (alert msg))))
 #+end_src
 
+As a person with a short attention span, the [[https://francescocirillo.com/pages/pomodoro-technique][Pomodoro technique]] allows me to
+maximize my concentration throughout the day. Personally, I do sessions of 25
+minutes of concentrated work and 5 minutes of break. Finally, every two hours, I
+take a 30 minute break. To use the Pomodoro technique with GNU Emacs, the
+[[https://github.com/marcinkoziej/org-pomodoro][org-pomodoro]] package is suggested.
 
-Being a person with a very low ability to concentrate, I use the =pomodoro=
-method to be able to concentrate throughout the day and have deep focus sessions
-almost all the time.
-
-Personally, I do sessions of:
-- *25 minutes of concentrated work*;
-- *5 minutes break*.
-
-Finally, I *take a 30-minute break every two hours*.
-
-To allow this, I use =org-pomodoro= making sure I get that in my status bar:
 #+begin_src emacs-lisp
   (use-package org-pomodoro
     :after org
