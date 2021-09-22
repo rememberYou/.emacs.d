@@ -3547,7 +3547,8 @@ growth.
 
 ** Languages
 
-With that, I can compile many languages with =org-mode=.
+Let's specify languages extra to Org Mode to compile them directly into =.org=
+files.
 
 #+begin_src emacs-lisp
   (use-package jupyter :ensure nil :after org)
