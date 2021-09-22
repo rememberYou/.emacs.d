@@ -3554,7 +3554,6 @@ With that, I can compile many languages with =org-mode=.
   (use-package python :ensure nil :after org)
   (use-package ob-C :ensure nil :after org)
   (use-package ob-css :ensure nil :after org)
-  (use-package ob-ditaa :ensure nil :after org)
   (use-package ob-dot :ensure nil :after org)
   (use-package ob-ein :ensure nil :after org)
   (use-package ob-emacs-lisp :ensure nil :after org)
@@ -3577,7 +3576,6 @@ With that, I can compile many languages with =org-mode=.
     :custom (org-plantuml-jar-path (expand-file-name (format "%s/plantuml.jar" xdg-lib))))
 
   (use-package ob-python :ensure nil :after org)
-  (use-package ob-ruby :ensure nil :after org)
   (use-package ob-shell :ensure nil :after org)
   (use-package ob-sql :ensure nil :after org)
 #+end_src
