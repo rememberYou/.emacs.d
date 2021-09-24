@@ -2412,7 +2412,7 @@ which I find more user-friendly.
 
     (defun my/circe-nickserv-password (server)
       "Fetch the NickServ password for the Libera Chat."
-      (my/circle-fetch-password :login "rememberYou" :machine "irc.libera.chat"))
+      (my/circe-fetch-password :login "rememberYou" :machine "irc.libera.chat"))
     :custom
     (circe-default-part-message nil)
     (circe-default-quit-message nil)
