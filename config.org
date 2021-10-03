@@ -869,7 +869,7 @@ seems to be easier and smoother to configure.
     :hook (lsp-mode . company-mode)
     :custom
     (company-begin-commands '(self-insert-command))
-    (company-idle-delay 0)
+    (company-idle-delay 0.5)
     (company-minimum-prefix-length 1)
     (company-show-quick-access t)
     (company-tooltip-align-annotations 't))
