@@ -601,6 +601,11 @@ use, let's change some default values.
   (use-package dired
     :ensure nil
     :commands (dired dired-jump)
+    :bind (:map dired-mode-map
+                ("h" . dired-up-directory)
+                ("j" . dired-next-line)
+                ("k" . dired-previous-line)
+                ("l" . dired-single-buffer))
     :delight "Dired"
     :custom
     (dired-auto-revert-buffer t)
@@ -648,7 +653,7 @@ becomes possible.
   (use-package dired-hide-dotfiles
     :hook (dired-mode . dired-hide-dotfiles-mode)
     :bind (:map dired-mode-map
-                ("h" . dired-hide-dotfiles-mode)))
+                ("H" . dired-hide-dotfiles-mode)))
 #+end_src
 
 I like being able to =<TAB>= on a folder and see its contents, without me getting
