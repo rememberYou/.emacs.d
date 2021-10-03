@@ -2951,9 +2951,8 @@ well according to the author of the package.
 
 #+begin_src emacs-lisp
   (use-package electric-operator
-    :delight
     :hook ((css-mode java-mode js2-mode
-                     python-mode sql-mode typescript-mode) . electric-operator-mode))
+                    python-mode sql-mode typescript-mode) . electric-operator-mode))
 #+end_src
 
 ** Recent Files
