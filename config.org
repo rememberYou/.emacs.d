@@ -2362,7 +2362,6 @@ of the previous mode, allowing a code to be always indented.
 
 #+begin_src emacs-lisp
   (use-package aggressive-indent
-    :hook (prog-mode . aggressive-indent-mode)
     :custom (aggressive-indent-comments-too t))
 #+end_src
 
