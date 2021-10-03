@@ -93,8 +93,8 @@
   - [[#contacts][Contacts]]
   - [[#faces][Faces]]
   - [[#encryption--decryption][Encryption / Decryption]]
-  - [[#journal][Journal]]
   - [[#languages][Languages]]
+  - [[#notes-and-journal][Notes and Journal]]
 
 * About
 
@@ -2227,9 +2227,26 @@ Group Projectile commands.
       ("s" counsel-ripgrep "search"))))
 #+end_src
 
+*** Hydra / Roam
 
+Group =org-roam= commands.
 
 #+begin_src emacs-lisp
+  (pretty-hydra-define hydra-notes
+    (:hint nil :color teal :quit-key "q" :title (with-octicon "pencil" "Notes" 1 -0.05))
+    ("Notes"
+     (("c" org-roam-dailies-capture-today "capture")
+      ("C" org-roam-dailies-capture-tomorrow "capture tomorrow")
+      ("g" org-roam-graph "graph")
+      ("f" org-roam-node-find "find")
+      ("i" org-roam-node-insert "insert"))
+     "Go To"
+     ((">" org-roam-dailies-goto-next-note "next note")
+      ("<" org-roam-dailies-goto-previous-note "previous note")
+      ("d" org-roam-dailies-goto-date "date")
+      ("t" org-roam-dailies-goto-today "today")
+      ("T" org-roam-dailies-goto-tomorrow "tomorrow")
+      ("y" org-roam-dailies-goto-yesterday "yesterday"))))
 #+end_src
 
 *** Hydra / Spelling
@@ -3516,37 +3533,9 @@ GPG key pair with the public key specified to =org-crypt=.
     :ensure nil
     :init (org-crypt-use-before-save-magic)
     :custom (org-crypt-key "E9AADC36E94A672D1A07D49B208FCDBB98190562"))
-#+end_src
 
-** Journal
-
-Recently, I started writing a journal about my daily life as I read that
-journals improve mental clarity, help solve problems, improve overall focus,
-insight and understanding, track the overall development and facilitate personal
-growth.
-
-#+begin_src emacs-lisp
-  (use-package org-journal
-    :after org
-    :bind (("C-c T" . org-journal-new-entry)
-           ("C-c Y" . journal-file-yesterday))
-    :preface
-    (defun get-journal-file-yesterday ()
-      "Get filename for yesterday's journal entry."
-      (let* ((yesterday (time-subtract (current-time) (days-to-time 1)))
-             (daily-name (format-time-string "%Y%m%d" yesterday)))
-        (expand-file-name (concat org-journal-dir daily-name))))
-
-    (defun journal-file-yesterday ()
-      "Create and load a file based on yesterday's date."
-      (interactive)
-      (find-file (get-journal-file-yesterday)))
-    :custom
-    (org-journal-date-format "%e %b %Y (%A)")
-    (org-journal-dir (format "~/.personal/journal/" (format-time-string "%Y")))
-    (org-journal-enable-encryption t)
-    (org-journal-file-format "%Y%m%d")
-    (org-journal-time-format ""))
+  (setq epa-file-encrypt-to "terencio.agozzino@gmail.com")
+  (setq epa-file-select-keys "auto")
 #+end_src
 
 ** Languages
@@ -3565,22 +3554,70 @@ files.
   (use-package ob-gnuplot :ensure nil :after org)
   (use-package ob-java :ensure nil :after org)
   (use-package ob-js :ensure nil :after org)
-
   (use-package ob-latex
     :ensure nil
     :after org
     :custom (org-latex-compiler "xelatex"))
-
   (use-package ob-ledger :ensure nil :after org)
   (use-package ob-makefile :ensure nil :after org)
   (use-package ob-org :ensure nil :after org)
-
   (use-package ob-plantuml
     :ensure nil
     :after org
     :custom (org-plantuml-jar-path (expand-file-name (format "%s/plantuml.jar" xdg-lib))))
-
   (use-package ob-python :ensure nil :after org)
   (use-package ob-shell :ensure nil :after org)
   (use-package ob-sql :ensure nil :after org)
 #+end_src
+
+** Notes and Journal
+
+Taking notes is a necessity in a world full of information. To take these notes
+and interconnect them, the [[https://github.com/org-roam/org-roam][org-roam]] package is great.
+
+After using [[https://github.com/bastibe/org-journal][org-journal]], I also decided to use =org-roam= to write my journal.
+
+If you don't already do so, I advise you to start writing your journal. If you
+haven't done so yet, I suggest you start writing your journal. This journal
+would allow you, for example, to improve your mental clarity, follow your
+evolution, and facilitate your personal growth.
+
+#+begin_src emacs-lisp
+  (use-package org-roam
+    :after org
+    :init
+    (setq org-roam-v2-ack t)
+    (setq my/daily-note-filename "%<%Y-%m-%d>.org.gpg"
+          my/daily-note-header "#+title: %<%Y-%m-%d %a>\n\n[[roam:%<%Y-%B>]]\n\n")
+    :custom
+    (org-roam-capture-templates
+     '(("d" "default" plain "%?"
+        :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                           "#+title: ${title}\n")
+        :unnarrowed t)))
+    (org-roam-completion-everywhere t)
+    (org-roam-dailies-directory "journal/")
+    (org-roam-dailies-capture-templates
+     `(("d" "default" plain
+        "* %?"
+        :if-new (file+head ,my/daily-note-filename
+                           ,my/daily-note-header)
+        :empty-lines 1)
+
+       ("j" "journal" plain
+        "** %<%I:%M %p>  :journal:\n\n%?\n\n"
+        :if-new (file+head+olp ,my/daily-note-filename
+                               ,my/daily-note-header
+                               ("Journal"))
+        :empty-lines 1)
+       ("m" "meeting" entry
+        "** %<%I:%M %p> - %^{Meeting Title}  :meeting:\n\n%?\n\n"
+        :if-new (file+head+olp ,my/daily-note-filename
+                               ,my/daily-note-header
+                               ("Meetings"))
+        :empty-lines 1)))
+    (org-roam-directory "~/.personal/notes")
+    :custom (org-roam-graph-viewer "/usr/bin/qutebrowser")
+    :config (org-roam-setup))
+#+end_src
+
