@@ -2424,7 +2424,7 @@ which I find more user-friendly.
         :port 6697
         :server-buffer-name "⇄ Libera Chat"
         :channels (:after-auth "#archlinux" "#bash" "#emacs" "#linux" "#python" "#qutebrowser" "#sway")
-        :nickserv-password my/circe-nickserver-password)))
+        :nickserv-password my/circe-nickserv-password)))
     (circe-reduce-lurker-spam t)
     (circe-use-cycle-completion t)
     (lui-flyspell-p t)
