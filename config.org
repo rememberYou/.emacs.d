@@ -2327,7 +2327,7 @@ Group upload commands.
   (pretty-hydra-define hydra-upload
     (:hint nil :color teal :quit-key "q" :title (with-faicon "cloud-upload" "Upload" 1 -0.05))
     ("Action"
-     (("b" webpaste-paste-buffe "buffer")
+     (("b" webpaste-paste-buffer "buffer")
       ("i" imgbb-upload "image")
       ("r" webpaste-paste-region "region"))))
 #+end_src
