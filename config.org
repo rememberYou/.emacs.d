@@ -1312,8 +1312,7 @@ syntax color and avoid modifying it, the [[https://github.com/anachronic/yarn-mo
 JSON is probably the data format I use the most in the web. That's why its setup
 below is a bit more advanced. As LSP server I prefer
 [[https://emacs-lsp.github.io/lsp-mode/page/lsp-json/][vscode-json-languageserver]]. To use it, make sure you install it with your
-package manager and to configure the LSP package. Although [[https://github.com/joshwnj/json-mode][json-mode]] is a
-package that is no longer under development, it still satisfies my needs.
+package manager and to configure the LSP package.
 
 #+begin_src emacs-lisp
   (use-package json-mode
