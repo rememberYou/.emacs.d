@@ -3025,11 +3025,11 @@ your repositories through an interface.
 #+end_src
 
 To make sure that the summary and the body of the commits respect the
-conventions, the [[https://github.com/magit/magit/blob/master/lisp/git-commit.el][git-commit]] package is perfect.
+conventions, the [[https://github.com/magit/magit/blob/master/lisp/git-commit.el][git-commit]] package from =magit= is perfect.
 
 #+begin_src emacs-lisp
   (use-package git-commit
-    :after magit
+    :ensure nil
     :preface
     (defun my/git-commit-auto-fill-everywhere ()
       "Ensure that the commit body does not exceed 72 characters."
