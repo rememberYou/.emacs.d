@@ -125,7 +125,7 @@ To install packages, it is useful to configure the package sources.
 #+begin_src emacs-lisp
   (setq package-archives '(("elpa" . "https://elpa.gnu.org/packages/")
                            ("melpa" . "https://melpa.org/packages/")
-                           ("org" . "http://orgmode.org/elpa/")))
+                           ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
 #+end_src
 
 ** Package Configurations
@@ -3105,12 +3105,12 @@ do lots of things with it. It is like the sky, without limits.
 ** First Steps
 
 To use Org Mode, GNU Emacs already has the =org= built-in package. However, some
-extra packages are in the [[https://orgmode.org/worg/org-contrib/][org-plus-contrib]] package. It is therefore a good idea
-to install it.
+extra packages are in the [[https://elpa.nongnu.org/nongnu/org-contrib.html][org-contrib]] package. It is therefore a good idea to
+install it.
 
 #+begin_src emacs-lisp
   (use-package org
-    :ensure org-plus-contrib
+    :ensure org-contrib
     :delight "Θ"
     :hook (org-mode . turn-off-auto-fill)
     :bind ("C-c i" . org-insert-structure-template)
@@ -3490,7 +3490,7 @@ take a 30 minute break. To use the Pomodoro technique with GNU Emacs, the
 
 Managing your business and personal contact information can quickly turn into a
 mess. Several solutions exist in GNU Emacs. Personally I use the =org-contacts=
-package available in the =org-plus-contrib= package.
+package available in the =org-contrib= package.
 
 #+begin_src emacs-lisp
   (use-package org-contacts
