@@ -1568,7 +1568,7 @@ enough.
 #+begin_src emacs-lisp
   (use-package lsp-pyright
     :if (executable-find "pyright")
-    ;; To properly load `lsp-pyrigt', the `require' instruction is important.
+    ;; To properly load `lsp-pyright', the `require' instruction is important.
     :hook (python-mode . (lambda ()
                            (require 'lsp-pyright)
                            (lsp-deferred)))
