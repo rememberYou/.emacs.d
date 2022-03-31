@@ -2633,7 +2633,7 @@ automatically convert Org in HTML, and custom some HTML elements.
                                     (goto-char (point-max))
                                     (insert "--<br>
                    <strong>Terencio Agozzino</strong><br>
-                   Machine Learning Engineer
+                   Data Scientist
                    <br>
                    <span style='text-decoration:none; color:#000;'>(+32) 495 45 29 07</span>")))
     (add-hook 'org-mime-html-hook (lambda ()
