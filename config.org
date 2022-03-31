@@ -2509,6 +2509,7 @@ Now all that remains is to configure =mu4e=:
   (use-package mu4e
     :ensure nil
     :ensure-system-package mu
+    :load-path "/usr/share/emacs/site-lisp/mu4e"
     :commands mu4e
     :hook (mu4e-compose-mode . turn-off-auto-fill)
     :bind (:map mu4e-headers-mode-map
