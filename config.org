@@ -2679,7 +2679,7 @@ name) and /<password>/ by those that match your real information:
 
 #+BEGIN_EXAMPLE
   machine imap.gmail.com login terencio.agozzino@gmail.com password <password> port 993
-  machine smtp.gmail.com login terencio.agozzino@gmail.com password <password> port 587
+  machine smtp.gmail.com login terencio.agozzino@gmail.com password <password> port 465
 #+END_EXAMPLE
 
 Similar to IRC, if you want to store your password in a /GPG/ file, you just need
