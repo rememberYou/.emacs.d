@@ -3142,7 +3142,6 @@ install it.
          (funcall ,fnc)))
     :hook ((after-save . my/config-tangle)
            (auto-save . org-save-all-org-buffers)
-           (org-mode . org-indent-mode)
            (org-mode . visual-line-mode))
     :custom
     (org-archive-location "~/.personal/archives/%s::")
@@ -3165,6 +3164,7 @@ install it.
     (org-refile-use-outline-path nil)
     (org-refile-targets '((org-agenda-files . (:maxlevel . 1))))
     (org-startup-folded nil)
+    (org-startup-indented t)
     (org-startup-with-inline-images t)
     (org-tag-alist
      '((:startgroup . "Context")
@@ -3239,14 +3239,6 @@ only need to use the =:TOC:= tag in the first heading of these tables of content
   (use-package toc-org
     :after org
     :hook (org-mode . toc-org-enable))
-#+end_src
-
-To indent the text in Org Mode according to the structure of the plan, the
-=org-indent= built-in package is fine, but I don't want to see it loaded in the
-modeline.
-
-#+begin_src emacs-lisp
-  (use-package org-indent :ensure nil :after org :delight)
 #+end_src
 
 ** Agenda
