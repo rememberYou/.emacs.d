@@ -3200,8 +3200,8 @@ install it.
        ("trip" . ?I)
        ("thinking" . ?i)
        ("update" . ?u)
-       ("watch" . ?W)
-       ("writing" . ?g)))
+       ("watch" . ?l)
+       ("writing" . ?W)))
     (org-tags-exclude-from-inheritance '("crypt" "project"))
     (org-todo-keywords '((sequence "TODO(t)"
                                    "STARTED(s)"
