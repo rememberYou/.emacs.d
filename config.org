@@ -2224,7 +2224,7 @@ Group Projectile commands.
      "Search"
      (("r" projectile-replace "replace")
       ("R" projectile-replace-regexp "regexp replace")
-      ("s" counsel-ripgrep "search"))))
+      ("s" consult-git-grep "search"))))
 #+end_src
 
 *** Hydra / Roam
