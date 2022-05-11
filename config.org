@@ -3164,9 +3164,11 @@ install it.
                    org-protocol
                    org-tempo))
     (org-refile-allow-creating-parent-nodes 'confirm)
+    (org-refile-targets '((org-agenda-files :maxlevel . 1)
+                          ("~/.personal/agenda/home.org" :maxlevel . 2)
+                          ("~/.personal/agenda/work.org" :maxlevel . 2)))
     (org-refile-use-cache nil)
     (org-refile-use-outline-path nil)
-    (org-refile-targets '((org-agenda-files . (:maxlevel . 1))))
     (org-startup-folded nil)
     (org-startup-indented t)
     (org-startup-with-inline-images t)
