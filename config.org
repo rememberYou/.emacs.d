@@ -3169,7 +3169,6 @@ install it.
                           ("~/.personal/agenda/work.org" :maxlevel . 2)))
     (org-refile-use-cache nil)
     (org-refile-use-outline-path nil)
-    (org-startup-folded nil)
     (org-startup-indented t)
     (org-startup-with-inline-images t)
     (org-tag-alist
