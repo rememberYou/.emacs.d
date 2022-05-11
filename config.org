@@ -2195,7 +2195,7 @@ Group Org commands.
       ("c" org-capture "capture")
       ("d" org-decrypt-entry "decrypt")
       ("i" org-insert-link-global "insert-link")
-      ("j" my/org-jump "jump-task")
+      ("j" org-capture-goto-last-stored "jump-capture")
       ("k" org-cut-subtree "cut-subtree")
       ("o" org-open-at-point-global "open-link")
       ("r" org-refile "refile")
