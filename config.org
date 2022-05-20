@@ -3449,9 +3449,9 @@ built-in package.
     :hook (org-clock-in-prepare-hook . my/org-mode-ask-effort)
     :custom
     (org-clock-clocktable-default-properties
-     '(:block day :maxlevel 2 :scope agenda :link t :compact t :formula %
-              :step day :fileskip0 t :stepskip0 t :narrow 80
-              :properties ("Effort" "CLOCKSUM" "CLOCKSUM_T" "TODO")))
+     '(:block thisweek :maxlevel 2 :scope agenda :link t :compact t :formula %
+              :step week :fileskip0 t :stepskip0 t :narrow 50
+              :properties ("Effort" "CLOCKSUM" "TODO")))
     (org-clock-continuously nil)
     (org-clock-in-switch-to-state "STARTED")
     (org-clock-out-remove-zero-time-clocks t)
