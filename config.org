@@ -3405,16 +3405,16 @@ information.
 
        ("i" "New Item")
        ("ib" "Book" checkitem (file+headline "~/.personal/items/books.org" "Books")
-        "- [ ] %^{Title} -- %^{Author} %? :@home:reading:\n%U"
+        "- [ ] %^{Title} - %^{Author}\n  %U"
         :immediate-finish t)
        ("il" "Learning" checkitem (file+headline "~/.personal/items/learning.org" "Things")
-        "- [ ] %^{Thing} :@home:"
+        "- [ ] %^{Thing}\n  %U"
         :immediate-finish t)
        ("im" "Movie" checkitem (file+headline "~/.personal/items/movies.org" "Movies")
-        "- [ ] %^{Title}  :@home:watch:\n%U"
+        "- [ ] %^{Title}\n  %U"
         :immediate-finish t)
        ("ip" "Purchase" checkitem (file+headline "~/.personal/items/purchases.org" "Purchases")
-        "- [ ] %^{Item}  :@home:purchase:\n%U"
+        "- [ ] %^{Item}\n  %U"
         :immediate-finish t)
 
        ("t" "New Task")
