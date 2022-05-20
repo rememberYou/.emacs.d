@@ -3283,7 +3283,8 @@ smartphone or other laptop), I synchronize my =.org= files with [[https://github
      `(("home" ,(list (all-the-icons-faicon "home" :v-adjust -0.05)) nil nil :ascent center :mask heuristic)
        ("inbox" ,(list (all-the-icons-faicon "inbox" :v-adjust -0.1)) nil nil :ascent center :mask heuristic)
        ("people" ,(list (all-the-icons-material "people" :v-adjust -0.25)) nil nil :ascent center :mask heuristic)
-       ("routine" ,(list (all-the-icons-material "repeat":v-adjust -0.25)) nil nil :ascent center :mask heuristic)
+       ("work" ,(list (all-the-icons-material "work" :v-adjust -0.25)) nil nil :ascent center :mask heuristic)
+       ("routine" ,(list (all-the-icons-material "repeat" :v-adjust -0.25)) nil nil :ascent center :mask heuristic)
        ))
     (org-agenda-custom-commands
      '(("d" "Dashboard"
