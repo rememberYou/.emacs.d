@@ -3297,8 +3297,8 @@ smartphone or other laptop), I synchronize my =.org= files with [[https://github
          (todo "NEXT"
                ((org-agenda-overriding-header "Next Tasks")))))
 
-       ("h" "Home Tasks" tags-todo "+home")
-       ("w" "Work Tasks" tags-todo "+work")
+       ("h" "Home Tasks" tags-todo "@home")
+       ("w" "Work Tasks" tags-todo "@work")
 
        ("E" "Easy Tasks" tags-todo "+easy")
        ("C" "Challenging Tasks" tags-todo "+challenging")
