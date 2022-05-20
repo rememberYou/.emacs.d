@@ -3301,8 +3301,8 @@ smartphone or other laptop), I synchronize my =.org= files with [[https://github
        ("h" "Home Tasks" tags-todo "@home")
        ("w" "Work Tasks" tags-todo "@work")
 
-       ("E" "Easy Tasks" tags-todo "+easy")
-       ("C" "Challenging Tasks" tags-todo "+challenging")
+       ("E" "Easy Tasks" tags-todo "easy")
+       ("C" "Challenging Tasks" tags-todo "challenging")
 
        ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
         ((org-agenda-overriding-header "Low Effort Tasks")
