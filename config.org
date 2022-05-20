@@ -2842,7 +2842,7 @@ Similarly, the [[https://github.com/ecraven/imgbb.el][imgbb]] package allows you
 
 ** PDF
 
-By default, opening PDFs under GNU Emacs sucks. Fortunately, the [[https://github.com/politza/pdf-tools][pdf-tools]]
+By default, opening PDFs under GNU Emacs sucks. Fortunately, the [[https://github.com/vedang/pdf-tools][pdf-tools]]
 package provides =pdf-view= to offer a better support for PDFs.
 
 *NOTE:* If =pdf-tools= fails to open a PDF, please execute the =pdf-tools-install=
