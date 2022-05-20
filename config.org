@@ -3388,7 +3388,7 @@ information.
     :custom
     (org-capture-templates
      `(
-       ("c" "Contact" entry (file+headline "~/.personal/agenda/contacts.org" "Friends"),
+       ("c" "Contact" entry (file+headline "~/.personal/agenda/contacts.org" "Inbox"),
         my/org-contacts-template
         :empty-lines 1)
 
