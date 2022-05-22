@@ -898,6 +898,9 @@ to reduce those nasty little spelling and grammar mistakes.
 According to a list of misspelled words, the =abbrev= built-in package
 automatically corrects these words on the fly.
 
+*NOTE:* to start with a comfortable list, you can save the common misspellings
+from Wikipedia (cf. [[https://www.masteringemacs.org/article/correcting-typos-misspellings-abbrev][Correcting Typos and Misspellings with Abbrev]])
+
 #+begin_src emacs-lisp
   (use-package abbrev
     :ensure nil
