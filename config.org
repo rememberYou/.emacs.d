@@ -915,7 +915,7 @@ I use the =flyspell= built-in package to enable spell checking on-the-fly in GNU
 Emacs. A useful =flyspell= command is =flyspell-auto-correct-word= (=M-TAB=) which
 automatically corrects a word according to the best suggestion.
 
-*NOTE:* a call to`flyspell-buffer` could be extremely slow.
+*NOTE:* a call to =flyspell-buffer= could be extremely slow.
 
 #+begin_src emacs-lisp
   (use-package flyspell
